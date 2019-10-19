@@ -10,6 +10,7 @@ add_subdirectory(lib/glew)
 include_directories(include)
 include_directories(lib/glfw/include)
 include_directories(lib/glew/include)
+include_directories(lib/glm)
 
 add_subdirectory(src)
 
