@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(CMAKE_CXX_STANDARD 11)
+
+if(WIN32)
+    option(gtest_force_shared_crt "" TRUE)
+endif(WIN32)
+
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
 
 project(SimEngine)
