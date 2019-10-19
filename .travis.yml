@@ -44,4 +44,4 @@ script:
 - cd build
 - cmake ..
 - make
-- ./bin/test --gtest_repeat = 10
+- ./bin/test
