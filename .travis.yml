@@ -38,7 +38,7 @@ install:
 - sudo apt-get install libgl1-mesa-dev
 - sudo apt-get install mesa-common-dev
 
-  script: 
+script: 
 - git submodule update --init --recursive
 - mkdir build
 - cd build
