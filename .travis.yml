@@ -37,6 +37,7 @@ install:
   sudo apt-get install xorg-dev
   sudo apt-get install libgl1-mesa-dev
   sudo apt-get install mesa-common-dev
+  
   script: 
 - git submodule update --init --recursive
 - mkdir build
