@@ -11,7 +11,13 @@ endif()
 if(WIN32)
     add_executable(SmartHouse WIN32 mainSmartHouse.cpp SmartHouse.cpp)
 else()
-    add_executable(SmartHouse WIN32 mainSmartHouse.cpp SmartHouse.cpp)
+    add_executable(SmartHouse mainSmartHouse.cpp SmartHouse.cpp)
+endif()
+
+if(WIN32)
+    add_executable(test WIN32 mainTest.cpp)
+else()
+    add_executable(test mainTest.cpp)
 endif()
 
 target_link_libraries(TrafficSim glfw ${OPENGL_LIBRARIES})
@@ -21,4 +27,6 @@ add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(TrafficSim libglew_static)
 target_link_libraries(SmartHouse libglew_static)
+
+target_link_libraries(test gtest)
 

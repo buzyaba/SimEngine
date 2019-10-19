@@ -6,11 +6,14 @@ project(SimEngine)
 
 add_subdirectory(lib/glfw)
 add_subdirectory(lib/glew)
+add_subdirectory(lib/googletest)
+
 
 include_directories(include)
 include_directories(lib/glfw/include)
 include_directories(lib/glew/include)
 include_directories(lib/glm)
+include_directories(lib/googletest/googletest/include)
 
 add_subdirectory(src)
 
