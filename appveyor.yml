@@ -11,6 +11,6 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: cmake ..
-  - cmd: make
+  - cmd: cmake --build .
   - cmd: cd bin
   - cmd: dir
