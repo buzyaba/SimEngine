@@ -12,5 +12,4 @@ build_script:
   - cmd: cd build
   - cmd: cmake ..
   - cmd: cmake --build .
-  - cmd: cd bin
-  - cmd: dir
+  - cmd: ./bin/test.exe

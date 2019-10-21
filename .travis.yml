@@ -43,5 +43,5 @@ script:
 - mkdir build
 - cd build
 - cmake ..
-- make
+- cmake --build .
 - ./bin/test
