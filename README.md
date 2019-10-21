@@ -15,3 +15,9 @@ git clone --recursive https://github.com/buzyaba/SimEngine.git
   cmake --build .
   ```
 3) Run `<project's folder>/build/bin`
+
+### Linux install
+  ```
+  sudo apt install xorg-dev
+  sudo apt install libgl1-mesa-dev
+  ```
