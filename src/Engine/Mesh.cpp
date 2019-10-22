@@ -1,4 +1,4 @@
-#include "Mesh.hpp"
+#include <Engine/Mesh.hpp>
 
 void Mesh::setTriangleData(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices) {
 
