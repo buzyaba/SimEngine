@@ -1,8 +1,10 @@
+#pragma once
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Camera{
+class Camera {
     public:
         Camera(GLfloat FOV, GLfloat width, GLfloat height, GLfloat nearPlane,
             GLfloat farPlane, glm::vec3 camPos);
