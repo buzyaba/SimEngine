@@ -1,4 +1,4 @@
-#include "SmartHouse.hpp"
+#include <SmartHouse/SmartHouse.hpp>
 
 void renderScene(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

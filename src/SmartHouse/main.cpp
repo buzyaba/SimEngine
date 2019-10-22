@@ -1,4 +1,4 @@
-#include "SmartHouse.hpp"
+#include <SmartHouse/SmartHouse.hpp>
 
 int main(int argc, char **argv){
     glfwInit();

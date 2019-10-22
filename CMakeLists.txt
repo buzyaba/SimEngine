@@ -17,6 +17,9 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
 
+find_package(OpenGL REQUIRED)
+
+include_directories(${OPENGL_INCLUDE_DIRS})
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")

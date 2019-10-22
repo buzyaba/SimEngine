@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
+#include <TrafficSim/TrafficSim.hpp>
 
 int main() {
   if(!glfwInit()) {
