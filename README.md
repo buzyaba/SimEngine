@@ -3,7 +3,9 @@
 
 # SimEngine
 ## To clone the project:
-git clone --recursive https://github.com/buzyaba/SimEngine.git
+```
+  git clone --recursive https://github.com/buzyaba/SimEngine.git
+```
 
 ## Build the project with CMake
 1) Configure the build: `Makefile`, `.sln`, etc.
