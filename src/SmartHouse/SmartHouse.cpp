@@ -19,10 +19,10 @@ void initApplication() {
     ShaderLoader shader;
     ShaderLoader shader2;
 
-    GLuint flatShaderProgram = shader.CreateProgram("../assets/shaders/VertexShader.vs", 
-    "../assets/shaders/FragmentShader.fs");
-    GLuint texturedShaderProgram = shader.CreateProgram("../assets/shaders/texturedModel.vs",
-    "../assets/shaders/texturedModel.fs");
+    GLuint flatShaderProgram = shader.CreateProgram("../../assets/shaders/VertexShader.vs", 
+    "../../assets/shaders/FragmentShader.fs");
+    GLuint texturedShaderProgram = shader.CreateProgram("../../assets/shaders/texturedModel.vs",
+    "../../assets/shaders/texturedModel.fs");
     camera = new Camera(45.0f, 800, 600, 0.1f, 100.0f, glm::vec3(7.0f, 4.0f, 5.0f));
     light = new LightRenderer(MeshType::kCube, camera); 
     light->setProgram(flatShaderProgram);

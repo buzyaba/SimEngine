@@ -15,8 +15,8 @@ void initApplication() {
 
     ShaderLoader shader;
 
-    GLuint flatShaderProgram = shader.CreateProgram("../assets/shaders/VertexShader.vs", 
-    "../assets/shaders/FragmentShader.fs");
+    GLuint flatShaderProgram = shader.CreateProgram("../../assets/shaders/VertexShader.vs", 
+    "../../assets/shaders/FragmentShader.fs");
 
     camera = new Camera(45.0f, 800, 600, 0.1f, 100.0f, glm::vec3(0.0f, 4.0f, 6.0f));
     light = new LightRenderer(MeshType::kTriangle, camera); 
