@@ -4,7 +4,7 @@ enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
 extern LightRenderer* light;
-MeshRenderer* sphere;
+extern MeshRenderer* sphere;
 
 int main(int argc, char** argv) {
   glfwInit();
@@ -25,5 +25,6 @@ int main(int argc, char** argv) {
   glfwTerminate();
   delete camera;
   delete light;
+  delete sphere;
   return 0;
 }
