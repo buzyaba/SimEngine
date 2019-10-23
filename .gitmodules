@@ -10,3 +10,6 @@
 [submodule "lib/glm"]
 	path = lib/glm
 	url = https://github.com/Groovounet/glm-deprecated.git
+[submodule "lib/stb"]
+	path = lib/stb
+	url = https://github.com/nothings/stb.git
