@@ -9,4 +9,14 @@ target_link_libraries(SmartHouse glfw ${OPENGL_LIBRARIES})
 add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(SmartHouse libglew_static)
-
+if (WIN32)
+    target_link_libraries(SmartHouse 
+        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletDynamics_Debug.lib
+        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletCollision_Debug.lib
+        ${CMAKE_SOURCE_DIR}/build/lib/Debug/LinearMath_Debug.lib)
+else ()
+    target_link_libraries(SmartHouse 
+        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletDynamics/libBulletDynamics.a
+        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletCollision/libBulletCollision.a
+        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/LinearMath/libLinearMath.a)
+endif(WIN32)

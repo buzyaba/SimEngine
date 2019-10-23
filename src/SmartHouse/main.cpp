@@ -6,6 +6,9 @@ extern Camera* camera;
 extern LightRenderer* light;
 extern MeshRenderer* sphere;
 
+//physics
+extern btDiscreteDynamicsWorld* dynamicsWorld;
+
 int main(int argc, char** argv) {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
