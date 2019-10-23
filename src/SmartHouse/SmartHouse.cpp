@@ -1,8 +1,25 @@
 #include <SmartHouse/SmartHouse.hpp>
 
-void renderScene(){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(1.0, 1.0, 0.0, 1.0); // clear Yellow
+Camera* camera;
+LightRenderer* light;
 
-    // draw objects here
+void renderScene() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.f, 1.f, 0.f, 1.f);
+    //Drawing objects here
+    light->draw();
+}
+
+void initApplication() {
+    glEnable(GL_DEPTH_TEST);
+
+    ShaderLoader shader;
+
+    GLuint flatShaderProgram = shader.CreateProgram("../assets/shaders/VertexShader.vs", 
+    "../assets/shaders/FragmentShader.fs");
+
+    camera = new Camera(45.0f, 800, 600, 0.1f, 100.0f, glm::vec3(0.0f, 4.0f, 6.0f));
+    light = new LightRenderer(MeshType::kCube, camera); 
+    light->setProgram(flatShaderProgram);
+    light->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 }
