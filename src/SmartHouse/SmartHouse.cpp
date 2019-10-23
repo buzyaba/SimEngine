@@ -5,6 +5,9 @@ LightRenderer* light;
 
 MeshRenderer* sphere;
 
+//physics
+btDiscreteDynamicsWorld* dynamicsWorld;
+
 void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 0.f, 1.f);
@@ -30,6 +33,15 @@ void initApplication() {
 
     TextureLoader tLoader;
     GLuint sphereTexture = tLoader.getTextureID("../assets/textures/globe.jpg");
+
+	//init physics
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
+
+	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+	dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
 
 	// Sphere Mesh
 
