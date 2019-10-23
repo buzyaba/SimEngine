@@ -10,7 +10,7 @@ add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(SmartHouse libglew_static)
 target_link_libraries(SmartHouse 
-    ${CMAKE_SOURCE_DIR}/build/lib/bullet3/src/BulletDynamics/libBulletDynamics.a
-    ${CMAKE_SOURCE_DIR}/build/lib/bullet3/src/BulletCollision/libBulletCollision.a
-    ${CMAKE_SOURCE_DIR}/build/lib/bullet3/src/LinearMath/libLinearMath.a
+    ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletDynamics/libBulletDynamics.a
+    ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletCollision/libBulletCollision.a
+    ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/LinearMath/libLinearMath.a
    )
