@@ -1,14 +1,11 @@
 # build what you want
-#IF(BUILD_BULLET3)
-#	SUBDIRS(  Bullet3OpenCL Bullet3Serialize/Bullet2FileLoader Bullet3Dynamics Bullet3Collision Bullet3Geometry )
-#ENDIF(BUILD_BULLET3)
+IF(BUILD_BULLET3)
+	SUBDIRS(  Bullet3OpenCL Bullet3Serialize/Bullet2FileLoader Bullet3Dynamics Bullet3Collision Bullet3Geometry )
+ENDIF(BUILD_BULLET3)
 
 
-#SUBDIRS(   BulletInverseDynamics BulletSoftBody BulletCollision BulletDynamics LinearMath Bullet3Common)
+SUBDIRS(   BulletInverseDynamics BulletSoftBody BulletCollision BulletDynamics LinearMath Bullet3Common)
 
-
-
-SUBDIRS(BulletCollision BulletDynamics LinearMath Bullet3Common)
 
 IF(INSTALL_LIBS)
 	#INSTALL of other files requires CMake 2.6
