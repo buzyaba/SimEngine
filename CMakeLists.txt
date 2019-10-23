@@ -26,6 +26,7 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/glew/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
+include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
 

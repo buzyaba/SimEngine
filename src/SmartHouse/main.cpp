@@ -4,6 +4,7 @@ enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
 extern LightRenderer* light;
+MeshRenderer* sphere;
 
 int main(int argc, char** argv) {
   glfwInit();
