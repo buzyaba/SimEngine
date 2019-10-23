@@ -11,6 +11,7 @@
 1) Configure the build: `Makefile`, `.sln`, etc.
   ```
   mkdir build && cd build
+  cmake ..
   ```
 2) Build the project:
   ```
