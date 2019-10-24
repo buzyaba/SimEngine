@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 
 #include <Engine/Camera.hpp>
@@ -9,9 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <btBulletDynamicsCommon.h>
+
 class MeshRenderer{
     public:
-        MeshRenderer(MeshType modelType, Camera* _camera);
+        MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _rigidBody);
         ~MeshRenderer();
         void draw();
 
@@ -29,4 +32,5 @@ class MeshRenderer{
         glm::vec3 position, scale;
         GLuint vao, vbo, ebo, texture, program;
     
+        btRigidBody* rigidBody;
 };
