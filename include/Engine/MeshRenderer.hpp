@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 #include <Engine/Camera.hpp>
@@ -9,17 +11,21 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <btBulletDynamicsCommon.h>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 class MeshRenderer{
     public:
-        MeshRenderer(MeshType modelType, Camera* _camera);
+        MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _rigidBody);
         ~MeshRenderer();
         void draw();
-
         void setPosition(glm::vec3 _position);
         void setScale(glm::vec3 _scale);
         void setProgram(GLuint _program);
         void setTexture(GLuint _textureID);
-    private:
+
+        btRigidBody* rigidBody;
+
+    protected:
         std::vector<Vertex>vertices;
         std::vector<GLuint>indices;
         glm::mat4 modelMatrix;

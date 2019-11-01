@@ -1,6 +1,8 @@
 #include <Engine/MeshRenderer.hpp>
+#include <iostream>
 
-MeshRenderer::MeshRenderer(MeshType modelType, Camera* _camera){
+MeshRenderer::MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _rigidBody){
+	rigidBody = _rigidBody;
     camera = _camera;
 	
 	scale = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -51,10 +53,26 @@ MeshRenderer::~MeshRenderer() {
 }
 
 void MeshRenderer::draw(){
-    glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), position);
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = TranslationMatrix *scaleMatrix;
+    
+	modelMatrix = glm::mat4(1.0f);
+
+	btTransform t;
+	
+	rigidBody->getMotionState()->getWorldTransform(t);
+	
+	btQuaternion rotation = t.getRotation();
+	btVector3 translate = t.getOrigin();
+
+	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), rotation.getAngle(),
+		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
+
+	glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f),
+		glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+
+	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+
+	modelMatrix = TranslationMatrix * RotationMatrix * scaleMatrix;
+
     glm::mat4 vp = camera->getProjectionMatrix() * camera->getViewMatrix();
     glUseProgram(this->program);
     GLint vpLoc = glGetUniformLocation(program, "vp");
