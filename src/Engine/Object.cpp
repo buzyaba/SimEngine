@@ -48,11 +48,11 @@ void Object::setPosition(const glm::vec3& pos) {
 
 }
 
-void Object::setRotation(const btScalar& dx, const btScalar& dy, const btScalar& dz) {
-    btTransform transform(mesh->rigidBody->getCenterOfMassTransform());
+void Object::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
+    btTransform transform(mesh->rigidBody->getWorldTransform());
+    btQuaternion rotate(btRadians(yaw), btRadians(pitch), btRadians(roll));
+    transform.setRotation(rotate);
 
-
-
-    mesh->rigidBody->setCenterOfMassTransform(transform);
-
+    mesh->rigidBody->setWorldTransform(transform);
+    mesh->rigidBody->getMotionState()->setWorldTransform(transform);
 }

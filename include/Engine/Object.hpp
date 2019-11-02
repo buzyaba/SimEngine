@@ -22,7 +22,7 @@ class Object {
        ~Object(){};
        void setScale(glm::vec3 _size);
        void setPosition(const glm::vec3& pos);
-       void setRotation(const btScalar& dx, const btScalar& dy, const btScalar& dz);
+       void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
        void setCollisionFlags(const CollisionType& _flag) {mesh->rigidBody->setCollisionFlags(_flag);} 
        glm::vec3 getPosition() {return glm::vec3(mesh->rigidBody->getWorldTransform().getOrigin().x(),
         mesh->rigidBody->getWorldTransform().getOrigin().y(), mesh->rigidBody->getWorldTransform().getOrigin().z());}

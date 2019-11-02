@@ -8,6 +8,8 @@ Object* sphere;
 Object* ground;
 Object* enemy;
 
+MeshRenderer* obj;
+
 void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 1.f, 1.f);
@@ -44,22 +46,22 @@ void initApplication() {
     enemy = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(1.0f, 1.0f, 1.0f)),
     glm::vec3(5.0f, -1.0f, 0.0f), glm::vec3(1.0f), 0.0f);
     enemy->setCollisionFlags(CollisionType::KINEMATIC);
-
-    //ground->setRotation(0.0f, 0.0, 45.0f);
+    //ground->setRotation(0.0f, 0.0, -45.0f);
     //ground->setPosition(glm::vec3(-2.0f, 2.0f, 0.0f));
 }
 
-void myTickCallback(btDynamicsWorld *dynamicsWorld, btScalar
+void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
     
 		// Get enemy transform
 		glm::vec3 pos = enemy->getPosition();
 		// Check if offScreen
-		if (pos.x <= -18.0f) {
+		if (pos.x <= -10.0f) {
 
 			enemy->setPosition(glm::vec3(5.0f, -1.0f, 0.0f));
+            sphere->setPosition(glm::vec3(0.0f));
 		}
         else
-            enemy->setPosition(pos+glm::vec3(-5.0f, 0.0f, 0.0f)*timeStep);
+            enemy->setPosition(pos+glm::vec3(-10.0f, 0.0f, 0.0f)*timeStep);
 
 }

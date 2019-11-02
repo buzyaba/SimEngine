@@ -8,7 +8,6 @@ MeshRenderer::MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _ri
 	scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	position = glm::vec3(0.0, 0.0, 0.0);
 
-
 	switch (modelType){
 
 		case kTriangle: Mesh::setTriangleData(vertices, indices); 
@@ -62,8 +61,9 @@ void MeshRenderer::draw(){
 	
 	btQuaternion rotation = t.getRotation();
 	btVector3 translate = t.getOrigin();
-
-	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), rotation.getAngle(),
+	std::cout << glm::degrees(rotation.getAngle()) << " " << rotation.getAxis().getX() << " " <<
+	rotation.getAxis().getY() << " "<<rotation.getAxis().getZ()<<std::endl;
+ 	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
 		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
 	glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f),
@@ -110,3 +110,4 @@ void MeshRenderer::setProgram(GLuint _program) {
 
 	this->program = _program;
 }
+
