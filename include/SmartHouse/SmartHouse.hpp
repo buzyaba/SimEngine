@@ -12,3 +12,8 @@
 void renderScene();
 
 void initApplication();
+void initMousePosition(GLfloat x, GLfloat y);
+void cameraMovement(float dt);
+void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void updateMouse(GLFWwindow* window, double xpos, double ypos);

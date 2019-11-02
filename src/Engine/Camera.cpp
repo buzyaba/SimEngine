@@ -1,12 +1,12 @@
 #include <Engine/Camera.hpp>
 
 Camera::Camera(GLfloat FOV, GLfloat width, GLfloat height, GLfloat nearPlane, 
-        GLfloat farPlane, glm::vec3 camPos){
+        GLfloat farPlane, glm::vec3 camPos, glm::vec3 camFront, glm::vec3 camUp){
 	cameraPos = camPos;
-	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	cameraFront = camFront;
+	cameraUp = camUp;
 
-	viewMatrix = glm::lookAt(cameraPos, cameraFront, cameraUp);
+	viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	projectionMatrix = glm::perspective(FOV, width/height, nearPlane, farPlane);
 }
 
@@ -15,6 +15,23 @@ Camera::~Camera(){
 
 }
 
+Camera* Camera::moveCamera(glm::vec3 camPos){
+	cameraPos = camPos;
+	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
+	return this;
+}
+
+Camera* Camera::rotateCamera(glm::vec3 camFront){
+	cameraFront = camFront;
+	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
+	return this;
+}
+
+Camera* Camera::rotateUpCamera(glm::vec3 camUp){
+	cameraUp = camUp;
+	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
+	return this;
+}
 
 glm::mat4 Camera::getViewMatrix() {
 
@@ -28,4 +45,12 @@ glm::mat4 Camera::getProjectionMatrix() {
 glm::vec3 Camera::getCameraPosition() {
 
 	return cameraPos;
+}
+
+glm::vec3 Camera::getCameraFront() {
+	return cameraFront;
+}
+
+glm::vec3 Camera::getCameraUp() {
+	return cameraUp;
 }

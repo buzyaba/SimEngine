@@ -5,8 +5,12 @@
 #include <Engine/Camera.hpp>
 #include <Engine/ShaderLoader.hpp>
 #include <Engine/LightRenderer.hpp>
-
+#include <Engine/MeshRenderer.hpp>
+#include <Engine/TextureLoader.hpp>
+#include <btBulletDynamicsCommon.h>
 
 void renderScene();
 
 void initApplication();
+void cameraMovement(float dt);
+void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
