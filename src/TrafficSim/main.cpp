@@ -4,10 +4,9 @@
 enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
-extern MeshRenderer* sphere;
-extern MeshRenderer* ground;
-
-//physics
+extern Object* sphere;
+extern Object* ground;
+extern Object* enemy;
 extern btDiscreteDynamicsWorld* dynamicsWorld;
 
 int main(int argc, char** argv) {
@@ -15,7 +14,7 @@ int main(int argc, char** argv) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Traffic Simulation", NULL, NULL);
   glfwMakeContextCurrent(window);
   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
   glewInit();
@@ -36,5 +35,10 @@ int main(int argc, char** argv) {
   }
   glfwTerminate();
   delete camera;
+  delete ground;
+  delete sphere;
+  delete enemy;
+  delete dynamicsWorld;
+
   return 0;
 }

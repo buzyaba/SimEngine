@@ -11,18 +11,20 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <btBulletDynamicsCommon.h>
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 class MeshRenderer{
     public:
         MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _rigidBody);
         ~MeshRenderer();
         void draw();
-
         void setPosition(glm::vec3 _position);
         void setScale(glm::vec3 _scale);
         void setProgram(GLuint _program);
         void setTexture(GLuint _textureID);
-    private:
+
+        btRigidBody* rigidBody;
+
+    protected:
         std::vector<Vertex>vertices;
         std::vector<GLuint>indices;
         glm::mat4 modelMatrix;
@@ -31,6 +33,4 @@ class MeshRenderer{
 
         glm::vec3 position, scale;
         GLuint vao, vbo, ebo, texture, program;
-    
-        btRigidBody* rigidBody;
 };
