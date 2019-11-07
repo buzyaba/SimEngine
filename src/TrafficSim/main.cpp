@@ -4,9 +4,13 @@
 enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
-extern Object* sphere;
+extern Car* car;
+extern Object* road1;
+extern Object* road2;
+extern Object* road3;
+extern Object* road4;
 extern Object* ground;
-extern Object* enemy;
+extern TrafficLight* light;
 extern btDiscreteDynamicsWorld* dynamicsWorld;
 
 int main(int argc, char** argv) {
@@ -36,8 +40,12 @@ int main(int argc, char** argv) {
   glfwTerminate();
   delete camera;
   delete ground;
-  delete sphere;
-  delete enemy;
+  delete road1;
+  delete road2;
+  delete road3;
+  delete road4;
+  delete car;
+  delete light;
   delete dynamicsWorld;
 
   return 0;
