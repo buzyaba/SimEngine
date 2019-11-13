@@ -15,7 +15,4 @@ foreach(subd ${subdirs})
     add_subdirectory(${subd})
 endforeach()
 
-add_executable(test mainTest.cpp)
-
-target_link_libraries(test gtest)
 
