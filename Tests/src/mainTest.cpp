@@ -1,9 +1,14 @@
 #include <gtest/gtest.h>
-
+#include "Core/main.h"
 	
 TEST(Addition, CanAddTwoNumbers)
 {
     EXPECT_EQ(4, 2+2); 
+}
+
+TEST(MainTest, MainTest)
+{
+  EXPECT_NO_THROW(main0(0, 0));
 }
 
 

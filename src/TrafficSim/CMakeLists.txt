@@ -8,7 +8,8 @@ add_executable(TrafficSim ${source_files} ${engine_source})
 add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(TrafficSim 
-						libglew_static
+						
+						libglewmx_static
 						BulletDynamics
 						BulletCollision
 						LinearMath 
