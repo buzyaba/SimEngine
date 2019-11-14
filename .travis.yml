@@ -44,4 +44,4 @@ script:
 - cd build
 - cmake ..
 - cmake --build .
-- ../../bin/RELEASE/tests
+- ../bin/RELEASE/tests
