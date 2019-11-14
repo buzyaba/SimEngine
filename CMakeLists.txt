@@ -50,7 +50,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/output_system)
 #add tests
 enable_testing()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
-add_subdirectory(${PROJECT_SOURCE_DIR}/tests)
+add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
 
 
 #Создаем папки
