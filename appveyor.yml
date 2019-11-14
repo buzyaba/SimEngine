@@ -12,4 +12,4 @@ build_script:
   - cmd: cd build
   - cmd: cmake ..
   - cmd: cmake --build .
-  - cmd: ../bin/DEBUG/tests
+  - cmd: ../bin/DEBUG/tests.exe
