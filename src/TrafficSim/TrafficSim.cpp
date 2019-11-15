@@ -11,9 +11,10 @@ Object* ground;
 TrafficLight* light;
 
 bool keys[1024];
-GLfloat pitch = 0.0f;
-GLfloat yaw = 0.0f;
-GLfloat roll = 0.0f;
+glm::vec3 sphereCam;
+double lastX;
+double lastY;
+bool rightMouseClick;
 
 void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -42,7 +43,8 @@ void initPhysics() {
 void initApplication() {
     glEnable(GL_DEPTH_TEST);
 
-    camera = new Camera(45.0f, 800, 600, 0.1f, 1000.0f, glm::vec3(0.0f, 980.0f, 0.0f), glm::vec3(0.0, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+        camera = new Camera(45.0f, 800, 600, 0.1f, 1000.0f, glm::vec3(20.0f, 15.0f, 20.0f), glm::vec3(-20.0f, -15.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		sphereCam = cartesianToSpherical(camera->getCameraPosition() - (camera->getCameraPosition() + camera->getCameraFront()));
 
     //init physics
     initPhysics();
@@ -92,42 +94,161 @@ void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int m
     }
 }
 
+void updateMouseButtons(GLFWwindow* window, int button, int action, int mods) {
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+		rightMouseClick = true;
+		glfwGetCursorPos(window, &lastX, &lastY);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	} else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+		rightMouseClick = false;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+}
+
+void updateMouse(GLFWwindow* window, double xpos, double ypos){
+	if (rightMouseClick) {
+		GLfloat xoffset = xpos - lastX;
+		GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+		lastX = xpos;
+		lastY = ypos;
+
+		GLfloat sensitivity = 0.05;	// Change this value to your liking
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+
+		glm::vec3 prevCamPos = camera->getCameraPosition();	
+		glm::vec3 prevCamFront = camera->getCameraFront();	
+		glm::vec3 offsetCam = prevCamPos + prevCamFront; 
+		prevCamPos -= offsetCam;
+
+		sphereCam[2] -= xoffset;
+		sphereCam[1] -= yoffset;
+
+		if(sphereCam[1] <= 1.5)
+				sphereCam[1] = 1.5;
+		if(sphereCam[1] >= 85)
+				sphereCam[1] = 85;
+		prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+		prevCamPos = sphericalToCartesian(sphereCam);
+
+		camera = camera->moveCamera(prevCamPos + offsetCam);
+		camera = camera->rotateCamera(prevCamFront);
+	}
+}
+
+void updateScroll(GLFWwindow* window, double xoffset, double yoffset) {
+	glm::vec3 prevCamPos = camera->getCameraPosition();	
+	glm::vec3 prevCamFront = camera->getCameraFront();	
+	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
+	prevCamPos -= offsetCam;
+		
+	GLfloat sensitivity = 1.05;	// Change this value to your liking
+	yoffset *= sensitivity;
+
+	sphereCam[0] += yoffset;
+	if (sphereCam[0] >= 990)
+		sphereCam[0] = 990;
+	if (sphereCam[0] <= 0.5)
+		sphereCam[0] = 0.5;	
+	prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+	prevCamPos = sphericalToCartesian(sphereCam);
+
+	camera = camera->moveCamera(prevCamPos + offsetCam);
+	camera = camera->rotateCamera(prevCamFront);
+}
 
 void cameraMovement(float dt)
 {
-	GLfloat cameraSpeed = 200.0f * dt;
-	if (keys[GLFW_KEY_LEFT] || keys[GLFW_KEY_RIGHT]){
-		if(keys[GLFW_KEY_LEFT])
-			pitch-= cameraSpeed * dt * 20;
-		if(keys[GLFW_KEY_RIGHT])
-			pitch+= cameraSpeed * dt * 20;
-		// if (pitch > 89.0f)
-		// 	pitch = -89.0f;
-		// if (pitch < -89.0f)
-		// 	pitch = +89.0f;
+	GLfloat cameraSpeed = 15.0f * dt;
+	glm::vec3 prevCamPos = camera->getCameraPosition();	
+	glm::vec3 prevCamFront = camera->getCameraFront();	
+	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
+	prevCamPos -= offsetCam;
+	if (keys[GLFW_KEY_W])
+	{
+		offsetCam += cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+	
+	}
+	if (keys[GLFW_KEY_S])
+	{
+		offsetCam -= cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+	}
+	if (keys[GLFW_KEY_D])
+	{
+		offsetCam += glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * 1.5f * cameraSpeed;
+	}
+	if (keys[GLFW_KEY_A])
+	{
+		offsetCam -= glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * 1.5f * cameraSpeed;
+	}
+	if (!rightMouseClick) {
+		if (keys[GLFW_KEY_LEFT])
+		{
+			sphereCam[2] -= cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
+		if (keys[GLFW_KEY_RIGHT])
+		{
+			sphereCam[2] += cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
+		if (keys[GLFW_KEY_UP])
+		{	
+			if(sphereCam[1] >= 1.5)
+				sphereCam[1] -= cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
+		if (keys[GLFW_KEY_DOWN])
+		{
+			if(sphereCam[1] <= 85)
+				sphereCam[1] += cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
 
-		camera->rotateUpCamera(glm::normalize(glm::vec3(cos(glm::radians(pitch)), 0.0f, sin(glm::radians(pitch)))));
+		// !!!!!!!!!!!!ZOOM HERE!!!!!!!!!
+		if (keys[GLFW_KEY_E])
+		{
+			if (sphereCam[0] <= 990) 
+				sphereCam[0] += cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
+		if (keys[GLFW_KEY_Q])
+		{
+			if (sphereCam[0] >= 0.5)
+				sphereCam[0] -= cameraSpeed * 5.0f;
+			prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
+			prevCamPos = sphericalToCartesian(sphereCam);
+		}
 	}
-	else{
-		glm::vec3 prevCamPos = camera->getCameraPosition();	
-		GLfloat prevHeight = prevCamPos[1];
-		if (keys[GLFW_KEY_W])
-		{
-			prevCamPos += cameraSpeed * camera->getCameraUp();
-		}
-		if (keys[GLFW_KEY_S])
-		{
-			prevCamPos -= cameraSpeed * camera->getCameraUp();
-		}
-		if (keys[GLFW_KEY_D])
-		{
-			prevCamPos += glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * cameraSpeed;
-		}
-		if (keys[GLFW_KEY_A])
-		{
-			prevCamPos -= glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * cameraSpeed;
-		}
-		prevCamPos[1] = prevHeight;
-		camera = camera->moveCamera(prevCamPos);
-	}
+	camera = camera->moveCamera(prevCamPos + offsetCam);
+	camera = camera->rotateCamera(prevCamFront);
+
+}
+
+glm::vec3 cartesianToSpherical(glm::vec3 vec){
+	glm::vec3 spherical;
+	spherical[0] = sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+	spherical[1] = glm::degrees(acos(vec[1] / sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2])));
+	spherical[2] = glm::degrees(atan(vec[0]/vec[2]));
+	return spherical;
+}
+
+glm::vec3 sphericalToCartesian(glm::vec3 vec){
+	glm::vec3 cartesian;
+	vec[1] = glm::radians(vec[1]);
+	vec[2] = glm::radians(vec[2]);
+	cartesian[0] = vec[0]*sin(vec[1])*sin(vec[2]);
+	cartesian[1] = vec[0]*cos(vec[1]);
+	cartesian[2] = vec[0]*sin(vec[1])*cos(vec[2]);
+	return cartesian;
+}
+
+void initMousePosition(GLfloat x, GLfloat y){
+    lastX = x;
+    lastY = y;
 }

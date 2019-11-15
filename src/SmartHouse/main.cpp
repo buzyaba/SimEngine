@@ -4,8 +4,13 @@
 enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
-extern MeshRenderer* sphere;
-extern MeshRenderer* ground;
+extern Object* ground;
+extern Object* wall1;
+extern Object* wall2;
+extern Object* wall3;
+extern Object* wall4;
+extern Object* ceiling;
+extern Object* cameraRigit;
 
 //physics
 extern btDiscreteDynamicsWorld* dynamicsWorld;
@@ -39,5 +44,12 @@ int main(int argc, char** argv) {
   }
   glfwTerminate();
   delete camera;
+  delete ground;
+  delete wall1;
+  delete wall2;
+  delete wall3;
+  delete wall4;
+  delete ceiling;
+  delete cameraRigit;
   return 0;
 }

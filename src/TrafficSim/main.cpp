@@ -20,7 +20,11 @@ int main(int argc, char** argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Traffic Simulation", NULL, NULL);
   glfwMakeContextCurrent(window);
+  initMousePosition(screenWidth/2, screenHeight/2); 
   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
+  glfwSetCursorPosCallback(window, updateMouse); // mouse events
+  glfwSetMouseButtonCallback(window, updateMouseButtons);
+  glfwSetScrollCallback(window, updateScroll);
   glewInit();
   initApplication();
   auto previousTime = std::chrono::high_resolution_clock::now();
