@@ -1,12 +1,12 @@
 #include "Core/Properties.h"
 
-IProperties::IProperties(std::vector<double> _values, std::vector<std::string> _names)
+IProperties::IProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name)
 {
+  name = _name;
   if (_values.size() == _names.size())
   {
     values = _values;
     names = _names;
-    size = values.size();
   }
   else
   {
@@ -14,16 +14,14 @@ IProperties::IProperties(std::vector<double> _values, std::vector<std::string> _
   }
 }
 
-IProperties::IProperties(int _size)
+IProperties::IProperties(int _size, std::string _name)
 {
+  name = _name;
   if (_size > -1)
   {
-    size = _size;
-    values.resize(size);
-    names.resize(size);
+    values.resize(_size);
+    names.resize(_size);
   }
-  else if (_size == -1)
-    size = -1;
   else
     throw - 1;
 
@@ -31,7 +29,6 @@ IProperties::IProperties(int _size)
 
 IProperties::IProperties(const IProperties& properties)
 {
-  this->size = properties.size;
   this->values = properties.values;
   this->names = properties.names;
 }
@@ -43,7 +40,7 @@ std::vector<double> IProperties::GetValues()
 
 void IProperties::SetValues(std::vector<double> _values)
 {
-  if ((_values.size() == size) || (size == -1))
+  if (_values.size() == names.size())
     values = _values;
   else
     throw - 1;
@@ -56,7 +53,7 @@ std::vector<std::string> IProperties::GetNames()
 
 void IProperties::SetNames(std::vector<std::string> _names)
 {
-  if ((_names.size() == size) || (size == -1))
+  if (_names.size() == values.size())
     names = _names;
   else
     throw - 1;
