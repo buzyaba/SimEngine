@@ -2,10 +2,13 @@
 
 btDiscreteDynamicsWorld* dynamicsWorld;
 Camera* camera;
-
-Object* sphere;
+Car* car;
+Object* road1;
+Object* road2;
+Object* road3;
+Object* road4;
 Object* ground;
-Object* enemy;
+TrafficLight* light;
 
 bool keys[1024];
 glm::vec3 sphereCam;
@@ -17,9 +20,13 @@ void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 1.f, 1.f);
     //Drawing objects here
-    sphere->draw();
+    car->draw();
     ground->draw();
-    enemy->draw();
+	light->draw();
+	road1->draw();
+	road2->draw();
+	road3->draw();
+	road4->draw();
 }
 
 void initPhysics() {
@@ -43,30 +50,34 @@ void initApplication() {
     initPhysics();
 
     //Adding objects
-    sphere = new Object(ObjectType::Sphere, camera, dynamicsWorld, new btSphereShape(1), glm::vec3(0.0f), glm::vec3(1.0f), 10.0f,"globe.jpg");
-    ground = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(10.0f, 0.2f, 2.0f)),
-    glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(10.0f, 0.1f, 2.0f), 0.0f,"road.jpg");
+    car = new Car(camera, dynamicsWorld, glm::vec3(0.0f, 0.0f, 253.0f));
+
+	road1 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
+	glm::vec3(0, -1, 257.0f), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
+
+	road2 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
+	glm::vec3(0, -1, -257.0f), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
+
+	road3 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
+	glm::vec3(-257, -1, 0), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
+	road3->setRotation(90, 0, 0);
+
+	road4 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
+	glm::vec3(257, -1, 0), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
+	road4->setRotation(90, 0, 0);
+
+	light = new TrafficLight(camera, dynamicsWorld, glm::vec3(-264.0f, 2.0f, 264.0f));
+    ground = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500.0f, 0.2f, 500.0f)),
+    glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(500.0f, 0.2f, 500.0f), 0.0f,"grass.jpg");
     ground->setCollisionFlags(CollisionType::STATIC);
-    enemy = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(1.0f, 1.0f, 1.0f)),
-    glm::vec3(5.0f, -1.0f, 0.0f), glm::vec3(1.0f), 0.0f);
-    enemy->setCollisionFlags(CollisionType::KINEMATIC);
-    //ground->setRotation(0.0f, 0.0, -45.0f);
-    //ground->setPosition(glm::vec3(-2.0f, 2.0f, 0.0f));
+	
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
     
-		// Get enemy transform
-		glm::vec3 pos = enemy->getPosition();
-		// Check if offScreen
-		if (pos.x <= -10.0f) {
-
-			enemy->setPosition(glm::vec3(5.0f, -1.0f, 0.0f));
-            sphere->setPosition(glm::vec3(0.0f));
-		}
-        else
-            enemy->setPosition(pos+glm::vec3(-10.0f, 0.0f, 0.0f)*timeStep);
+    glm::vec3 pos = car->getPostition();
+    car->setPostition(pos + glm::vec3(-5.0f, 0.0f, 0.0f)*timeStep);
 
 }
 

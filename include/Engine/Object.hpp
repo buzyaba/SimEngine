@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Engine/MeshRenderer.hpp>
 #include <Engine/Camera.hpp>
 #include <Engine/ShaderLoader.hpp>
@@ -27,4 +29,5 @@ class Object {
        glm::vec3 getPosition() {return glm::vec3(mesh->rigidBody->getWorldTransform().getOrigin().x(),
         mesh->rigidBody->getWorldTransform().getOrigin().y(), mesh->rigidBody->getWorldTransform().getOrigin().z());}
        void draw() {mesh->draw();}
+       bool isStatic() {return (mesh->rigidBody->getCollisionFlags() == CollisionType::STATIC) ? true : false;};
 };
