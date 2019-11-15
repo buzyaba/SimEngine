@@ -42,7 +42,7 @@ void initPhysics() {
 void initApplication() {
     glEnable(GL_DEPTH_TEST);
 
-    camera = new Camera(45.0f, 800, 600, 0.1f, 1000.0f, glm::vec3(0.0f, 100.0f, 0.0f), glm::vec3(0.0, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    camera = new Camera(45.0f, 800, 600, 0.1f, 1000.0f, glm::vec3(0.0f, 980.0f, 0.0f), glm::vec3(0.0, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
 
     //init physics
     initPhysics();
