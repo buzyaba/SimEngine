@@ -43,7 +43,7 @@ void initPhysics() {
 void initApplication() {
     glEnable(GL_DEPTH_TEST);
 
-        camera = new Camera(45.0f, 800, 600, 0.1f, 1000.0f, glm::vec3(20.0f, 15.0f, 20.0f), glm::vec3(-20.0f, -15.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        camera = new Camera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		sphereCam = cartesianToSpherical(camera->getCameraPosition() - (camera->getCameraPosition() + camera->getCameraFront()));
 
     //init physics
@@ -142,10 +142,10 @@ void updateScroll(GLFWwindow* window, double xoffset, double yoffset) {
 	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
 	prevCamPos -= offsetCam;
 		
-	GLfloat sensitivity = 1.05;	// Change this value to your liking
+	GLfloat sensitivity = 15;	// Change this value to your liking
 	yoffset *= sensitivity;
 
-	sphereCam[0] += yoffset;
+	sphereCam[0] -= yoffset;
 	if (sphereCam[0] >= 990)
 		sphereCam[0] = 990;
 	if (sphereCam[0] <= 0.5)
@@ -159,7 +159,7 @@ void updateScroll(GLFWwindow* window, double xoffset, double yoffset) {
 
 void cameraMovement(float dt)
 {
-	GLfloat cameraSpeed = 15.0f * dt;
+	GLfloat cameraSpeed = 155.0f * dt;
 	glm::vec3 prevCamPos = camera->getCameraPosition();	
 	glm::vec3 prevCamFront = camera->getCameraFront();	
 	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
