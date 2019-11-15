@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 
 #include <Engine/Camera.hpp>
@@ -34,5 +33,4 @@ class MeshRenderer{
 
         glm::vec3 position, scale;
         GLuint vao, vbo, ebo, texture, program;
-    
 };

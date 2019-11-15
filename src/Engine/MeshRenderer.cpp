@@ -61,8 +61,6 @@ void MeshRenderer::draw(){
 	
 	btQuaternion rotation = t.getRotation();
 	btVector3 translate = t.getOrigin();
-	std::cout << glm::degrees(rotation.getAngle()) << " " << rotation.getAxis().getX() << " " <<
-	rotation.getAxis().getY() << " "<<rotation.getAxis().getZ()<<std::endl;
  	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
 		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
@@ -77,10 +75,13 @@ void MeshRenderer::draw(){
     glUseProgram(this->program);
     GLint vpLoc = glGetUniformLocation(program, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+
     GLint modelLoc = glGetUniformLocation(program, "model");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-    glm::value_ptr(modelMatrix));
+    	glm::value_ptr(modelMatrix));
+
     glBindTexture(GL_TEXTURE_2D, texture);
+
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
