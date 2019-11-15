@@ -61,8 +61,6 @@ void MeshRenderer::draw(){
 	
 	btQuaternion rotation = t.getRotation();
 	btVector3 translate = t.getOrigin();
-	std::cout << glm::degrees(rotation.getAngle()) << " " << rotation.getAxis().getX() << " " <<
-	rotation.getAxis().getY() << " "<<rotation.getAxis().getZ()<<std::endl;
  	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
 		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
