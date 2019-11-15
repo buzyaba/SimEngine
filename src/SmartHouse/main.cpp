@@ -1,16 +1,13 @@
-#include <TrafficSim/TrafficSim.hpp>
+#include <SmartHouse/SmartHouse.hpp>
 #include <chrono>
 
 enum{screenWidth = 800, screenHeight = 600};
 
 extern Camera* camera;
-extern Car* car;
-extern Object* road1;
-extern Object* road2;
-extern Object* road3;
-extern Object* road4;
-extern Object* ground;
-extern TrafficLight* light;
+extern MeshRenderer* sphere;
+extern MeshRenderer* ground;
+
+//physics
 extern btDiscreteDynamicsWorld* dynamicsWorld;
 
 int main(int argc, char** argv) {
@@ -18,9 +15,12 @@ int main(int argc, char** argv) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Traffic Simulation", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
   glfwMakeContextCurrent(window);
+  initMousePosition(screenWidth/2, screenHeight/2); 
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
+  glfwSetCursorPosCallback(window, updateMouse); // mouse events
   glewInit();
   initApplication();
   auto previousTime = std::chrono::high_resolution_clock::now();
@@ -39,14 +39,5 @@ int main(int argc, char** argv) {
   }
   glfwTerminate();
   delete camera;
-  delete ground;
-  delete road1;
-  delete road2;
-  delete road3;
-  delete road4;
-  delete car;
-  delete light;
-  delete dynamicsWorld;
-
   return 0;
 }
