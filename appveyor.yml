@@ -8,8 +8,5 @@ environment:
 
 build_script:
   - cmd: git submodule update --init --recursive
-  - cmd: mkdir build
-  - cmd: cd build
-  - cmd: cmake ..
-  - cmd: cmake --build .
-  - cmd: C:\projects\simengine\bin\DEBUG\tests.exe
+  - cmd: C:\projects\simengine\gen.bat
+  - cmd: C:\projects\simengine\_build\bin\DEBUG\tests.exe

@@ -40,8 +40,8 @@ install:
 
 script: 
 - git submodule update --init --recursive
-- mkdir build
-- cd build
+- mkdir _build
+- cd _build
 - cmake ..
 - cmake --build .
-- ../bin/RELEASE/tests
+- bin/RELEASE/tests
