@@ -2,6 +2,7 @@
 #include "Core/main.h"
 
 #include "Core/ObjectOfObservation.h"
+#include "Core/CoordinateObject.h"
 
 int main(int argc, char* argv[])
 {

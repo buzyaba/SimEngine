@@ -14,17 +14,19 @@
 #include "Core/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 
+/// Класс 
 class TWorkManager
 {
 protected:
-  std::vector<IObjectOfObservation*> objects;
-  std::vector<ISmartThing*> things;
-  std::vector<IScene*> scene;
+  std::vector<TObjectOfObservation*> objects;
+  std::vector<TSmartThing*> things;
+  std::vector<TScene*> scene;
   unsigned int timeStep;
-  double _fractionOfTimeStep;
+  double fractionOfTimeStep;
   TEnvironmentScript* script;
   IManagementProgram* program;
   TDataStore* storage;
+  unsigned int maxStep;
   
 public:
   TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _fractionOfTimeStep = -1.0);

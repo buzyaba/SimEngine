@@ -8,20 +8,24 @@
 #include "Core/Object.h"
 #include "Core/ObjectOfObservation.h"
 
-class ISmartThing : public IObject
+/// Класс описывающий умную вещь
+class TSmartThing : public TObject
 {
 protected:
+  /// Сенсор
   std::vector<ISensor*> sensors;
+  /// Актуаторы
   std::vector<IActuator*> actuators;
-
 public:
+  TSmartThing(std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators);
+  TSmartThing(const TSmartThing& thing);
 
-  virtual std::vector<ISensor*> GetSensors() = 0;
-  virtual std::vector<IActuator*> GetActuators() = 0;
+  virtual std::vector<ISensor*> GetSensors();
+  virtual std::vector<IActuator*> GetActuators();
 
-  virtual void AddObject(IObjectOfObservation& object) = 0;
-  virtual void ExcludeObject(IObjectOfObservation& object) = 0;
-  virtual void ExcludeObject(std::string _name) = 0;
+  virtual void AddObject(TObjectOfObservation& object);
+  virtual void ExcludeObject(TObjectOfObservation& object);
+  virtual void ExcludeObject(std::string _name);
 
 
 };

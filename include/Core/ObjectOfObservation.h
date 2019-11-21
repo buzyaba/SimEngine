@@ -2,76 +2,38 @@
 
 #include "Core/Object.h"
 
-class IObjectOfObservation : public IObject
+
+/// Базовая реализация для наблюдаемых объектов
+class TObjectOfObservation : public TObject
 {
 protected:
 
+  /// предок данного объекта
+  TObjectOfObservation* parentObject;
+  /// Потомки данного объекта, если потомков несколько, тоНужно оставить только одного
+  std::vector<TObjectOfObservation*> childObjects;
+  /// Соседние потомки
+  std::vector<TObjectOfObservation*> neighboringObject;
+  /// Все свойства объекта начиная с себя самого
+  std::vector<IProperties*> allProperties;
+  
 public:
-  virtual void AddParentObject(IObjectOfObservation& obect) = 0;
-  virtual void AddChildObject(IObjectOfObservation& obect) = 0;
-  virtual void AddNeighboringObject(IObjectOfObservation& obect) = 0;
-  virtual void ExcludeChildObject(IObjectOfObservation& obect) = 0;
-};
+  TObjectOfObservation(std::vector<TObjectOfObservation*> _neighboringObject = {nullptr},
+    TObjectOfObservation* _parentObject = nullptr, TObjectOfObservation* _childObject = nullptr);
+  TObjectOfObservation(const TObjectOfObservation& obj);
 
-class TCoordinateObject: public IObjectOfObservation
-{
-protected:
-
-public:
-
-  TCoordinateObject()
-  {
-    this->name = "CoordinateObject";
-    properties.resize(2);
-    properties[0] = new IProperties({ 0, 0 }, { "x", "y" }, "coordinate");
-  }
-
-  virtual void AddParentObject(IObjectOfObservation& obect)
-  {
-
-  }
-  virtual void AddChildObject(IObjectOfObservation& obect)
-  {
-
-  }
-  virtual void AddNeighboringObject(IObjectOfObservation& obect)
-  {
-
-  }
-  virtual void ExcludeChildObject(IObjectOfObservation& obect)
-  {
-
-  }
-
-  virtual void SetProperty(IProperties& property, std::string _name = "")
-  {
-    if (_name == "")
-      properties[0]->SetValues(property.GetValues());
-    else
-      GetProperty(_name).SetValues(property.GetValues());
-  }
-  virtual std::vector<IProperties*> GetProperties()
-  {
-    return properties;
-  }
-  virtual IProperties& GetProperty(std::string _name = "")
-  {
-    if (_name == "")
-      return *properties[0];
-    int i = 0;
-    for (; i < properties.size(); i++)
-      if (properties[i]->GetName() == _name)
-        return *properties[i];
-    if (i == properties.size())
-      throw - 1;
-  }
-
-  virtual std::string GetName()
-  {
-    return name;
-  }
-  virtual void SetName(std::string _name)
-  {
-    name = _name;
-  }
+  /// Добавить объект который является хранилищем текущего объекта
+  virtual void AddParentObject(TObjectOfObservation& obect);
+  /// Добавить дочерний объект
+  virtual int AddChildObject(TObjectOfObservation& obect);
+  /// Возвращает вектор дочерних объектов, должен остаться только один потомок
+  virtual std::vector<TObjectOfObservation*> GetChildObject();
+  /// Добавить соседний объект, между ними может происходить объмен дочерними объектами
+  virtual void AddNeighboringObject(TObjectOfObservation& obect);
+  /// Исключить дочерний объект
+  virtual void ExcludeChildObject(TObjectOfObservation& obect);
+  /// Обновляет свойства данного объекта 
+  virtual void Update();
+  /// Возвращает все свойства объекта
+  virtual std::vector<IProperties*> GetProperties();
 };

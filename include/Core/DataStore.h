@@ -8,15 +8,23 @@
 #include "Core/Object.h"
 #include "Core/ObjectOfObservation.h"
 
+/// Класс реализующий базовое хранение данных об объектах в базе данных
+/// Пока заглушка
 class TDataStore
 {
 protected:
+  /// Имя базы данных
   std::string name;
+  /// 
   std::vector<IProperties*> properties;
 
 public:
   TDataStore()
   {};
-  virtual void AddPropertyForObject(const IProperties& property, unsigned long time) = 0;
-  virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time) = 0;
+  virtual void AddPropertyForObject(const IProperties& property, unsigned long time)
+  {}
+  virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time)
+  {
+    return properties;
+  }
 };
