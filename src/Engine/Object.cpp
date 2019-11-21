@@ -24,8 +24,8 @@ camera(_camera), dynamicsWorld(_dynamicsWorld){
 
     mesh = new MeshRenderer((MeshType)_mesh, camera, rigidBody);
 
-    GLuint textureShaderProgram = shader.CreateProgram("../../assets/shaders/texturedModel.vs", "../../assets/shaders/texturedModel.fs");
-    GLuint shaderTexture = texture.getTextureID("../../assets/textures/" + texture_path);
+    GLuint textureShaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
+    GLuint shaderTexture = texture.getTextureID("../../../assets/textures/" + texture_path);
 
     mesh->setProgram(textureShaderProgram);
     mesh->setTexture(shaderTexture);
