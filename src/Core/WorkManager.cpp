@@ -50,7 +50,7 @@ void TWorkManager::Start()
 {
 
   unsigned long int time = 0;
-  std::chrono::milliseconds delayTime(unsigned long int(timeStep * delay));
+  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
   for (int t = 0; t < maxStep; t++)
   {
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
