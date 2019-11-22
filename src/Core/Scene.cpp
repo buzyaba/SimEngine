@@ -1,8 +1,7 @@
 #include "Core/Scene.h"
 
-TScene::TScene(std::string _name)
+TScene::TScene(std::string _name) : TObject(_name)
 {
-  name = _name;
 }
 
 TScene::TScene(const TScene& _scene) : TObject(_scene)

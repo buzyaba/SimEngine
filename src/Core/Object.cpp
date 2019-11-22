@@ -1,8 +1,8 @@
 #include "Core/Object.h"
 
-TObject::TObject()
+TObject::TObject(std::string _name)
 {
-  name = "";
+  SetName(_name);
 }
 
 TObject::TObject(const TObject& obj)
@@ -11,19 +11,17 @@ TObject::TObject(const TObject& obj)
   name = obj.name;
 }
 
-void TObject::SetProperty(IProperties& _property)
+void TObject::SetProperty(IProperties& property)
 {
-  GetProperty(_property.GetName()).SetValues(_property.GetValues());
+  GetProperty(property.GetName()).SetValues(property.GetValues());
 }
 
-void TObject::SetProperty(IProperties& property, std::string _name)
+void TObject::SetProperty(std::vector<double> values, std::string propertyName)
 {
-  if (_name == "")
-    properties[0]->SetValues(property.GetValues());
-  else
-    GetProperty(_name).SetValues(property.GetValues());
+  GetProperty(propertyName).SetValues(values);
 }
-std::vector<IProperties*> TObject::GetProperties()
+
+std::vector<IProperties*>& TObject::GetProperties()
 {
   return properties;
 }
@@ -43,7 +41,11 @@ std::string TObject::GetName()
 {
   return name;
 }
+
 void TObject::SetName(std::string _name)
 {
-  name = _name;
+  if (_name.length() > 0)
+    name = _name;
+  else
+    throw - 1;
 }

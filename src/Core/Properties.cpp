@@ -34,15 +34,18 @@ TProperties::TProperties(const TProperties& properties)
   this->name = properties.name;
 }
 
-std::vector<double> TProperties::GetValues()
+std::vector<double>& TProperties::GetValues()
 {
   return values;
 }
 
 void TProperties::SetValues(std::vector<double> _values)
 {
-  if ((_values.size() == names.size()) || (values.size() == 0 || names.size() == 0))
-    values = _values;
+  if ((_values.size() == values.size()) || (values.size() == 0 || names.size() == 0))
+  {
+    for (int i = 0; i < values.size(); i++)
+      values[i] = _values[i];
+  }
   else
     throw - 1;
 }

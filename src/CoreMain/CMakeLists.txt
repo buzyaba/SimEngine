@@ -11,7 +11,9 @@ add_executable(CoreMain ${srcs} ${hdrs})
 target_link_libraries(CoreMain 
 						pugixml 
 						output_system
-						Core)
+						Core
+						SmartHouseData
+						TrafficSimData)
 
 #add_library(${MyLib1} STATIC ${srcs} ${hdrs}) #—оздаем статическую библиотеку с именем из переменной ${MyLib1}, объ€вленной в родительском CMake файле (локальные переменные перенос€тс€ в наследников), в неЄ добавл€ютс€ файлы из переменных ${srcs} и ${hdrs}
 

@@ -1,7 +1,8 @@
 #include "Core/ObjectOfObservation.h"
 
-TObjectOfObservation::TObjectOfObservation(std::vector<TObjectOfObservation*> _neighboringObject, 
-  TObjectOfObservation* _parentObject, TObjectOfObservation* _childObject)
+TObjectOfObservation::TObjectOfObservation(std::string _name, 
+  std::vector<TObjectOfObservation*> _neighboringObject,
+  TObjectOfObservation* _parentObject, TObjectOfObservation* _childObject) : TObject(_name)
 {
   if (_neighboringObject.size() == 1)
   {
@@ -74,9 +75,10 @@ void TObjectOfObservation::Update()
     throw - 1;
 }
 
-std::vector<IProperties*> TObjectOfObservation::GetProperties()
+std::vector<IProperties*>& TObjectOfObservation::GetProperties()
 {
   if (childObjects.size() > 0)
+  {
     if (childObjects[0] != nullptr)
     {
       std::vector<IProperties*> cp = childObjects[0]->GetProperties();
@@ -100,6 +102,12 @@ std::vector<IProperties*> TObjectOfObservation::GetProperties()
           j++;
         }
       }
-    } 
+    }
+  }
+  else
+  {
+    if (allProperties.size() != properties.size())
+      allProperties = properties;
+  }
   return allProperties;
 }

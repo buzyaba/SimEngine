@@ -8,7 +8,7 @@ protected:
 
 public:
 
-  TCoordinateObject()
+  TCoordinateObject(std::string _name) : TObjectOfObservation(_name)
   {
     this->name = "CoordinateObject";
     properties.resize(1, nullptr);

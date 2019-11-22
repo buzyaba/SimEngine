@@ -17,7 +17,7 @@ protected:
   /// Актуаторы
   std::vector<IActuator*> actuators;
 public:
-  TSmartThing(std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators);
+  TSmartThing(std::string _name, std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators);
   TSmartThing(const TSmartThing& thing);
 
   virtual std::vector<ISensor*> GetSensors();

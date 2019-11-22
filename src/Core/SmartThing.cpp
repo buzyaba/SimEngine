@@ -1,12 +1,13 @@
 #include "Core/SmartThing.h"
 
-TSmartThing::TSmartThing(std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators)
+TSmartThing::TSmartThing(std::string _name, std::vector<ISensor*> _sensors,
+  std::vector<IActuator*> _actuators) : TObject(_name)
 {
   this->sensors = _sensors;
   this->actuators = _actuators;
 }
 
-TSmartThing::TSmartThing(const TSmartThing& thing)
+TSmartThing::TSmartThing(const TSmartThing& thing) : TObject(thing)
 {
   this->sensors = thing.sensors;
   this->actuators = thing.actuators;

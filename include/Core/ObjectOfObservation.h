@@ -18,7 +18,7 @@ protected:
   std::vector<IProperties*> allProperties;
   
 public:
-  TObjectOfObservation(std::vector<TObjectOfObservation*> _neighboringObject = {nullptr},
+  TObjectOfObservation(std::string _name, std::vector<TObjectOfObservation*> _neighboringObject = {nullptr},
     TObjectOfObservation* _parentObject = nullptr, TObjectOfObservation* _childObject = nullptr);
   TObjectOfObservation(const TObjectOfObservation& obj);
 
@@ -35,5 +35,5 @@ public:
   /// Обновляет свойства данного объекта 
   virtual void Update();
   /// Возвращает все свойства объекта
-  virtual std::vector<IProperties*> GetProperties();
+  virtual std::vector<IProperties*>& GetProperties();
 };

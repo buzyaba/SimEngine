@@ -1,6 +1,7 @@
 #include "Core/EnvironmentScript.h"
 
-std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, std::vector<IProperties*>& properties, unsigned long int time)
+std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, 
+  std::vector<IProperties*>& properties, unsigned long int time)
 {
   for (int i = 0; i < objectPropertyIntervals[objectIndex].size(); i++)
   {
@@ -16,6 +17,37 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
 {
   this->objects = _objects;
   this->script = _script;
+
+  int intervalCount = 5;
+  std::vector<unsigned long int> startTime;
+  std::vector<unsigned long int> endTime;
+
+  startTime.resize(intervalCount);
+  endTime.resize(intervalCount);
+
+  startTime[0] = 0;
+  endTime[0] = startTime[0] + 200;
+
+  for (int i = 1; i < intervalCount; i++)
+  {
+    startTime[i] = endTime[i - 1];
+    endTime[i] = startTime[i] + 200;
+  }
+
+  objectPropertyIntervals.resize(objects.size());
+  for (int i = 0; i < objects.size(); i++)
+  {
+    objectPropertyIntervals[i].resize(objects[i]->GetProperties().size());
+    for (int j = 0; j < objects[i]->GetProperties().size(); j++)
+    {
+      objectPropertyIntervals[i][j].SetProperty(*(objects[i]->GetProperties()[j]), intervalCount, startTime, endTime);
+    }
+  }
+  objectPropertyIntervals[0][0].isSet = true;
+  for (int i = 0; i < intervalCount; i++)
+  {
+    objectPropertyIntervals[0][0].value[i][0] = rand() % 2;
+  }
 
   //Добвать построение objectPropertyIntervals по скрипту.
 }
@@ -39,7 +71,7 @@ std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& obj
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == nullptr)
+    if (objects[i] != nullptr)
     {
       if (objects[i]->GetName() == object.GetName())
       {
@@ -48,4 +80,25 @@ std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& obj
     }
   }
   throw - 1;
+}
+
+void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
+{
+  
+  for (int i = 0; i < objects.size(); i++)
+  {
+    if (objects[i] != nullptr)
+    {
+      std::vector<IProperties*>& properties = objects[i]->GetProperties();
+
+      for (int j = 0; j < objectPropertyIntervals[i].size(); j++)
+      {
+        if (objectPropertyIntervals[i][j].isSet)
+        {
+          std::vector<double>& tmp = objectPropertyIntervals[i][j].GetValue(time);
+          properties[j]->SetValues(tmp);
+        }
+      }
+    }
+  }
 }

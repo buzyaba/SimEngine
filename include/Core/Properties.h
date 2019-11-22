@@ -7,7 +7,7 @@
 class IProperties
 {
 public:
-  virtual std::vector<double> GetValues() = 0;
+  virtual std::vector<double>& GetValues() = 0;
   virtual void SetValues(std::vector<double> _values) = 0;
 
   virtual std::vector<std::string> GetNames() = 0;
@@ -34,7 +34,7 @@ public:
   TProperties(int _size = 0, std::string _name = "");
   TProperties(const TProperties& properties);
 
-  virtual std::vector<double> GetValues();
+  virtual std::vector<double>& GetValues();
   virtual void SetValues(std::vector<double> _values);
 
   virtual std::vector<std::string> GetNames();

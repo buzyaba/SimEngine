@@ -1,44 +1,45 @@
+#include <chrono>
+#include <thread>
+
 #include "Core/WorkManager.h"
 #include "Core/EmptyProgram.h"
 
-TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _fractionOfTimeStep, unsigned int _maxStep)
+TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
-//objects;
-// things;
-// scene;
-//
+  mainSet = new TMainSet();
 
- if (_millisecondsOfTimeStep > 0)
-   timeStep = _millisecondsOfTimeStep;
- else
-   timeStep = 0;
- if (_fractionOfTimeStep > 0)
-   fractionOfTimeStep = _fractionOfTimeStep;
- else
-   fractionOfTimeStep = 0;
- 
- std::vector<IObject*> allObject(objects.size() + things.size() + scene.size());
- int j = 0;
- for (int i = 0; i < objects.size(); i++)
- {
-   allObject[j] = objects[i];
-   j++;
- }
- for (int i = 0; i < things.size(); i++)
- {
-   allObject[j] = things[i];
-   j++;
- }
- for (int i = 0; i < scene.size(); i++)
- {
-   allObject[j] = scene[i];
-   j++;
- }
+  objects = mainSet->GetObject();
+  things = mainSet->GetThing();
+  scene = mainSet->GetScene();
 
- script = new TEnvironmentScript(allObject, "");
- program = new TEmptyProgram();
- storage = new TDataStore();
- maxStep = _maxStep;
+  if (_millisecondsOfTimeStep > 0)
+    timeStep = _millisecondsOfTimeStep;
+  else
+    timeStep = 0;
+  if (_fractionOfTimeStep > 0)
+    fractionOfTimeStep = _fractionOfTimeStep;
+  else
+    fractionOfTimeStep = 0;
+
+  delay = _delay;
+
+  std::vector<IObject*> allObject(objects.size() + things.size());
+  int j = 0;
+  for (int i = 0; i < objects.size(); i++)
+  {
+    allObject[j] = objects[i];
+    j++;
+  }
+  for (int i = 0; i < things.size(); i++)
+  {
+    allObject[j] = things[i];
+    j++;
+  }
+
+  script = new TEnvironmentScript(allObject, "");
+  program = new TEmptyProgram();
+  storage = new TDataStore(allObject, "A");
+  maxStep = _maxStep;
 }
 
 TWorkManager::~TWorkManager()
@@ -47,10 +48,33 @@ TWorkManager::~TWorkManager()
 
 void TWorkManager::Start()
 {
-  while (1)
-  {
 
+  unsigned long int time = 0;
+  std::chrono::milliseconds delayTime(unsigned long int(timeStep * delay));
+  for (int t = 0; t < maxStep; t++)
+  {
+    std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
+    time = (t * timeStep) / 1000;
+    script->UpdateObjectsProperties(time);
+
+    for (int i = 0; i < objects.size(); i++)
+    {      
+      objects[i]->Update();      
+    }  
+
+    storage->AddAllProperties(time);
+    
+    program->Run();  
+
+    //storage->PrintToConsole();
+    std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
+    std::chrono::milliseconds delta =
+      std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
+
+    std::this_thread::sleep_for(delta);
   }
+
+  storage->PrintToFile();
 }
 
 void TWorkManager::Stop()
@@ -59,8 +83,16 @@ void TWorkManager::Stop()
 
 void TWorkManager::SetTimeStep(unsigned int _milliseconds)
 {
+  if (_milliseconds > 0)
+    timeStep = _milliseconds;
+  else
+    timeStep = 0;
 }
 
 void TWorkManager::SetProgramStep(double _fractionOfTimeStep)
 {
+  if (_fractionOfTimeStep > 0)
+    fractionOfTimeStep = _fractionOfTimeStep;
+  else
+    fractionOfTimeStep = 0;
 }
