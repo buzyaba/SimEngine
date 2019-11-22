@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 #include <vector>
@@ -8,13 +8,13 @@
 #include "Core/Object.h"
 #include "Core/ObjectOfObservation.h"
 
-/// Класс описывающий умную вещь
+/// РљР»Р°СЃСЃ РѕРїРёСЃС‹РІР°СЋС‰РёР№ СѓРјРЅСѓСЋ РІРµС‰СЊ
 class TSmartThing : public TObject
 {
 protected:
-  /// Сенсор
+  /// РЎРµРЅСЃРѕСЂ
   std::vector<ISensor*> sensors;
-  /// Актуаторы
+  /// РђРєС‚СѓР°С‚РѕСЂС‹
   std::vector<IActuator*> actuators;
 public:
   TSmartThing(std::string _name, std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators);

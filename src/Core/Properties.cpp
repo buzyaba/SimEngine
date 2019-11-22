@@ -1,4 +1,4 @@
-#include "Core/Properties.h"
+﻿#include "Core/Properties.h"
 
 TProperties::TProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name)
 {

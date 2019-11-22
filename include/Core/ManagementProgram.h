@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include "Core/DataPacket.h"
 
-/// Интерфейс запускаемой программы
+/// РРЅС‚РµСЂС„РµР№СЃ Р·Р°РїСѓСЃРєР°РµРјРѕР№ РїСЂРѕРіСЂР°РјРјС‹
 class IManagementProgram
 {
 protected:

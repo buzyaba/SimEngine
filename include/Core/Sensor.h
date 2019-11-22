@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 #include <vector>
@@ -6,7 +6,7 @@
 #include "Core/DataPacket.h"
 #include "Core/ObjectOfObservation.h"
 
-/// Интерфейс сенсор который может наблюдать за объектами
+/// РРЅС‚РµСЂС„РµР№СЃ СЃРµРЅСЃРѕСЂ РєРѕС‚РѕСЂС‹Р№ РјРѕР¶РµС‚ РЅР°Р±Р»СЋРґР°С‚СЊ Р·Р° РѕР±СЉРµРєС‚Р°РјРё
 class ISensor
 {
 public:
@@ -22,13 +22,13 @@ public:
 class TSensor : public ISensor
 {
 protected:
-  /// Имя сенсора
+  /// РРјСЏ СЃРµРЅСЃРѕСЂР°
   std::string name;
-  /// наблюдаемые объекты
+  /// РЅР°Р±Р»СЋРґР°РµРјС‹Рµ РѕР±СЉРµРєС‚С‹
   std::vector<TObjectOfObservation*> objects;
-  /// Свойства всех наблюдаемых объектов
+  /// РЎРІРѕР№СЃС‚РІР° РІСЃРµС… РЅР°Р±Р»СЋРґР°РµРјС‹С… РѕР±СЉРµРєС‚РѕРІ
   std::vector<std::vector<IProperties*>> objectsProperties;
-  /// используемый пакет
+  /// РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РїР°РєРµС‚
   TDataPacket* packet;
 public:
   TSensor(std::string _name);

@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 #include "Core/Properties.h"
 #include "Core/ObjectOfObservation.h"
 
-/// Базовый интерфейс актуатора
+/// Р‘Р°Р·РѕРІС‹Р№ РёРЅС‚РµСЂС„РµР№СЃ Р°РєС‚СѓР°С‚РѕСЂР°
 class IActuator
 {
 public:
@@ -25,17 +25,17 @@ public:
   virtual void SetName(std::string _name) = 0;
 };
 
-/// Базовый актуатор
+/// Р‘Р°Р·РѕРІС‹Р№ Р°РєС‚СѓР°С‚РѕСЂ
 class TActuator : public IActuator
 {
 protected:
-  /// Имя
+  /// РРјСЏ
   std::string name;
-  /// Набор объектов на которые может быть оказано воздействие
+  /// РќР°Р±РѕСЂ РѕР±СЉРµРєС‚РѕРІ РЅР° РєРѕС‚РѕСЂС‹Рµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕРєР°Р·Р°РЅРѕ РІРѕР·РґРµР№СЃС‚РІРёРµ
   std::vector<TObjectOfObservation*> objects;
-  /// Набор свойств объектов
+  /// РќР°Р±РѕСЂ СЃРІРѕР№СЃС‚РІ РѕР±СЉРµРєС‚РѕРІ
   IProperties* property;
-  /// Используемый пакет
+  /// РСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РїР°РєРµС‚
   TDataPacket* packet;
 public:
   TActuator(std::string _name);

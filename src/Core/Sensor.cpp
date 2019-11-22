@@ -1,4 +1,4 @@
-#include "Core/Sensor.h"
+п»ї#include "Core/Sensor.h"
 
 TSensor::TSensor(std::string _name) : packet(nullptr)
 {
@@ -68,7 +68,7 @@ void TSensor::ExcludeObject(TObjectOfObservation& object)
     if (objects[i] == &object)
     {
       objects[i] = nullptr;
-      ///Дописать перепаковку
+      ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
     }
   }
 }
@@ -83,7 +83,7 @@ void TSensor::ExcludeObject(std::string objectName)
       {
         objects[i] = nullptr;
 
-        ///Дописать перепаковку
+        ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
       }
     }
   }

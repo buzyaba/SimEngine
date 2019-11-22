@@ -1,10 +1,10 @@
-#pragma once
+п»ї#pragma once
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
 #include "Core/Scene.h"
 
 
-/// Возвращает набор элементов по базовому скрипту
+/// Р’РѕР·РІСЂР°С‰Р°РµС‚ РЅР°Р±РѕСЂ СЌР»РµРјРµРЅС‚РѕРІ РїРѕ Р±Р°Р·РѕРІРѕРјСѓ СЃРєСЂРёРїС‚Сѓ
 class TMainSet
 {
 protected:

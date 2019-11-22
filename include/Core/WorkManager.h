@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include <string>
 #include <vector>
@@ -15,7 +15,7 @@
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
 
-///  Î‡ÒÒ 
+/// –ö–ª–∞—Å—Å 
 class TWorkManager
 {
 protected:

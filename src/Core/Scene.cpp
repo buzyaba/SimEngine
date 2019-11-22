@@ -1,4 +1,4 @@
-#include "Core/Scene.h"
+п»ї#include "Core/Scene.h"
 
 TScene::TScene(std::string _name) : TObject(_name)
 {
@@ -28,7 +28,7 @@ void TScene::ExcludeObject(TObjectOfObservation& obect)
     if (objectsOfObservation[i] == &obect)
     {
       objectsOfObservation[i] = nullptr;
-      ///Дописать перепаковку
+      ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
     }
   }
 }
@@ -45,7 +45,7 @@ void TScene::ExcludeSceneObject(TScene& obect)
     if (scenes[i] == &obect)
     {
       scenes[i] = nullptr;
-      ///Дописать перепаковку
+      ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
     }
   }
 }

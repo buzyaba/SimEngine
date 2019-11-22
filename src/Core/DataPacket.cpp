@@ -1,4 +1,4 @@
-#include "Core/DataPacket.h"
+﻿#include "Core/DataPacket.h"
 #include <algorithm>
 
 TDataPacket::TDataPacket(int* _data, int _size) : data(nullptr), size(0)

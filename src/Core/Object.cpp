@@ -1,4 +1,4 @@
-#include "Core/Object.h"
+﻿#include "Core/Object.h"
 
 TObject::TObject(std::string _name)
 {

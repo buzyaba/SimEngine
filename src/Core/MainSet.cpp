@@ -1,4 +1,4 @@
-#include "Core/MainSet.h"
+п»ї#include "Core/MainSet.h"
 
 
 #include "SmartHouseData/Room.h"
@@ -6,7 +6,7 @@
 
 TMainSet::TMainSet()
 {
-  /// пока что заглушка
+  /// РїРѕРєР° С‡С‚Рѕ Р·Р°РіР»СѓС€РєР°
   objects.resize(1, new TTerminal("Terminal"));
   scene.resize(1, new TRoom("Room"));
   thing.resize(1, new TSmartSocket("SmartSocket"));

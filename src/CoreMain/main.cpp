@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include "Core/main.h"
 
 #include "Core/ObjectOfObservation.h"
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
   //TCoordinateObject a;
   //IProperties& coordinate = a.GetProperty();
   //coordinate.SetValues({ 20, 25 });
-  //a.SetProperty(coordinate); // Не обязательно
+  //a.SetProperty(coordinate); // РќРµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ
   //coordinate.SetValues({ 40, 45 });
 
   TWorkManager WorkManager;

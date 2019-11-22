@@ -1,4 +1,4 @@
-#include "Core/Actuator.h"
+п»ї#include "Core/Actuator.h"
 
 TActuator::TActuator(std::string _name)
 {
@@ -30,7 +30,7 @@ void TActuator::ExcludeObject(TObjectOfObservation& object)
     if (objects[i] == &object)
     {
       objects[i] = nullptr;
-      ///Дописать перепаковку
+      ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
     }
   }
 }
@@ -45,7 +45,7 @@ void TActuator::ExcludeObject(std::string objectName)
       {
         objects[i] = nullptr;
 
-        ///Дописать перепаковку
+        ///Р”РѕРїРёСЃР°С‚СЊ РїРµСЂРµРїР°РєРѕРІРєСѓ
       }
     }
   }

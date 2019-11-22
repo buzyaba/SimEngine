@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include"Core/Properties.h"
 
-/// Базовый класс реализующий объект имеющий набор свойств и имя.
+/// Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ СЂРµР°Р»РёР·СѓСЋС‰РёР№ РѕР±СЉРµРєС‚ РёРјРµСЋС‰РёР№ РЅР°Р±РѕСЂ СЃРІРѕР№СЃС‚РІ Рё РёРјСЏ.
 class IObject
 {
 public:
@@ -15,13 +15,13 @@ public:
   virtual void SetName(std::string _name) = 0;
 };
 
-/// Реализация базового объекта
+/// Р РµР°Р»РёР·Р°С†РёСЏ Р±Р°Р·РѕРІРѕРіРѕ РѕР±СЉРµРєС‚Р°
 class TObject : public IObject
 {
 protected:
-  /// Набор свойств объекта
+  /// РќР°Р±РѕСЂ СЃРІРѕР№СЃС‚РІ РѕР±СЉРµРєС‚Р°
   std::vector<IProperties*> properties;
-  /// Имя объекта
+  /// РРјСЏ РѕР±СЉРµРєС‚Р°
   std::string name;
 public:
   TObject(std::string _name);

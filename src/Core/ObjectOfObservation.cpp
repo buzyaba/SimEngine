@@ -1,4 +1,4 @@
-#include "Core/ObjectOfObservation.h"
+﻿#include "Core/ObjectOfObservation.h"
 
 TObjectOfObservation::TObjectOfObservation(std::string _name, 
   std::vector<TObjectOfObservation*> _neighboringObject,

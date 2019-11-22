@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 #include <vector>
@@ -9,12 +9,12 @@
 #include "Core/Object.h"
 #include "Core/ObjectOfObservation.h"
 
-/// Класс реализующий базовое хранение данных об объектах в базе данных
-/// Пока заглушка
+/// РљР»Р°СЃСЃ СЂРµР°Р»РёР·СѓСЋС‰РёР№ Р±Р°Р·РѕРІРѕРµ С…СЂР°РЅРµРЅРёРµ РґР°РЅРЅС‹С… РѕР± РѕР±СЉРµРєС‚Р°С… РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
+/// РџРѕРєР° Р·Р°РіР»СѓС€РєР°
 class TDataStore
 {
 protected:
-  /// Имя базы данных
+  /// РРјСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С…
   std::string name;
   std::vector<IObject*> allObjects;
   std::vector<IProperties*> allObjectsProperties;

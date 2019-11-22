@@ -1,15 +1,15 @@
-#pragma once
+п»ї#pragma once
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
-/// Базовый элемент сцены
+/// Р‘Р°Р·РѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС†РµРЅС‹
 class TScene : public TObject
 {
 protected:
-  /// Объекты размещенные на этом элементе сцены
+  /// РћР±СЉРµРєС‚С‹ СЂР°Р·РјРµС‰РµРЅРЅС‹Рµ РЅР° СЌС‚РѕРј СЌР»РµРјРµРЅС‚Рµ СЃС†РµРЅС‹
   std::vector<TObjectOfObservation*> objectsOfObservation;
-  /// Вещи размещенные на этом элементе сцены
+  /// Р’РµС‰Рё СЂР°Р·РјРµС‰РµРЅРЅС‹Рµ РЅР° СЌС‚РѕРј СЌР»РµРјРµРЅС‚Рµ СЃС†РµРЅС‹
   std::vector<TSmartThing*> smartThings;
-  /// Другие элементы сцены размещенные в этом элементе
+  /// Р”СЂСѓРіРёРµ СЌР»РµРјРµРЅС‚С‹ СЃС†РµРЅС‹ СЂР°Р·РјРµС‰РµРЅРЅС‹Рµ РІ СЌС‚РѕРј СЌР»РµРјРµРЅС‚Рµ
   std::vector<TScene*> scenes;
 public:
   TScene(std::string _name);

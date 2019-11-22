@@ -1,4 +1,4 @@
-#include "Core/EnvironmentScript.h"
+п»ї#include "Core/EnvironmentScript.h"
 
 std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, 
   std::vector<IProperties*>& properties, unsigned long int time)
@@ -49,7 +49,7 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
     objectPropertyIntervals[0][0].value[i][0] = rand() % 2;
   }
 
-  //Добвать построение objectPropertyIntervals по скрипту.
+  //Р”РѕР±РІР°С‚СЊ РїРѕСЃС‚СЂРѕРµРЅРёРµ objectPropertyIntervals РїРѕ СЃРєСЂРёРїС‚Сѓ.
 }
 
 std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(std::string name, unsigned long int time)

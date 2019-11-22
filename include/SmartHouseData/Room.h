@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <stdlib.h>
 
 #include "Core/Scene.h"
@@ -18,7 +18,7 @@ public:
 class TTerminal : public TObjectOfObservation
 {
 protected:
-  ///Был лши включен терминал
+  ///Р‘С‹Р» Р»С€Рё РІРєР»СЋС‡РµРЅ С‚РµСЂРјРёРЅР°Р»
   bool isWork;
 public:
   TTerminal(std::string _name) : TObjectOfObservation(_name)
