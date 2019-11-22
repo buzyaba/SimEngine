@@ -15,9 +15,9 @@
 
 TEST(ObjectOfObservationTest, CanCreate)
 {
-  //virtual void AddParentObject(IObjectOfObservation& obect) = 0;
-  //virtual void AddChildObject(IObjectOfObservation& obect) = 0;
-  //virtual void AddNeighboringObject(IObjectOfObservation& obect) = 0;
-  //virtual void ExcludeChildObject(IObjectOfObservation& obect) = 0;
+  //virtual void AddParentObject(TObjectOfObservation& obect) = 0;
+  //virtual void AddChildObject(TObjectOfObservation& obect) = 0;
+  //virtual void AddNeighboringObject(TObjectOfObservation& obect) = 0;
+  //virtual void ExcludeChildObject(TObjectOfObservation& obect) = 0;
   EXPECT_EQ(4, 2 + 2);
 };

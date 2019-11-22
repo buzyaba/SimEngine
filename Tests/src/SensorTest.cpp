@@ -16,8 +16,8 @@
 TEST(SensorTest, CanCreate)
 {
   //virtual TDataPacket GetDataPacket() = 0;
-  //virtual void AddObject(IObjectOfObservation* object) = 0;
-  //virtual void ExcludeObject(IObjectOfObservation* object) = 0;
+  //virtual void AddObject(TObjectOfObservation* object) = 0;
+  //virtual void ExcludeObject(TObjectOfObservation* object) = 0;
   //virtual void ExcludeObject(std::string objectName) = 0;
 
   //std::string GetName()

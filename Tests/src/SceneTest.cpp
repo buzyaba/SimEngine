@@ -15,10 +15,10 @@
 
 TEST(SceneTest, CanCreate)
 {
-  //virtual void AddObject(IObjectOfObservation& obect) = 0;
-  //virtual void AddThing(ISmartThing& obect) = 0;
-  //virtual void ExcludeObject(IObjectOfObservation& obect) = 0;
-  //virtual void AddSceneObject(IObjectOfObservation& obect) = 0;
-  //virtual void ExcludeSceneObject(IScene& obect) = 0;
+  //virtual void AddObject(TObjectOfObservation& obect) = 0;
+  //virtual void AddThing(TSmartThing& obect) = 0;
+  //virtual void ExcludeObject(TObjectOfObservation& obect) = 0;
+  //virtual void AddSceneObject(TObjectOfObservation& obect) = 0;
+  //virtual void ExcludeSceneObject(TScene& obect) = 0;
   EXPECT_EQ(4, 2 + 2);
 };

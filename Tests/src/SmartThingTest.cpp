@@ -19,8 +19,8 @@ TEST(SmartThingTest, CanCreate)
   //virtual std::vector<ISensor*> GetSensors() = 0;
   //virtual std::vector<IActuator*> GetActuators() = 0;
 
-  //virtual void AddObject(IObjectOfObservation& object) = 0;
-  //virtual void ExcludeObject(IObjectOfObservation& object) = 0;
+  //virtual void AddObject(TObjectOfObservation& object) = 0;
+  //virtual void ExcludeObject(TObjectOfObservation& object) = 0;
   //virtual void ExcludeObject(std::string _name) = 0;
   EXPECT_EQ(4, 2 + 2);
 

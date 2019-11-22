@@ -19,7 +19,9 @@ target_link_libraries(${PROJECT_NAME_STR}
 						gtest
 						pugixml
 						output_system
-						Core)
+						Core
+						SmartHouseData
+						TrafficSimData)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set_target_properties(${PROJECT_NAME_STR} PROPERTIES LINK_FLAGS "-lm -Wl,--no-as-needed -ldl -lpthread")

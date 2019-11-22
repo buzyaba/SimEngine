@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -6,27 +6,40 @@
 #include "Core/DataPacket.h"
 #include "Core/ObjectOfObservation.h"
 
+/// Интерфейс сенсор который может наблюдать за объектами
 class ISensor
 {
-protected:
-  std::string name;
-  std::vector<IObjectOfObservation*> objects;
 public:
   virtual TDataPacket GetDataPacket() = 0;
-  virtual void AddObject(IObjectOfObservation* object) = 0;
-  virtual void ExcludeObject(IObjectOfObservation* object) = 0;
+  virtual void AddObject(TObjectOfObservation& object) = 0;
+  virtual void ExcludeObject(TObjectOfObservation& object) = 0;
   virtual void ExcludeObject(std::string objectName) = 0;
 
-  std::string GetName()
-  {
-    return name;
-  }
-
-  void SetName(std::string _name)
-  {
-    if (_name.length() > 0)
-      name = _name;
-    else
-      throw - 1;
-  }
+  virtual std::string GetName() = 0;
+  virtual void SetName(std::string _name) = 0;
 };
+
+class TSensor : public ISensor
+{
+protected:
+  /// Имя сенсора
+  std::string name;
+  /// наблюдаемые объекты
+  std::vector<TObjectOfObservation*> objects;
+  /// Свойства всех наблюдаемых объектов
+  std::vector<std::vector<IProperties*>> objectsProperties;
+  /// используемый пакет
+  TDataPacket* packet;
+public:
+  TSensor(std::string _name);
+  TSensor(const TSensor& sensor);
+
+  virtual TDataPacket GetDataPacket();
+  virtual void AddObject(TObjectOfObservation& object);
+  virtual void ExcludeObject(TObjectOfObservation& object);
+  virtual void ExcludeObject(std::string objectName);
+  virtual std::string GetName();
+  virtual void SetName(std::string _name);
+
+};
+

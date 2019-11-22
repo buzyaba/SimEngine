@@ -1,4 +1,3 @@
-﻿#pragma once
 #include <iostream>
 
 int main0(int argc, char* argv[])

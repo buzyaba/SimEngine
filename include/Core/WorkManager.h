@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <vector>
@@ -13,21 +13,29 @@
 #include "Core/DataStore.h"
 #include "Core/DataPacket.h"
 #include "Core/EnvironmentScript.h"
+#include "Core/MainSet.h"
 
+/// Класс 
 class TWorkManager
 {
 protected:
-  std::vector<IObjectOfObservation*> objects;
-  std::vector<ISmartThing*> things;
-  std::vector<IScene*> scene;
-  unsigned int timeStep;
-  double _fractionOfTimeStep;
+  ///
+  std::vector<TObjectOfObservation*> objects;
+  std::vector<TSmartThing*> things;
+  std::vector<TScene*> scene;
+
   TEnvironmentScript* script;
   IManagementProgram* program;
   TDataStore* storage;
+
+  unsigned int maxStep;
+  TMainSet* mainSet;
+  unsigned int timeStep;
+  double fractionOfTimeStep;
+  double delay;
   
 public:
-  TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _fractionOfTimeStep = -1.0);
+  TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
   ~TWorkManager();
   void Start();
   void Stop();

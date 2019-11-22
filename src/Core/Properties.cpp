@@ -1,6 +1,6 @@
-#include "Core/Properties.h"
+﻿#include "Core/Properties.h"
 
-IProperties::IProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name)
+TProperties::TProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name)
 {
   name = _name;
   if (_values.size() == _names.size())
@@ -14,47 +14,68 @@ IProperties::IProperties(std::vector<double> _values, std::vector<std::string> _
   }
 }
 
-IProperties::IProperties(int _size, std::string _name)
+TProperties::TProperties(int _size, std::string _name)
 {
   name = _name;
-  if (_size > -1)
+  if (_size > 0)
   {
     values.resize(_size);
     names.resize(_size);
   }
-  else
+  else if (_size < 0)
     throw - 1;
 
 }
 
-IProperties::IProperties(const IProperties& properties)
+TProperties::TProperties(const TProperties& properties)
 {
   this->values = properties.values;
   this->names = properties.names;
+  this->name = properties.name;
 }
 
-std::vector<double> IProperties::GetValues()
+std::vector<double>& TProperties::GetValues()
 {
   return values;
 }
 
-void IProperties::SetValues(std::vector<double> _values)
+void TProperties::SetValues(std::vector<double> _values)
 {
-  if (_values.size() == names.size())
-    values = _values;
+  if ((_values.size() == values.size()) || (values.size() == 0 || names.size() == 0))
+  {
+    for (int i = 0; i < values.size(); i++)
+      values[i] = _values[i];
+  }
   else
     throw - 1;
 }
 
-std::vector<std::string> IProperties::GetNames()
+std::vector<std::string> TProperties::GetNames()
 {
   return names;
 }
 
-void IProperties::SetNames(std::vector<std::string> _names)
+void TProperties::SetNames(std::vector<std::string> _names)
 {
-  if (_names.size() == values.size())
+  if ((_names.size() == values.size()) || (values.size() == 0 || names.size() == 0))
     names = _names;
   else
     throw - 1;
+}
+
+double TProperties::GetValue(std::string name)
+{
+  int i = 0;
+  for (; i < names.size(); i++)
+  {
+    if (names[i] == name)
+      return values[i];
+  }
+  if (i == names.size())
+    throw - 1;
+}
+
+std::string TProperties::GetName()
+{
+  return name;
 }
