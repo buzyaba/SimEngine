@@ -11,4 +11,4 @@ build_script:
   - cmd: mkdir _build
   - cmd: cd _build
   - cmd: cmake -Dglew-cmake_BUILD_SHARED=OFF -Dglew-cmake_BUILD_SINGLE_CONTEXT=OFF ..
-  - cmd: C:\projects\simengine\_build\bin\DEBUG\tests.exe
+  - cmd: C:\projects\simengine\bin\DEBUG\tests.exe
