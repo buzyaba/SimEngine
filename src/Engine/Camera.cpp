@@ -15,22 +15,19 @@ Camera::~Camera(){
 
 }
 
-Camera* Camera::moveCamera(glm::vec3 camPos){
+void Camera::moveCamera(glm::vec3 camPos){
 	cameraPos = camPos;
 	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
-	return this;
 }
 
-Camera* Camera::rotateCamera(glm::vec3 camFront){
+void Camera::rotateCamera(glm::vec3 camFront){
 	cameraFront = camFront;
 	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
-	return this;
 }
 
-Camera* Camera::rotateUpCamera(glm::vec3 camUp){
+void Camera::rotateUpCamera(glm::vec3 camUp){
 	cameraUp = camUp;
 	viewMatrix = glm::lookAt(cameraPos,	cameraPos + cameraFront, cameraUp);
-	return this;
 }
 
 glm::mat4 Camera::getViewMatrix() {

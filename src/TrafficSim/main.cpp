@@ -3,15 +3,6 @@
 
 enum{screenWidth = 800, screenHeight = 600};
 
-extern Camera* camera;
-extern Car* car;
-extern Object* road1;
-extern Object* road2;
-extern Object* road3;
-extern Object* road4;
-extern Object* ground;
-extern TrafficLight* light;
-extern btDiscreteDynamicsWorld* dynamicsWorld;
 
 int main(int argc, char** argv) {
   glfwInit();
@@ -33,7 +24,7 @@ int main(int argc, char** argv) {
     auto currentTime = std::chrono::high_resolution_clock::now();
 		float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 
-		dynamicsWorld->stepSimulation(dt);
+		Renderer::getDynamicsWorld()->stepSimulation(dt);
     // Some render stuff
     renderScene();
 
@@ -43,15 +34,6 @@ int main(int argc, char** argv) {
     previousTime = currentTime;
   }
   glfwTerminate();
-  delete camera;
-  delete ground;
-  delete road1;
-  delete road2;
-  delete road3;
-  delete road4;
-  delete car;
-  delete light;
-  delete dynamicsWorld;
-
+  Renderer::terminate();
   return 0;
 }

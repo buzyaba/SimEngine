@@ -1,14 +1,5 @@
 #include <TrafficSim/TrafficSim.hpp>
 
-btDiscreteDynamicsWorld* dynamicsWorld;
-Camera* camera;
-Car* car;
-Object* road1;
-Object* road2;
-Object* road3;
-Object* road4;
-Object* ground;
-TrafficLight* light;
 
 bool keys[1024];
 glm::vec3 sphereCam;
@@ -20,65 +11,26 @@ void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 1.f, 1.f);
     //Drawing objects here
-    car->draw();
-    ground->draw();
-	light->draw();
-	road1->draw();
-	road2->draw();
-	road3->draw();
-	road4->draw();
+
 }
 
-void initPhysics() {
-    btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-    btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver();
-    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-    
-    dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
-    dynamicsWorld->setInternalTickCallback(myTickCallback);
-}
 
 void initApplication() {
     glEnable(GL_DEPTH_TEST);
 
-        camera = new Camera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		sphereCam = cartesianToSpherical(camera->getCameraPosition() - (camera->getCameraPosition() + camera->getCameraFront()));
+        Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		sphereCam = cartesianToSpherical(Renderer::getCamera()->getCameraPosition() - (Renderer::getCamera()->getCameraPosition() + Renderer::getCamera()->getCameraFront()));
 
     //init physics
-    initPhysics();
+    Renderer::initPhysics();
 
     //Adding objects
-    car = new Car(camera, dynamicsWorld, glm::vec3(0.0f, 0.0f, 253.0f));
-
-	road1 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
-	glm::vec3(0, -1, 257.0f), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
-
-	road2 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
-	glm::vec3(0, -1, -257.0f), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
-
-	road3 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
-	glm::vec3(-257, -1, 0), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
-	road3->setRotation(90, 0, 0);
-
-	road4 = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500, 0.2, 7)), 
-	glm::vec3(257, -1, 0), glm::vec3(500, 0.2, 7), 0.0f, "road.jpg");
-	road4->setRotation(90, 0, 0);
-
-	light = new TrafficLight(camera, dynamicsWorld, glm::vec3(-264.0f, 2.0f, 264.0f));
-    ground = new Object(ObjectType::Cube, camera, dynamicsWorld, new btBoxShape(btVector3(500.0f, 0.2f, 500.0f)),
-    glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(500.0f, 0.2f, 500.0f), 0.0f,"grass.jpg");
-    ground->setCollisionFlags(CollisionType::STATIC);
 	
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
     
-    glm::vec3 pos = car->getPostition();
-    car->setPostition(pos + glm::vec3(-5.0f, 0.0f, 0.0f)*timeStep);
-
 }
 
 void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
@@ -116,8 +68,8 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos){
 		xoffset *= sensitivity;
 		yoffset *= sensitivity;
 
-		glm::vec3 prevCamPos = camera->getCameraPosition();	
-		glm::vec3 prevCamFront = camera->getCameraFront();	
+		glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();	
+		glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();	
 		glm::vec3 offsetCam = prevCamPos + prevCamFront; 
 		prevCamPos -= offsetCam;
 
@@ -131,14 +83,14 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos){
 		prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
 		prevCamPos = sphericalToCartesian(sphereCam);
 
-		camera = camera->moveCamera(prevCamPos + offsetCam);
-		camera = camera->rotateCamera(prevCamFront);
+		Renderer::getCamera()->moveCamera(prevCamPos + offsetCam);
+		Renderer::getCamera()->rotateCamera(prevCamFront);
 	}
 }
 
 void updateScroll(GLFWwindow* window, double xoffset, double yoffset) {
-	glm::vec3 prevCamPos = camera->getCameraPosition();	
-	glm::vec3 prevCamFront = camera->getCameraFront();	
+	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();	
+	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();	
 	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
 	prevCamPos -= offsetCam;
 		
@@ -153,15 +105,15 @@ void updateScroll(GLFWwindow* window, double xoffset, double yoffset) {
 	prevCamFront += prevCamPos - sphericalToCartesian(sphereCam);
 	prevCamPos = sphericalToCartesian(sphereCam);
 
-	camera = camera->moveCamera(prevCamPos + offsetCam);
-	camera = camera->rotateCamera(prevCamFront);
+	Renderer::getCamera()->moveCamera(prevCamPos + offsetCam);
+	Renderer::getCamera()->rotateCamera(prevCamFront);
 }
 
 void cameraMovement(float dt)
 {
 	GLfloat cameraSpeed = 155.0f * dt;
-	glm::vec3 prevCamPos = camera->getCameraPosition();	
-	glm::vec3 prevCamFront = camera->getCameraFront();	
+	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();	
+	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();	
 	glm::vec3 offsetCam = prevCamPos + prevCamFront; 
 	prevCamPos -= offsetCam;
 	if (keys[GLFW_KEY_W])
@@ -175,11 +127,11 @@ void cameraMovement(float dt)
 	}
 	if (keys[GLFW_KEY_D])
 	{
-		offsetCam += glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * 1.5f * cameraSpeed;
+		offsetCam += glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) * 1.5f * cameraSpeed;
 	}
 	if (keys[GLFW_KEY_A])
 	{
-		offsetCam -= glm::normalize(glm::cross(camera->getCameraFront(), camera->getCameraUp())) * 1.5f * cameraSpeed;
+		offsetCam -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) * 1.5f * cameraSpeed;
 	}
 	if (!rightMouseClick) {
 		if (keys[GLFW_KEY_LEFT])
@@ -225,8 +177,8 @@ void cameraMovement(float dt)
 			prevCamPos = sphericalToCartesian(sphereCam);
 		}
 	}
-	camera = camera->moveCamera(prevCamPos + offsetCam);
-	camera = camera->rotateCamera(prevCamFront);
+	Renderer::getCamera()->moveCamera(prevCamPos + offsetCam);
+	Renderer::getCamera()->rotateCamera(prevCamFront);
 
 }
 
