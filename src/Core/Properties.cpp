@@ -1,12 +1,14 @@
 ﻿#include "Core/Properties.h"
 
-TProperties::TProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name)
+TProperties::TProperties(std::vector<double> _values, std::vector<std::string> _names, 
+  bool _isObserved, std::string _name)
 {
   name = _name;
   if (_values.size() == _names.size())
   {
     values = _values;
     names = _names;
+    isObserved = _isObserved;
   }
   else
   {
@@ -78,4 +80,14 @@ double TProperties::GetValue(std::string name)
 std::string TProperties::GetName()
 {
   return name;
+}
+
+bool TProperties::IsObserved()
+{
+  return isObserved;
+}
+
+void TProperties::SetIsObserved(bool _isObserved)
+{
+    isObserved = _isObserved;
 }

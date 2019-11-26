@@ -9,6 +9,7 @@ protected:
   /// размер массива данных в байтах
   int size;
 public:
+  TDataPacket(int _size = sizeof(double));
   TDataPacket(int* _data, int _size = 1);
   TDataPacket(double* _data, int _size = 1);
   TDataPacket(char* _data, int _size = 1);

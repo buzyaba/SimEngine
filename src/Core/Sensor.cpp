@@ -24,7 +24,7 @@ TDataPacket TSensor::GetDataPacket()
       vals[i].resize(objectsProperties[i].size());
       for (int j = 0; j < objectsProperties[i].size(); j++)
       {
-        if (objectsProperties[i][j] != nullptr)
+        if (objectsProperties[i][j] != nullptr && objectsProperties[i][j]->IsObserved())
         {
           vals[i][j] = objectsProperties[i][j]->GetValues();
             propertyCount += vals[i][j].size();
@@ -32,6 +32,8 @@ TDataPacket TSensor::GetDataPacket()
       }
     }
   }
+  if (packet == nullptr)
+    packet = new TDataPacket(propertyCount * sizeof(double));
   packet->SetSize(propertyCount * sizeof(double));
   double* data = packet->GetDoubles();
   int t = 0;
