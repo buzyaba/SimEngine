@@ -11,7 +11,7 @@ public:
   TRoom(std::string _name):  TScene(_name)
   {
     this->properties.resize(1);
-    this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, "Dimensions");
+    this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, false, "Dimensions");
   }
 };
 
@@ -24,9 +24,9 @@ public:
   TTerminal(std::string _name) : TObjectOfObservation(_name)
   {
     this->properties.resize(3);
-    this->properties[0] = new TProperties({ 0 }, { "IsWork" }, "IsWork");
-    this->properties[1] = new TProperties({ 0 }, { "PowerConsumption" }, "PowerConsumption");
-    this->properties[2] = new TProperties({ 10, 10}, { "X", "Y" }, "Coordinate"); 
+    this->properties[0] = new TProperties({ 0 }, { "IsWork" }, false, "IsWork");
+    this->properties[1] = new TProperties({ 0 }, { "PowerConsumption" }, true, "PowerConsumption");
+    this->properties[2] = new TProperties({ 10, 10}, { "X", "Y" }, false, "Coordinate");
     isWork = false;
   }
 

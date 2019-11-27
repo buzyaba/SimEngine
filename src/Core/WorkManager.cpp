@@ -6,7 +6,9 @@
 
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
-  mainSet = new TMainSet();
+  
+  mainSet = TSetFactory::Create(1);
+    //new TMainSet();
 
   objects = mainSet->GetObject();
   things = mainSet->GetThing();

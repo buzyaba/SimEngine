@@ -15,6 +15,9 @@ public:
 
   virtual double GetValue(std::string name) = 0;
   virtual std::string GetName() = 0;
+
+  virtual bool IsObserved() = 0;
+  virtual void SetIsObserved(bool _isObserved) = 0;
 };
 
 
@@ -26,11 +29,14 @@ protected:
   std::vector<double> values;
   /// вектор имен значений
   std::vector<std::string> names;
+  /// Нублюдается ли это свойство сенсорами
+  bool isObserved;
   /// имя данного свойства
   std::string name;
 public:
 
-  TProperties(std::vector<double> _values, std::vector<std::string> _names, std::string _name = "");
+  TProperties(std::vector<double> _values, std::vector<std::string> _names, 
+    bool _isObserved = false, std::string _name = "");
   TProperties(int _size = 0, std::string _name = "");
   TProperties(const TProperties& properties);
 
@@ -42,4 +48,7 @@ public:
 
   virtual double GetValue(std::string name);
   virtual std::string GetName();
+
+  virtual bool IsObserved();
+  virtual void SetIsObserved(bool _isObserved);
 };

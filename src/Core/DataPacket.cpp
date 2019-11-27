@@ -1,6 +1,19 @@
 ﻿#include "Core/DataPacket.h"
 #include <algorithm>
 
+TDataPacket::TDataPacket(int _size) : data(nullptr), size(0)
+{
+  if (_size <= 0)
+  {
+    throw - 1;
+  }
+  else
+  {
+    data = new char[_size];
+    size = _size;
+  }
+}
+
 TDataPacket::TDataPacket(int* _data, int _size) : data(nullptr), size(0)
 {
   if ((_size <= 0) || (_data == nullptr))
