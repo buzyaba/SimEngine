@@ -87,14 +87,14 @@ MeshRenderer::~MeshRenderer() {
 
 // // setters 
 
-// void MeshRenderer::setTexture(GLuint _textureID) {
+void MeshRenderer::setTexture(GLuint _textureID) {
 
-// 	texture = _textureID;
+	texture = _textureID;
 
-// }
+}
 
-// void MeshRenderer::setProgram(GLuint _program) {
+void MeshRenderer::setProgram(GLuint _program) {
 
-// 	this->program = _program;
-// }
+	this->program = _program;
+}
 

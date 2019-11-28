@@ -1,6 +1,8 @@
 #include <TrafficSim/TrafficSim.hpp>
 
 
+std::vector<Ground*> ground;
+
 bool keys[1024];
 glm::vec3 sphereCam;
 double lastX;
@@ -11,7 +13,7 @@ void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 1.f, 1.f);
     //Drawing objects here
-
+	Ground::drawElements(ground);
 }
 
 
@@ -25,7 +27,7 @@ void initApplication() {
     Renderer::initPhysics();
 
     //Adding objects
-	
+	ground.push_back(new Ground(glm::vec3(0.0f), glm::vec3(500, 0, 500)));
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar

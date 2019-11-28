@@ -2,11 +2,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <Engine/Camera.hpp>
-#include <btBulletDynamicsCommon.h>
-#include <Engine/Object.hpp>
 #include <Engine/Renderer.hpp>
-
+#include <TrafficSim/Ground.hpp>
 
 void renderScene();
 

@@ -17,6 +17,7 @@ class Renderer {
         static void initPhysics();
         static void initTextures();
         static Camera* getCamera() {return camera;}
+        static std::vector<GLuint> getTextures(){return textures;}
         static btDiscreteDynamicsWorld* getDynamicsWorld() {return dynamicsWorld;}
         static void terminate() {delete camera; delete dynamicsWorld;};
 };
