@@ -3,7 +3,6 @@
 MeshRenderer* Ground::mesh = nullptr;
 
 void Ground::initMesh() {
-    std::cout << "Hiiii";
     GLuint texture = Renderer::getTextures()[GRASS];
     mesh = new MeshRenderer(MeshType::kCube);
     mesh->setProgram(shaderProgram);
@@ -42,17 +41,11 @@ void Ground::setScale(const glm::vec3& _size) {
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
 }
 
-void Ground::drawElements(const std::vector<Ground*> objects) {
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
-    for (int i = 0; i < objects.size(); ++i) {
-        modelMatrixes[i] = objects[i]->transform.getModelMatrix();
-    }
-
-    glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+void Ground::initDraw(const std::vector<Ground*> objects) {
     glUseProgram(shaderProgram);
-    GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
-    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-
+    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
+    for (int i = 0; i < objects.size(); ++i) 
+        modelMatrixes[i] = objects[i]->transform.getModelMatrix();
     unsigned int buffer;
     GLuint vao = objects[0]->mesh->getVAO();
     GLuint texture = objects[0]->mesh->getTexture();
@@ -76,6 +69,17 @@ void Ground::drawElements(const std::vector<Ground*> objects) {
     glBindVertexArray(0);
 
     glBindTexture(GL_TEXTURE_2D, texture);
+
+    
+}
+
+void Ground::drawElements(const std::vector<Ground*> objects) {
+
+    glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+    glUseProgram(shaderProgram);
+    GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
+    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+    GLuint vao = objects[0]->mesh->getVAO();
     glBindVertexArray(vao);
     glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size());
     glBindVertexArray(0);

@@ -27,7 +27,12 @@ void initApplication() {
     Renderer::initPhysics();
 
     //Adding objects
-	ground.push_back(new Ground(glm::vec3(0.0f), glm::vec3(500, 0, 500)));
+	//ground.push_back(new Ground(glm::vec3(0.0f), glm::vec3(500, 0, 500)));
+	for (int i = -170; i < 170; i++)
+		for(int j = -170; j < 170; j++) {
+			ground.push_back(new Ground(glm::vec3(5*i, 300, 5*j)));
+		}
+	Ground::initDraw(ground);
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
