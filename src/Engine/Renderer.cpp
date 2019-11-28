@@ -2,6 +2,7 @@
 
 Camera* Renderer::camera = nullptr;
 btDiscreteDynamicsWorld* Renderer::dynamicsWorld = nullptr;
+std::vector<GLuint>Renderer::textures;
 
 void Renderer::initCamera(GLfloat FOV, GLfloat width, GLfloat height, GLfloat nearPlane, 
     GLfloat farPlane, glm::vec3 camPos, glm::vec3 camFront, glm::vec3 camUp) {
@@ -17,4 +18,12 @@ void Renderer::initPhysics() {
     
     dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
     dynamicsWorld->setInternalTickCallback(nullptr);
+}
+
+void Renderer::initTextures() {
+    TextureLoader tex;
+    textures.push_back(tex.getTextureID("../../../assets/textures/car.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/grass.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/ground.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/road.jpg"));
 }

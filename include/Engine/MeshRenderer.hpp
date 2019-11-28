@@ -18,7 +18,11 @@ class MeshRenderer{
         ~MeshRenderer();
         void setProgram(GLuint _program);
         void setTexture(GLuint _textureID);
+        GLuint getVAO(){return vao;}
+        GLuint getTexture(){return texture;}
+        std::vector<GLuint> getIndices() {return indices;}
         
+    private:
         std::vector<Vertex>vertices;
         std::vector<GLuint>indices;
         glm::mat4 modelMatrix;

@@ -18,9 +18,9 @@ void renderScene() {
 void initApplication() {
     glEnable(GL_DEPTH_TEST);
 
-        Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		sphereCam = cartesianToSpherical(Renderer::getCamera()->getCameraPosition() - (Renderer::getCamera()->getCameraPosition() + Renderer::getCamera()->getCameraFront()));
-
+	Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	sphereCam = cartesianToSpherical(Renderer::getCamera()->getCameraPosition() - (Renderer::getCamera()->getCameraPosition() + Renderer::getCamera()->getCameraFront()));
+	Renderer::initTextures();
     //init physics
     Renderer::initPhysics();
 
