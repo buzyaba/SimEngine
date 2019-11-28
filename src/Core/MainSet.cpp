@@ -69,5 +69,11 @@ TStreetSet::TStreetSet() : TMainSet()
   objects[0]->AddNeighboringObject(*objects[1]);
 
   scene.resize(1, new TStreet("Street"));
-  //thing.resize(0, new TSmartSocket("SmartSocket"));
+
+  TTrafficLight* trafficLight = new TTrafficLight("TrafficLight", objects[3]);
+  trafficLight->AddObject(*objects[3]);
+  trafficLight->AddObject(*objects[2]);
+  trafficLight->AddObject(*objects[1]);
+
+  thing.resize(1, trafficLight);
 }
