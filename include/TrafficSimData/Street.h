@@ -5,11 +5,14 @@
 #include "Core/Scene.h"
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
+#include "Core/common.h"
+
 
 #define TRoadIsBblockierenIndex 0
 #define TRoadCoordinate 1
 #define TRoadDimensions 2
 #define TRoadIsBusy 3
+#define TRoadIsHaveStandingCar 4
 
 #define TCarWayIndex 0
 #define TCarWayIndexCount 1
@@ -19,7 +22,8 @@
 #define TCarCreatorCoordinate 1
 #define TCarCreatorDimensions 2
 #define TCarCreatorIsBusy 3
-#define TCarCreatorIsCreat 4
+#define TCarCreatorIsHaveStandingCar 4
+#define TCarCreatorIsCreat 5
 
 
 class TStreet : public TScene
@@ -37,20 +41,24 @@ public:
 class TRoad : public TObjectOfObservation
 {
 protected:
-  /// Был лши включен терминал
-  bool isUpdate;
+  /// Время последнего обновления
+  unsigned long int oldGoTime;
   /// Соседние дороги
   std::vector < TRoad*> roadNeighboring;
+  /// Можно ли ехать
+  bool isCanGo;
 public:
   TRoad(std::string _name) : TObjectOfObservation(_name)
   {
-    this->properties.resize(4);
-    this->properties[TRoadIsBblockierenIndex] = new TProperties({ 0 }, { "IsBblockieren" }, true, "IsBblockieren");
+    this->properties.resize(5);
+    this->properties[TRoadIsBblockierenIndex] = new TProperties({ 0 }, { "IsBblockieren" }, false, "IsBblockieren");
     this->properties[TRoadCoordinate] = new TProperties({ 10, 10 }, { "X", "Y" }, false, "Coordinate");
     this->properties[TRoadDimensions] = new TProperties({ 2, 2, 2 }, { "Width", "Length", "Height" }, false, "Dimensions");
     this->properties[TRoadIsBusy] = new TProperties({ 0 }, { "IsBusy" }, false, "IsBusy");
+    this->properties[TRoadIsHaveStandingCar] = new TProperties({ 0 }, { "IsHaveStandingCar" }, true, "IsHaveStandingCar");
 
-    isUpdate = false;
+    oldGoTime = currentStep;
+    isCanGo = true;
   }
 
   /// Добавить соседний объект, между ними может происходить объмен дочерними объектами
@@ -60,8 +68,9 @@ public:
 
     TRoad* road = dynamic_cast<TRoad*>(&obect);
     if (road != NULL)
-    roadNeighboring.push_back(road);
+      roadNeighboring.push_back(road);
   }
+
   /// Может ли машина уехать с этой клетки дороги
   virtual bool IsCanGo()
   {
@@ -92,46 +101,50 @@ public:
   /// Уезжаем с этой клетки
   virtual void Go()
   {
-    TObjectOfObservation* child = nullptr;
-    if (this->childObjects.size() > 0)
-      child = this->childObjects[0];
-
-    if (child != nullptr)
+    if (oldGoTime != currentStep)
     {
-      std::vector<double>& maxWayIndex = child->GetProperties()[TCarWayIndexCount]->GetValues();
-      maxWayIndex[0] = static_cast<double>(this->roadNeighboring.size());
-      child->GetProperties()[TCarWayIndexCount]->SetValues(maxWayIndex);
-      child->Update();
-    }
+      oldGoTime = currentStep;
+      isCanGo = true;
+      TObjectOfObservation* child = nullptr;
+      if (this->childObjects.size() > 0)
+        child = this->childObjects[0];
 
-    isUpdate = true;
-    bool isCanGo = IsCanGo();
-
-    std::vector<double>& isBblockieren = this->properties[TRoadIsBblockierenIndex]->GetValues();
-    /// может ли машина уехать
-    if (isCanGo)
-    {
-      isBblockieren[0] = 0;
-      this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
       if (child != nullptr)
       {
-        int roadIndex = child->GetProperties()[TCarWayIndex]->GetValues()[0];
-        if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
-        {
-          this->ExcludeChildObject(*child); //извлекли машину
-          this->roadNeighboring[roadIndex]->Go(); // сходили соседом
-          this->roadNeighboring[roadIndex]->AddChildObject(*child); // добавили машину соседу
-          child->GetProperties()[TCarCoordinate]->SetValues(
-            this->roadNeighboring[roadIndex]->GetProperties()[TRoadCoordinate]->GetValues());
-        }
-        else
-          throw - 1;
+        std::vector<double>& maxWayIndex = child->GetProperties()[TCarWayIndexCount]->GetValues();
+        maxWayIndex[0] = static_cast<double>(this->roadNeighboring.size());
+        child->GetProperties()[TCarWayIndexCount]->SetValues(maxWayIndex);
+        child->Update();
       }
-    }
-    else
-    {
-      isBblockieren[0] = 1;
-      this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
+
+      isCanGo = IsCanGo();
+
+      //std::vector<double>& isBblockieren = this->properties[TRoadIsBblockierenIndex]->GetValues();
+      /// может ли машина уехать
+      if (isCanGo)
+      {
+        //isBblockieren[0] = 0;
+        //this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
+        if (child != nullptr)
+        {
+          int roadIndex = child->GetProperties()[TCarWayIndex]->GetValues()[0];
+          if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
+          {
+            this->ExcludeChildObject(*child); //извлекли машину
+            this->roadNeighboring[roadIndex]->Go(); // сходили соседом
+            this->roadNeighboring[roadIndex]->AddChildObject(*child); // добавили машину соседу
+            child->GetProperties()[TCarCoordinate]->SetValues(
+              this->roadNeighboring[roadIndex]->GetProperties()[TRoadCoordinate]->GetValues());
+          }
+          else
+            throw - 1;
+        }
+      }
+      else
+      {
+        //isBblockieren[0] = 1;
+        //this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
+      }
     }
   }
 
@@ -139,11 +152,16 @@ public:
   {
     TObjectOfObservation::Update();
 
-    if (!isUpdate)
+    Go();
+
+    std::vector<double>& isHaveStandingCar = this->properties[TRoadIsHaveStandingCar]->GetValues();
+    if ((this->properties[TRoadIsBusy]->GetValues()[0] == 1) && !isCanGo)
     {
-      Go();
+      isHaveStandingCar[0] = 1;
     }
-    isUpdate = false;
+    else
+      isHaveStandingCar[0] = 0;
+    this->properties[TRoadIsHaveStandingCar]->SetValues(isHaveStandingCar);
   }
 
   /// Добавить дочерний объект
@@ -248,41 +266,52 @@ public:
   }
 };
 
-//class TElectricitySensor : public TSensor
-//{
-//public:
-//  TElectricitySensor(std::string _name) : TSensor(_name)
-//  {
-//  }
-//};
-//
-//class TSwitch : public TActuator
-//{
-//public:
-//  TSwitch(std::string _name) : TActuator(_name)
-//  {
-//  }
-//
-//  virtual void SetDataPacket(TDataPacket& packet)
-//  {
-//    if (packet.GetDoubles()[0] == 0)
-//    {
-//      for (int i = 0; i < objects.size(); i++)
-//      {
-//        if (objects[i] != nullptr)
-//        {
-//          objects[i]->SetProperty({ 0 }, "IsWork");
-//        }
-//      }
-//    }
-//  }
-//};
-//
-//class TSmartSocket : public TSmartThing
-//{
-//public:
-//  TSmartSocket(std::string _name) :
-//    TSmartThing(_name, { new TElectricitySensor(_name + "ElectricitySensor") }, { new TSwitch(_name + "Switch") })
-//  {
-//  }
-//};
+class TMachineNumberSensor : public TSensor
+{
+public:
+  TMachineNumberSensor(std::string _name) : TSensor(_name)
+  {
+  }
+};
+
+class TBarrage : public TActuator
+{
+protected:
+  /// блокируемая дорога
+  TObjectOfObservation* blockedRoad;
+public:
+  TBarrage(std::string _name, TObjectOfObservation* _blockedRoad) : TActuator(_name)
+  {
+    if (_blockedRoad != nullptr)
+      blockedRoad = _blockedRoad;
+    else
+      throw - 1;
+  }
+
+  virtual void SetDataPacket(TDataPacket& packet)
+  {
+
+    if (blockedRoad != nullptr)
+    {
+      if (packet.GetDoubles()[0] == 0)
+        blockedRoad->SetProperty({ 0 }, "IsBblockieren");
+      else
+        blockedRoad->SetProperty({ 1 }, "IsBblockieren");
+    }
+
+  }
+};
+
+class TTrafficLight : public TSmartThing
+{
+//protected:
+//  TDataPacket packet;
+
+public:
+  TTrafficLight(std::string _name, TObjectOfObservation* _blockedRoad) :
+    TSmartThing(_name, { new TMachineNumberSensor(_name + "MachineNumberSensor") }, { new TBarrage(_name + "Barrage", _blockedRoad) })
+  {
+    this->properties.resize(1);
+    this->properties[0] = new TProperties({ 0 }, { "NumberOfStandingCars" }, true, "NumberOfStandingCars");
+  }
+};

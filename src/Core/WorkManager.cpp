@@ -4,9 +4,15 @@
 #include "Core/WorkManager.h"
 #include "Core/EmptyProgram.h"
 
+#include "Core/common.h"
+
+unsigned long int currentTime;
+unsigned long int currentStep;
+
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
-  
+  currentTime = 0;
+  currentStep = 0;
   mainSet = TSetFactory::Create(1);
     //new TMainSet();
 
@@ -39,13 +45,14 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
   }
 
   script = new TEnvironmentScript(allObject, "");
-  program = new TEmptyProgram();
+  program = TProgramFactory::Create(1, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
 }
 
 TWorkManager::~TWorkManager()
 {
+  delete program;
 }
 
 void TWorkManager::Start()
@@ -57,6 +64,8 @@ void TWorkManager::Start()
   {
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     time = (t * timeStep) / 1000;
+    currentTime = time;
+    currentStep = t;
     script->UpdateObjectsProperties(time);
 
     for (int i = 0; i < objects.size(); i++)
@@ -77,6 +86,7 @@ void TWorkManager::Start()
   }
 
   storage->PrintToFile();
+  program->End();
 }
 
 void TWorkManager::Stop()

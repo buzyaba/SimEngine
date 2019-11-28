@@ -3,6 +3,8 @@
 TSensor::TSensor(std::string _name) : packet(nullptr)
 {
   SetName(_name);
+  oldObjectCount = 0;
+  propertyCount = 0;
 }
 
 TSensor::TSensor(const TSensor& sensor)
@@ -10,30 +12,38 @@ TSensor::TSensor(const TSensor& sensor)
   this->packet = sensor.packet;
   this->name = sensor.name;
   this->objects = sensor.objects;
+  this->oldObjectCount = sensor.oldObjectCount;
+  this->propertyCount = sensor.propertyCount;
 }
 
-TDataPacket TSensor::GetDataPacket()
+TDataPacket& TSensor::GetDataPacket()
 {
-  std::vector<std::vector<std::vector<double>>> vals(objects.size());
-  int propertyCount = 0;
-  for (int i = 0; i < objects.size(); i++)
+  if (oldObjectCount < objects.size())
   {
-    if (objects[i] != nullptr)
+    oldObjectCount = objects.size();
+    vals.resize(oldObjectCount);
+    propertyCount = 0;
+    for (int i = 0; i < objects.size(); i++)
     {
-      objectsProperties[i] = objects[i]->GetProperties();
-      vals[i].resize(objectsProperties[i].size());
-      for (int j = 0; j < objectsProperties[i].size(); j++)
+      if (objects[i] != nullptr)
       {
-        if (objectsProperties[i][j] != nullptr && objectsProperties[i][j]->IsObserved())
+        objectsProperties[i] = objects[i]->GetProperties();
+        vals[i].resize(objectsProperties[i].size());
+        for (int j = 0; j < objectsProperties[i].size(); j++)
         {
-          vals[i][j] = objectsProperties[i][j]->GetValues();
-            propertyCount += vals[i][j].size();
+          if (objectsProperties[i][j] != nullptr && objectsProperties[i][j]->IsObserved())
+          {
+            vals[i][j] = &(objectsProperties[i][j]->GetValues());
+            propertyCount += vals[i][j]->size();
+          }
         }
       }
     }
   }
+
   if (packet == nullptr)
     packet = new TDataPacket(propertyCount * sizeof(double));
+
   packet->SetSize(propertyCount * sizeof(double));
   double* data = packet->GetDoubles();
   int t = 0;
@@ -41,10 +51,13 @@ TDataPacket TSensor::GetDataPacket()
   {
     for (int j = 0; j < vals[i].size(); j++)
     {
-      for (int k = 0; k < vals[i][j].size(); k++)
+      if (vals[i][j] != nullptr)
       {
-        data[t] = vals[i][j][k];
-        t++;
+        for (int k = 0; k < vals[i][j]->size(); k++)
+        {
+          data[t] = (*(vals[i][j]))[k];
+          t++;
+        }
       }
     }
   }
