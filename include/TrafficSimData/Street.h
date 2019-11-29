@@ -285,7 +285,6 @@ public:
 
   virtual void SetDataPacket(TDataPacket& packet)
   {
-
     if (blockedRoad != nullptr)
     {
       if (packet.GetDoubles()[0] == 0)
@@ -293,20 +292,19 @@ public:
       else
         blockedRoad->SetProperty({ 1 }, "IsBblockieren");
     }
-
   }
 };
 
 class TTrafficLight : public TSmartThing
 {
-//protected:
-//  TDataPacket packet;
-
 public:
+
   TTrafficLight(std::string _name, TObjectOfObservation* _blockedRoad) :
     TSmartThing(_name, { new TMachineNumberSensor(_name + "MachineNumberSensor") }, { new TBarrage(_name + "Barrage", _blockedRoad) })
   {
-    this->properties.resize(1);
+    this->properties.resize(2);
     this->properties[0] = new TProperties({ 0 }, { "NumberOfStandingCars" }, true, "NumberOfStandingCars");
+    this->properties[1] = new TProperties({ 0 }, { "Color" }, true, "Color"); //Зеленый 0; Желтый 1; Красный 2;
+
   }
 };
