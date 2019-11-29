@@ -74,10 +74,6 @@ public:
   /// Может ли машина уехать с этой клетки дороги
   virtual bool IsCanGo()
   {
-    /// Если дорога заблокирована, то ехать нельзя
-    if (this->properties[TRoadIsBblockierenIndex]->GetValues()[0] == 1)
-      return false;
-
     /// Если есть потомки, это могут быть только машины, то проверяем можем ли ехать
     if (this->childObjects.size() == 0)
       return true;
@@ -87,13 +83,16 @@ public:
     }
     else
     {
-      bool isCanGo = true;
       int roadIndex = this->childObjects[0]->GetProperties()[TCarWayIndex]->GetValues()[0];
       if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
-        isCanGo = this->roadNeighboring[roadIndex]->IsCanGo();
+      {
+        /// Если дорога заблокирована, то ехать нельзя
+        if (this->roadNeighboring[roadIndex]->GetProperties()[TRoadIsBblockierenIndex]->GetValues()[0] == 1)
+          return false;
+        return this->roadNeighboring[roadIndex]->IsCanGo();
+      }
       else
         throw - 1;
-      return isCanGo;
     }
     return false;
   }
@@ -119,7 +118,7 @@ public:
 
       isCanGo = IsCanGo();
 
-      //std::vector<double>& isBblockieren = this->properties[TRoadIsBblockierenIndex]->GetValues();
+
       /// может ли машина уехать
       if (isCanGo)
       {
@@ -140,11 +139,7 @@ public:
             throw - 1;
         }
       }
-      else
-      {
-        //isBblockieren[0] = 1;
-        //this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
-      }
+
     }
   }
 
