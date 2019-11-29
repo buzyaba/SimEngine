@@ -74,10 +74,6 @@ public:
   /// Может ли машина уехать с этой клетки дороги
   virtual bool IsCanGo()
   {
-    /// Если дорога заблокирована, то ехать нельзя
-    if (this->properties[TRoadIsBblockierenIndex]->GetValues()[0] == 1)
-      return false;
-
     /// Если есть потомки, это могут быть только машины, то проверяем можем ли ехать
     if (this->childObjects.size() == 0)
       return true;
@@ -87,13 +83,16 @@ public:
     }
     else
     {
-      bool isCanGo = true;
       int roadIndex = this->childObjects[0]->GetProperties()[TCarWayIndex]->GetValues()[0];
       if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
-        isCanGo = this->roadNeighboring[roadIndex]->IsCanGo();
+      {
+        /// Если дорога заблокирована, то ехать нельзя
+        if (this->roadNeighboring[roadIndex]->GetProperties()[TRoadIsBblockierenIndex]->GetValues()[0] == 1)
+          return false;
+        return this->roadNeighboring[roadIndex]->IsCanGo();
+      }
       else
         throw - 1;
-      return isCanGo;
     }
     return false;
   }
@@ -119,7 +118,7 @@ public:
 
       isCanGo = IsCanGo();
 
-      //std::vector<double>& isBblockieren = this->properties[TRoadIsBblockierenIndex]->GetValues();
+
       /// может ли машина уехать
       if (isCanGo)
       {
@@ -140,11 +139,7 @@ public:
             throw - 1;
         }
       }
-      else
-      {
-        //isBblockieren[0] = 1;
-        //this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
-      }
+
     }
   }
 
@@ -290,7 +285,6 @@ public:
 
   virtual void SetDataPacket(TDataPacket& packet)
   {
-
     if (blockedRoad != nullptr)
     {
       if (packet.GetDoubles()[0] == 0)
@@ -298,20 +292,19 @@ public:
       else
         blockedRoad->SetProperty({ 1 }, "IsBblockieren");
     }
-
   }
 };
 
 class TTrafficLight : public TSmartThing
 {
-//protected:
-//  TDataPacket packet;
-
 public:
+
   TTrafficLight(std::string _name, TObjectOfObservation* _blockedRoad) :
     TSmartThing(_name, { new TMachineNumberSensor(_name + "MachineNumberSensor") }, { new TBarrage(_name + "Barrage", _blockedRoad) })
   {
-    this->properties.resize(1);
+    this->properties.resize(2);
     this->properties[0] = new TProperties({ 0 }, { "NumberOfStandingCars" }, true, "NumberOfStandingCars");
+    this->properties[1] = new TProperties({ 0 }, { "Color" }, true, "Color"); //Зеленый 0; Желтый 1; Красный 2;
+
   }
 };
