@@ -26,4 +26,8 @@ void Renderer::initTextures() {
     textures.push_back(tex.getTextureID("../../../assets/textures/grass.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/ground.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/road.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/gray.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/black.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/windows.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/windows98.jpg"));
 }

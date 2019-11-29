@@ -2,10 +2,12 @@
 
 GLuint Primitive::shaderProgram = -1;
 
+
 void Primitive::initShader() {
     ShaderLoader shader;
     shaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
 }
+
 
 Transform::Transform() {
     pos = glm::vec3(0);

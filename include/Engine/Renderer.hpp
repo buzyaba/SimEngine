@@ -4,7 +4,7 @@
 #include <Engine/TextureLoader.hpp>
 #include <vector>
 
-enum Textures {CAR, GRASS, GROUND, ROAD};
+enum Textures {CAR, GRASS, GROUND, ROAD, GRAY, BLACK, WINDOWS, SCREENSAVER};
 
 class Renderer {
     private:

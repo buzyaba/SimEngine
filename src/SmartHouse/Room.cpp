@@ -1,20 +1,20 @@
-#include <SmartHouse/Table.hpp>
+#include <SmartHouse/Room.hpp>
 
-MeshRenderer* Table::mesh = nullptr;
-unsigned int Table::meshBuffer = -1;
+MeshRenderer* Room::mesh = nullptr;
+unsigned int Room::meshBuffer = -1;
 
-void Table::initBuffer() {
+void Room::initBuffer() {
     glGenBuffers(1, &meshBuffer);
 }
 
-void Table::initMesh() {
-    GLuint texture = Renderer::getTextures()[ROAD];
+void Room::initMesh() {
+    GLuint texture = Renderer::getTextures()[GRASS];
     mesh = new MeshRenderer(MeshType::kCube);
     mesh->setProgram(shaderProgram);
     mesh->setTexture(texture);
 }
 
-Table::Table(const glm::vec3& pos, const glm::vec3& scale) {
+Room::Room(const glm::vec3& pos, const glm::vec3& scale) {
     if (mesh == nullptr)
         this->initMesh();
     if (meshBuffer == -1)
@@ -42,37 +42,40 @@ Table::Table(const glm::vec3& pos, const glm::vec3& scale) {
     transform.setPosition(pos);
     transform.setScale(scale);
 
-    countertop.setPosition(pos + glm::vec3(0.0f, 3.0f,0.0f));
-    countertop.setScale(glm::vec3(3.0f,0.1f,1.5f) * scale); 
-    tableLeg1.setPosition(pos + glm::vec3(-2.9f, 1.5f,-1.4f));
-    tableLeg1.setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); 
-    tableLeg2.setPosition(pos + glm::vec3(-2.9f, 1.5f, 1.4f));
-    tableLeg2.setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); 
-    tableLeg3.setPosition(pos + glm::vec3(2.9f, 1.5f,-1.4f));
-    tableLeg3.setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); 
-    tableLeg4.setPosition(pos + glm::vec3(2.9f, 1.5f,1.4f));
-    tableLeg4.setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); 
-
+    floor.setPosition(pos + glm::vec3(0.0f, -0.1f,0.0f));
+    floor.setScale(glm::vec3(30.0f,0.1f,30.0f) * scale); 
+    ceiling.setPosition(pos + glm::vec3(0.0f, 10.0f,0.0f));
+    ceiling.setScale(glm::vec3(30.0f,0.1f,30.0f) * scale);
+    rightWall.setPosition(pos + glm::vec3(30.0f, 5.0f,0.0f));
+    rightWall.setScale(glm::vec3(0.1f,5.0f,30.0f) * scale);
+    leftWall.setPosition(pos + glm::vec3(-30.0f, 5.0f,0.0f));
+    leftWall.setScale(glm::vec3(0.1f,5.0f,30.0f) * scale);
+    frontWall.setPosition(pos + glm::vec3(0.0f, 5.0f, -30.0f));
+    frontWall.setScale(glm::vec3(30.0f,5.0f,0.1f) * scale); 
+    backWall.setPosition(pos + glm::vec3(0.0f, 5.0f, 30.0f));
+    backWall.setScale(glm::vec3(30.0f,5.0f,0.1f) * scale); 
+    
 }
 
-void Table::setScale(const glm::vec3& _size) {
+void Room::setScale(const glm::vec3& _size) {
 
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
 }
 
-void Table::initDraw(const std::vector<Table*> objects) {
+void Room::initDraw(const std::vector<Room*> objects) {
     glUseProgram(shaderProgram);
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*5];
+    glm::mat4* modelMatrixes = new glm::mat4[(int)(objects.size()*6)];
     for (int i = 0; i < objects.size(); ++i) {
-        modelMatrixes[i*2] = objects[i]->countertop.getModelMatrix();
-        modelMatrixes[i*2 + 1] = objects[i]->tableLeg1.getModelMatrix();
-        modelMatrixes[i*2 + 2] = objects[i]->tableLeg2.getModelMatrix();
-        modelMatrixes[i*2 + 3] = objects[i]->tableLeg3.getModelMatrix();
-        modelMatrixes[i*2 + 4] = objects[i]->tableLeg4.getModelMatrix();
+        modelMatrixes[i*6] = objects[i]->floor.getModelMatrix();
+        modelMatrixes[i*6 + 1] = objects[i]->ceiling.getModelMatrix();
+        modelMatrixes[i*6 + 2] = objects[i]->leftWall.getModelMatrix();
+        modelMatrixes[i*6 + 3] = objects[i]->rightWall.getModelMatrix();
+        modelMatrixes[i*6 + 4] = objects[i]->frontWall.getModelMatrix();
+        modelMatrixes[i*6 + 5] = objects[i]->backWall.getModelMatrix();
     }
     GLuint vao = objects[0]->mesh->getVAO();
-    glBindBuffer(GL_ARRAY_BUFFER, Table::meshBuffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 5, &modelMatrixes[0], GL_STATIC_DRAW);        
+    glBindBuffer(GL_ARRAY_BUFFER, Room::meshBuffer);
+    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 6, &modelMatrixes[0], GL_STATIC_DRAW);        
     glBindVertexArray(vao);
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
@@ -93,16 +96,16 @@ void Table::initDraw(const std::vector<Table*> objects) {
     
 }
 
-void Table::drawElements(const std::vector<Table*> objects) {
+void Room::drawElements(const std::vector<Room*> objects) {
     glUseProgram(shaderProgram);
     GLuint vao = objects[0]->mesh->getVAO();
     GLuint texture = objects[0]->mesh->getTexture();
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, Table::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, Room::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 5);
+    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)(objects.size()*6));
     glBindVertexArray(0);
 }
