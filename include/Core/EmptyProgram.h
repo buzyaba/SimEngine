@@ -61,7 +61,7 @@ public:
   virtual void Run()
   {
     std::vector<std::string> str(1);
-    
+
     str[0] = std::to_string(currentTime);
     int valCount = 0;
 
@@ -83,7 +83,7 @@ class TRoomProgram : public TEmptyProgram
 public:
   TRoomProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
   {
-    
+
   }
 };
 
@@ -113,15 +113,13 @@ public:
       table[table.size() - 1].push_back(std::to_string(carCount));
     }
     double* packetVal = sendPacket.GetDoubles();
-    
+
     bool isUpdate = false;
-    
+
     if (currentStep % 17 == 0)
     {
       isUpdate = true;
       packetVal[0] = (int(packetVal[0]) + 1) % 2;
-      
-
     }
 
     if (isUpdate)
