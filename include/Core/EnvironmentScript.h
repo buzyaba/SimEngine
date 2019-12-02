@@ -66,7 +66,7 @@ protected:
 
 
 public:
-  TEnvironmentScript(std::vector<IObject*> _objects, std::string _script);
+  TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, unsigned long int maxTime = 1000);
 
   virtual std::vector <IProperties*>& GetObjectProperties(std::string name, unsigned long int time);
   virtual std::vector <IProperties*>& GetObjectProperties(IObject& object, unsigned long int time);
