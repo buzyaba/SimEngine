@@ -1,5 +1,6 @@
 ﻿#include <chrono>
 #include <thread>
+#include <iostream>
 
 #include "Core/WorkManager.h"
 #include "Core/EmptyProgram.h"
@@ -44,7 +45,7 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, "");
+  script = new TEnvironmentScript(allObject, "", _maxStep);
   program = TProgramFactory::Create(1, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
@@ -57,6 +58,8 @@ TWorkManager::~TWorkManager()
 
 void TWorkManager::Start()
 {
+  std::cout << "Start\n" << std::endl;
+  std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
 
   unsigned long int time = 0;
   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
@@ -87,6 +90,10 @@ void TWorkManager::Start()
 
   storage->PrintToFile();
   program->End();
+  std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
+  std::chrono::milliseconds deltaWork =
+    std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
+  std::cout << "End\n" << deltaWork.count() << std::endl;
 }
 
 void TWorkManager::Stop()
