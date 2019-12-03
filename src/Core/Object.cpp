@@ -16,7 +16,7 @@ void TObject::SetProperty(IProperties& property)
   GetProperty(property.GetName()).SetValues(property.GetValues());
 }
 
-void TObject::SetProperty(std::vector<double> values, std::string propertyName)
+void TObject::SetProperty(const std::vector<double>& values, std::string propertyName)
 {
   GetProperty(propertyName).SetValues(values);
 }
@@ -48,4 +48,9 @@ void TObject::SetName(std::string _name)
     name = _name;
   else
     throw - 1;
+}
+
+std::string TObject::ClassName()
+{
+  return std::string("ClassName");
 }
