@@ -58,7 +58,7 @@ TWorkManager::~TWorkManager()
 
 void TWorkManager::Start()
 {
-  std::cout << "Start\n" << std::endl;
+  std::cout << "Start\n MaxIter = " << maxStep<< std::endl;
   std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
 
   unsigned long int time = 0;
