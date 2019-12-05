@@ -13,7 +13,7 @@ std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex
   return properties;
 }
 
-TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string _script)
+TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, unsigned long int maxTime)
 {
   this->objects = _objects;
   this->script = _script;
@@ -21,17 +21,17 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   int intervalCount = 200;
   std::vector<unsigned long int> startTime;
   std::vector<unsigned long int> endTime;
-
+  unsigned long int interval = maxTime / (intervalCount - 1);
   startTime.resize(intervalCount);
   endTime.resize(intervalCount);
 
   startTime[0] = 0;
-  endTime[0] = startTime[0] + 5;
+  endTime[0] = startTime[0] + interval;
 
   for (int i = 1; i < intervalCount; i++)
   {
     startTime[i] = endTime[i - 1];
-    endTime[i] = startTime[i] + 5;
+    endTime[i] = startTime[i] + interval;
   }
 
   objectPropertyIntervals.resize(objects.size());

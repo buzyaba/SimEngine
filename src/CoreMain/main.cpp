@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 {
   try
   {
-    TWorkManager WorkManager;
+    TWorkManager WorkManager(1000, 0, -1.0, 1000);//60*60*24*30);
 
     WorkManager.Start();
   }
