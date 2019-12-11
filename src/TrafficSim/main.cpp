@@ -1,5 +1,6 @@
 #include <TrafficSim/TrafficSim.hpp>
 #include <chrono>
+#include <thread>
 
 enum{screenWidth = 800, screenHeight = 600};
 
@@ -33,6 +34,7 @@ int main(int argc, char** argv) {
     cameraMovement(dt); // every frame movement
     previousTime = currentTime;
   }
+  th.join();
   glfwTerminate();
   Renderer::terminate();
   return 0;

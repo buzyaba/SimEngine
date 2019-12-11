@@ -25,11 +25,11 @@ void initApplication() {
 	Renderer::initTextures();
     //init physics
     Renderer::initPhysics();
-
+	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
     //Adding objects
 	//ground.push_back(new Ground(glm::vec3(0.0f), glm::vec3(500, 0, 500)));
-	for (int i = -170; i < 170; i++)
-		for(int j = -170; j < 170; j++) {
+	for (int i = -100; i < 100; i++)
+		for(int j = -100; j < 100; j++) {
 			ground.push_back(new Ground(glm::vec3(5*i, 300, 5*j)));
 		}
 	Ground::initDraw(ground);
@@ -37,7 +37,10 @@ void initApplication() {
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
-    
+    for (auto& i : ground) {
+		auto pos = i->getPosition();
+		i->setPosition(pos + glm::vec3(-15, 0, 0)*timeStep);
+	}
 }
 
 void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
