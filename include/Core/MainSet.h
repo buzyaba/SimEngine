@@ -18,3 +18,27 @@ public:
   std::vector<TScene*> GetScene();
   std::vector<TSmartThing*> GetThing();
 };
+
+class TRoomSet : public TMainSet
+{
+public:
+  TRoomSet();
+};
+
+class TStreetSet : public TMainSet
+{
+public:
+  TStreetSet();
+};
+
+class TSetFactory
+{
+public:
+  static TMainSet* Create(int a = 0)
+  {
+    if (a == 0)
+      return new TRoomSet();
+    else
+      return new TStreetSet();
+  }
+};

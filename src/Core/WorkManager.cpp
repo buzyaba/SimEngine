@@ -1,12 +1,21 @@
 ﻿#include <chrono>
 #include <thread>
+#include <iostream>
 
 #include "Core/WorkManager.h"
 #include "Core/EmptyProgram.h"
 
+#include "Core/common.h"
+
+unsigned long int currentTime;
+unsigned long int currentStep;
+
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
-  mainSet = new TMainSet();
+  currentTime = 0;
+  currentStep = 0;
+  mainSet = TSetFactory::Create(1);
+    //new TMainSet();
 
   objects = mainSet->GetObject();
   things = mainSet->GetThing();
@@ -36,18 +45,21 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, "");
-  program = new TEmptyProgram();
+  script = new TEnvironmentScript(allObject, "", _maxStep);
+  program = TProgramFactory::Create(1, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
 }
 
 TWorkManager::~TWorkManager()
 {
+  delete program;
 }
 
 void TWorkManager::Start()
 {
+  std::cout << "Start\n MaxIter = " << maxStep<< std::endl;
+  std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
 
   unsigned long int time = 0;
   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
@@ -55,6 +67,8 @@ void TWorkManager::Start()
   {
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     time = (t * timeStep) / 1000;
+    currentTime = time;
+    currentStep = t;
     script->UpdateObjectsProperties(time);
 
     for (int i = 0; i < objects.size(); i++)
@@ -75,6 +89,11 @@ void TWorkManager::Start()
   }
 
   storage->PrintToFile();
+  program->End();
+  std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
+  std::chrono::milliseconds deltaWork =
+    std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
+  std::cout << "End\n" << deltaWork.count() << std::endl;
 }
 
 void TWorkManager::Stop()

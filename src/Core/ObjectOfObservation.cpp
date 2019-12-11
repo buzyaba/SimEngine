@@ -34,8 +34,18 @@ void TObjectOfObservation::AddParentObject(TObjectOfObservation& obect)
 
 int TObjectOfObservation::AddChildObject(TObjectOfObservation& obect)
 {
-  childObjects.push_back(&obect);
-  return childObjects.size();
+  if (childObjects.size() == 0)
+    childObjects.push_back(&obect);
+  else
+  {
+    if (childObjects[0] == nullptr)
+      childObjects[0] = &obect;
+    else
+    {
+      childObjects.push_back(&obect);
+    }
+  }
+  return childObjects.size();  
 }
 
 std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObject()
@@ -50,21 +60,29 @@ void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect)
 
 void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect)
 {
-  for (int i = 0; i < childObjects.size(); i++)
+  if (childObjects.size() == 1)
   {
-    if (childObjects[i]->GetName() == obect.GetName())
+    if (childObjects[0]->GetName() == obect.GetName())
+      childObjects[0] = nullptr;
+  }
+  else
+  {
+    for (int i = 0; i < childObjects.size(); i++)
     {
-      std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
-      for (int j = 0, t = 0; j < childObjects.size(); j++)
+      if (childObjects[i]->GetName() == obect.GetName())
       {
-        if (j != i)
+        std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
+        for (int j = 0, t = 0; j < childObjects.size(); j++)
         {
-          newChildObjects[t] = childObjects[j];
-          t++;
+          if (j != i)
+          {
+            newChildObjects[t] = childObjects[j];
+            t++;
+          }
         }
+        childObjects = newChildObjects;
+        break;
       }
-      childObjects = newChildObjects;
-      break;
     }
   }
 }

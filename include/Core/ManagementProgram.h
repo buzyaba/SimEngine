@@ -7,4 +7,6 @@ class IManagementProgram
 protected:
 public:
   virtual void Run() = 0;
+  virtual void End() = 0;
 };
+
