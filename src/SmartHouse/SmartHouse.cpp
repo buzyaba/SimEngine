@@ -1,7 +1,7 @@
 #include <SmartHouse/SmartHouse.hpp>
 
-std::vector<Table*> table;
-std::vector<Room*> room;
+// std::vector<Table*> table;
+// std::vector<Room*> room;
 std::vector<Monitor*> monitor;
 
 //physics
@@ -12,36 +12,34 @@ GLfloat lastX;
 GLfloat lastY;
 GLfloat humanTall = 5.0f;
 int tick = 0;
-bool windowFlag = false;
+bool windowFlag[400] = { false };
 
 void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 1.f, 0.f, 1.f);
     //Drawing objects here
-    Table::drawElements(table);
-	Room::drawElements(room);
+    // Table::drawElements(table);
+	// Room::drawElements(room);
 	Monitor::drawElements(monitor);
 }
 
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
-    if (tick>300){
+    if (tick >= 399){
 		tick = 0;
-		windowFlag = !windowFlag;
-		if (windowFlag) {
-			GLuint texture = Renderer::getTextures()[WINDOWS];
-			monitor[0]->meshScreen->setTexture(texture);
-		}
-		else
-		{
-			GLuint texture = Renderer::getTextures()[SCREENSAVER];
-			monitor[0]->meshScreen->setTexture(texture);
-		}
-		
+	}
+	windowFlag[tick] = !windowFlag[tick];
+	if (windowFlag[tick]) {
+		GLuint texture = Renderer::getTextures()[WINDOWS];
+		monitor[tick]->setScreenTexture(texture);
+	}
+	else
+	{
+		GLuint texture = Renderer::getTextures()[SCREENSAVER];
+		monitor[tick]->setScreenTexture(texture);
 	}
 	tick++;
-
 }
 
 void initApplication() {
@@ -54,11 +52,13 @@ void initApplication() {
 	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
 
     //Adding objects
-	table.push_back(new Table());
-	Table::initDraw(table);
-	room.push_back(new Room());
-	Room::initDraw(room);
-	monitor.push_back(new Monitor());
+	// table.push_back(new Table());
+	// Table::initDraw(table);
+	// room.push_back(new Room());
+	// Room::initDraw(room);
+	for (int i = -10; i < 10; i++)
+		for (int j = -10; j<10; j++)
+			monitor.push_back(new Monitor(glm::vec3(5*i, -2, 5*j)));
 	Monitor::initDraw(monitor);
 }
 
