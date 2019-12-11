@@ -8,10 +8,10 @@
 class TRoom : public TScene
 {
 public:
-  TRoom(std::string _name):  TScene(_name)
+  TRoom(std::string _name) : TScene(_name)
   {
     this->properties.resize(1);
-    this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, "Dimensions");
+    this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, false, "Dimensions");
   }
 };
 
@@ -24,9 +24,9 @@ public:
   TTerminal(std::string _name) : TObjectOfObservation(_name)
   {
     this->properties.resize(3);
-    this->properties[0] = new TProperties({ 0 }, { "IsWork" }, "IsWork");
-    this->properties[1] = new TProperties({ 0 }, { "PowerConsumption" }, "PowerConsumption");
-    this->properties[2] = new TProperties({ 10, 10}, { "X", "Y" }, "Coordinate"); 
+    this->properties[0] = new TProperties({ 0 }, { "IsWork" }, false, "IsWork");
+    this->properties[1] = new TProperties({ 0 }, { "PowerConsumption" }, true, "PowerConsumption");
+    this->properties[2] = new TProperties({ 10, 10 }, { "X", "Y" }, false, "Coordinate");
     isWork = false;
   }
 
@@ -55,7 +55,7 @@ public:
 
     isWork = this->properties[0]->GetValues()[0] == 1;
   }
-  
+
 };
 
 
@@ -76,14 +76,14 @@ public:
 
   virtual void SetDataPacket(TDataPacket& packet)
   {
-    if (packet.GetDoubles()[0] == 0)
+    for (int i = 0; i < objects.size(); i++)
     {
-      for (int i = 0; i < objects.size(); i++)
+      if (objects[i] != nullptr)
       {
-        if (objects[i] != nullptr)
-        {
+        if (packet.GetDoubles()[0] == 0)
           objects[i]->SetProperty({ 0 }, "IsWork");
-        }
+        else
+          objects[i]->SetProperty({ 1 }, "IsWork");
       }
     }
   }
@@ -92,8 +92,8 @@ public:
 class TSmartSocket : public TSmartThing
 {
 public:
-  TSmartSocket(std::string _name) : 
-    TSmartThing(_name, { new TElectricitySensor(_name + "ElectricitySensor") }, {new TSwitch (_name + "Switch")})
+  TSmartSocket(std::string _name) :
+    TSmartThing(_name, { new TElectricitySensor(_name + "ElectricitySensor") }, { new TSwitch(_name + "Switch") })
   {
   }
 };
