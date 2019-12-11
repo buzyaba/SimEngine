@@ -16,10 +16,7 @@ class MeshRenderer{
     public:
         MeshRenderer(MeshType modelType);
         ~MeshRenderer();
-        void setProgram(GLuint _program);
-        void setTexture(GLuint _textureID);
         GLuint getVAO(){return vao;}
-        GLuint getTexture(){return texture;}
         std::vector<GLuint> getIndices() {return indices;}
         
     private:
@@ -28,5 +25,5 @@ class MeshRenderer{
         glm::mat4 modelMatrix;
 
         glm::vec3 position, scale;
-        GLuint vao, vbo, ebo, texture, program;
+        GLuint vao, vbo, ebo;
 };

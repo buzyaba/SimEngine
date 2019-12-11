@@ -1,11 +1,13 @@
 #include <Engine/Object.hpp>
 
 GLuint Primitive::shaderProgram = -1;
+GLuint Primitive::shaderProgramSingle = -1;
 
 
 void Primitive::initShader() {
     ShaderLoader shader;
     shaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
+    shaderProgramSingle = shader.CreateProgram("../../../assets/shaders/texturedModelSingle.vs", "../../../assets/shaders/texturedModel.fs");
 }
 
 

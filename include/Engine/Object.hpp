@@ -29,6 +29,7 @@ class Primitive {
         static void initShader();
     protected:
         static GLuint shaderProgram;
+        static GLuint shaderProgramSingle;
         Transform transform;
         btRigidBody* rigidBody;
         virtual void initMesh() = 0;
