@@ -34,7 +34,6 @@ int main(int argc, char** argv) {
     cameraMovement(dt); // every frame movement
     previousTime = currentTime;
   }
-  th.join();
   glfwTerminate();
   Renderer::terminate();
   return 0;

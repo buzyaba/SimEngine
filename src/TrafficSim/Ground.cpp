@@ -40,6 +40,7 @@ Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
 void Ground::setScale(const glm::vec3& _size) {
 
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
+    rigidBody->setCollisionShape(shape);
     transform.setScale(_size);
 }
 
