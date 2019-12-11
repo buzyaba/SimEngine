@@ -3,17 +3,6 @@
 
 enum{screenWidth = 800, screenHeight = 600};
 
-extern Camera* camera;
-extern Object* ground;
-extern Object* wall1;
-extern Object* wall2;
-extern Object* wall3;
-extern Object* wall4;
-extern Object* ceiling;
-extern Object* cameraRigit;
-
-//physics
-extern btDiscreteDynamicsWorld* dynamicsWorld;
 
 int main(int argc, char** argv) {
   glfwInit();
@@ -34,7 +23,7 @@ int main(int argc, char** argv) {
     auto currentTime = std::chrono::high_resolution_clock::now();
 		float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 
-		dynamicsWorld->stepSimulation(dt);
+		Renderer::getDynamicsWorld()->stepSimulation(dt);
     // Some render stuff
     renderScene();
 
@@ -44,13 +33,6 @@ int main(int argc, char** argv) {
     previousTime = currentTime;
   }
   glfwTerminate();
-  delete camera;
-  delete ground;
-  delete wall1;
-  delete wall2;
-  delete wall3;
-  delete wall4;
-  delete ceiling;
-  delete cameraRigit;
+  Renderer::terminate();
   return 0;
 }

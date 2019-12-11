@@ -1,58 +1,71 @@
 #include <Engine/Object.hpp>
 
-Object::Object(const ObjectType& _mesh, Camera* _camera, btDiscreteDynamicsWorld* _dynamicsWorld, btCollisionShape* shape, 
-       const glm::vec3& pos, const glm::vec3& scale, const btScalar& _mass,const std::string& texture_path):
-camera(_camera), dynamicsWorld(_dynamicsWorld){
+GLuint Primitive::shaderProgram = -1;
+
+
+void Primitive::initShader() {
     ShaderLoader shader;
-    TextureLoader texture;
-    btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(pos.x, pos.y, pos.z)));
-
-	btScalar mass = _mass; 
-	btVector3 Inertia(0, 0, 0);
-    if(mass != 0.0f)
-	    shape->calculateLocalInertia(mass, Inertia);
-
-	btRigidBody::btRigidBodyConstructionInfo RigidBodyCI(mass, MotionState, shape, Inertia);
-
-	btRigidBody* rigidBody = new btRigidBody(RigidBodyCI);
-    rigidBody->setRestitution(1.0f);
-	rigidBody->setFriction(0.0f);
-
-    rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
-	dynamicsWorld->addRigidBody(rigidBody);
-
-    mesh = new MeshRenderer((MeshType)_mesh, camera, rigidBody);
-
-    GLuint textureShaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
-    GLuint shaderTexture = texture.getTextureID("../../../assets/textures/" + texture_path);
-
-    mesh->setProgram(textureShaderProgram);
-    mesh->setTexture(shaderTexture);
-    mesh->setPosition(pos);
-    mesh->setScale(scale);
-
-    rigidBody->setUserPointer(mesh);
+    shaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
 }
 
-void Object::setScale(glm::vec3 _size) {
-    mesh->setScale(_size);
+
+Transform::Transform() {
+    pos = glm::vec3(0);
+    scale = glm::vec3(1);
+    rotation = rotation.getIdentity();
+    rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
+    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));
+
+	translationMatrix = glm::translate(glm::mat4(1.0f),
+		glm::vec3(pos.x, pos.y, pos.z));
+
+	scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+
+	modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 }
 
-void Object::setPosition(const glm::vec3& pos) {
-    btTransform transform(mesh->rigidBody->getWorldTransform());
+void Transform::setPosition(const glm::vec3& _pos) {
+    pos = _pos;
+    translationMatrix = glm::translate(glm::mat4(1.0f),
+		glm::vec3(pos.x, pos.y, pos.z));
+    modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+}
+
+void Transform::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
+    rotation = btQuaternion(yaw, pitch, roll);
+    rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
+    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));;
+
+    modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+}
+
+void Transform::setScale(const glm::vec3& _scale) {
+    scale = _scale;
+    scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+    modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
+}
+
+Primitive::Primitive() {
+    if (shaderProgram == -1) {
+        Primitive::initShader();
+    }
+}
+
+
+void Primitive::setPosition(const glm::vec3& pos) {
+    btTransform transform(rigidBody->getWorldTransform());
 
     transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-    mesh->rigidBody->setWorldTransform(transform);
-    mesh->rigidBody->getMotionState()->setWorldTransform(transform);
+    rigidBody->setWorldTransform(transform);
+    rigidBody->getMotionState()->setWorldTransform(transform);
 
 }
 
-void Object::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
-    btTransform transform(mesh->rigidBody->getWorldTransform());
+void Primitive::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
+    btTransform transform(rigidBody->getWorldTransform());
     btQuaternion rotate(btRadians(yaw), btRadians(pitch), btRadians(roll));
     transform.setRotation(rotate);
 
-    mesh->rigidBody->setWorldTransform(transform);
-    mesh->rigidBody->getMotionState()->setWorldTransform(transform);
+    rigidBody->setWorldTransform(transform);
+    rigidBody->getMotionState()->setWorldTransform(transform);
 }

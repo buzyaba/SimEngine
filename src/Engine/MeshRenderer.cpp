@@ -1,10 +1,7 @@
 #include <Engine/MeshRenderer.hpp>
 #include <iostream>
 
-MeshRenderer::MeshRenderer(MeshType modelType, Camera* _camera, btRigidBody* _rigidBody){
-	rigidBody = _rigidBody;
-    camera = _camera;
-	
+MeshRenderer::MeshRenderer(MeshType modelType){
 	scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	position = glm::vec3(0.0, 0.0, 0.0);
 
@@ -51,61 +48,50 @@ MeshRenderer::~MeshRenderer() {
     
 }
 
-void MeshRenderer::draw(){
+// THIS WILL HELP;
+// void draw(){
     
-	modelMatrix = glm::mat4(1.0f);
+// 	modelMatrix = glm::mat4(1.0f);
 
-	btTransform t;
+// 	btTransform t;
+// 	btRigidBody* rigidBody; // ЗАГЛУШКА
+// 	rigidBody->getMotionState()->getWorldTransform(t);
 	
-	rigidBody->getMotionState()->getWorldTransform(t);
-	
-	btQuaternion rotation = t.getRotation();
-	btVector3 translate = t.getOrigin();
- 	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
-		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
+// 	btQuaternion rotation = t.getRotation();
+// 	btVector3 translate = t.getOrigin();
+//  	glm::mat4 RotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
+// 		glm::vec3(rotation.getAxis().getX(),rotation.getAxis().getY(), rotation.getAxis().getZ()));
 
-	glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f),
-		glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
+// 	glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f),
+// 		glm::vec3(translate.getX(), translate.getY(), translate.getZ()));
 
-	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
+// 	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
 
-	modelMatrix = TranslationMatrix * RotationMatrix * scaleMatrix;
+// 	modelMatrix = TranslationMatrix * RotationMatrix * scaleMatrix;
 
-    glm::mat4 vp = camera->getProjectionMatrix() * camera->getViewMatrix();
-    glUseProgram(this->program);
-    GLint vpLoc = glGetUniformLocation(program, "vp");
-    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+//     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+//     glUseProgram(this->program);
+//     GLint vpLoc = glGetUniformLocation(program, "vp");
+//     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
 
-    GLint modelLoc = glGetUniformLocation(program, "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-    	glm::value_ptr(modelMatrix));
+//     GLint modelLoc = glGetUniformLocation(program, "model");
+//     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+//     	glm::value_ptr(modelMatrix));
 
-    glBindTexture(GL_TEXTURE_2D, texture);
+//     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
+//     glBindVertexArray(vao);
+//     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+//     glBindVertexArray(0);
+// }
 
-// setters 
+// // setters 
 
 void MeshRenderer::setTexture(GLuint _textureID) {
 
 	texture = _textureID;
 
 }
-
-void MeshRenderer::setScale(glm::vec3 _scale) {
-
-	this->scale = _scale;
-}
-
-
-void MeshRenderer::setPosition(glm::vec3 _position) {
-
-	this->position = _position;
-}
-
 
 void MeshRenderer::setProgram(GLuint _program) {
 

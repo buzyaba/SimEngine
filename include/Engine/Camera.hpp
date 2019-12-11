@@ -15,9 +15,9 @@ class Camera {
         glm::vec3 getCameraPosition();
         glm::vec3 getCameraFront();
         glm::vec3 getCameraUp();
-        Camera* moveCamera(glm::vec3 camPos);
-        Camera* rotateCamera(glm::vec3 camFront);
-        Camera* rotateUpCamera(glm::vec3 camUp);
+        void moveCamera(glm::vec3 camPos);
+        void rotateCamera(glm::vec3 camFront);
+        void rotateUpCamera(glm::vec3 camUp);
 
     private:
         glm::mat4 viewMatrix;
