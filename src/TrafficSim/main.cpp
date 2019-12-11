@@ -1,5 +1,6 @@
 #include <TrafficSim/TrafficSim.hpp>
 #include <chrono>
+#include <thread>
 
 enum{screenWidth = 800, screenHeight = 600};
 

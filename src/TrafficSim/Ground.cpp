@@ -1,6 +1,7 @@
 #include <TrafficSim/Ground.hpp>
 
 MeshRenderer* Ground::mesh = nullptr;
+unsigned int Ground::buffer = -1;
 
 void Ground::initMesh() {
     GLuint texture = Renderer::getTextures()[GRASS];
@@ -24,7 +25,7 @@ Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
 
 	btRigidBody::btRigidBodyConstructionInfo RigidBodyCI(mass, MotionState, shape, Inertia);
 
-	btRigidBody* rigidBody = new btRigidBody(RigidBodyCI);
+    rigidBody = new btRigidBody(RigidBodyCI);
     rigidBody->setRestitution(1.0f);
 	rigidBody->setFriction(0.0f);
 
@@ -39,6 +40,8 @@ Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
 void Ground::setScale(const glm::vec3& _size) {
 
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
+    rigidBody->setCollisionShape(shape);
+    transform.setScale(_size);
 }
 
 void Ground::initDraw(const std::vector<Ground*> objects) {
@@ -46,7 +49,6 @@ void Ground::initDraw(const std::vector<Ground*> objects) {
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
     for (int i = 0; i < objects.size(); ++i) 
         modelMatrixes[i] = objects[i]->transform.getModelMatrix();
-    unsigned int buffer;
     GLuint vao = objects[0]->mesh->getVAO();
     GLuint texture = objects[0]->mesh->getTexture();
     glGenBuffers(1, &buffer);
@@ -70,11 +72,15 @@ void Ground::initDraw(const std::vector<Ground*> objects) {
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    
+    delete[] modelMatrixes;
 }
 
 void Ground::drawElements(const std::vector<Ground*> objects) {
-
+    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
+    for (int i = 0; i < objects.size(); ++i) 
+        modelMatrixes[i] = objects[i]->transform.getModelMatrix();
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4), &modelMatrixes[0], GL_STATIC_DRAW);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     glUseProgram(shaderProgram);
     GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
@@ -83,4 +89,5 @@ void Ground::drawElements(const std::vector<Ground*> objects) {
     glBindVertexArray(vao);
     glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size());
     glBindVertexArray(0);
+    delete[] modelMatrixes;
 }

@@ -14,7 +14,7 @@ class Transform {
     private:
         glm::vec3 pos, scale;
         btQuaternion rotation;
-        glm::mat4 modelMatrix, translationMatrix, rotationMatrix, scaleMatrix;
+        glm::mat4 modelMatrix;
     public:
         explicit Transform();
         glm::mat4 getModelMatrix() {return modelMatrix;};
