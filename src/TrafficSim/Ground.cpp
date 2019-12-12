@@ -2,17 +2,17 @@
 
 MeshRenderer* Ground::mesh = nullptr;
 unsigned int Ground::buffer = -1;
+GLuint Ground::texture = -1;
 
 void Ground::initMesh() {
-    GLuint texture = Renderer::getTextures()[GRASS];
     mesh = new MeshRenderer(MeshType::kCube);
-    mesh->setProgram(shaderProgram);
-    mesh->setTexture(texture);
 }
 
 Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
     if (mesh == nullptr)
         this->initMesh();
+    if (texture == -1)
+        texture = Renderer::getTextures()[GRASS];
 
     btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(pos.x, pos.y, pos.z)));
 
@@ -50,7 +50,6 @@ void Ground::initDraw(const std::vector<Ground*> objects) {
     for (int i = 0; i < objects.size(); ++i) 
         modelMatrixes[i] = objects[i]->transform.getModelMatrix();
     GLuint vao = objects[0]->mesh->getVAO();
-    GLuint texture = objects[0]->mesh->getTexture();
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4), &modelMatrixes[0], GL_STATIC_DRAW);        
