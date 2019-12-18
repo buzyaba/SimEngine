@@ -1,7 +1,7 @@
-// #pragma once
-// #include <Engine/Object.hpp>
-// #include <Engine/Renderer.hpp>
-// #include <Engine/MeshRenderer.hpp>
+#pragma once
+#include <Engine/Object.hpp>
+#include <Engine/Renderer.hpp>
+#include <Engine/MeshRenderer.hpp>
 
 class Ground: public Primitive {
     protected:

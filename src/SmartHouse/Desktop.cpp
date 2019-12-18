@@ -1,18 +1,18 @@
-#include <SmartHouse/Monitor.hpp>
+#include <SmartHouse/Desktop.hpp>
 
-MeshRenderer* Monitor::mesh = nullptr;
-GLuint Monitor::mainTexture = -1;
-unsigned int Monitor::meshBuffer = -1;
+MeshRenderer* Desktop::mesh = nullptr;
+GLuint Desktop::mainTexture = -1;
+unsigned int Desktop::meshBuffer = -1;
 
-void Monitor::initBuffer() {
+void Desktop::initBuffer() {
     glGenBuffers(1, &meshBuffer);
 }
 
-void Monitor::initMesh() {
+void Desktop::initMesh() {
     mesh = new MeshRenderer(MeshType::kCube);
 }
 
-Monitor::Monitor(const glm::vec3& pos, const glm::vec3& scale) {
+Desktop::Desktop(const glm::vec3& pos, const glm::vec3& scale) {
     if (mesh == nullptr)
         this->initMesh();
     if (mainTexture == -1)
@@ -42,32 +42,45 @@ Monitor::Monitor(const glm::vec3& pos, const glm::vec3& scale) {
     transform.setPosition(pos);
     transform.setScale(scale);
 
-    monitor.setPosition(pos + glm::vec3(0.0f, 4.4f,0.0f));
-    monitor.setScale(glm::vec3(1.0f,1.0f,0.1f) * scale); 
-    stand1.setPosition(pos + glm::vec3(0.0f, 3.1f,0.0f));
+    monitor.setScale(glm::vec3(1.4f,1.0f,0.1f) * scale); 
     stand1.setScale(glm::vec3(0.2f,0.1f,0.2f) * scale); 
-    stand2.setPosition(pos + glm::vec3(0.0f, 3.2f, 0.0f));
-    stand2.setScale(glm::vec3(0.1f,0.3f,0.1f) * scale);
-    screen.setPosition(pos + glm::vec3(0.0f, 4.4f,0.091f));
-    screen.setScale(glm::vec3(0.9f,0.9f,0.01f) * scale);  
+    stand2.setScale(glm::vec3(0.1f,0.2f,0.1f) * scale);
+    screen.setScale(glm::vec3(1.3f,0.9f,0.01f) * scale);
+    systemBlock.setScale(glm::vec3(0.4f, 1.0f, 1.4f));  
+    
+    monitor.setPosition(pos + glm::vec3(0.0f, 1.3f,0.0f));
+    stand1.setPosition(pos + glm::vec3(0.0f, 0.0f,0.0f));
+    stand2.setPosition(pos + glm::vec3(0.0f, 0.2f, 0.0f));
+    screen.setPosition(pos + glm::vec3(0.0f, 1.3f,0.091f));
+    systemBlock.setPosition(pos + glm::vec3(-2.0f, 1.0f, 0.0f));
 }
 
-void Monitor::setScale(const glm::vec3& _size) {
+void Desktop::setScale(const glm::vec3& _size) {
 
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
 }
 
-void Monitor::initDraw(const std::vector<Monitor*> objects) {
+void Desktop::setPosition(const glm::vec3& pos) {
+    Primitive::setPosition(pos);
+    monitor.setPosition(pos + glm::vec3(0.0f, 4.4f,0.0f));
+    stand1.setPosition(pos + glm::vec3(0.0f, 3.1f,0.0f));
+    stand2.setPosition(pos + glm::vec3(0.0f, 3.2f, 0.0f));
+    screen.setPosition(pos + glm::vec3(0.0f, 4.4f,0.091f));
+    systemBlock.setPosition(pos + glm::vec3(-2.0f, 0.5f, 0.0f));
+}
+
+void Desktop::initDraw(const std::vector<Desktop*> objects) {
     initBuffer();
     glUseProgram(shaderProgram);
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
+    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*4];
     for (int i = 0; i < objects.size(); ++i) {
-        modelMatrixes[i*3] = objects[i]->monitor.getModelMatrix();
-        modelMatrixes[i*3 + 1] = objects[i]->stand2.getModelMatrix();
-        modelMatrixes[i*3 + 2] = objects[i]->stand1.getModelMatrix();
+        modelMatrixes[i*4] = objects[i]->monitor.getModelMatrix();
+        modelMatrixes[i*4 + 1] = objects[i]->stand2.getModelMatrix();
+        modelMatrixes[i*4 + 2] = objects[i]->stand1.getModelMatrix();
+        modelMatrixes[i*4 + 3] = objects[i]->systemBlock.getModelMatrix();
     }
-    glBindBuffer(GL_ARRAY_BUFFER, Monitor::meshBuffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);   
+    glBindBuffer(GL_ARRAY_BUFFER, Desktop::meshBuffer);
+    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 4, &modelMatrixes[0], GL_STATIC_DRAW);   
     GLuint vao = objects[0]->mesh->getVAO();
     glBindVertexArray(vao);
     glEnableVertexAttribArray(3);
@@ -87,24 +100,25 @@ void Monitor::initDraw(const std::vector<Monitor*> objects) {
     delete[] modelMatrixes;    
 }
 
-void Monitor::drawElements(const std::vector<Monitor*> objects) {
+void Desktop::drawElements(const std::vector<Desktop*> objects) {
     glUseProgram(shaderProgram);
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
+    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*4];
     for (int i = 0; i < objects.size(); ++i) {
-        modelMatrixes[i*3] = objects[i]->monitor.getModelMatrix();
-        modelMatrixes[i*3 + 1] = objects[i]->stand2.getModelMatrix();
-        modelMatrixes[i*3 + 2] = objects[i]->stand1.getModelMatrix();
+        modelMatrixes[i*4] = objects[i]->monitor.getModelMatrix();
+        modelMatrixes[i*4 + 1] = objects[i]->stand2.getModelMatrix();
+        modelMatrixes[i*4 + 2] = objects[i]->stand1.getModelMatrix();
+        modelMatrixes[i*4 + 3] = objects[i]->systemBlock.getModelMatrix();
     }
-    glBindBuffer(GL_ARRAY_BUFFER, Monitor::meshBuffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, Desktop::meshBuffer);
+    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 4, &modelMatrixes[0], GL_STATIC_DRAW);   
     GLuint vao = objects[0]->mesh->getVAO();
-    glBindTexture(GL_TEXTURE_2D, Monitor::mainTexture);
+    glBindTexture(GL_TEXTURE_2D, Desktop::mainTexture);
     glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, Monitor::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, Desktop::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 3);
+    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 4);
     glBindVertexArray(0);
     delete[] modelMatrixes;
 

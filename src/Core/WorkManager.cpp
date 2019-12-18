@@ -10,11 +10,11 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
-{
+TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep, 
+  double _delay, double _fractionOfTimeStep, unsigned int _maxStep) {
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(1);
+  mainSet = _mainSet;
     //new TMainSet();
 
   objects = mainSet->GetObject();
@@ -46,7 +46,48 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
   }
 
   script = new TEnvironmentScript(allObject, "", _maxStep);
-  program = TProgramFactory::Create(1, things);
+  program = TProgramFactory::Create(0, things);
+  storage = new TDataStore(allObject, "A");
+  maxStep = _maxStep;
+  }
+
+TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
+{
+  currentTime = 0;
+  currentStep = 0;
+  mainSet = TSetFactory::Create(0);
+    //new TMainSet();
+
+  objects = mainSet->GetObject();
+  things = mainSet->GetThing();
+  scene = mainSet->GetScene();
+
+  if (_millisecondsOfTimeStep > 0)
+    timeStep = _millisecondsOfTimeStep;
+  else
+    timeStep = 0;
+  if (_fractionOfTimeStep > 0)
+    fractionOfTimeStep = _fractionOfTimeStep;
+  else
+    fractionOfTimeStep = 0;
+
+  delay = _delay;
+
+  std::vector<IObject*> allObject(objects.size() + things.size());
+  int j = 0;
+  for (int i = 0; i < objects.size(); i++)
+  {
+    allObject[j] = objects[i];
+    j++;
+  }
+  for (int i = 0; i < things.size(); i++)
+  {
+    allObject[j] = things[i];
+    j++;
+  }
+
+  script = new TEnvironmentScript(allObject, "", _maxStep);
+  program = TProgramFactory::Create(0, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
 }
@@ -114,4 +155,19 @@ void TWorkManager::SetProgramStep(double _fractionOfTimeStep)
     fractionOfTimeStep = _fractionOfTimeStep;
   else
     fractionOfTimeStep = 0;
+}
+
+void TWorkManager::Iteration(unsigned long int time){
+    currentTime=time;
+    currentStep++;
+    script->UpdateObjectsProperties(time);
+
+    for (int i = 0; i < objects.size(); i++)
+    {      
+      objects[i]->Update();      
+    }  
+
+    storage->AddAllProperties(time);
+    std::cout<<program<<std::endl;
+    // program->Run();  
 }

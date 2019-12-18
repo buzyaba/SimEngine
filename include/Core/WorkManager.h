@@ -36,9 +36,12 @@ protected:
   
 public:
   TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
+  TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep = 1000, 
+  double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
   ~TWorkManager();
   void Start();
   void Stop();
   void SetTimeStep(unsigned int _milliseconds = 1000);
   void SetProgramStep(double _fractionOfTimeStep = -1.0);
+  void Iteration(unsigned long int time);
 };

@@ -8,7 +8,10 @@ add_executable(SmartHouse ${source_files} ${engine_source})
 add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(SmartHouse
-						
+						pugixml 
+						output_system
+						Core
+						SmartHouseData
 						libglewmx_static
 						BulletDynamics
 						BulletCollision

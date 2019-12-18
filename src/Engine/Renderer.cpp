@@ -24,10 +24,14 @@ void Renderer::initTextures() {
     TextureLoader tex;
     textures.push_back(tex.getTextureID("../../../assets/textures/car.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/grass.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/ground.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/road.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/gray.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/black.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/windows.jpg"));
     textures.push_back(tex.getTextureID("../../../assets/textures/windows98.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/table.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/wall.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/floor.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/ceiling.jpg"));
+    textures.push_back(tex.getTextureID("../../../assets/textures/monitor.jpg"));
 }

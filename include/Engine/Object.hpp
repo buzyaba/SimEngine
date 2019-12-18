@@ -37,8 +37,8 @@ class Primitive {
        explicit Primitive();
        virtual ~Primitive(){delete rigidBody;};
        virtual void setScale(const glm::vec3& _size) = 0;
-       void setPosition(const glm::vec3& pos);
-       void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
+       virtual void setPosition(const glm::vec3& pos);
+       virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
        void setCollisionFlags(const CollisionType& _flag) {rigidBody->setCollisionFlags(_flag);} 
        glm::vec3 getPosition() {return glm::vec3(rigidBody->getWorldTransform().getOrigin().x(),
         rigidBody->getWorldTransform().getOrigin().y(), rigidBody->getWorldTransform().getOrigin().z());}
