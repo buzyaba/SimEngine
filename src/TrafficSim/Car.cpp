@@ -1,24 +1,23 @@
-#include <TrafficSim/Ground.hpp>
+#include <TrafficSim/Car.hpp>
 
-MeshRenderer* Ground::mesh = nullptr;
-unsigned int Ground::buffer = -1;
-GLuint Ground::texture = -1;
+MeshRenderer* Car::mesh = nullptr;
+unsigned int Car::buffer = -1;
+GLuint Car::texture = -1;
 
-void Ground::initMesh() {
+void Car::initMesh() {
     mesh = new MeshRenderer(MeshType::kCube);
 }
 
-Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
+Car::Car(const glm::vec3& pos) {
     if (mesh == nullptr)
-        this->initMesh();
+        initMesh();
     if (texture == -1)
-        texture = Renderer::getTextures()[GRASS];
-
+        texture = Renderer::getTextures()[CAR];
     btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(pos.x, pos.y, pos.z)));
 
-    btCollisionShape* shape = new btBoxShape(btVector3(scale.x, scale.y, scale.z));
+    btCollisionShape* shape = new btBoxShape(btVector3(3, 4, 8));
 
-	btScalar mass = 0.0f; 
+	btScalar mass = 10.0f; 
 	btVector3 Inertia(0, 0, 0);
     if(mass != 0.0f)
 	    shape->calculateLocalInertia(mass, Inertia);
@@ -34,17 +33,28 @@ Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
 
     transform.setPosition(pos);
-    transform.setScale(scale);
+    transform.setScale(glm::vec3(3, 4, 8));
 }
 
-void Ground::setScale(const glm::vec3& _size) {
-
-    btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
-    rigidBody->setCollisionShape(shape);
-    transform.setScale(_size);
+void Car::drawElements(const std::vector<Car*> objects) {
+    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
+    for (int i = 0; i < objects.size(); ++i) 
+        modelMatrixes[i] = objects[i]->transform.getModelMatrix();
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4), &modelMatrixes[0], GL_STATIC_DRAW);
+    glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+    glUseProgram(shaderProgram);
+    GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
+    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+    GLuint vao = objects[0]->mesh->getVAO();
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindVertexArray(vao);
+    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size());
+    glBindVertexArray(0);
+    delete[] modelMatrixes;
 }
 
-void Ground::initDraw(const std::vector<Ground*> objects) {
+void Car::initDraw(const std::vector<Car*> objects) {
     glUseProgram(shaderProgram);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
     for (int i = 0; i < objects.size(); ++i) 
@@ -69,23 +79,5 @@ void Ground::initDraw(const std::vector<Ground*> objects) {
     glVertexAttribDivisor(6, 1);
     glBindVertexArray(0);
 
-    delete[] modelMatrixes;
-}
-
-void Ground::drawElements(const std::vector<Ground*> objects) {
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
-    for (int i = 0; i < objects.size(); ++i) 
-        modelMatrixes[i] = objects[i]->transform.getModelMatrix();
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4), &modelMatrixes[0], GL_STATIC_DRAW);
-    glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
-    glUseProgram(shaderProgram);
-    GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
-    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-    GLuint vao = objects[0]->mesh->getVAO();
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glBindVertexArray(vao);
-    glDrawElementsInstanced(GL_TRIANGLES, objects[0]->mesh->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size());
-    glBindVertexArray(0);
     delete[] modelMatrixes;
 }
