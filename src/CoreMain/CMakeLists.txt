@@ -9,7 +9,8 @@ endif()
 
 add_executable(CoreMain ${srcs} ${hdrs})
 target_link_libraries(CoreMain 
-						pugixml 
+						pugixml
+						${dislin_libpath}
 						output_system
 						Core
 						SmartHouseData

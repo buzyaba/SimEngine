@@ -10,11 +10,12 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
+TWorkManager::TWorkManager(int type, unsigned int _millisecondsOfTimeStep, 
+  double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(1);
+  mainSet = TSetFactory::Create(type);
     //new TMainSet();
 
   objects = mainSet->GetObject();
@@ -46,7 +47,7 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
   }
 
   script = new TEnvironmentScript(allObject, "", _maxStep);
-  program = TProgramFactory::Create(1, things);
+  program = TProgramFactory::Create(type, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
 }

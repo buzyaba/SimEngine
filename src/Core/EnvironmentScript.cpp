@@ -19,6 +19,8 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   this->script = _script;
 
   int intervalCount = 200;
+  if (maxTime < 200)
+    intervalCount = maxTime / 10 + 1;
   std::vector<unsigned long int> startTime;
   std::vector<unsigned long int> endTime;
   unsigned long int interval = maxTime / (intervalCount - 1);
