@@ -36,7 +36,7 @@ class TSetFactory
 public:
   static TMainSet* Create(int a = 0)
   {
-    if (a == 0)
+    if (a <= 0)
       return new TRoomSet();
     else
       return new TStreetSet();

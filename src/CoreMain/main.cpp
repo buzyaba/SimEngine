@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <chrono>
 #include <thread>
+#include <conio.h>
 
 #include "Core/main.h"
 
@@ -17,9 +18,20 @@ int main(int argc, char* argv[])
 {
   try
   {
-    TWorkManager WorkManager(0, 1000, 0, -1.0, 100);//60*60*24*30);
+    int type = 0;
+    std::string xmlFile = "";
+
+    if (argc >= 2)
+      type = atoi(argv[1]);
+
+    if (argc >= 3)
+      xmlFile = argv[2];
+
+    TWorkManager WorkManager(type, xmlFile, 1000, 0.5, -1.0, 1000);//60*60*24*30);
 
     WorkManager.Start();
+
+    _getch();
   }
   catch (const TException & e)
   {

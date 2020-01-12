@@ -1,6 +1,8 @@
 ﻿#include "Core/EnvironmentScript.h"
+#include "../lib/pugixml/include/pugixml.hpp"
+//"pugixml.hpp"
 
-std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, 
+std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex,
   std::vector<IProperties*>& properties, unsigned long int time)
 {
   for (int i = 0; i < objectPropertyIntervals[objectIndex].size(); i++)
@@ -13,11 +15,8 @@ std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex
   return properties;
 }
 
-TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, unsigned long int maxTime)
+void TEnvironmentScript::RandomGen(unsigned long int maxTime)
 {
-  this->objects = _objects;
-  this->script = _script;
-
   int intervalCount = 200;
   if (maxTime < 200)
     intervalCount = maxTime / 10 + 1;
@@ -50,6 +49,111 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   {
     objectPropertyIntervals[0][0].value[i][0] = rand() % 2;
   }
+}
+
+
+
+void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
+{
+  if (script == "")
+    return;
+  int intervalCount = 0;
+
+  objectPropertyIntervals.resize(objects.size());
+
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(script.c_str());
+  if (result.status != pugi::status_ok)
+    return;
+  pugi::xml_node config = doc.child("config");
+  std::vector<unsigned long int> startTime;
+  std::vector<unsigned long int> endTime;
+
+  for (pugi::xml_node iter = config.first_child(); iter != 0; iter = iter.next_sibling())
+  {
+    std::string name = iter.name();
+    std::string value = iter.child_value();
+
+    if (name == "intervalCount")
+      intervalCount = atoi(value.c_str());
+    else if (name == "maxStep")
+      maxTime = atoi(value.c_str());
+    else if (name == "time")
+    {
+      startTime.resize(intervalCount);
+      endTime.resize(intervalCount);
+      std::vector<int> tt(intervalCount + 1);
+      ParseString(value, tt);
+
+      for (int i = 0; i < intervalCount; i++)
+      {
+        startTime[i] = tt[i];
+        endTime[i] = tt[i + 1];
+      }
+
+      for (int i = 0; i < objects.size(); i++)
+      {
+        objectPropertyIntervals[i].resize(objects[i]->GetProperties().size());
+        for (int j = 0; j < objects[i]->GetProperties().size(); j++)
+        {
+          objectPropertyIntervals[i][j].SetProperty(*(objects[i]->GetProperties()[j]), intervalCount, startTime, endTime);
+        }
+      }
+    }
+
+    for (int i = 0; i < objects.size(); i++)
+    {
+      if (objects[i]->GetName() == name)
+      {
+        objectPropertyIntervals[i][0].isSet = true;
+        std::vector<int> tt(intervalCount);
+        ParseString(value, tt);
+
+        for (int j = 0; j < intervalCount; j++)
+        {
+          objectPropertyIntervals[i][0].value[j][0] = tt[j];
+        }
+      }
+    }
+  }
+}
+
+void TEnvironmentScript::ParseString(std::string str, std::vector<int>& tt)
+{
+  int intervalCount = tt.size();
+  char* s = new char[str.length() + 1];
+  int l = 0;
+  strcpy(s, str.c_str());
+
+  char* pp = strtok(s, "_");
+
+  double t = 0;
+  while ((pp != 0) && (l < intervalCount))
+  {
+    sscanf(pp, "%lf", &t);
+    tt[l] = t;
+    pp = strtok(NULL, "_");
+    l++;
+  }
+
+  delete[] s;
+}
+
+TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string _script,
+  unsigned long int& maxTime, int type)
+{
+
+  this->objects = _objects;
+  this->script = _script;
+
+  if (type == -1)
+  {
+    LoadXML(maxTime);
+  }
+  else
+  {
+    RandomGen(maxTime);
+  }
 
   //Добвать построение objectPropertyIntervals по скрипту.
 }
@@ -61,7 +165,7 @@ std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(std::string 
     if (objects[i] != nullptr)
     {
       if (objects[i]->GetName() == name)
-      {        
+      {
         return  ChangeProperties(i, objects[i]->GetProperties(), time);
       }
     }
@@ -86,7 +190,7 @@ std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& obj
 
 void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
 {
-  
+
   for (int i = 0; i < objects.size(); i++)
   {
     if (objects[i] != nullptr)

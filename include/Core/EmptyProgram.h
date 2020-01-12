@@ -33,13 +33,14 @@ protected:
   std::vector <std::string> title2;
   double minx, miny, maxx, maxy;
 
-  void InitPlot()
+  void InitPlot(bool f = false)
   {
     g.metafl("XWIN");
     g.scrmod("revers");
 
     g.disini();
-    //g.winmod("NONE");
+    //if (!f)
+    //  g.winmod("NONE");
 
     g.name("Time", "x");
     g.name("Values", "y");
@@ -59,6 +60,11 @@ protected:
     if (yArray.size() < (tableHeader.size() - 1))
     {
       yArray.resize(tableHeader.size() - 1);
+    }
+    for (int j = 0; j < yArray.size(); j++)
+    {
+      yArray[j].clear();
+      yArray[j].resize(0);
     }
 
     xArray.clear();
@@ -95,11 +101,13 @@ protected:
 
   void Plot()
   {
-    if (table.size() < 2)
+    if (table.size() < 3)
       return;
 
+    CreatePlotData();
+
     int count = yArray.size();
-    int xn = xArray.size();
+    int xn = yArray[0].size();
 
     g.erase();
     g.endgrf();
@@ -109,10 +117,15 @@ protected:
     g.axspos(450, 1800);
     g.axslen(2200, 1200);
 
+    if (maxx == minx)
+      maxx += 1;
+    if (maxy == miny)
+      maxy += 1;
+
     double xstep = (maxx - minx) / 4.0;
     double ystep = (maxy - miny) / 4.0;
     g.graf(minx, maxx, minx, xstep,
-      miny, maxy, miny, ystep);
+      miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
 
 
     //g.titlin(title1.c_str(), 1);
@@ -128,12 +141,12 @@ protected:
     g.grid(1, 1);
 
     g.color("red");
-    double* xa = xArray.data();
-    double* ya = yArray[count - 1].data();
-    //for (int k = 0; k < count; k++)
-    //  g.curve(xArray.data(), yArray[k].data(), xn);
+    //double* xa = xArray.data();
+    //double* ya = yArray[count - 1].data();
+    for (int k = 0; k < count; k++)
+      g.curve(xArray.data(), yArray[k].data(), xn);
 
-    g.curve(xa, ya, xn);
+    //g.curve(xa, ya, xn);
 
     g.sendbf();
   }
@@ -180,8 +193,9 @@ public:
         fprintf(file, "%s;", table[i][j].c_str());
       fprintf(file, "\n");
     }
+    //FinPlot();
 
-    CreatePlotData();
+    //InitPlot(true);
     Plot();
     FinPlot();
 
@@ -190,6 +204,8 @@ public:
 
   virtual void Run()
   {
+    Plot();
+
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);
 
@@ -204,8 +220,6 @@ public:
     }
     table.push_back(str);
   }
-
-
 };
 
 class TRoomProgram : public TEmptyProgram
@@ -213,6 +227,26 @@ class TRoomProgram : public TEmptyProgram
 public:
   TRoomProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
   {
+
+  }
+
+  virtual void End()
+  {
+    TEmptyProgram::End();
+
+    double value = 0;
+    double sum = 0;
+
+    for (int u = 0; u < table.size() - 1; u++)
+    {
+      for (int i = 0; i < table[u].size() - 1; i++)
+      {
+        value = atof(table[u][i + 1].c_str());
+        sum += value;
+      }
+    }
+
+    std::cout << "Power consumption = " << sum << std::endl;
 
   }
 };
@@ -276,7 +310,7 @@ class TProgramFactory
 public:
   static TEmptyProgram* Create(int a, std::vector<TSmartThing*>& _things)
   {
-    if (a == 0)
+    if (a <= 0)
       return new TRoomProgram(_things);
     else
       return new TStreetProgram(_things);
