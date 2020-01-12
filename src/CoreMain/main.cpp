@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
     WorkManager.Start();
 
-    _getch();
+    //_getch();
   }
   catch (const TException & e)
   {

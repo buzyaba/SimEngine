@@ -232,8 +232,6 @@ public:
 
   virtual void End()
   {
-    TEmptyProgram::End();
-
     double value = 0;
     double sum = 0;
 
@@ -248,6 +246,7 @@ public:
 
     std::cout << "Power consumption = " << sum << std::endl;
 
+    TEmptyProgram::End();
   }
 };
 
