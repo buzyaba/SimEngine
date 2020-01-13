@@ -13,6 +13,18 @@ public:
     this->properties.resize(1);
     this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, false, "Dimensions");
   }
+
+  /// Возвращает имя класса (используется для динамического создания модели)
+  virtual std::string ClassName()
+  {
+    return "TRoom";
+  }
+
+  /// Создание клона объекта
+  virtual TRoom* Clone()
+  {
+    return new TRoom(*this);
+  }
 };
 
 class TTerminal : public TObjectOfObservation
@@ -56,6 +68,17 @@ public:
     isWork = this->properties[0]->GetValues()[0] == 1;
   }
 
+  /// Возвращает имя класса (используется для динамического создания модели)
+  virtual std::string ClassName()
+  {
+    return "TTerminal";
+  }
+
+  /// Создание клона объекта
+  virtual TTerminal* Clone()
+  {
+    return new TTerminal(*this);
+  }
 };
 
 
@@ -95,5 +118,17 @@ public:
   TSmartSocket(std::string _name) :
     TSmartThing(_name, { new TElectricitySensor(_name + "ElectricitySensor") }, { new TSwitch(_name + "Switch") })
   {
+  }
+
+  /// Возвращает имя класса (используется для динамического создания модели)
+  virtual std::string ClassName()
+  {
+    return "TSmartSocket";
+  }
+
+  /// Создание клона объекта
+  virtual TSmartSocket* Clone()
+  {
+    return new TSmartSocket(*this);
   }
 };

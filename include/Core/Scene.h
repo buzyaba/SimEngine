@@ -19,5 +19,7 @@ public:
   virtual void ExcludeObject(TObjectOfObservation& obect);
   virtual void AddSceneObject(TScene& obect);
   virtual void ExcludeSceneObject(TScene& obect);
+  /// Создание клона объекта
+  virtual TScene* Clone();
 };
 

@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <chrono>
 #include <thread>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 #include "discpp.h"
 
 
@@ -128,8 +131,7 @@ protected:
       miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
 
 
-    //g.titlin(title1.c_str(), 1);
-    for (int i = 0; (i < 3) && ( i < title2.size()); i++)
+    for (int i = 0; (i < 3) && (i < title2.size()); i++)
       g.titlin(title2[i].c_str(), i + 1);
 
     g.color("fore");
@@ -141,12 +143,9 @@ protected:
     g.grid(1, 1);
 
     g.color("red");
-    //double* xa = xArray.data();
-    //double* ya = yArray[count - 1].data();
+
     for (int k = 0; k < count; k++)
       g.curve(xArray.data(), yArray[k].data(), xn);
-
-    //g.curve(xa, ya, xn);
 
     g.sendbf();
   }
@@ -176,7 +175,6 @@ public:
     }
 
     title1 = fileName;
-    InitPlot();
   }
 
   virtual void End()
@@ -193,9 +191,8 @@ public:
         fprintf(file, "%s;", table[i][j].c_str());
       fprintf(file, "\n");
     }
-    //FinPlot();
 
-    //InitPlot(true);
+    InitPlot();
     Plot();
     FinPlot();
 
@@ -204,8 +201,6 @@ public:
 
   virtual void Run()
   {
-    Plot();
-
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);
 
@@ -227,6 +222,26 @@ class TRoomProgram : public TEmptyProgram
 public:
   TRoomProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
   {
+
+  }
+
+  virtual void Run()
+  {
+    TEmptyProgram::Run();
+
+    double value = 0;
+    double sum = 0;
+    int u = table.size() - 1;
+    for (int i = 0; i < table[u].size() - 1; i++)
+    {
+      value = atof(table[u][i + 1].c_str());
+      sum += value;
+    }
+
+    std::string s = "curl -v -X POST -d \"{\\\"Power\\\": " +
+      std::to_string(sum) +
+      " }\" http://localhost:8080/api/v1/FISKOaCIWwS5dlpZtL4c/telemetry --header \"Content-Type:application/json\"";
+    std::system(s.c_str());
 
   }
 

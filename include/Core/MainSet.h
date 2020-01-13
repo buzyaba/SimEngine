@@ -12,7 +12,7 @@ protected:
   std::vector<TScene*> scene;
   std::vector<TSmartThing*> thing;
 public:
-  TMainSet();
+  TMainSet(std::string xmlFile = "");
 
   std::vector<TObjectOfObservation*> GetObject();
   std::vector<TScene*> GetScene();
@@ -34,8 +34,10 @@ public:
 class TSetFactory
 {
 public:
-  static TMainSet* Create(int a = 0)
+  static TMainSet* Create(int a = 0, std::string xmlFile = "")
   {
+    if (xmlFile != "")
+      return new TMainSet(xmlFile);
     if (a <= 0)
       return new TRoomSet();
     else

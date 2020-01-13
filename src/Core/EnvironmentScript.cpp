@@ -105,14 +105,28 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
     {
       if (objects[i]->GetName() == name)
       {
-        objectPropertyIntervals[i][0].isSet = true;
-        std::vector<int> tt(intervalCount);
-        ParseString(value, tt);
-
-        for (int j = 0; j < intervalCount; j++)
+        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
         {
-          objectPropertyIntervals[i][0].value[j][0] = tt[j];
+          std::string nameProperty = iter2.name();
+          std::string valueProperty = iter2.child_value();
+
+          for (int j = 0; j < objectPropertyIntervals[i].size(); i++)
+          {
+            if (objectPropertyIntervals[i][j].nameProperty == nameProperty)
+            {
+              objectPropertyIntervals[i][j].isSet = true;
+              std::vector<int> tt(intervalCount);
+              ParseString(valueProperty, tt);
+
+              for (int k = 0; k < intervalCount; k++)
+              {
+                objectPropertyIntervals[i][j].value[k][0] = tt[k];
+              }
+            }
+          }
         }
+
+
       }
     }
   }

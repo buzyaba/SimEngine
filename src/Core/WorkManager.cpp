@@ -10,13 +10,14 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(int type, std::string _xmlFile, unsigned int _millisecondsOfTimeStep,
+TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, unsigned int _millisecondsOfTimeStep,
   double _delay,  double _fractionOfTimeStep, unsigned long int _maxStep)
 {
+  xmlScript = _script;
   xmlFile = _xmlFile;
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(type);
+  mainSet = TSetFactory::Create(type, xmlFile);
     //new TMainSet();
 
   objects = mainSet->GetObject();
@@ -47,7 +48,7 @@ TWorkManager::TWorkManager(int type, std::string _xmlFile, unsigned int _millise
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, xmlFile, _maxStep, type);
+  script = new TEnvironmentScript(allObject, xmlScript, _maxStep, type);
   program = TProgramFactory::Create(type, things);
   storage = new TDataStore(allObject, "A");
   maxStep = _maxStep;
