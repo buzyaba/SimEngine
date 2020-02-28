@@ -169,5 +169,5 @@ void TWorkManager::Iteration(unsigned long int time){
 
     storage->AddAllProperties(time);
     std::cout<<program<<std::endl;
-    // program->Run();  
+    program->Run();  
 }

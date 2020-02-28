@@ -29,6 +29,7 @@ std::vector<Monoblock*> monitor;
 std::vector<Desktop*> desktop;
 std::vector<IObject*> allObject(2);
 std::vector<TObjectOfObservation*> objects(5);
+std::vector<TSmartThing*> things(1);
 TEnvironmentScript* script;
 TWorkManager workManager;
 
@@ -48,8 +49,21 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos);
 int main(int argc, char** argv) {
   auto mainSet = TSetFactory::Create(0);//!!!!
   objects = mainSet->GetObject();///!!!
+  things = mainSet->GetThing();
   auto maxStep = 1000;
-//   script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
+    std::vector<IObject*> allObject(objects.size() + things.size());
+  int j = 0;
+  for (int i = 0; i < objects.size(); i++)
+  {
+    allObject[j] = objects[i];
+    j++;
+  }
+  for (int i = 0; i < things.size(); i++)
+  {
+    allObject[j] = things[i];
+    j++;
+  }
+  script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
   workManager = TWorkManager(mainSet);
 	
   glfwInit();
