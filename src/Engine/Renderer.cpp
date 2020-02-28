@@ -1,4 +1,5 @@
 #include <Engine/Renderer.hpp>
+#include <filesystem>
 
 Camera* Renderer::camera = nullptr;
 btDiscreteDynamicsWorld* Renderer::dynamicsWorld = nullptr;
@@ -22,16 +23,18 @@ void Renderer::initPhysics() {
 
 void Renderer::initTextures() {
     TextureLoader tex;
-    textures.push_back(tex.getTextureID("../../../assets/textures/car.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/grass.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/road.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/gray.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/black.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/windows.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/windows98.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/table.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/wall.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/floor.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/ceiling.jpg"));
-    textures.push_back(tex.getTextureID("../../../assets/textures/monitor.jpg"));
+    auto i = std::filesystem::current_path().string().find("SimEngine");
+    auto pwd = std::filesystem::current_path().string();
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/car.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/grass.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/road.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/gray.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/black.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/windows.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/windows98.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/table.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/wall.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/floor.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/ceiling.jpg"));
+    textures.push_back(tex.getTextureID(pwd.substr(0,i) + "SimEngine/assets/textures/monitor.jpg"));
 }

@@ -1,4 +1,5 @@
 #include <Engine/Object.hpp>
+#include <filesystem>
 
 GLuint Primitive::shaderProgram = -1;
 GLuint Primitive::shaderProgramSingle = -1;
@@ -6,8 +7,10 @@ GLuint Primitive::shaderProgramSingle = -1;
 
 void Primitive::initShader() {
     ShaderLoader shader;
-    shaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
-    shaderProgramSingle = shader.CreateProgram("../../../assets/shaders/texturedModelSingle.vs", "../../../assets/shaders/texturedModel.fs");
+    auto i = std::filesystem::current_path().string().find("SimEngine");
+    auto pwd = std::filesystem::current_path().string();
+    shaderProgram = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
+    shaderProgramSingle = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModelSingle.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
 }
 
 
