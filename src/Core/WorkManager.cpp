@@ -85,7 +85,6 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     allObject[j] = things[i];
     j++;
   }
-
   script = new TEnvironmentScript(allObject, "", _maxStep);
   program = TProgramFactory::Create(0, things);
   storage = new TDataStore(allObject, "A");

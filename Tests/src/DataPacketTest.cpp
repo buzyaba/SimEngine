@@ -13,19 +13,19 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(DataPacketTest, CanCreate)
-{
-  //TDataPacket(int* data, int size = 1);
-  //TDataPacket(double* data, int size = 1);
-  //TDataPacket(char* data, int size = 1);
-  //TDataPacket(const TDataPacket& packet);
-  //~TDataPacket();
+// TEST(DataPacketTest, CanCreate)
+// {
+//   //TDataPacket(int* data, int size = 1);
+//   //TDataPacket(double* data, int size = 1);
+//   //TDataPacket(char* data, int size = 1);
+//   //TDataPacket(const TDataPacket& packet);
+//   //~TDataPacket();
 
-  //virtual char* GetData();
-  //virtual int GetSize();
-  //virtual void Setdata(char*);
-  //virtual void SetSize(int);
-  //virtual int* GetInts();
-  //virtual double* GetDoubles();
-  EXPECT_EQ(4, 2 + 2);
-};
+//   //virtual char* GetData();
+//   //virtual int GetSize();
+//   //virtual void Setdata(char*);
+//   //virtual void SetSize(int);
+//   //virtual int* GetInts();
+//   //virtual double* GetDoubles();
+//   // EXPECT_EQ(4, 2 + 2);
+// };

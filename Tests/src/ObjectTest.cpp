@@ -13,13 +13,13 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(ObjectTest, CanCreate)
-{
-  //virtual void SetProperty(IProperties& property) = 0;
-  //virtual std::vector<IProperties*> GetProperties() = 0;
-  //virtual IProperties& GetProperty(std::string _name = "") = 0;
+// TEST(ObjectTest, CanCreate)
+// {
+//   //virtual void SetProperty(IProperties& property) = 0;
+//   //virtual std::vector<IProperties*> GetProperties() = 0;
+//   //virtual IProperties& GetProperty(std::string _name = "") = 0;
 
-  //virtual std::string GetName() = 0;
-  //virtual void SetName(std::string _name) = 0;
-  EXPECT_EQ(4, 2 + 2);
-};
+//   //virtual std::string GetName() = 0;
+//   //virtual void SetName(std::string _name) = 0;
+//   // EXPECT_EQ(4, 2 + 2);
+// };

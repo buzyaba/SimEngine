@@ -13,8 +13,8 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(ManagementProgramTest, CanCreate)
-{
-  //virtual void Run() = 0;
-  EXPECT_EQ(4, 2 + 2);
-};
+// TEST(ManagementProgramTest, CanCreate)
+// {
+//   //virtual void Run() = 0;
+//   // EXPECT_EQ(4, 2 + 2);
+// };

@@ -13,11 +13,11 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(DataStoreTest, CanCreate)
-{
-  //TDataStore()
-  //{};
-  //virtual void AddPropertyForObject(const IProperties& property, unsigned long time) = 0;
-  //virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time) = 0;
-  EXPECT_EQ(4, 2 + 2);
-};
+// TEST(DataStoreTest, CanCreate)
+// {
+//   //TDataStore()
+//   //{};
+//   //virtual void AddPropertyForObject(const IProperties& property, unsigned long time) = 0;
+//   //virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time) = 0;
+//   // EXPECT_EQ(4, 2 + 2);
+// };

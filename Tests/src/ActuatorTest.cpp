@@ -13,20 +13,20 @@
 #include "Core/EnvironmentScript.h"
 
 
-TEST(ActuatorTest, CanCreate)
-{
-  //virtual void AddObject(TObjectOfObservation * object) = 0;
-  //virtual void ExcludeObject(TObjectOfObservation * object) = 0;
-  //virtual void ExcludeObject(std::string objectName) = 0;
+// TEST(ActuatorTest, CanCreate)
+// {
+//   //virtual void AddObject(TObjectOfObservation * object) = 0;
+//   //virtual void ExcludeObject(TObjectOfObservation * object) = 0;
+//   //virtual void ExcludeObject(std::string objectName) = 0;
 
-  //virtual void ChangeActuatorProperty(IProperties & _property) = 0;
-  //virtual void ChangeProperty(IProperties & property, TObjectOfObservation & object) = 0;
-  //virtual void ChangeProperty(IProperties & property, std::string _objectName) = 0;
-  //virtual void SetDataPacket(TDataPacket & packet) = 0;
+//   //virtual void ChangeActuatorProperty(IProperties & _property) = 0;
+//   //virtual void ChangeProperty(IProperties & property, TObjectOfObservation & object) = 0;
+//   //virtual void ChangeProperty(IProperties & property, std::string _objectName) = 0;
+//   //virtual void SetDataPacket(TDataPacket & packet) = 0;
 
-  //std::string GetName()
+//   //std::string GetName()
 
 
-  //void SetName(std::string _name)
-  EXPECT_EQ(4, 2 + 2);
-}
+//   //void SetName(std::string _name)
+//   // EXPECT_EQ(4, 2 + 2);
+// }

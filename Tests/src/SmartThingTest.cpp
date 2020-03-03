@@ -13,16 +13,16 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(SmartThingTest, CanCreate)
-{
+// TEST(SmartThingTest, CanCreate)
+// {
 
-  //virtual std::vector<ISensor*> GetSensors() = 0;
-  //virtual std::vector<IActuator*> GetActuators() = 0;
+//   //virtual std::vector<ISensor*> GetSensors() = 0;
+//   //virtual std::vector<IActuator*> GetActuators() = 0;
 
-  //virtual void AddObject(TObjectOfObservation& object) = 0;
-  //virtual void ExcludeObject(TObjectOfObservation& object) = 0;
-  //virtual void ExcludeObject(std::string _name) = 0;
-  EXPECT_EQ(4, 2 + 2);
+//   //virtual void AddObject(TObjectOfObservation& object) = 0;
+//   //virtual void ExcludeObject(TObjectOfObservation& object) = 0;
+//   //virtual void ExcludeObject(std::string _name) = 0;
+//   // EXPECT_EQ(4, 2 + 2);
 
 
-};
+// };

@@ -13,9 +13,9 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(EnvironmentScriptTest, CanCreate)
-{
-  //virtual IProperties& GetObjectProperties(std::string name) = 0;
-  //virtual IProperties& GetObjectProperties(const IObject& object) = 0;
-  EXPECT_EQ(4, 2 + 2);
-};
+// TEST(EnvironmentScriptTest, CanCreate)
+// {
+//   //virtual IProperties& GetObjectProperties(std::string name) = 0;
+//   //virtual IProperties& GetObjectProperties(const IObject& object) = 0;
+//   // EXPECT_EQ(4, 2 + 2);
+// };

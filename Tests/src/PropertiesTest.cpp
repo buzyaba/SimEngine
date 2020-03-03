@@ -13,15 +13,17 @@
 #include "Core/ManagementProgram.h"
 #include "Core/EnvironmentScript.h"
 
-TEST(PropertiesTest, CanCreate)
-{
-  //IProperties(std::vector<double> _values, std::vector<std::string> _names);
-  //IProperties(int _size = -1);
-  //IProperties(const IProperties& properties);
+// TEST(PropertiesTest, CanCreate)
+// {
+//   //IProperties(std::vector<double> _values, std::vector<std::string> _names);
+//   //IProperties(int _size = -1);
+//   //IProperties(const IProperties& properties);
 
-  //virtual std::vector<double> GetValues();
-  //virtual void SetValues(std::vector<double> _values);
-  //virtual std::vector<std::string> GetNames();
-  //virtual void SetNames(std::vector<std::string> _names);
-  EXPECT_EQ(4, 2 + 2);
-};
+//   //virtual std::vector<double> GetValues();
+//   //virtual void SetValues(std::vector<double> _values);
+//   //virtual std::vector<std::string> GetNames();
+//   //virtual void SetNames(std::vector<std::string> _names);
+//   // EXPECT_EQ(4, 2 + 2);
+// };
+
+TEST(PropertiesTest, )
