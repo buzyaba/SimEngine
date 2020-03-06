@@ -1,19 +1,78 @@
-#include <TrafficSim/TrafficSim.hpp>
-
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <Engine/Renderer.hpp>
+#include <TrafficSim/Ground.hpp>
+#include <TrafficSim/Car.hpp>
+#include <TrafficSim/Road.hpp>
+#include <chrono>
+#include <vector>
 
 std::vector<Ground*> ground;
+std::vector<Road*> roads;
+std::vector<Car*> cars;
 
 bool keys[1024];
 glm::vec3 sphereCam;
 double lastX;
 double lastY;
 bool rightMouseClick;
+enum{screenWidth = 800, screenHeight = 600};
+
+void renderScene();
+
+void initApplication();
+void myTickCallback(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
+void cameraMovement(float dt);
+void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
+void initMousePosition(GLfloat x, GLfloat y);
+void updateMouse(GLFWwindow* window, double xpos, double ypos);
+void updateMouseButtons(GLFWwindow* window, int button, int action, int mods);
+void updateScroll(GLFWwindow* window, double xoffset, double yoffset);
+
+glm::vec3 cartesianToSpherical(glm::vec3 vec);
+glm::vec3 sphericalToCartesian(glm::vec3 vec);
+
+int main(int argc, char** argv) {
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Traffic Simulation", NULL, NULL);
+  glfwMakeContextCurrent(window);
+  initMousePosition(screenWidth/2, screenHeight/2); 
+  glfwSetKeyCallback(window, updateKeyboard); // keyboard events
+  glfwSetCursorPosCallback(window, updateMouse); // mouse events
+  glfwSetMouseButtonCallback(window, updateMouseButtons);
+  glfwSetScrollCallback(window, updateScroll);
+  glewInit();
+  initApplication();
+  auto previousTime = std::chrono::high_resolution_clock::now();
+  while(!glfwWindowShouldClose(window)) {
+    auto currentTime = std::chrono::high_resolution_clock::now();
+		float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
+
+		Renderer::getDynamicsWorld()->stepSimulation(dt);
+    // Some render stuff
+    renderScene();
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+    cameraMovement(dt); // every frame movement
+    previousTime = currentTime;
+  }
+  glfwTerminate();
+  Renderer::terminate();
+  return 0;
+}
 
 void renderScene() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.f, 1.f, 1.f, 1.f);
     //Drawing objects here
 	Ground::drawElements(ground);
+	Road::drawElements(roads);
+	Car::drawElements(cars);
 }
 
 
@@ -27,19 +86,53 @@ void initApplication() {
     Renderer::initPhysics();
 	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
     //Adding objects
-	//ground.push_back(new Ground(glm::vec3(0.0f), glm::vec3(500, 0, 500)));
-	for (int i = -100; i < 100; i++)
-		for(int j = -100; j < 100; j++) {
-			ground.push_back(new Ground(glm::vec3(5*i, 300, 5*j)));
-		}
+	ground.push_back(new Ground(glm::vec3(0), glm::vec3(500, 0, 500)));
+	
+	for (int i = -24; i < 25; ++i) {
+		roads.push_back(new Road(glm::vec3(-100, 0.7, i*20)));
+		if (i >= 0)
+			cars.push_back(new Car(glm::vec3(-100, 1.1, i*20))); //0..24
+	}
+
+	for (int i = -24; i < 25; ++i) {
+		roads.push_back(new Road(glm::vec3(-50, 0.7, i*20)));
+		if (i >= 0)
+			cars.push_back(new Car(glm::vec3(-50, 1.1, i*20))); //25..49
+	}
+
+	for (int i = -24; i < 25; ++i) {
+		roads.push_back(new Road(glm::vec3(-110, 0.7, i*20)));
+		if (i <= 0)
+			cars.push_back(new Car(glm::vec3(-110, 1.1, i*20)));
+	}
+
+	for (int i = -24; i < 25; ++i) {
+		roads.push_back(new Road(glm::vec3(-60, 0.7, i*20)));
+		if (i <= 0)
+			cars.push_back(new Car(glm::vec3(-60, 1.1, i*20)));
+	}
+
+	Car::initDraw(cars);
+	Road::initDraw(roads);
 	Ground::initDraw(ground);
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
-    for (auto& i : ground) {
-		auto pos = i->getPosition();
-		i->setPosition(pos + glm::vec3(-15, 0, 0)*timeStep);
+	int tick = 0;
+	int dir = -1;
+    for (int i = 0; i < cars.size(); ++i) {
+		auto pos = cars[i]->getPosition();
+		if (i <= 49) {
+			cars[i]->setPosition(pos + glm::vec3(0, 0, dir*15)*timeStep);
+			if (cars[i]->getPosition().z < -500)
+				cars[i]->setPosition(glm::vec3(pos.x, 1.1, 490));
+		}
+		else {
+			cars[i]->setPosition(pos + glm::vec3(0, 0, dir*dir*15)*timeStep);
+			if (cars[i]->getPosition().z > 500)
+				cars[i]->setPosition(glm::vec3(pos.x, 1.1, -490));
+		}
 	}
 }
 

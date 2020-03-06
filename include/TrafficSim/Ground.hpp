@@ -6,6 +6,7 @@
 class Ground: public Primitive {
     protected:
         static MeshRenderer* mesh;
+        static GLuint texture;
         static unsigned int buffer;
         void initMesh();
     public:

@@ -17,9 +17,10 @@ void Primitive::initShader() {
 Transform::Transform() {
     pos = glm::vec3(0);
     scale = glm::vec3(1);
-    rotation = rotation.getIdentity();
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
-    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));
+    rotation = glm::vec3(0);
+    btQuaternion rot(rotation.x, rotation.y, rotation.z);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rot.getAngle()),
+    glm::vec3(rot.getAxis().x(), rot.getAxis().y(), rot.getAxis().z()));
 
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f),
 		glm::vec3(pos.x, pos.y, pos.z));
@@ -31,8 +32,9 @@ Transform::Transform() {
 
 void Transform::setPosition(const glm::vec3& _pos) {
     pos = _pos;
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
-    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));
+    btQuaternion rot(rotation.x, rotation.y, rotation.z);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rot.getAngle()),
+    glm::vec3(rot.getAxis().x(), rot.getAxis().y(), rot.getAxis().z()));
 
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f),
 		glm::vec3(pos.x, pos.y, pos.z));
@@ -42,9 +44,10 @@ void Transform::setPosition(const glm::vec3& _pos) {
 }
 
 void Transform::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
-    rotation = btQuaternion(yaw, pitch, roll);
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
-    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));
+    btQuaternion rot(yaw, pitch, roll);
+    rotation = glm::vec3(yaw, pitch, roll);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rot.getAngle()),
+    glm::vec3(rot.getAxis().x(), rot.getAxis().y(), rot.getAxis().z()));
 
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f),
 		glm::vec3(pos.x, pos.y, pos.z));
@@ -56,8 +59,9 @@ void Transform::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
 
 void Transform::setScale(const glm::vec3& _scale) {
     scale = _scale;
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rotation.getAngle()),
-    glm::vec3(rotation.getAxis().x(), rotation.getAxis().y(), rotation.getAxis().z()));
+    btQuaternion rot(rotation.x, rotation.y, rotation.z);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), glm::degrees(rot.getAngle()),
+    glm::vec3(rot.getAxis().x(), rot.getAxis().y(), rot.getAxis().z()));
 
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f),
 		glm::vec3(pos.x, pos.y, pos.z));

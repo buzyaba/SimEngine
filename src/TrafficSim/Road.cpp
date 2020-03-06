@@ -1,22 +1,21 @@
-#include <TrafficSim/Ground.hpp>
+#include <TrafficSim/Road.hpp>
 
-MeshRenderer* Ground::mesh = nullptr;
-unsigned int Ground::buffer = -1;
-GLuint Ground::texture = -1;
+MeshRenderer* Road::mesh = nullptr;
+GLuint Road::texture = -1;
+unsigned int Road::buffer = -1;
 
-void Ground::initMesh() {
+void Road::initMesh() {
     mesh = new MeshRenderer(MeshType::kCube);
 }
 
-Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
+Road::Road(const glm::vec3& pos) {
     if (mesh == nullptr)
-        this->initMesh();
+        initMesh();
     if (texture == -1)
-        texture = Renderer::getTextures()[GRASS];
-
+        texture = Renderer::getTextures()[ROAD];
     btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(pos.x, pos.y, pos.z)));
 
-    btCollisionShape* shape = new btBoxShape(btVector3(scale.x, scale.y, scale.z));
+    btCollisionShape* shape = new btBoxShape(btVector3(15, 0.1, 10));
 
 	btScalar mass = 0.0f; 
 	btVector3 Inertia(0, 0, 0);
@@ -34,17 +33,10 @@ Ground::Ground(const glm::vec3& pos, const glm::vec3& scale) {
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
 
     transform.setPosition(pos);
-    transform.setScale(scale);
+    transform.setScale(glm::vec3(5, 0.1, 10));
 }
 
-void Ground::setScale(const glm::vec3& _size) {
-
-    btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
-    rigidBody->setCollisionShape(shape);
-    transform.setScale(_size);
-}
-
-void Ground::initDraw(const std::vector<Ground*> objects) {
+void Road::initDraw(const std::vector<Road*> objects) {
     glUseProgram(shaderProgram);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
     for (int i = 0; i < objects.size(); ++i) 
@@ -72,7 +64,7 @@ void Ground::initDraw(const std::vector<Ground*> objects) {
     delete[] modelMatrixes;
 }
 
-void Ground::drawElements(const std::vector<Ground*> objects) {
+void Road::drawElements(const std::vector<Road*> objects) {
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
     for (int i = 0; i < objects.size(); ++i) 
         modelMatrixes[i] = objects[i]->transform.getModelMatrix();

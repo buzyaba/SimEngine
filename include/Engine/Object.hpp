@@ -13,7 +13,7 @@ enum CollisionType{
 class Transform {
     private:
         glm::vec3 pos, scale;
-        btQuaternion rotation;
+        glm::vec3 rotation;
         glm::mat4 modelMatrix;
     public:
         explicit Transform();
@@ -21,6 +21,7 @@ class Transform {
         void setPosition(const glm::vec3& _pos);
         void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
         void setScale(const glm::vec3& _scale);
+        glm::vec3 getRotation() {return rotation;}
 
 };
 
@@ -34,14 +35,15 @@ class Primitive {
         btRigidBody* rigidBody;
         virtual void initMesh() = 0;
     public:
-       explicit Primitive();
-       virtual ~Primitive(){delete rigidBody;};
-       virtual void setScale(const glm::vec3& _size) = 0;
-       virtual void setPosition(const glm::vec3& pos);
-       virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
-       void setCollisionFlags(const CollisionType& _flag) {rigidBody->setCollisionFlags(_flag);} 
-       glm::vec3 getPosition() {return glm::vec3(rigidBody->getWorldTransform().getOrigin().x(),
-        rigidBody->getWorldTransform().getOrigin().y(), rigidBody->getWorldTransform().getOrigin().z());}
-       bool isStatic() {return (rigidBody->getCollisionFlags() == CollisionType::STATIC) ? true : false;};
-       btRigidBody* getRigidBody()  {return rigidBody;}
+        explicit Primitive();
+        virtual ~Primitive(){delete rigidBody;};
+        virtual void setScale(const glm::vec3& _size) = 0;
+        glm::vec3 getRotation() {return transform.getRotation();}
+        virtual void setPosition(const glm::vec3& pos);
+        virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
+        void setCollisionFlags(const CollisionType& _flag) {rigidBody->setCollisionFlags(_flag);} 
+        glm::vec3 getPosition() {return glm::vec3(rigidBody->getWorldTransform().getOrigin().x(),
+            rigidBody->getWorldTransform().getOrigin().y(), rigidBody->getWorldTransform().getOrigin().z());}
+        bool isStatic() {return (rigidBody->getCollisionFlags() == CollisionType::STATIC) ? true : false;};
+        btRigidBody* getRigidBody()  {return rigidBody;}
 };
