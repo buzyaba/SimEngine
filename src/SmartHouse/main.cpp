@@ -3,7 +3,6 @@
 #include <Engine/Renderer.hpp>
 #include <SmartHouse/Table.hpp>
 #include <SmartHouse/Room.hpp>
-#include <SmartHouse/Monoblock.hpp>
 #include <SmartHouse/Desktop.hpp>
 #include <chrono>
 #include <thread>
@@ -23,15 +22,15 @@ GLfloat lastX;
 GLfloat lastY;
 GLfloat humanTall = 5.0f;
 
-std::vector<Table*> table;
-std::vector<Room*> room;
-std::vector<Monoblock*> monitor;
-std::vector<Desktop*> desktop;
-std::vector<IObject*> allObject(2);
-std::vector<TObjectOfObservation*> objects(5);
-std::vector<TSmartThing*> things(1);
-TEnvironmentScript* script;
-TWorkManager workManager;
+// std::vector<Table*> table;
+// std::vector<Room*> room;
+// std::vector<Monoblock*> monitor;
+// std::vector<Desktop*> desktop;
+// std::vector<IObject*> allObject(2);
+// std::vector<TObjectOfObservation*> objects(5);
+// std::vector<TSmartThing*> things(1);
+// TEnvironmentScript* script;
+TWorkManager* workManager;
 
 int tick = 0;
 // bool windowFlag[400] = { false };
@@ -48,23 +47,23 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv) {
   auto mainSet = TSetFactory::Create(0);//!!!!
-  objects = mainSet->GetObject();///!!!
-  things = mainSet->GetThing();
-  auto maxStep = 1000;
-    std::vector<IObject*> allObject(objects.size() + things.size());
-  int j = 0;
-  for (int i = 0; i < objects.size(); i++)
-  {
-    allObject[j] = objects[i];
-    j++;
-  }
-  for (int i = 0; i < things.size(); i++)
-  {
-    allObject[j] = things[i];
-    j++;
-  }
-  script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
-  workManager = TWorkManager(mainSet);
+//   objects = mainSet->GetObject();///!!!
+//   things = mainSet->GetThing();
+//   auto maxStep = 1000;
+//     std::vector<IObject*> allObject(objects.size() + things.size());
+//   int j = 0;
+//   for (int i = 0; i < objects.size(); i++)
+//   {
+//     allObject[j] = objects[i];
+//     j++;
+//   }
+//   for (int i = 0; i < things.size(); i++)
+//   {
+//     allObject[j] = things[i];
+//     j++;
+//   }
+//   script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
+  workManager = new TWorkManager(mainSet);
 	
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -104,10 +103,11 @@ void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.2f, 1.f, 0.f, 1.f);
 	//Drawing objects here
-	Table::drawElements(table);
-	Room::drawElements(room);
-	Monoblock::drawElements(monitor);
-	Desktop::drawElements(desktop);
+    workManager->DrawElements();
+	// table[0]->drawElements(table);
+	// Room::drawElements(room);
+	// Monoblock::drawElements(monitor);
+	// Desktop::drawElements(desktop);
 }
 
 
@@ -124,16 +124,16 @@ void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
 			// monitor[0]->setScreenTexture(texture);
 	// 	}
 	// }
-	tick++;
-	auto time = tick*timeStep;
-	workManager.Iteration(time);
-	if (objects[0]->GetProperties()[0]->GetValues()[0] == 0) {
-		GLuint texture = Renderer::getTextures()[WINDOWS];
-		monitor[0]->setScreenTexture(texture);
-	} else {
-		GLuint texture = Renderer::getTextures()[SCREENSAVER];
-		monitor[0]->setScreenTexture(texture);
-	}
+	// tick++;
+	// auto time = tick*timeStep;
+	// workManager->Iteration(time);
+	// if (objects[0]->GetProperties()[0]->GetValues()[0] == 0) {
+	// 	GLuint texture = Renderer::getTextures()[WINDOWS];
+	// 	monitor[0]->setScreenTexture(texture);
+	// } else {
+	// 	GLuint texture = Renderer::getTextures()[SCREENSAVER];
+	// 	monitor[0]->setScreenTexture(texture);
+	// }
 }
 
 void initApplication() {
@@ -144,19 +144,19 @@ void initApplication() {
   //init physics
   Renderer::initPhysics();
 	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
-
+    workManager->InitDraw();
   //Adding objects
-	table.push_back(new Table());
-	table.push_back(new Table(glm::vec3(-7.0f, 0.0f, 0.0f)));
-	Table::initDraw(table);
-	room.push_back(new Room());
-	Room::initDraw(room);
-	// for (int i = -10; i < 10; i++)
-	// 	for (int j = -10; j<10; j++)
-	monitor.push_back(new Monoblock(glm::vec3(0.0f, 3.1f, 0.0f)));
-	Monoblock::initDraw(monitor);
-	desktop.push_back(new Desktop(glm::vec3 (-6.5f, 3.1f, 0.0f)));
-	Desktop::initDraw(desktop);
+	// table.push_back(new Table());
+	// table.push_back(new Table(glm::vec3(-7.0f, 0.0f, 0.0f)));
+	// Table::initDraw(table);
+	// room.push_back(new Room());
+	// Room::initDraw(room);
+	// // for (int i = -10; i < 10; i++)
+	// // 	for (int j = -10; j<10; j++)
+	// monitor.push_back(new Monoblock(glm::vec3(0.0f, 3.1f, 0.0f)));
+	// Monoblock::initDraw(monitor);
+	// desktop.push_back(new Desktop(glm::vec3 (-6.5f, 3.1f, 0.0f)));
+	// Desktop::initDraw(desktop);
 }
 
 void initMousePosition(GLfloat x, GLfloat y){

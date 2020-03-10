@@ -44,4 +44,6 @@ public:
   void SetTimeStep(unsigned int _milliseconds = 1000);
   void SetProgramStep(double _fractionOfTimeStep = -1.0);
   void Iteration(unsigned long int time);
+  void InitDraw();
+  void DrawElements();
 };

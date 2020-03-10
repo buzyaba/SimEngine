@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"Core/Properties.h"
+#include "Engine/Object.hpp"
 
 /// Базовый класс реализующий объект имеющий набор свойств и имя.
 class IObject
@@ -27,10 +28,12 @@ public:
 class TObject : public IObject
 {
 protected:
-  /// Набор свойств объекта
-  std::vector<IProperties*> properties;
-  /// Имя объекта
-  std::string name;
+    /// Набор свойств объекта
+    std::vector<IProperties*> properties;
+    /// Имя объекта
+    std::string name;
+    /// Графическое представление объекта
+    Primitive* GObject;        
 public:
   TObject(std::string _name);
   TObject(const TObject& obj);
@@ -43,7 +46,7 @@ public:
   virtual std::vector<IProperties*>& GetProperties();
   /// Возвращает своство с именем _name
   virtual IProperties& GetProperty(std::string _name = "");
-
+    virtual Primitive* GetGObject() {return GObject;}
   /// Возвращает имя объекта (используется для работы с объектами)
   virtual std::string GetName();
   /// Задает имя объекта

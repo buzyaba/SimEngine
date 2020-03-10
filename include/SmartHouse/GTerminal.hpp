@@ -4,7 +4,7 @@
 #include <Engine/MeshRenderer.hpp>
 
 
-class Monoblock : public Primitive {
+class GTerminal : public Primitive {
     private: 
         static void initBuffer();
     protected:
@@ -18,10 +18,10 @@ class Monoblock : public Primitive {
         static unsigned int meshBuffer;
         void initMesh();
     public:
-        explicit Monoblock(const glm::vec3& pos=glm::vec3(0.0f), const glm::vec3& scale=glm::vec3(1.0f));
+        explicit GTerminal(const glm::vec3& pos=glm::vec3(0.0f), const glm::vec3& scale=glm::vec3(1.0f));
         void setScale(const glm::vec3& _size) override;
         void setPosition(const glm::vec3& pos) override;
         void setScreenTexture(GLuint _text) {screenTexture = _text;}
-        void static drawElements(const std::vector<Monoblock*> objects);
-        void static initDraw(const std::vector<Monoblock*> objects);
+        void drawElements(const std::vector<Primitive*> objects) override;
+        void initDraw(const std::vector<Primitive*> objects) override;
 };

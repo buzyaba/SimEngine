@@ -170,3 +170,13 @@ void TWorkManager::Iteration(unsigned long int time){
     std::cout<<program<<std::endl;
     program->Run();  
 }
+
+void TWorkManager::InitDraw() {
+    for(const auto& elem : mainSet->GetAllGObject())
+        elem.second[0]->initDraw(elem.second);
+}
+
+void TWorkManager::DrawElements() {
+    for(const auto& elem : mainSet->GetAllGObject())
+        elem.second[0]->drawElements(elem.second);
+}

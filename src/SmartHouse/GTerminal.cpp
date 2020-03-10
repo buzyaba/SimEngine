@@ -1,18 +1,18 @@
-#include <SmartHouse/Monoblock.hpp>
+#include <SmartHouse/GTerminal.hpp>
 
-MeshRenderer* Monoblock::mesh = nullptr;
-GLuint Monoblock::mainTexture = -1;
-unsigned int Monoblock::meshBuffer = -1;
+MeshRenderer* GTerminal::mesh = nullptr;
+GLuint GTerminal::mainTexture = -1;
+unsigned int GTerminal::meshBuffer = -1;
 
-void Monoblock::initBuffer() {
+void GTerminal::initBuffer() {
     glGenBuffers(1, &meshBuffer);
 }
 
-void Monoblock::initMesh() {
+void GTerminal::initMesh() {
     mesh = new MeshRenderer(MeshType::kCube);
 }
 
-Monoblock::Monoblock(const glm::vec3& pos, const glm::vec3& scale) {
+GTerminal::GTerminal(const glm::vec3& pos, const glm::vec3& scale) {
     if (mesh == nullptr)
         this->initMesh();
     if (mainTexture == -1)
@@ -52,20 +52,19 @@ Monoblock::Monoblock(const glm::vec3& pos, const glm::vec3& scale) {
     screen.setPosition(pos + glm::vec3(0.0f, 1.3f,0.091f));
 }
 
-void Monoblock::setScale(const glm::vec3& _size) {
+void GTerminal::setScale(const glm::vec3& _size) {
 
     btCollisionShape* shape = new btBoxShape(btVector3(_size.x, _size.y, _size.z));
 }
 
-void Monoblock::setPosition(const glm::vec3& pos) {
+void GTerminal::setPosition(const glm::vec3& pos) {
     Primitive::setPosition(pos);
     monitor.setPosition(pos + glm::vec3(0.0f, 4.4f,0.0f));
     stand1.setPosition(pos + glm::vec3(0.0f, 3.1f,0.0f));
     stand2.setPosition(pos + glm::vec3(0.0f, 3.2f, 0.0f));
     screen.setPosition(pos + glm::vec3(0.0f, 4.4f,0.091f));
 }
-
-void Monoblock::initDraw(const std::vector<Monoblock*> objects) {
+void GTerminal::initDraw(const std::vector<Primitive*> objects) {
     initBuffer();
     glUseProgram(shaderProgram);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
@@ -74,7 +73,7 @@ void Monoblock::initDraw(const std::vector<Monoblock*> objects) {
         modelMatrixes[i*3 + 1] = objects[i]->stand2.getModelMatrix();
         modelMatrixes[i*3 + 2] = objects[i]->stand1.getModelMatrix();
     }
-    glBindBuffer(GL_ARRAY_BUFFER, Monoblock::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, GTerminal::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);   
     GLuint vao = objects[0]->mesh->getVAO();
     glBindVertexArray(vao);
@@ -95,7 +94,7 @@ void Monoblock::initDraw(const std::vector<Monoblock*> objects) {
     delete[] modelMatrixes;    
 }
 
-void Monoblock::drawElements(const std::vector<Monoblock*> objects) {
+void GTerminal::drawElements(const std::vector<Primitive*> objects) {
     glUseProgram(shaderProgram);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
@@ -103,12 +102,12 @@ void Monoblock::drawElements(const std::vector<Monoblock*> objects) {
         modelMatrixes[i*3 + 1] = objects[i]->stand2.getModelMatrix();
         modelMatrixes[i*3 + 2] = objects[i]->stand1.getModelMatrix();
     }
-    glBindBuffer(GL_ARRAY_BUFFER, Monoblock::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, GTerminal::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
     GLuint vao = objects[0]->mesh->getVAO();
-    glBindTexture(GL_TEXTURE_2D, Monoblock::mainTexture);
+    glBindTexture(GL_TEXTURE_2D, GTerminal::mainTexture);
     glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, Monoblock::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, GTerminal::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     GLint vpLoc = glGetUniformLocation(shaderProgram, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));

@@ -3,7 +3,7 @@
 
 #include "SmartHouseData/Room.h"
 #include "TrafficSimData/Street.h"
-
+#include "SmartHouseData/TTerminal.h"
 
 TMainSet::TMainSet()
 {
@@ -29,13 +29,14 @@ TRoomSet::TRoomSet() : TMainSet()
 {
   /// пока что заглушка
   objects.resize(1, new TTerminal("Terminal"));
-  scene.resize(1, new TRoom("Room"));
-  thing.resize(1, new TSmartSocket("SmartSocket"));
+  allGObject.insert(std::make_pair("Terminal", std::vector<Primitive*>(1, new GTerminal())));
+//   scene.resize(1, new TRoom("Room"));
+//   thing.resize(1, new TSmartSocket("SmartSocket"));
 
-  for (int i = 0; i < thing.size() && i < objects.size(); i++)
-  {
-    thing[i]->AddObject(*objects[i]);
-  }
+//   for (int i = 0; i < thing.size() && i < objects.size(); i++)
+//   {
+//     thing[i]->AddObject(*objects[i]);
+//   }
 }
 
 TStreetSet::TStreetSet() : TMainSet()

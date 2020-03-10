@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <map>
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
 #include "Core/Scene.h"
@@ -11,12 +12,14 @@ protected:
   std::vector<TObjectOfObservation*> objects;
   std::vector<TScene*> scene;
   std::vector<TSmartThing*> thing;
+    std::map<std::string, std::vector<Primitive*>> allGObject;
 public:
   TMainSet();
 
   std::vector<TObjectOfObservation*> GetObject();
   std::vector<TScene*> GetScene();
   std::vector<TSmartThing*> GetThing();
+  const std::map<std::string, std::vector<Primitive*>>& GetAllGObject() {return allGObject;}
 };
 
 class TRoomSet : public TMainSet
