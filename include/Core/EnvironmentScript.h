@@ -25,15 +25,15 @@ public:
   void SetProperty(IProperties& prop, int intervalCount, std::vector<unsigned long int>& _startTime,
   std::vector<unsigned long int>& _endTime)
   {
-    nameProperty = prop.GetName();
-    isSet = false;
-    value.resize(intervalCount);
-    startTime = _startTime;
-    endTime = _endTime;
-    for (int i = 0; i < intervalCount; i++)
-    {
-      value[i] = prop.GetValues();
-    }
+    // nameProperty = prop.GetName();
+    // isSet = false;
+    // value.resize(intervalCount);
+    // startTime = _startTime;
+    // endTime = _endTime;
+    // for (int i = 0; i < intervalCount; i++)
+    // {
+    //   value[i] = prop.GetValues();
+    // }
   }
 
   std::vector<double>& GetValue(unsigned long int time)

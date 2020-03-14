@@ -100,44 +100,44 @@ public:
 
   virtual void Run()
   {
-    TEmptyProgram::Run();
-    double carCount = 0;
-    if (sensors.size() > 0)
-    {
-      double* val = sensors[0]->GetDataPacket().GetDoubles();
-      int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
-      for (int j = 0; j < dataCount; j++)
-      {
-        carCount += val[j];
-      }
-      table[table.size() - 1].push_back(std::to_string(carCount));
-    }
-    double* packetVal = sendPacket.GetDoubles();
+//     TEmptyProgram::Run();
+//     double carCount = 0;
+//     if (sensors.size() > 0)
+//     {
+//       double* val = sensors[0]->GetDataPacket().GetDoubles();
+//       int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
+//       for (int j = 0; j < dataCount; j++)
+//       {
+//         carCount += val[j];
+//       }
+//       table[table.size() - 1].push_back(std::to_string(carCount));
+//     }
+//     double* packetVal = sendPacket.GetDoubles();
 
-    bool isUpdate = false;
+//     bool isUpdate = false;
 
-    if (currentStep % 17 == 0)
-    {
-      isUpdate = true;
-      packetVal[0] = (int(packetVal[0]) + 1) % 2;
-    }
+//     if (currentStep % 17 == 0)
+//     {
+//       isUpdate = true;
+//       packetVal[0] = (int(packetVal[0]) + 1) % 2;
+//     }
 
-    if (isUpdate)
-    {
-      for (int i = 0; i < things.size(); i++)
-      {
-        things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
-        int IsNotGo = int(packetVal[0]);
+//     if (isUpdate)
+//     {
+//       for (int i = 0; i < things.size(); i++)
+//       {
+//         things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
+//         int IsNotGo = int(packetVal[0]);
 
-        if (IsNotGo == 1)
-          things[i]->SetProperty({ 2 }, "Color");
-        else
-          things[i]->SetProperty({ 0 }, "Color");
-      }
-    }
+//         if (IsNotGo == 1)
+//           things[i]->SetProperty({ 2 }, "Color");
+//         else
+//           things[i]->SetProperty({ 0 }, "Color");
+//       }
+//     }
 
-    for (int i = 0; i < things.size(); i++)
-      things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
+//     for (int i = 0; i < things.size(); i++)
+//       things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
   }
 };
 

@@ -45,10 +45,10 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, "", _maxStep);
-  program = TProgramFactory::Create(0, things);
-  storage = new TDataStore(allObject, "A");
-  maxStep = _maxStep;
+//   script = new TEnvironmentScript(allObject, "", _maxStep);
+//   program = TProgramFactory::Create(0, things);
+//   storage = new TDataStore(allObject, "A");
+//   maxStep = _maxStep;
   }
 
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
@@ -85,10 +85,10 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     allObject[j] = things[i];
     j++;
   }
-  script = new TEnvironmentScript(allObject, "", _maxStep);
-  program = TProgramFactory::Create(0, things);
-  storage = new TDataStore(allObject, "A");
-  maxStep = _maxStep;
+//   script = new TEnvironmentScript(allObject, "", _maxStep);
+//   program = TProgramFactory::Create(0, things);
+//   storage = new TDataStore(allObject, "A");
+//   maxStep = _maxStep;
 }
 
 TWorkManager::~TWorkManager()

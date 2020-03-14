@@ -55,17 +55,17 @@ public:
 
   virtual void AddAllProperties(unsigned long time)
   {
-    std::vector<std::string> str(allObjectsProperties.size() + 1);
-    str[0] = std::to_string(time);
-    for (int i = 0; i < allObjectsProperties.size(); i++)
-    {      
-      std::vector<double>& tmp = allObjectsProperties[i]->GetValues();
-      str[i + 1] = std::to_string(tmp[0]);
-      for (int j = 1; j < tmp.size(); j++)
-        str[i + 1] = str[i + 1] + "_" + std::to_string(tmp[j]);
-    }
+    // std::vector<std::string> str(allObjectsProperties.size() + 1);
+    // str[0] = std::to_string(time);
+    // for (int i = 0; i < allObjectsProperties.size(); i++)
+    // {      
+    //   std::vector<double>& tmp = allObjectsProperties[i]->GetValues();
+    //   str[i + 1] = std::to_string(tmp[0]);
+    //   for (int j = 1; j < tmp.size(); j++)
+    //     str[i + 1] = str[i + 1] + "_" + std::to_string(tmp[j]);
+    // }
 
-    table.push_back(str);
+    // table.push_back(str);
   }
 
 

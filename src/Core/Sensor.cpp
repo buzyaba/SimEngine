@@ -18,49 +18,49 @@ TSensor::TSensor(const TSensor& sensor)
 
 TDataPacket& TSensor::GetDataPacket()
 {
-  if (oldObjectCount < objects.size())
-  {
-    oldObjectCount = objects.size();
-    vals.resize(oldObjectCount);
-    propertyCount = 0;
-    for (int i = 0; i < objects.size(); i++)
-    {
-      if (objects[i] != nullptr)
-      {
-        objectsProperties[i] = objects[i]->GetProperties();
-        vals[i].resize(objectsProperties[i].size());
-        for (int j = 0; j < objectsProperties[i].size(); j++)
-        {
-          if (objectsProperties[i][j] != nullptr && objectsProperties[i][j]->IsObserved())
-          {
-            vals[i][j] = &(objectsProperties[i][j]->GetValues());
-            propertyCount += vals[i][j]->size();
-          }
-        }
-      }
-    }
-  }
+//   if (oldObjectCount < objects.size())
+//   {
+//     oldObjectCount = objects.size();
+//     vals.resize(oldObjectCount);
+//     propertyCount = 0;
+//     for (int i = 0; i < objects.size(); i++)
+//     {
+//       if (objects[i] != nullptr)
+//       {
+//         objectsProperties[i] = objects[i]->GetProperties();
+//         vals[i].resize(objectsProperties[i].size());
+//         for (int j = 0; j < objectsProperties[i].size(); j++)
+//         {
+//           if (objectsProperties[i][j] != nullptr && objectsProperties[i][j]->IsObserved())
+//           {
+//             vals[i][j] = &(objectsProperties[i][j]->GetValues());
+//             propertyCount += vals[i][j]->size();
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  if (packet == nullptr)
-    packet = new TDataPacket(propertyCount * sizeof(double));
+//   if (packet == nullptr)
+//     packet = new TDataPacket(propertyCount * sizeof(double));
 
-  packet->SetSize(propertyCount * sizeof(double));
-  double* data = packet->GetDoubles();
-  int t = 0;
-  for (int i = 0; i < vals.size(); i++)
-  {
-    for (int j = 0; j < vals[i].size(); j++)
-    {
-      if (vals[i][j] != nullptr)
-      {
-        for (int k = 0; k < vals[i][j]->size(); k++)
-        {
-          data[t] = (*(vals[i][j]))[k];
-          t++;
-        }
-      }
-    }
-  }
+//   packet->SetSize(propertyCount * sizeof(double));
+//   double* data = packet->GetDoubles();
+//   int t = 0;
+//   for (int i = 0; i < vals.size(); i++)
+//   {
+//     for (int j = 0; j < vals[i].size(); j++)
+//     {
+//       if (vals[i][j] != nullptr)
+//       {
+//         for (int k = 0; k < vals[i][j]->size(); k++)
+//         {
+//           data[t] = (*(vals[i][j]))[k];
+//           t++;
+//         }
+//       }
+//     }
+//   }
 
   return *packet;
 }

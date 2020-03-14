@@ -18,7 +18,7 @@ void TObject::SetProperty(IProperties& property)
 
 void TObject::SetProperty(const std::vector<double>& values, std::string propertyName)
 {
-  GetProperty(propertyName).SetValues(values);
+//   GetProperty(propertyName).SetValues(values);
 }
 
 std::vector<IProperties*>& TObject::GetProperties()
@@ -27,14 +27,14 @@ std::vector<IProperties*>& TObject::GetProperties()
 }
 IProperties& TObject::GetProperty(std::string _name)
 {
-  if (_name == "")
-    return *properties[0];
-  int i = 0;
-  for (; i < properties.size(); i++)
-    if (properties[i]->GetName() == _name)
-      return *properties[i];
-  if (i == properties.size())
-    throw - 1;
+//   if (_name == "")
+//     return *properties[0];
+//   int i = 0;
+//   for (; i < properties.size(); i++)
+//     if (properties[i]->GetName() == _name)
+//       return *properties[i];
+//   if (i == properties.size())
+//     throw - 1;
 }
 
 std::string TObject::GetName()
