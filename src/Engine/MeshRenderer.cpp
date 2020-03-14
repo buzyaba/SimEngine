@@ -1,10 +1,6 @@
 #include <Engine/MeshRenderer.hpp>
-#include <iostream>
 
 MeshRenderer::MeshRenderer(MeshType modelType){
-	scale = glm::vec3(1.0f, 1.0f, 1.0f);
-	position = glm::vec3(0.0, 0.0, 0.0);
-
 	switch (modelType){
 
 		case kTriangle: Mesh::setTriangleData(vertices, indices); 
@@ -42,8 +38,4 @@ MeshRenderer::MeshRenderer(MeshType modelType){
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-}
-
-MeshRenderer::~MeshRenderer() {
-    
 }

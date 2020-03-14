@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 //   }
 //   script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
   workManager = new TWorkManager(mainSet);
-  workManager->InitDraw();
+//   workManager->InitDraw();
   auto previousTime = std::chrono::high_resolution_clock::now();
   while(!glfwWindowShouldClose(window)) {
     auto currentTime = std::chrono::high_resolution_clock::now();

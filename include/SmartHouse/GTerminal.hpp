@@ -22,6 +22,6 @@ class GTerminal : public Primitive {
         void setScale(const glm::vec3& _size) override;
         void setPosition(const glm::vec3& pos) override;
         void setScreenTexture(GLuint _text) {screenTexture = _text;}
-        void drawElements(const std::vector<Primitive*> objects) override;
-        void initDraw(const std::vector<Primitive*> objects) override;
+        // void drawElements(const std::vector<Primitive*> objects) override;
+        // void initDraw(const std::vector<Primitive*> objects) override;
 };

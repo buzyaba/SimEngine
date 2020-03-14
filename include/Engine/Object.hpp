@@ -46,6 +46,6 @@ class Primitive {
             rigidBody->getWorldTransform().getOrigin().y(), rigidBody->getWorldTransform().getOrigin().z());}
         bool isStatic() {return (rigidBody->getCollisionFlags() == CollisionType::STATIC) ? true : false;};
         btRigidBody* getRigidBody()  {return rigidBody;}
-        virtual void drawElements(const std::vector<Primitive*> objects);
-        virtual void initDraw(const std::vector<Primitive*> objects);
+        // virtual void drawElements(const std::vector<Primitive*> objects);
+        // virtual void initDraw(const std::vector<Primitive*> objects);
 };
