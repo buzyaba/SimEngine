@@ -1,6 +1,8 @@
 ﻿#pragma once
-#include"Core/Properties.h"
-#include "Engine/Object.hpp"
+#include "Core/Properties.h"
+#include <Engine/Transform.hpp>
+#include <Engine/MeshRenderer.hpp>
+#include <map>
 
 /// Базовый класс реализующий объект имеющий набор свойств и имя.
 class IObject
@@ -9,11 +11,11 @@ public:
   /// Задает значение своства с именем равным property.name берет значения из property
   virtual void SetProperty(IProperties& property) = 0;
   /// Задает значение values своству с именем propertyName
-  virtual void SetProperty(const std::vector<double>& values, std::string propertyName) = 0;
+  virtual void SetProperty(const std::map<std::string, std::vector<double>>& values, std::string propertyName) = 0;
   /// Возвращает все своства данного объекта
-  virtual std::vector<IProperties*>& GetProperties() = 0;
+  virtual std::map<std::string, IProperties*>& GetProperties() = 0;
   /// Возвращает своство с именем _name
-  virtual IProperties& GetProperty(std::string _name = "") = 0;
+  virtual IProperties& GetProperty(const std::string& _name = "") = 0;
 
   /// Возвращает имя объекта (используется для работы с объектами)
   virtual std::string GetName() = 0;
@@ -24,35 +26,41 @@ public:
   virtual std::string ClassName() = 0;
 };
 
-/// Реализация базового объекта имеющего набор свойств и имя.
-class TObject : public IObject
-{
-protected:
-    /// Набор свойств объекта
-    std::vector<IProperties*> properties;
-    /// Имя объекта
+class TObject: public IObject {
+  private:
+    static void initShader();
+    static void initMeshes();
+  protected:
+    // GL
+    static GLuint shaderProgramInstanced;
+    static GLuint shaderProgramUnique;
+    btRigidBody* rigidBody;
+    std::vector<Transform> transforms;
+    static std::vector<MeshRenderer*> meshes;
+    // Logic
     std::string name;
-    /// Графическое представление объекта
-    Primitive* GObject;        
-public:
-  TObject(std::string _name);
-  TObject(const TObject& obj);
-
-  /// Задает значение своства с именем равным property.name берет значения из property
-  virtual void SetProperty(IProperties& property);
-  /// Задает значение values своству с именем propertyName
-  virtual void SetProperty(const std::vector<double>& values, std::string propertyName);
-  /// Возвращает все своства данного объекта
-  virtual std::vector<IProperties*>& GetProperties();
-  /// Возвращает своство с именем _name
-  virtual IProperties& GetProperty(std::string _name = "");
-    virtual Primitive* GetGObject() {return GObject;}
-  /// Возвращает имя объекта (используется для работы с объектами)
-  virtual std::string GetName();
-  /// Задает имя объекта
-  virtual void SetName(std::string _name);
-
-  /// Возвращает имя класса (используется для динамического создания модели)
-  virtual std::string ClassName();
-
+    std::map<std::string, IProperties*> properties;
+  public:
+    TObject(const std::string& _name, ...);
+    TObject(const TObject& obj);
+    virtual ~TObject() {delete rigidBody;}
+    // Logic
+    virtual void SetProperty(IProperties& property) override;
+    virtual void SetProperty(const std::map<std::string, std::vector<double>>& values, std::string propertyName) override;
+    virtual std::map<std::string, IProperties*>& GetProperties() override;
+    virtual IProperties& GetProperty(const std::string& _name = "") override;
+    virtual std::string GetName() override;
+    virtual void SetName(std::string name) override;
+    virtual std::string ClassName();
+    // GL
+    virtual void setScale(const glm::vec3& _size) = 0;
+    virtual void setPosition(const glm::vec3& pos);
+    virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
+    void setCollisionFlags(const CollisionType& _flag);
+    glm::vec3 getPosition();
+    glm::vec3 getRotatfion();
+    btRigidBody* getRigidBody();
+    bool isStatic();
+    virtual void drawElements(const std::vector<TObject*> objects);
+    virtual void initDraw(const std::vector<TObject*> objects);
 };

@@ -1,17 +1,17 @@
-#include <Engine/Object.hpp>
+#include <Engine/Transform.hpp>
 #include <filesystem>
 
-GLuint Primitive::shaderProgram = -1;
-GLuint Primitive::shaderProgramSingle = -1;
+// GLuint Primitive::shaderProgram = -1;
+// GLuint Primitive::shaderProgramSingle = -1;
 
 
-void Primitive::initShader() {
-    ShaderLoader shader;
-    auto i = std::filesystem::current_path().string().find("SimEngine");
-    auto pwd = std::filesystem::current_path().string();
-    shaderProgram = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
-    shaderProgramSingle = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModelSingle.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
-}
+// void Primitive::initShader() {
+//     ShaderLoader shader;
+//     auto i = std::filesystem::current_path().string().find("SimEngine");
+//     auto pwd = std::filesystem::current_path().string();
+//     shaderProgram = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
+//     shaderProgramSingle = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModelSingle.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
+// }
 
 
 Transform::Transform() {
