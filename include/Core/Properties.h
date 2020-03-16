@@ -9,8 +9,7 @@
 Свойство содержит словарь double значени с соответствующими имена и\или строку - значение.
 Например: свойство "координаты объекта" содержит словарь значений (1, 1, 1) с именами ("x", "y", "z")
 */
-class IProperties
-{
+class IProperties {
 public:
     /// Возвращает словарь свойства
     virtual std::map<std::string, double>& GetValues() = 0;
@@ -38,8 +37,7 @@ public:
 
 
 ///Класс с базовой реализациейинтерфейса свойств объектов, описывает параметры различных объектов
-class TProperties : public IProperties
-{
+class TProperties : public IProperties  {
 protected:
     /// словарь значений в соответствии с именами
     std::map<std::string, double> propMap;

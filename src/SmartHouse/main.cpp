@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <Engine/Renderer.hpp>
 #include <SmartHouse/Table.hpp>
 #include <SmartHouse/Room.hpp>
@@ -13,7 +11,7 @@
 
 #include "Core/common.h"
 
-enum{screenWidth = 800, screenHeight = 600};
+// enum{screenWidth = 800, screenHeight = 600};
 
 bool keys[1024];
 GLfloat yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
@@ -47,18 +45,18 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv) {
 	
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+//   glfwInit();
+//   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+//   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+//   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
   GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
   glfwMakeContextCurrent(window);
   initMousePosition(screenWidth/2, screenHeight/2); 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
   glfwSetCursorPosCallback(window, updateMouse); // mouse events
-  glewInit();
+//   glewInit();
 
   initApplication();
   auto mainSet = TSetFactory::Create(0);//!!!!
