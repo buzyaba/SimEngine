@@ -11,7 +11,7 @@ public:
   /// Задает значение своства с именем равным property.name берет значения из property
   virtual void SetProperty(IProperties& property) = 0;
   /// Задает значение values своству с именем propertyName
-  virtual void SetProperty(const std::map<std::string, std::vector<double>>& values, std::string propertyName) = 0;
+  virtual void SetProperty(const std::map<std::string, double>& values, std::string propertyName) = 0;
   /// Возвращает все своства данного объекта
   virtual std::map<std::string, IProperties*>& GetProperties() = 0;
   /// Возвращает своство с именем _name
@@ -30,23 +30,25 @@ class TObject: public IObject {
   private:
     static void initShader();
     static void initMeshes();
+    virtual GLuint getMeshBuffer() = 0;
+    virtual void initBuffer() = 0;
   protected:
     // GL
     static GLuint shaderProgramInstanced;
     static GLuint shaderProgramUnique;
     btRigidBody* rigidBody;
     std::vector<Transform> transforms;
-    static std::vector<MeshRenderer*> meshes;
+    MeshContainer* meshes;
     // Logic
     std::string name;
     std::map<std::string, IProperties*> properties;
   public:
-    TObject(const std::string& _name, ...);
+    explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
     virtual ~TObject() {delete rigidBody;}
     // Logic
     virtual void SetProperty(IProperties& property) override;
-    virtual void SetProperty(const std::map<std::string, std::vector<double>>& values, std::string propertyName) override;
+    virtual void SetProperty(const std::map<std::string, double>& values, std::string propertyName) override;
     virtual std::map<std::string, IProperties*>& GetProperties() override;
     virtual IProperties& GetProperty(const std::string& _name = "") override;
     virtual std::string GetName() override;
@@ -58,9 +60,9 @@ class TObject: public IObject {
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
     void setCollisionFlags(const CollisionType& _flag);
     glm::vec3 getPosition();
-    glm::vec3 getRotatfion();
+    glm::vec3 getRotation();
     btRigidBody* getRigidBody();
     bool isStatic();
-    virtual void drawElements(const std::vector<TObject*> objects);
-    virtual void initDraw(const std::vector<TObject*> objects);
+    virtual void drawElements(const std::vector<TObject&>& objects) = 0;
+    virtual void initDraw(const std::vector<TObject&>& objects) = 0;
 };

@@ -10,7 +10,7 @@
 
 class MeshRenderer{
     public:
-        MeshRenderer(MeshType modelType);
+        explicit MeshRenderer(MeshType modelType);
         GLuint getVAO(){return vao;}
         std::vector<GLuint> getIndices() {return indices;}        
     private:
@@ -18,4 +18,20 @@ class MeshRenderer{
         std::vector<GLuint>indices;
 
         GLuint vao, vbo, ebo;
+};
+
+class MeshContainer {
+    private:
+        static MeshContainer* instance;
+        MeshRenderer* cubeMesh;
+        MeshRenderer* sphereMesh;
+        MeshRenderer* triangleMesh;
+        MeshRenderer* quadMesh;
+        explicit MeshContainer();
+        MeshContainer(const MeshContainer&) = delete;
+        MeshContainer& operator=(const MeshContainer&) = delete;
+        ~MeshContainer();
+    public:
+        static MeshContainer* getInstance();
+        MeshRenderer* getMesh(MeshType type);
 };

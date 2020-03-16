@@ -1,4 +1,5 @@
 #include <Engine/MeshRenderer.hpp>
+#include <stdexcept>
 
 MeshRenderer::MeshRenderer(MeshType modelType){
 	switch (modelType){
@@ -38,4 +39,37 @@ MeshRenderer::MeshRenderer(MeshType modelType){
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+}
+
+MeshContainer* MeshContainer::instance = 0;
+
+MeshContainer::MeshContainer(): cubeMesh(new MeshRenderer(MeshType::kCube)), 
+								sphereMesh(new MeshRenderer(MeshType::kSphere)),
+								triangleMesh(new MeshRenderer(MeshType::kTriangle)),
+								quadMesh(new MeshRenderer(MeshType::kQuad))
+{
+}
+
+MeshContainer* MeshContainer::getInstance() {
+	if (!instance) {
+		instance = new MeshContainer();
+		return instance;
+	} else {
+		return instance;
+	}
+}
+
+MeshRenderer* MeshContainer::getMesh(MeshType type) {
+	switch (type) {
+	case MeshType::kCube:
+		return cubeMesh;
+	case MeshType::kSphere:
+		return sphereMesh;
+	case MeshType::kTriangle:
+		return triangleMesh;
+	case MeshType::kQuad:
+		return quadMesh;
+	default:
+		throw std::invalid_argument("type must be a member of MeshType enum"); 
+	}
 }
