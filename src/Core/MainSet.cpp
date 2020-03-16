@@ -5,6 +5,8 @@
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
+#include <string.h>
+
 
 void ParseString(std::string str, std::vector<double>& tt)
 {
