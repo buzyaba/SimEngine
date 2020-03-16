@@ -14,22 +14,9 @@
 
 #include "output_system.h"
 #include "exception.h"
-#include "discpp.h"
-
 
 int main(int argc, char* argv[])
 {
-  //std::chrono::milliseconds delta(100);
-
-  //for (int t = 0; t < 50; t++)
-  //{
-  //  double val = double(rand()) / RAND_MAX * 30.0 + 5;
-  //  std::string s = "curl -v -X POST -d \"{\\\"Power\\\": " +
-  //    std::to_string(val) +
-  //    " }\" http://localhost:8080/api/v1/FISKOaCIWwS5dlpZtL4c/telemetry --header \"Content-Type:application/json\"";
-  //  std::system(s.c_str());
-  //  std::this_thread::sleep_for(delta);
-  //}
   try
   {
     int type = 0;
@@ -44,11 +31,10 @@ int main(int argc, char* argv[])
     if (argc >= 4)
       xmlFile = argv[3];
 
-    TWorkManager WorkManager(type, xmlScript, xmlFile, 1000, 1.0, -1.0, 1000);//60*60*24*30);
+    TWorkManager WorkManager(type, xmlScript, xmlFile, 1000, 0.0, -1.0, 1000);//60*60*24*30);
 
     WorkManager.Start();
 
-    //_getch();
   }
   catch (const TException & e)
   {

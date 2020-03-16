@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include "discpp.h"
+//#include "discpp.h"
 
 
 class TEmptyProgram : public IManagementProgram
@@ -27,7 +27,7 @@ protected:
   /// Набор наблюдаемых сенсоров
   std::vector <ISensor*> sensors;
   /// Рисование графиков
-  Dislin g;
+  //Dislin g;
 
   std::vector <double> xArray;
   std::vector < std::vector <double>> yArray;
@@ -38,121 +38,121 @@ protected:
 
   void InitPlot(bool f = false)
   {
-    g.metafl("XWIN");
-    g.scrmod("revers");
+    //g.metafl("XWIN");
+    //g.scrmod("revers");
 
-    g.disini();
-    //if (!f)
-    //  g.winmod("NONE");
+    //g.disini();
+    ////if (!f)
+    ////  g.winmod("NONE");
 
-    g.name("Time", "x");
-    g.name("Values", "y");
+    //g.name("Time", "x");
+    //g.name("Values", "y");
 
-    g.labdig(-1, "x");
-    g.ticks(9, "x");
-    g.ticks(10, "y");
+    //g.labdig(-1, "x");
+    //g.ticks(9, "x");
+    //g.ticks(10, "y");
 
-    minx = 0;
-    miny = 0;
-    maxx = 0;
-    maxy = 0;
+    //minx = 0;
+    //miny = 0;
+    //maxx = 0;
+    //maxy = 0;
   }
 
   void CreatePlotData()
   {
-    if (yArray.size() < (tableHeader.size() - 1))
-    {
-      yArray.resize(tableHeader.size() - 1);
-    }
-    for (int j = 0; j < yArray.size(); j++)
-    {
-      yArray[j].clear();
-      yArray[j].resize(0);
-    }
+    //if (yArray.size() < (tableHeader.size() - 1))
+    //{
+    //  yArray.resize(tableHeader.size() - 1);
+    //}
+    //for (int j = 0; j < yArray.size(); j++)
+    //{
+    //  yArray[j].clear();
+    //  yArray[j].resize(0);
+    //}
 
-    xArray.clear();
-    xArray.resize(currentTime);
-    for (unsigned long int t = 0; t < currentTime; t++)
-    {
-      xArray[t] = double(t);
-    }
+    //xArray.clear();
+    //xArray.resize(currentTime);
+    //for (unsigned long int t = 0; t < currentTime; t++)
+    //{
+    //  xArray[t] = double(t);
+    //}
 
-    maxx = double(currentTime + 1);
+    //maxx = double(currentTime + 1);
 
-    double value;
-    for (int u = 0; u < table.size() - 1; u++)
-    {
-      for (int i = 0; i < table[u].size() - 1; i++)
-      {
-        value = atof(table[u][i + 1].c_str());
+    //double value;
+    //for (int u = 0; u < table.size() - 1; u++)
+    //{
+    //  for (int i = 0; i < table[u].size() - 1; i++)
+    //  {
+    //    value = atof(table[u][i + 1].c_str());
 
-        if (maxy < value)
-          maxy = value;
-        if (miny > value)
-          miny = value;
+    //    if (maxy < value)
+    //      maxy = value;
+    //    if (miny > value)
+    //      miny = value;
 
-        yArray[i].push_back(value);
-      }
-    }
+    //    yArray[i].push_back(value);
+    //  }
+    //}
 
-    title2.resize(tableHeader.size() - 1);
-    for (int u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
-    {
-      title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
-    }
+    //title2.resize(tableHeader.size() - 1);
+    //for (int u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
+    //{
+    //  title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
+    //}
   }
 
   void Plot()
   {
-    if (table.size() < 3)
-      return;
+    //if (table.size() < 3)
+    //  return;
 
-    CreatePlotData();
+    //CreatePlotData();
 
-    int count = yArray.size();
-    int xn = yArray[0].size();
+    //int count = yArray.size();
+    //int xn = yArray[0].size();
 
-    g.erase();
-    g.endgrf();
-    g.color("fore");
-    g.pagera();
-    g.complx();
-    g.axspos(450, 1800);
-    g.axslen(2200, 1200);
+    //g.erase();
+    //g.endgrf();
+    //g.color("fore");
+    //g.pagera();
+    //g.complx();
+    //g.axspos(450, 1800);
+    //g.axslen(2200, 1200);
 
-    if (maxx == minx)
-      maxx += 1;
-    if (maxy == miny)
-      maxy += 1;
+    //if (maxx == minx)
+    //  maxx += 1;
+    //if (maxy == miny)
+    //  maxy += 1;
 
-    double xstep = (maxx - minx) / 4.0;
-    double ystep = (maxy - miny) / 4.0;
-    g.graf(minx, maxx, minx, xstep,
-      miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
-
-
-    for (int i = 0; (i < 3) && (i < title2.size()); i++)
-      g.titlin(title2[i].c_str(), i + 1);
-
-    g.color("fore");
-    g.height(50);
-    g.title();
+    //double xstep = (maxx - minx) / 4.0;
+    //double ystep = (maxy - miny) / 4.0;
+    //g.graf(minx, maxx, minx, xstep,
+    //  miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
 
 
-    g.setrgb(0.7, 0.7, 0.7);
-    g.grid(1, 1);
+    //for (int i = 0; (i < 3) && (i < title2.size()); i++)
+    //  g.titlin(title2[i].c_str(), i + 1);
 
-    g.color("red");
+    //g.color("fore");
+    //g.height(50);
+    //g.title();
 
-    for (int k = 0; k < count; k++)
-      g.curve(xArray.data(), yArray[k].data(), xn);
 
-    g.sendbf();
+    //g.setrgb(0.7, 0.7, 0.7);
+    //g.grid(1, 1);
+
+    //g.color("red");
+
+    //for (int k = 0; k < count; k++)
+    //  g.curve(xArray.data(), yArray[k].data(), xn);
+
+    //g.sendbf();
   }
 
   void FinPlot()
   {
-    g.disfin();
+    //g.disfin();
   }
 
 public:
@@ -237,12 +237,12 @@ public:
       value = atof(table[u][i + 1].c_str());
       sum += value;
     }
-
+    /*
     std::string s = "curl -v -X POST -d \"{\\\"Power\\\": " +
       std::to_string(sum) +
       " }\" http://localhost:8080/api/v1/FISKOaCIWwS5dlpZtL4c/telemetry --header \"Content-Type:application/json\"";
     std::system(s.c_str());
-
+    */
   }
 
   virtual void End()

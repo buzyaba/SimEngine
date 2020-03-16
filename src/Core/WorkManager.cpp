@@ -50,7 +50,7 @@ TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, 
 
   script = new TEnvironmentScript(allObject, xmlScript, _maxStep, type);
   program = TProgramFactory::Create(type, things);
-  storage = new TDataStore(allObject, "A");
+  storage = new TDataStore(allObject, "../../A");
   maxStep = _maxStep;
 }
 

@@ -44,19 +44,19 @@ if (NOT (CMAKE_BUILD_TYPE IN_LIST CMAKE_CONFIGURATION_TYPES))
   message(STATUS "Unknown build type has been changed to " ${CMAKE_BUILD_TYPE})
 endif()
 
-  set(dislin_includedir ${PROJECT_SOURCE_DIR}/lib/dislin/include)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/lnx/libdiscpp.so.10
-       ${PROJECT_SOURCE_DIR}/lib/dislin/lib/lnx/discpp-10.6.so)
-  elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    if (SIMENGINE_TARGET_ARCH MATCHES "x86")
-      set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/win/x86/discpp.lib)
-    elseif (SIMENGINE_TARGET_ARCH MATCHES "x64")
-      set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/win/x64/discpp.lib)
-    endif()
-  endif()
-  
-  message(WARNING "dislin = ${CMAKE_SIZEOF_VOID_P}")
+  #set(dislin_includedir ${PROJECT_SOURCE_DIR}/lib/dislin/include)
+  #if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  #  set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/lnx/libdiscpp.so.10
+  #     ${PROJECT_SOURCE_DIR}/lib/dislin/lib/lnx/discpp-10.6.so)
+  #elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  #  if (SIMENGINE_TARGET_ARCH MATCHES "x86")
+  #    set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/win/x86/discpp.lib)
+  #  elseif (SIMENGINE_TARGET_ARCH MATCHES "x64")
+  #    set(dislin_libpath ${PROJECT_SOURCE_DIR}/lib/dislin/lib/win/x64/discpp.lib)
+  #  endif()
+  #endif()
+  #
+  #message(WARNING "dislin = ${CMAKE_SIZEOF_VOID_P}")
 
 #add graphic libraries
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
@@ -113,7 +113,7 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
-include_directories("${dislin_includedir}")
+#include_directories("${dislin_includedir}")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
