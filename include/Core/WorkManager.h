@@ -8,12 +8,13 @@
 #include "Core/SmartThing.h"
 #include "Core/ObjectOfObservation.h"
 #include "Core/Properties.h"
-#include "Scene.h"
+#include "Core/Scene.h"
 #include "Core/ManagementProgram.h"
 #include "Core/DataStore.h"
 #include "Core/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
+#include "Engine/WindowManager.hpp"
 
 /// Класс 
 class TWorkManager
