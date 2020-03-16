@@ -1,5 +1,7 @@
 ﻿#include "Core/EnvironmentScript.h"
 #include "../lib/pugixml/include/pugixml.hpp"
+
+#include <string.h>
 //"pugixml.hpp"
 
 std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex,
