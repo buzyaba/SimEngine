@@ -6,6 +6,43 @@
 #include "../lib/pugixml/include/pugixml.hpp"
 
 
+void ParseString(std::string str, std::vector<double>& tt)
+{
+  char* s = new char[str.length() + 1];
+  int l = 0;
+  strcpy(s, str.c_str());
+
+  char* pp = strtok(s, " ");
+
+  double t = 0;
+  while (pp != 0)
+  {
+    sscanf(pp, "%lf", &t);
+    tt.push_back(t);
+    pp = strtok(NULL, " ");
+    l++;
+  }
+
+  delete[] s;
+}
+
+void SetProperty(IObject* object, std::string nameProperty, std::string valueProperty)
+{
+  if (nameProperty == "Name")
+    object->SetName(valueProperty);
+
+  std::vector<IProperties*>& propertys = object->GetProperties();
+  for (int i = 0; i < propertys.size(); i++)
+  {
+    if (propertys[i]->GetName() == nameProperty)
+    {
+      std::vector<double> tempVal;
+      ParseString(valueProperty, tempVal);
+      object->SetProperty(tempVal, nameProperty);
+    }
+  }
+}
+
 TMainSet::TMainSet(std::string xmlFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
@@ -41,8 +78,7 @@ TMainSet::TMainSet(std::string xmlFile)
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          if (nameProperty == "Name")
-            newScene->SetName(valueProperty);
+          SetProperty(newScene, nameProperty, valueProperty);
         }
 
         scene.push_back(newScene);
@@ -59,8 +95,7 @@ TMainSet::TMainSet(std::string xmlFile)
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          if (nameProperty == "Name")
-            newObject->SetName(valueProperty);
+          SetProperty(newObject, nameProperty, valueProperty);
         }
 
         objects.push_back(newObject);
@@ -77,8 +112,9 @@ TMainSet::TMainSet(std::string xmlFile)
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          if (nameProperty == "Name")
-            newThing->SetName(valueProperty);
+          
+          SetProperty(newThing, nameProperty, valueProperty);
+          
           if (nameProperty == "Object")
           {
             for (int j = 0; j < objects.size(); j++)
