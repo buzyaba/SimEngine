@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <maxStep>50</maxStep>
+  <intervalCount>5</intervalCount>
+  <time>0_5_20_30_40_50</time>
+  <Terminal>1_0_1_0_1</Terminal>
+</config>

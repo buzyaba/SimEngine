@@ -36,4 +36,7 @@ public:
   virtual void Update();
   /// Возвращает все свойства объекта
   virtual std::vector<IProperties*>& GetProperties();
+
+  /// Создание клона объекта
+  virtual TObjectOfObservation* Clone();
 };

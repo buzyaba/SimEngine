@@ -54,3 +54,8 @@ std::string TObject::ClassName()
 {
   return std::string("ClassName");
 }
+
+IObject* TObject::Clone()
+{
+  return new TObject(*this);
+}

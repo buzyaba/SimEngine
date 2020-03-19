@@ -52,3 +52,8 @@ void TSmartThing::ExcludeObject(std::string _name)
     if (sensors[i] != nullptr)
       sensors[i]->ExcludeObject(_name);
 }
+
+TSmartThing* TSmartThing::Clone()
+{
+  return new TSmartThing(*this);
+}

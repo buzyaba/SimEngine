@@ -1,13 +1,136 @@
 ﻿#include "Core/MainSet.h"
 
-
 #include "SmartHouseData/Room.h"
 #include "TrafficSimData/Street.h"
 
+#include "../lib/pugixml/include/pugixml.hpp"
 
-TMainSet::TMainSet()
+#include <string.h>
+
+
+void ParseString(std::string str, std::vector<double>& tt)
 {
+  char* s = new char[str.length() + 1];
+  int l = 0;
+  strcpy(s, str.c_str());
 
+  char* pp = strtok(s, " ");
+
+  double t = 0;
+  while (pp != 0)
+  {
+    sscanf(pp, "%lf", &t);
+    tt.push_back(t);
+    pp = strtok(NULL, " ");
+    l++;
+  }
+
+  delete[] s;
+}
+
+void SetProperty(IObject* object, std::string nameProperty, std::string valueProperty)
+{
+  if (nameProperty == "Name")
+    object->SetName(valueProperty);
+
+  std::vector<IProperties*>& propertys = object->GetProperties();
+  for (int i = 0; i < propertys.size(); i++)
+  {
+    if (propertys[i]->GetName() == nameProperty)
+    {
+      std::vector<double> tempVal;
+      ParseString(valueProperty, tempVal);
+      object->SetProperty(tempVal, nameProperty);
+    }
+  }
+}
+
+TMainSet::TMainSet(std::string xmlFile)
+{
+  std::vector<TObjectOfObservation*> LocalObjects;
+  std::vector<TScene*> LocalScene;
+  std::vector<TSmartThing*> LocalThing;
+
+  LocalScene.push_back(new TRoom("Room"));
+
+  LocalObjects.push_back(new TTerminal("Terminal"));
+
+  LocalThing.push_back(new TSmartSocket("SmartSocket"));
+
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(xmlFile.c_str());
+  if (result.status != pugi::status_ok)
+    return;
+  pugi::xml_node config = doc.child("config");
+  std::vector<unsigned long int> startTime;
+  std::vector<unsigned long int> endTime;
+
+  for (pugi::xml_node iter = config.first_child(); iter != 0; iter = iter.next_sibling())
+  {
+    std::string name = iter.name();
+    std::string value = iter.child_value();
+
+    /// Создаем новые сцены
+    for (int i = 0; i < LocalScene.size(); i++)
+    {
+      if (LocalScene[i]->ClassName() == name)
+      {
+        TScene* newScene = LocalScene[i]->Clone();
+        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
+        {
+          std::string nameProperty = iter2.name();
+          std::string valueProperty = iter2.child_value();
+          SetProperty(newScene, nameProperty, valueProperty);
+        }
+
+        scene.push_back(newScene);
+      }
+    }
+
+    /// Создаем новые объекты
+    for (int i = 0; i < LocalObjects.size(); i++)
+    {
+      if (LocalObjects[i]->ClassName() == name)
+      {
+        TObjectOfObservation* newObject = LocalObjects[i]->Clone();
+        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
+        {
+          std::string nameProperty = iter2.name();
+          std::string valueProperty = iter2.child_value();
+          SetProperty(newObject, nameProperty, valueProperty);
+        }
+
+        objects.push_back(newObject);
+      }
+    }
+
+    /// Создаем новые умные вещи
+    for (int i = 0; i < LocalThing.size(); i++)
+    {
+      if (LocalThing[i]->ClassName() == name)
+      {
+        TSmartThing* newThing = LocalThing[i]->Clone();
+        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
+        {
+          std::string nameProperty = iter2.name();
+          std::string valueProperty = iter2.child_value();
+          
+          SetProperty(newThing, nameProperty, valueProperty);
+          
+          if (nameProperty == "Object")
+          {
+            for (int j = 0; j < objects.size(); j++)
+            {
+              if (objects[j]->GetName() == valueProperty)
+                newThing->AddObject(*objects[j]);
+            }
+          }
+        }
+
+        thing.push_back(newThing);
+      }
+    }
+  }
 }
 
 std::vector<TObjectOfObservation*> TMainSet::GetObject()

@@ -10,11 +10,14 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
+TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, unsigned int _millisecondsOfTimeStep,
+  double _delay,  double _fractionOfTimeStep, unsigned long int _maxStep)
 {
+  xmlScript = _script;
+  xmlFile = _xmlFile;
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(1);
+  mainSet = TSetFactory::Create(type, xmlFile);
     //new TMainSet();
 
   objects = mainSet->GetObject();
@@ -45,9 +48,9 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, "", _maxStep);
-  program = TProgramFactory::Create(1, things);
-  storage = new TDataStore(allObject, "A");
+  script = new TEnvironmentScript(allObject, xmlScript, _maxStep, type);
+  program = TProgramFactory::Create(type, things);
+  storage = new TDataStore(allObject, "../../A");
   maxStep = _maxStep;
 }
 
@@ -58,7 +61,10 @@ TWorkManager::~TWorkManager()
 
 void TWorkManager::Start()
 {
-  std::cout << "Start\n MaxIter = " << maxStep<< std::endl;
+  std::cout << "Start\n Max Iter = " << maxStep<< std::endl;
+  std::cout << "Max Time = " << double(maxStep * timeStep) / 1000.0 << " seconds" << std::endl;
+  std::cout << "time acceleration = " << delay << " X" << std::endl;
+
   std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
 
   unsigned long int time = 0;
@@ -87,13 +93,13 @@ void TWorkManager::Start()
 
     std::this_thread::sleep_for(delta);
   }
-
-  storage->PrintToFile();
-  program->End();
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
   std::cout << "End\n" << deltaWork.count() << std::endl;
+
+  storage->PrintToFile();
+  program->End();
 }
 
 void TWorkManager::Stop()

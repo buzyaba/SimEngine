@@ -49,3 +49,8 @@ void TScene::ExcludeSceneObject(TScene& obect)
     }
   }
 }
+
+TScene* TScene::Clone()
+{
+  return new TScene(*this);
+}

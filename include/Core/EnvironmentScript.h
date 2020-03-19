@@ -64,9 +64,20 @@ protected:
   /// Меняем свойство найденного объекта в соответствии со скриптом
   std::vector <IProperties*>& ChangeProperties(int objectIndex, std::vector <IProperties*>& properties, unsigned long int time);
 
+  /// Файл с расписанием активности
+  std::string xmlFile;
+
+  /// Случайное заполнение расписания
+  void RandomGen(unsigned long int maxTime);
+  
+  /// Случайное заполнение расписания
+  void LoadXML(unsigned long int& maxTime);
+
+  void ParseString(std::string str, std::vector<int>& tt);
 
 public:
-  TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, unsigned long int maxTime = 1000);
+  TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, 
+    unsigned long int& maxTime, int type = 0);
 
   virtual std::vector <IProperties*>& GetObjectProperties(std::string name, unsigned long int time);
   virtual std::vector <IProperties*>& GetObjectProperties(IObject& object, unsigned long int time);

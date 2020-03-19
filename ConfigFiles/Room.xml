@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <TRoom>
+	<Name>Room</Name>
+  </TRoom>
+  <TTerminal>
+	<Name>Terminal1</Name>
+  </TTerminal>
+  <TSmartSocket>
+	<Name>SmartSocket1</Name>
+	<Object>Terminal1</Object>
+  </TSmartSocket>  
+  
+</config>

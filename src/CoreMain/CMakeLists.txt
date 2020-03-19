@@ -9,9 +9,9 @@ endif()
 
 add_executable(CoreMain ${srcs} ${hdrs})
 target_link_libraries(CoreMain 
-						pugixml 
-						output_system
 						Core
+						pugixml
+						output_system						
 						SmartHouseData
 						TrafficSimData)
 
