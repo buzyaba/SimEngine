@@ -172,11 +172,11 @@ void TWorkManager::Iteration(unsigned long int time){
 }
 
 void TWorkManager::InitDraw() {
-    // for(const auto& elem : mainSet->GetAllGObject())
-    //     elem.second[0]->initDraw(elem.second);
+    for(const auto& elem : mainSet->GetAllGObject())
+        elem.second[0]->initDraw(elem.second);
 }
 
 void TWorkManager::DrawElements() {
-    // for(const auto& elem : mainSet->GetAllGObject())
-    //     elem.second[0]->drawElements(elem.second);
+    for(const auto& elem : mainSet->GetAllGObject())
+        elem.second[0]->drawElements(elem.second);
 }

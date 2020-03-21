@@ -57,14 +57,14 @@ std::vector<glm::mat4> TTerminal::getModelMatrixes() {
     return std::vector<glm::mat4>({transforms[1].getModelMatrix(), transforms[2].getModelMatrix(), transforms[3].getModelMatrix(), });
 }
 
-void TTerminal::initDraw(const std::vector<TObject&>& objects) {
+void TTerminal::initDraw(const std::vector<TObject*>& objects) {
     initBuffer();
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
-        std::vector<glm::mat4> vec = objects[i].getModelMatrixes();
+        std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
         for (size_t j = 1; j < 4; ++j) {
-            modelMatrixes[i*3 + j] = vec[j];
+            modelMatrixes[i*3 + j-1] = vec[j];
         }
     }
     glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
@@ -88,13 +88,13 @@ void TTerminal::initDraw(const std::vector<TObject&>& objects) {
     delete[] modelMatrixes;    
 }
 
-void TTerminal::drawElements(const std::vector<TObject&>& objects) {
+void TTerminal::drawElements(const std::vector<TObject*>& objects) {
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
-        std::vector<glm::mat4> vec = objects[i].getModelMatrixes();
+        std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
         for (size_t j = 1; j < 4; ++j) {
-            modelMatrixes[i*3 + j] = vec[j];
+            modelMatrixes[i*3 + j-1] = vec[j];
         }
     }
     glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
@@ -116,9 +116,9 @@ void TTerminal::drawElements(const std::vector<TObject&>& objects) {
     vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
     for (auto iter : objects) {
-        glBindTexture(GL_TEXTURE_2D, iter.getTexture("screen"));
+        glBindTexture(GL_TEXTURE_2D, iter->getTexture("screen"));
         GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
-        std::vector<glm::mat4> vec = iter.getModelMatrixes();
+        std::vector<glm::mat4> vec = iter->getModelMatrixes();
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
             glm::value_ptr(vec[4]));
         glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
