@@ -30,7 +30,7 @@ class TObject: public IObject {
   private:
     static void initShader();
     static void initMeshes();
-    virtual GLuint getMeshBuffer() = 0;
+    virtual unsigned int getMeshBuffer() = 0;
     virtual void initBuffer() = 0;
   protected:
     // GL
@@ -38,6 +38,7 @@ class TObject: public IObject {
     static GLuint shaderProgramUnique;
     btRigidBody* rigidBody;
     std::vector<Transform> transforms;
+    std::map<std::string, GLuint> otherTextures;
     MeshContainer* meshes;
     // Logic
     std::string name;
@@ -65,4 +66,6 @@ class TObject: public IObject {
     bool isStatic();
     virtual void drawElements(const std::vector<TObject&>& objects) = 0;
     virtual void initDraw(const std::vector<TObject&>& objects) = 0;
+    virtual std::vector<glm::mat4> getModelMatrixes() = 0;
+    GLuint getTexture(std::string _name) { return otherTextures[_name]; }
 };

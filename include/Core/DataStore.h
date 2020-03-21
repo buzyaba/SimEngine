@@ -26,30 +26,30 @@ protected:
 public:
   TDataStore(std::vector<IObject*> _allObjects, std::string _name)
   {
-    isFirstPrintToConsole = true;
-    allObjects = _allObjects;
-    name = _name;
-    int size = 0;
-    for (int i = 0; i < allObjects.size(); i++)
-    {
-      size += allObjects[i]->GetProperties().size();
-    }
+    // isFirstPrintToConsole = true;
+    // allObjects = _allObjects;
+    // name = _name;
+    // int size = 0;
+    // for (int i = 0; i < allObjects.size(); i++)
+    // {
+    //   size += allObjects[i]->GetProperties().size();
+    // }
 
-    int k = 0;
-    allObjectsProperties.resize(size);
-    tableHeader.resize(size + 1);
-    tableHeader[0] = "Time";
+    // int k = 0;
+    // allObjectsProperties.resize(size);
+    // tableHeader.resize(size + 1);
+    // tableHeader[0] = "Time";
 
-    for (int i = 0; i < allObjects.size(); i++)
-    {
-      std::vector<IProperties*>& tmp = allObjects[i]->GetProperties();
-      for (int j = 0; j < tmp.size(); j++)
-      {
-        allObjectsProperties[k] = tmp[j];
-        tableHeader[k + 1] = allObjects[i]->GetName() + "_" + tmp[j]->GetName();
-        k++;
-      }
-    }
+    // for (int i = 0; i < allObjects.size(); i++)
+    // {
+    //   std::vector<IProperties*>& tmp = allObjects[i]->GetProperties();
+    //   for (int j = 0; j < tmp.size(); j++)
+    //   {
+    //     allObjectsProperties[k] = tmp[j];
+    //     tableHeader[k + 1] = allObjects[i]->GetName() + "_" + tmp[j]->GetName();
+    //     k++;
+    //   }
+    // }
 
   };
 

@@ -93,39 +93,39 @@ void TObjectOfObservation::Update()
     throw - 1;
 }
 
-std::vector<IProperties*>& TObjectOfObservation::GetProperties()
+std::vector<IProperties*>& TObjectOfObservation::GetAllProperties()
 {
-  if (childObjects.size() > 0)
-  {
-    if (childObjects[0] != nullptr)
-    {
-      std::vector<IProperties*> cp = childObjects[0]->GetProperties();
-      int sizeAllProp = properties.size() + cp.size();
-      if (allProperties.size() != sizeAllProp)
-        allProperties.resize(sizeAllProp, nullptr);
-      int j = 0;
-      for (int i = 0; i < properties.size(); i++)
-      {
-        if (properties[i] != nullptr)
-        {
-          allProperties[j] = properties[i];
-          j++;
-        }
-      }
-      for (int i = 0; i < cp.size(); i++)
-      {
-        if (cp[i] != nullptr)
-        {
-          allProperties[j] = cp[i];
-          j++;
-        }
-      }
-    }
-  }
-  else
-  {
-    if (allProperties.size() != properties.size())
-      allProperties = properties;
-  }
+//   if (childObjects.size() > 0)
+//   {
+//     if (childObjects[0] != nullptr)
+//     {
+//       std::vector<IProperties*> cp = childObjects[0]->GetProperties();
+//       int sizeAllProp = properties.size() + cp.size();
+//       if (allProperties.size() != sizeAllProp)
+//         allProperties.resize(sizeAllProp, nullptr);
+//       int j = 0;
+//       for (const auto& elem : properties)
+//       {
+//         if (elem.second != nullptr)
+//         {
+//           allProperties[j] = elem.second;
+//           j++;
+//         }
+//       }
+//       for (int i = 0; i < cp.size(); i++)
+//       {
+//         if (cp[i] != nullptr)
+//         {
+//           allProperties[j] = cp[i];
+//           j++;
+//         }
+//       }
+//     }
+//   }
+//   else
+//   {
+//     if (allProperties.size() != properties.size())
+//       allProperties = properties;
+//   }
   return allProperties;
 }

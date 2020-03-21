@@ -40,8 +40,8 @@ std::map<std::string, IProperties*>& TObject::GetProperties() {
 }
 
 IProperties& TObject::GetProperty(const std::string& _name) {
-  if (_name == "")
-    return *properties.begin;
+//   if (_name == "")
+//     return *properties.begin; // What is this?????
   for (const auto& i : properties)
     if (i.second->GetName() == _name)
       return *i.second;

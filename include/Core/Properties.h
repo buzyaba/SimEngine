@@ -47,7 +47,7 @@ protected:
     std::string name;
     /// Является свойство строковым или нет
     bool isString;
-    /// Строка значения сойства
+    /// Строка значения свойства
     std::string stringValue;
 public:
     TProperties(std::string _name = "");

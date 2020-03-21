@@ -1,7 +1,7 @@
 #include <Engine/Renderer.hpp>
-#include <SmartHouse/Table.hpp>
-#include <SmartHouse/Room.hpp>
-#include <SmartHouse/Desktop.hpp>
+// #include <SmartHouse/Table.hpp>
+// #include <SmartHouse/Room.hpp>
+// #include <SmartHouse/Desktop.hpp>
 #include <chrono>
 #include <thread>
 #include <iostream>
