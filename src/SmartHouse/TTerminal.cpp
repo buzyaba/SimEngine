@@ -54,7 +54,8 @@ void TTerminal::initBuffer() {
 }
 
 std::vector<glm::mat4> TTerminal::getModelMatrixes() {
-    return std::vector<glm::mat4>({transforms[1].getModelMatrix(), transforms[2].getModelMatrix(), transforms[3].getModelMatrix(), });
+    return std::vector<glm::mat4>{transforms[0].getModelMatrix(), transforms[1].getModelMatrix(),
+        transforms[2].getModelMatrix(), transforms[3].getModelMatrix(), transforms[4].getModelMatrix()};
 }
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
@@ -111,7 +112,6 @@ void TTerminal::drawElements(const std::vector<TObject*>& objects) {
     delete[] modelMatrixes;
 
     glUseProgram(shaderProgramUnique);
-    // vao = objects[0]->mesh->getVAO();
     glBindVertexArray(vao);
     vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
