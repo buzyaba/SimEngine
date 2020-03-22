@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <Engine/FirstPersonView.hpp>
 
 #include "Core/WorkManager.h"
 #include "Core/EmptyProgram.h"
@@ -13,12 +14,12 @@
 
 // enum{screenWidth = 800, screenHeight = 600};
 
-bool keys[1024];
-GLfloat yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
-GLfloat pitch =   0.0f;
-GLfloat lastX;
-GLfloat lastY;
-GLfloat humanTall = 5.0f;
+// bool keys[1024];
+// GLfloat yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
+// GLfloat pitch =   0.0f;
+// GLfloat lastX;
+// GLfloat lastY;
+// GLfloat humanTall = 5.0f;
 
 // std::vector<Table*> table;
 // std::vector<Room*> room;
@@ -45,20 +46,21 @@ void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv) {
 	
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
-  glfwMakeContextCurrent(window);
-  initMousePosition(screenWidth/2, screenHeight/2); 
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
-  glfwSetKeyCallback(window, updateKeyboard); // keyboard events
-  glfwSetCursorPosCallback(window, updateMouse); // mouse events
-  glewInit();
-
-  initApplication();
+//   glfwInit();
+//   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+//   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+//   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+//   GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
+//   glfwMakeContextCurrent(window);
+//   initMousePosition(screenWidth/2, screenHeight/2); 
+//   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
+//   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
+//   glfwSetCursorPosCallback(window, updateMouse); // mouse events
+//   glewInit();
+  
+//   initApplication();
+  FirstPersonView window(800, 600);
   auto mainSet = TSetFactory::Create(0);//!!!!
 //   objects = mainSet->GetObject();///!!!
 //   things = mainSet->GetThing();
@@ -79,20 +81,18 @@ int main(int argc, char** argv) {
   workManager = new TWorkManager(mainSet);
   workManager->InitDraw();
   auto previousTime = std::chrono::high_resolution_clock::now();
-  while(!glfwWindowShouldClose(window)) {
+  int i = 0;
+  while(!window.isWindowShouldClose()) {
     auto currentTime = std::chrono::high_resolution_clock::now();
 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 	Renderer::getDynamicsWorld()->stepSimulation(dt);
     
     // Some render stuff
-    renderScene();
-    
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-    cameraMovement(dt); // every frame movement
+	window.runWindow(dt, renderScene);
+
+	++i;
     previousTime = currentTime;
   }
-  glfwTerminate();
   Renderer::terminate();
   return 0;
 }
@@ -136,12 +136,12 @@ void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
 }
 
 void initApplication() {
-    glEnable(GL_DEPTH_TEST);
-	Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(0.0f, humanTall, 8.0f), glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	Renderer::initTextures();
+//     glEnable(GL_DEPTH_TEST);
+// 	Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(0.0f, humanTall, 8.0f), glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+// 	Renderer::initTextures();
 
-  //init physics
-    Renderer::initPhysics();
+//   //init physics
+//     Renderer::initPhysics();
 	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
   //Adding objects
 	// table.push_back(new Table());
@@ -157,71 +157,71 @@ void initApplication() {
 	// Desktop::initDraw(desktop);
 }
 
-void initMousePosition(GLfloat x, GLfloat y){
-    lastX = x;
-    lastY = y;
-}
+// void initMousePosition(GLfloat x, GLfloat y){
+//     lastX = x;
+//     lastY = y;
+// }
 
-void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
-	if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS){
-		glfwSetWindowShouldClose(window,true);
-	}
-	if (key >= 0 && key < 1024)
-    {
-        if (action == GLFW_PRESS)
-            keys[key] = true;
-        else if (action == GLFW_RELEASE)
-            keys[key] = false;
-    }
-}
+// void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods){
+// 	if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS){
+// 		glfwSetWindowShouldClose(window,true);
+// 	}
+// 	if (key >= 0 && key < 1024)
+//     {
+//         if (action == GLFW_PRESS)
+//             keys[key] = true;
+//         else if (action == GLFW_RELEASE)
+//             keys[key] = false;
+//     }
+// }
 
-void cameraMovement(float dt)
-{
-	GLfloat cameraSpeed = 15.0f * dt;
-	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
-	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
-	if (keys[GLFW_KEY_W])
-	{
-		prevCamPos += cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
-	}
-	if (keys[GLFW_KEY_S])
-	{
-		prevCamPos -= cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
-	}
-	if (keys[GLFW_KEY_D])
-	{
-		prevCamPos += glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
-	}
-	if (keys[GLFW_KEY_A])
-	{
-		prevCamPos -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
-	}
-	prevCamPos[1] = humanTall;
-	Renderer::getCamera()->moveCamera(prevCamPos);
-}
+// void cameraMovement(float dt)
+// {
+// 	GLfloat cameraSpeed = 15.0f * dt;
+// 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
+// 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
+// 	if (keys[GLFW_KEY_W])
+// 	{
+// 		prevCamPos += cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+// 	}
+// 	if (keys[GLFW_KEY_S])
+// 	{
+// 		prevCamPos -= cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+// 	}
+// 	if (keys[GLFW_KEY_D])
+// 	{
+// 		prevCamPos += glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
+// 	}
+// 	if (keys[GLFW_KEY_A])
+// 	{
+// 		prevCamPos -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
+// 	}
+// 	prevCamPos[1] = humanTall;
+// 	Renderer::getCamera()->moveCamera(prevCamPos);
+// }
 
-void updateMouse(GLFWwindow* window, double xpos, double ypos){
-	GLfloat xoffset = xpos - lastX;
-	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
-	lastX = xpos;
-	lastY = ypos;
+// void updateMouse(GLFWwindow* window, double xpos, double ypos){
+// 	GLfloat xoffset = xpos - lastX;
+// 	GLfloat yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+// 	lastX = xpos;
+// 	lastY = ypos;
 
-	GLfloat sensitivity = 0.05;	// Change this value to your liking
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+// 	GLfloat sensitivity = 0.05;	// Change this value to your liking
+// 	xoffset *= sensitivity;
+// 	yoffset *= sensitivity;
 
-	yaw   += xoffset;
-	pitch += yoffset;
+// 	yaw   += xoffset;
+// 	pitch += yoffset;
 
-	// Make sure that when pitch is out of bounds, screen doesn't get flipped
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+// 	// Make sure that when pitch is out of bounds, screen doesn't get flipped
+// 	if (pitch > 89.0f)
+// 		pitch = 89.0f;
+// 	if (pitch < -89.0f)
+// 		pitch = -89.0f;
 
-	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	Renderer::getCamera()->rotateCamera(glm::normalize(front));
-}
+// 	glm::vec3 front;
+// 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+// 	front.y = sin(glm::radians(pitch));
+// 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+// 	Renderer::getCamera()->rotateCamera(glm::normalize(front));
+// }
