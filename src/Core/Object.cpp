@@ -41,7 +41,7 @@ std::map<std::string, IProperties*>& TObject::GetProperties() {
 
 IProperties& TObject::GetProperty(const std::string& _name) {
 //   if (_name == "")
-//     return *properties.begin; // What is this?????
+//     return *properties.begin()->second; // What is this?????
   for (const auto& i : properties)
     if (i.second->GetName() == _name)
       return *i.second;
@@ -60,7 +60,7 @@ void TObject::SetName(std::string _name) {
 }
 
 std::string TObject::ClassName() {
-  return std::string("ClassName");
+  return std::string("TObject");
 }
 
 // TODO: Graphic part and constructor
@@ -104,4 +104,11 @@ btRigidBody* TObject::getRigidBody() {
 
 bool TObject::isStatic() {
     return (rigidBody->getCollisionFlags() == CollisionType::STATIC) ? true : false;
+}
+
+std::vector<glm::mat4> TObject::getModelMatrixes() {
+    std::vector<glm::mat4> vec(transforms.size());
+    for (size_t i = 0; i < transforms.size(); ++i)
+        vec[i] = transforms[i].getModelMatrix();
+    return vec;
 }

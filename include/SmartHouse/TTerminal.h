@@ -16,10 +16,11 @@ protected:
 public:
     explicit TTerminal(std::string _name = "", const glm::vec3& pos=glm::vec3(0.0f), const glm::vec3& scale=glm::vec3(1.0f));
     virtual void Update() override;
-    void setScale(const glm::vec3& _size) override {};
-    void setPosition(const glm::vec3& pos) override {};
+    virtual void setScale(const glm::vec3& _size) override;
+    virtual void setPosition(const glm::vec3& pos) override;
+    virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) override;
     void setScreenTexture(GLuint _text) { otherTextures["screen"] = _text; }
     void drawElements(const std::vector<TObject*>& objects);
     void initDraw(const std::vector<TObject*>& objects);
-    virtual std::vector<glm::mat4> getModelMatrixes() override;
+    // virtual std::vector<glm::mat4> getModelMatrixes() override;
 };

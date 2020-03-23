@@ -62,10 +62,11 @@ class TObject: public IObject {
     void setCollisionFlags(const CollisionType& _flag);
     glm::vec3 getPosition();
     glm::vec3 getRotation();
+    glm::vec3 getScale() { return transforms[0].getScale(); }
     btRigidBody* getRigidBody();
     bool isStatic();
     virtual void drawElements(const std::vector<TObject*>& objects) = 0;
     virtual void initDraw(const std::vector<TObject*>& objects) = 0;
-    virtual std::vector<glm::mat4> getModelMatrixes() = 0;
+    std::vector<glm::mat4> getModelMatrixes();
     GLuint getTexture(std::string _name) { return otherTextures[_name]; }
 };
