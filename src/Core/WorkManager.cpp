@@ -172,11 +172,18 @@ void TWorkManager::Iteration(unsigned long int time){
 }
 
 void TWorkManager::InitDraw() {
-    for(const auto& elem : mainSet->GetAllGObject())
+    for(const auto& elem : mainSet->GetAllGObject()){
         elem.second[0]->initDraw(elem.second);
+    }
 }
 
 void TWorkManager::DrawElements() {
-    for(const auto& elem : mainSet->GetAllGObject())
+    for(const auto& elem : mainSet->GetAllGObject()) {
+        elem.second[0]->setPosition(elem.second[0]->getPosition() + glm::vec3(0.05f,0.0f,0.0f));
+        glm::vec3 vec = elem.second[0]->getRotation();
+        glm::vec3 vec1 = elem.second[0]->getScale();
+        elem.second[0]->setRotation(vec[0] + 0.2f, 0.0f, 0.0f);
+        elem.second[0]->setScale(glm::vec3(vec1[0] + 0.02f, vec1[1] + 0.02f, vec1[2] + 0.02f));
         elem.second[0]->drawElements(elem.second);
+    }
 }

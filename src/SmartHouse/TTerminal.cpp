@@ -36,16 +36,20 @@ TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& s
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
     transforms.resize(5);
 
-    transforms[0].setPosition(pos);
+    transforms[0].setPosition(pos + glm::vec3(0.0f, 0.0f, 0.0f)); //main Transform
     transforms[0].setScale(scale);
     transforms[1].setScale(glm::vec3(1.0f,1.0f,0.1f) * scale); //monitor 
     transforms[2].setScale(glm::vec3(0.2f,0.1f,0.2f) * scale); //stand1
     transforms[3].setScale(glm::vec3(0.1f,0.2f,0.1f) * scale); //stand2
     transforms[4].setScale(glm::vec3(0.9f,0.9f,0.01f) * scale); //screen
-    transforms[1].setPosition(pos + glm::vec3(0.0f, 1.3f,0.0f));
-    transforms[2].setPosition(pos + glm::vec3(0.0f, 0.0f,0.0f));
-    transforms[3].setPosition(pos + glm::vec3(0.0f, 0.2f, 0.0f));
-    transforms[4].setPosition(pos + glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
+    transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
+    transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+    transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+    transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+    transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
 }
 
 void TTerminal::initBuffer() {
@@ -53,10 +57,75 @@ void TTerminal::initBuffer() {
         glGenBuffers(1, &meshBuffer);
 }
 
-std::vector<glm::mat4> TTerminal::getModelMatrixes() {
-    return std::vector<glm::mat4>{transforms[0].getModelMatrix(), transforms[1].getModelMatrix(),
-        transforms[2].getModelMatrix(), transforms[3].getModelMatrix(), transforms[4].getModelMatrix()};
+void TTerminal::setScale(const glm::vec3& _size) {
+    // TObject::setScale(_size);
+    transforms[0].setScale(_size);
+    transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
+    transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
+    transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+    transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+    transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+    transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
 }
+void TTerminal::setPosition(const glm::vec3& pos) {
+    TObject::setPosition(pos);
+    transforms[0].setPosition(pos);
+    transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
+    transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
+    transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+    transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+    transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+    transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
+    // transforms[1].setPosition(pos + glm::vec3(0.0f, 1.3f,0.0f));
+    // transforms[2].setPosition(pos + glm::vec3(0.0f, 0.0f,0.0f));
+    // transforms[3].setPosition(pos + glm::vec3(0.0f, 0.2f, 0.0f));
+    // transforms[4].setPosition(pos + glm::vec3(0.0f, 1.3f,0.091f));
+}
+
+void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
+    TObject::setRotation(yaw, pitch, roll);
+    transforms[0].setRotation(yaw, pitch, roll);
+    transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
+    transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
+    transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+    transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+    transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+    transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
+    // for (auto& elem : transforms)
+    //     elem.setRotation(yaw, pitch, roll);
+    // TObject::setRotation(yaw, pitch, roll);
+    // glm::vec3 vec(transforms[0].getPosition());
+    // transforms[0].setPosition(vec);
+    // transforms[0].setRotation(yaw, pitch, roll);
+    // transforms[0].setPosition(vec + glm::vec3(0.0f, 1.3f,0.0f));
+    // vec = transforms[1].getPosition();
+    // transforms[1].setPosition(vec);
+    // transforms[1].setRotation(yaw, pitch, roll);
+    // transforms[1].setPosition(vec);
+    // vec = transforms[2].getPosition();
+    // transforms[2].setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    // transforms[2].setRotation(yaw, pitch, roll);
+    // transforms[2].setPosition(vec);
+    // vec = transforms[3].getPosition();
+    // transforms[3].setPosition(vec - glm::vec3(0.0f, 0.2f, 0.0f));
+    // transforms[3].setRotation(yaw, pitch, roll);
+    // transforms[3].setPosition(vec + glm::vec3(0.0f, 0.2f, 0.0f));
+    // vec = transforms[4].getPosition();
+    // transforms[4].setPosition(vec - glm::vec3(0.0f, 1.3f,0.091f));
+    // transforms[4].setRotation(yaw, pitch, roll);
+    // transforms[4].setPosition(vec + glm::vec3(0.0f, 1.3f,0.091f));
+}
+
+// std::vector<glm::mat4> TTerminal::getModelMatrixes() {
+//     return std::vector<glm::mat4>{transforms[0].getModelMatrix(), transforms[1].getModelMatrix(),
+//         transforms[2].getModelMatrix(), transforms[3].getModelMatrix(), transforms[4].getModelMatrix()};
+// }
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
     initBuffer();
@@ -118,9 +187,8 @@ void TTerminal::drawElements(const std::vector<TObject*>& objects) {
     for (auto iter : objects) {
         glBindTexture(GL_TEXTURE_2D, iter->getTexture("screen"));
         GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
-        std::vector<glm::mat4> vec = iter->getModelMatrixes();
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-            glm::value_ptr(vec[4]));
+            glm::value_ptr(iter->getModelMatrixes()[4]));
         glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
