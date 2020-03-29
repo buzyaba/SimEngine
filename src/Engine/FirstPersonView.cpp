@@ -22,7 +22,7 @@ FirstPersonView::FirstPersonView(const uint& screenWidth, const uint& screenHeig
 }
 
 void FirstPersonView::cameraMovement(float dt) {
-    GLfloat cameraSpeed = 15.0f * dt;
+    GLfloat cameraSpeed = 150.0f * dt;
 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
 	if (keys[GLFW_KEY_W])
@@ -46,7 +46,7 @@ void FirstPersonView::cameraMovement(float dt) {
 }
 
 void FirstPersonView::updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (glfwGetKey(window,GLFW_KEY_ESCAPE) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
 		glfwSetWindowShouldClose(window,true);
 	}
 	if (key >= 0 && key < 1024) {

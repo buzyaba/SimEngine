@@ -12,27 +12,9 @@
 
 #include "Core/common.h"
 
-// enum{screenWidth = 800, screenHeight = 600};
-
-// bool keys[1024];
-// GLfloat yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
-// GLfloat pitch =   0.0f;
-// GLfloat lastX;
-// GLfloat lastY;
-// GLfloat humanTall = 5.0f;
-
-// std::vector<Table*> table;
-// std::vector<Room*> room;
-// std::vector<Monoblock*> monitor;
-// std::vector<Desktop*> desktop;
-// std::vector<IObject*> allObject(2);
-// std::vector<TObjectOfObservation*> objects(5);
-// std::vector<TSmartThing*> things(1);
-// TEnvironmentScript* script;
 TWorkManager* workManager;
 
 int tick = 0;
-// bool windowFlag[400] = { false };
 bool windowFlag = false;
 
 void renderScene();
@@ -45,94 +27,22 @@ void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int m
 void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv) {
-	
-//   glfwInit();
-//   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-//   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-//   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-//   GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
-//   glfwMakeContextCurrent(window);
-//   initMousePosition(screenWidth/2, screenHeight/2); 
-//   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
-//   glfwSetKeyCallback(window, updateKeyboard); // keyboard events
-//   glfwSetCursorPosCallback(window, updateMouse); // mouse events
-//   glewInit();
-  
-//   initApplication();
-  FirstPersonView window(800, 600);
   auto mainSet = TSetFactory::Create(0);//!!!!
-//   objects = mainSet->GetObject();///!!!
-//   things = mainSet->GetThing();
-//   auto maxStep = 1000;
-//     std::vector<IObject*> allObject(objects.size() + things.size());
-//   int j = 0;
-//   for (int i = 0; i < objects.size(); i++)
-//   {
-//     allObject[j] = objects[i];
-//     j++;
-//   }
-//   for (int i = 0; i < things.size(); i++)
-//   {
-//     allObject[j] = things[i];
-//     j++;
-//   }
-//   script = new TEnvironmentScript(allObject, "", maxStep);///!!!!
   workManager = new TWorkManager(mainSet);
   workManager->InitDraw();
-  auto previousTime = std::chrono::high_resolution_clock::now();
-  int i = 0;
-  while(!window.isWindowShouldClose()) {
-    auto currentTime = std::chrono::high_resolution_clock::now();
-	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
-	Renderer::getDynamicsWorld()->stepSimulation(dt);
-    
-    // Some render stuff
-	window.runWindow(dt, renderScene);
-
-	++i;
-    previousTime = currentTime;
-  }
+  workManager->Start();
+//   auto previousTime = std::chrono::high_resolution_clock::now();
+//   while(!window.isWindowShouldClose()) {
+//     auto currentTime = std::chrono::high_resolution_clock::now();
+// 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
+// 	Renderer::getDynamicsWorld()->stepSimulation(dt);
   Renderer::terminate();
   return 0;
 }
 
-void renderScene() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.2f, 1.f, 0.f, 1.f);
-	//Drawing objects here
-    workManager->DrawElements();
-	// table[0]->drawElements(table);
-	// Room::drawElements(room);
-	// Monoblock::drawElements(monitor);
-	// Desktop::drawElements(desktop);
-}
-
-
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
     timeStep) {
 		
-  	// if (tick >= 399){
-	// 	tick = 0;
-	// 	windowFlag = !windowFlag;
-	// 	if (windowFlag) {
-	// 		GLuint texture = Renderer::getTextures()[WINDOWS];
-	// 		monitor[0]->setScreenTexture(texture);
-	// 	} else {
-			// GLuint texture = Renderer::getTextures()[SCREENSAVER];
-			// monitor[0]->setScreenTexture(texture);
-	// 	}
-	// }
-	// tick++;
-	// auto time = tick*timeStep;
-	// workManager->Iteration(time);
-	// if (objects[0]->GetProperties()[0]->GetValues()[0] == 0) {
-	// 	GLuint texture = Renderer::getTextures()[WINDOWS];
-	// 	monitor[0]->setScreenTexture(texture);
-	// } else {
-	// 	GLuint texture = Renderer::getTextures()[SCREENSAVER];
-	// 	monitor[0]->setScreenTexture(texture);
-	// }
 }
 
 void initApplication() {

@@ -14,7 +14,7 @@
 #include "Core/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
-#include "Engine/WindowManager.hpp"
+#include <Engine/WindowManager.hpp>
 
 /// Класс 
 class TWorkManager

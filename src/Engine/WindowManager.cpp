@@ -18,6 +18,7 @@ WindowManager::WindowManager(const uint& screenWidth, const uint& screenHeight, 
 }
 
 void WindowManager::runWindow(const float& dt, const std::function<void()>& renderFunc) {
+    Renderer::getDynamicsWorld()->stepSimulation(dt);
     renderFunc();
     glfwSwapBuffers(window);
     glfwPollEvents();

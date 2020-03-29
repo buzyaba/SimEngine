@@ -1,5 +1,6 @@
 ﻿#include "Core/MainSet.h"
 #include "SmartHouse/TTerminal.h"
+#include <Engine/FirstPersonView.hpp>
 // #include "SmartHouseData/Room.h"
 // #include "TrafficSimData/Street.h"
 
@@ -26,6 +27,7 @@ std::vector<TSmartThing*> TMainSet::GetThing()
 TRoomSet::TRoomSet() : TMainSet()
 {
     /// пока что заглушка
+    window = new FirstPersonView(800, 600, "Smart House");
     objects.resize(1, new TTerminal("Terminal"));
     allGObject.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
     //   scene.resize(1, new TRoom("Room"));

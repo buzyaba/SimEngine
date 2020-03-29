@@ -57,7 +57,6 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
   currentStep = 0;
   mainSet = TSetFactory::Create(0);
     //new TMainSet();
-
   objects = mainSet->GetObject();
   things = mainSet->GetThing();
   scene = mainSet->GetScene();
@@ -103,33 +102,36 @@ void TWorkManager::Start()
 
   unsigned long int time = 0;
   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
-  for (int t = 0; t < maxStep; t++)
+  for (int t = 0; t < maxStep && !mainSet->GetWindow()->isWindowShouldClose(); t++)
   {
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     time = (t * timeStep) / 1000;
     currentTime = time;
     currentStep = t;
-    script->UpdateObjectsProperties(time);
+    // TODO: FIX COMMENTED STUFF
+    // script->UpdateObjectsProperties(time);
 
     for (int i = 0; i < objects.size(); i++)
     {      
       objects[i]->Update();      
-    }  
-
-    storage->AddAllProperties(time);
+    }
+    // storage->AddAllProperties(time);
     
-    program->Run();  
+    // program->Run();  
 
     //storage->PrintToConsole();
     std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
     std::chrono::milliseconds delta =
       std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-
+    float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end-start).count();
+    mainSet->GetWindow()->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	                                             glClearColor(0.2f, 1.f, 0.f, 1.f);
+                                               this->DrawElements();});
     std::this_thread::sleep_for(delta);
   }
 
-  storage->PrintToFile();
-  program->End();
+  // storage->PrintToFile();
+  // program->End();
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
@@ -179,11 +181,6 @@ void TWorkManager::InitDraw() {
 
 void TWorkManager::DrawElements() {
     for(const auto& elem : mainSet->GetAllGObject()) {
-        elem.second[0]->setPosition(elem.second[0]->getPosition() + glm::vec3(0.05f,0.0f,0.0f));
-        glm::vec3 vec = elem.second[0]->getRotation();
-        glm::vec3 vec1 = elem.second[0]->getScale();
-        elem.second[0]->setRotation(vec[0] + 0.2f, 0.0f, 0.0f);
-        elem.second[0]->setScale(glm::vec3(vec1[0] + 0.02f, vec1[1] + 0.02f, vec1[2] + 0.02f));
         elem.second[0]->drawElements(elem.second);
     }
 }
