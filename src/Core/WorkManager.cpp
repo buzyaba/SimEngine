@@ -48,7 +48,7 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
 //   script = new TEnvironmentScript(allObject, "", _maxStep);
 //   program = TProgramFactory::Create(0, things);
 //   storage = new TDataStore(allObject, "A");
-//   maxStep = _maxStep;
+    maxStep = _maxStep;
   }
 
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
