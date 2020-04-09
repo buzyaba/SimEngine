@@ -5,8 +5,8 @@ add_executable(SmartHouse ${source_files} ${engine_source})
 
 #target_link_libraries(SmartHouse glfw ${OPENGL_LIBRARIES})
 
-add_definitions(-DGLEW_STATIC)
 add_definitions(-DGLEW_NO_GLU)
+add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(SmartHouse
 						pugixml 
