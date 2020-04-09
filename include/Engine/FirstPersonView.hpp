@@ -6,7 +6,7 @@
 
 class FirstPersonView : public WindowManager {
 public:
-    FirstPersonView(const uint& screenWidth = 800, const uint& screenHeight = 600,
+    FirstPersonView(const std::uint32_t& screenWidth = 800, const std::uint32_t& screenHeight = 600,
                     const std::string winName = "Window"); 
 private:
     virtual void cameraMovement(float dt) override;

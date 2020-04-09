@@ -11,7 +11,7 @@ protected:
     GLFWwindow* window;
     virtual void cameraMovement(float dt) {};
 public: 
-    WindowManager(const uint& screenWidth = 800, const uint& screenHeight = 600, 
+    WindowManager(const std::uint32_t& screenWidth = 800, const std::uint32_t& screenHeight = 600, 
                   const std::string winName = "Window");
     int isWindowShouldClose() {return glfwWindowShouldClose(window);}
     virtual ~WindowManager() {glfwDestroyWindow(window); glfwTerminate();}

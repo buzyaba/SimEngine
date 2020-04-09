@@ -7,7 +7,7 @@ class TTerminal : public TObjectOfObservation
 {
 private:
     void initBuffer() override;
-    unsigned int getMeshBuffer() override {return uint{0};};
+    unsigned int getMeshBuffer() override {return std::uint32_t{0};};
 protected:
     ///Был ли включен терминал
     bool isWork;
