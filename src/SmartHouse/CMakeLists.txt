@@ -11,7 +11,7 @@ add_definitions(-DGLEW_STATIC)
 target_link_libraries(SmartHouse
 						pugixml 
 						output_system
-						libglew_static
+						libglewmx_static
 						Core
 						BulletDynamics
 						BulletCollision
