@@ -33,7 +33,7 @@ void Renderer::initPhysics() {
 std::string Renderer::getCWD() {
     char buff[FILENAME_MAX]; //create string buffer to hold path
     GetCurrentDir(buff, FILENAME_MAX);
-    std::string current_working_dir(std::move(buff));
+    std::string current_working_dir(buff);
     return current_working_dir;
 }
 
