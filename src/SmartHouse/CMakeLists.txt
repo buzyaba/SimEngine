@@ -10,8 +10,8 @@ add_definitions(-DGLEW_STATIC)
 target_link_libraries(SmartHouse
 						pugixml 
 						output_system
-						Core
 						libglewmx_static
+						Core
 						BulletDynamics
 						BulletCollision
 						LinearMath 
