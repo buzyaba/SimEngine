@@ -21,7 +21,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 						output_system
 						Core
                         TrafficSimData
-                        libglewmx_static
+                        libglew_static
 						BulletDynamics
 						BulletCollision
 						LinearMath 
