@@ -1,5 +1,6 @@
 ﻿#include "Core/Object.h"
-#include <filesystem>
+#include <Engine/Renderer.hpp>
+#include <algorithm>
 
 
 GLuint TObject::shaderProgramInstanced = -1;
@@ -7,12 +8,13 @@ GLuint TObject::shaderProgramUnique = -1;
 
 void TObject::initShader() {
     ShaderLoader shader;
-    auto i = std::filesystem::current_path().string().find("SimEngine");
-    auto pwd = std::filesystem::current_path().string();
+    auto cwd = Renderer::getCWD();
+    std::transform(cwd.begin(), cwd.end(), cwd.begin(), toupper);
+    auto i = cwd.find("SIMENGINE");
     if (shaderProgramInstanced == -1)
-      shaderProgramInstanced = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
+      shaderProgramInstanced = shader.CreateProgram(Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.vs", Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.fs");
     if (shaderProgramUnique == -1)
-      shaderProgramUnique = shader.CreateProgram(pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModelSingle.vs", pwd.substr(0,i) + "SimEngine/assets/shaders/texturedModel.fs");
+      shaderProgramUnique = shader.CreateProgram(Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModelSingle.vs", Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.fs");
 }
 
 TObject::TObject(const std::string& _name):rigidBody(nullptr), name(_name) {

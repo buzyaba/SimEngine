@@ -27,17 +27,17 @@ void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int m
 void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char** argv) {
-  auto mainSet = TSetFactory::Create(0);//!!!!
-  workManager = new TWorkManager(mainSet);
-  workManager->InitDraw();
-  workManager->Start();
+	auto mainSet = TSetFactory::Create(0);//!!!!
+  	workManager = new TWorkManager(mainSet);
+  	workManager->InitDraw();
+  	workManager->Start(1);
 //   auto previousTime = std::chrono::high_resolution_clock::now();
 //   while(!window.isWindowShouldClose()) {
 //     auto currentTime = std::chrono::high_resolution_clock::now();
 // 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 // 	Renderer::getDynamicsWorld()->stepSimulation(dt);
-  Renderer::terminate();
-  return 0;
+  	Renderer::terminate();
+  	return 0;
 }
 
 void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar

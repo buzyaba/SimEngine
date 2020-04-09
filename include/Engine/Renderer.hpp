@@ -3,6 +3,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <Engine/TextureLoader.hpp>
 #include <vector>
+#include <string>
 
 enum Textures {CAR, GRASS, ROAD, GRAY, BLACK, WINDOWS, SCREENSAVER, TABLE, WALL, FLOOR, CEILING, MONITOR};
 
@@ -16,8 +17,9 @@ class Renderer {
             GLfloat farPlane, glm::vec3 camPos, glm::vec3 camFront, glm::vec3 camUp);
         static void initPhysics();
         static void initTextures();
-        static Camera* getCamera() {return camera;}
-        static std::vector<GLuint> getTextures(){return textures;}
-        static btDiscreteDynamicsWorld* getDynamicsWorld() {return dynamicsWorld;}
+        static std::string getCWD();
+        static Camera* getCamera() noexcept {return camera;}
+        static std::vector<GLuint> getTextures() noexcept {return textures;}
+        static btDiscreteDynamicsWorld* getDynamicsWorld() noexcept {return dynamicsWorld;}
         static void terminate() {delete camera; delete dynamicsWorld;};
 };

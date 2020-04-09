@@ -95,7 +95,7 @@ TWorkManager::~TWorkManager()
   delete program;
 }
 
-void TWorkManager::Start()
+void TWorkManager::Start(const unsigned short& _enableVisualisation)
 {
   std::cout << "Start\n MaxIter = " << maxStep<< std::endl;
   std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
@@ -124,10 +124,12 @@ void TWorkManager::Start()
     std::chrono::milliseconds delta =
       std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
     float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end-start).count();
-    mainSet->GetWindow()->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	                                             glClearColor(0.2f, 1.f, 0.f, 1.f);
-                                               this->DrawElements();});
-    std::this_thread::sleep_for(delta);
+    if (_enableVisualisation == 1)
+      mainSet->GetWindow()->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	                                              glClearColor(0.2f, 1.f, 0.f, 1.f);
+                                                this->DrawElements();});
+    else
+      std::this_thread::sleep_for(delta);
   }
 
   // storage->PrintToFile();
