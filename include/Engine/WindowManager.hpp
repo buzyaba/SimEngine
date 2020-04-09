@@ -8,7 +8,7 @@
 
 class WindowManager {
 protected:
-    GLFWwindow* window;
+    static GLFWwindow* window;
     virtual void cameraMovement(float dt) {};
 public: 
     WindowManager(const std::uint32_t& screenWidth = 800, const std::uint32_t& screenHeight = 600, 

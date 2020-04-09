@@ -1,7 +1,7 @@
 #include <Engine/Renderer.hpp>
 #include <algorithm>
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <direct.h>
 #define GetCurrentDir _getcwd
 #else

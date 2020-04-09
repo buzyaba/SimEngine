@@ -1,5 +1,7 @@
 #include "Engine/WindowManager.hpp"
 
+GLFWwindow* WindowManager::window = nullptr;
+
 WindowManager::WindowManager(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, const std::string winName) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

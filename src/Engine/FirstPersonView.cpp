@@ -6,7 +6,7 @@ GLfloat lastY;
 GLfloat yaw;	
 GLfloat pitch;
 
-FirstPersonView::FirstPersonView(const uint& screenWidth, const uint& screenHeight, 
+FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
                                  const std::string winName): WindowManager(screenWidth, screenHeight, winName) {
     Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(0.0f, 5.0f, 8.0f), 
                         glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
