@@ -92,6 +92,8 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
 
 TWorkManager::~TWorkManager()
 {
+  auto temp = mainSet->GetWindow();
+  delete temp;
   delete program;
 }
 

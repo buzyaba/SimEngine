@@ -13,6 +13,7 @@ target_link_libraries(SmartHouse
 						output_system
 						libglewmx_static
 						Core
+						Python3::Python
 						BulletDynamics
 						BulletCollision
 						LinearMath 

@@ -11,8 +11,10 @@
 #include "Core/EmptyProgram.h"
 
 #include "Core/common.h"
+#include "matplotlibcpp.h"
 
 TWorkManager* workManager;
+namespace plt = matplotlibcpp;
 
 int tick = 0;
 bool windowFlag = false;
@@ -26,16 +28,43 @@ void cameraMovement(float dt);
 void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
 void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
-int main(int argc, char** argv) {
+void drawPlot() {
+	std::vector<std::vector<double>> x, y, z;
+    for (double i = -5; i <= 5;  i += 0.25) {
+        std::vector<double> x_row, y_row, z_row;
+        for (double j = -5; j <= 5; j += 0.25) {
+            x_row.push_back(i);
+            y_row.push_back(j);
+            z_row.push_back(::std::sin(::std::hypot(i, j)));
+        }
+		x.push_back(x_row);
+        y.push_back(y_row);
+        z.push_back(z_row);
+	}
+	plt::plot_surface(x, y, z);
+	plt::show();
+}
+
+void startWork() {
 	auto mainSet = TSetFactory::Create(0);//!!!!
   	workManager = new TWorkManager(mainSet);
   	workManager->InitDraw();
   	workManager->Start(1);
+}
+
+int main(int argc, char** argv) {
+	auto plt_thread = std::thread(drawPlot);
+	auto work_thread = std::thread(startWork);
 //   auto previousTime = std::chrono::high_resolution_clock::now();
 //   while(!window.isWindowShouldClose()) {
 //     auto currentTime = std::chrono::high_resolution_clock::now();
 // 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 // 	Renderer::getDynamicsWorld()->stepSimulation(dt);
+	work_thread.join();
+	delete workManager;
+	std::cout << "Workmanager stopped\n";
+	std::cout << "Waiting for plt\n";
+	plt_thread.join();
   	Renderer::terminate();
   	return 0;
 }
