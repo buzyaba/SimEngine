@@ -1,8 +1,8 @@
 #include "SmartHouse/Room.h"
 
-unsigned int TRoom::meshBuffer = -1;
+// unsigned int TRoom::meshBuffer = -1;
 
-TRoom::TRoom(std::string _name = "", const glm::vec3 &pos,
+TRoom::TRoom(std::string _name, const glm::vec3 &pos,
              const glm::vec3 &scale)
     : TStaticObject(_name) {
   properties.insert({std::string("Dimensions"),
@@ -56,10 +56,11 @@ TRoom::TRoom(std::string _name = "", const glm::vec3 &pos,
   transforms[6].setScale(glm::vec3(30.0f, 5.0f, 0.1f) * scale);
 }
 
-void TRoom::initBuffer() {
-  if (meshBuffer == -1)
-    glGenBuffers(1, &meshBuffer);
-}
+// void TRoom::initBuffer() {
+//   if (meshBuffer == -1)
+//     glGenBuffers(1, &meshBuffer);
+// }
+
 void TRoom::setScale(const glm::vec3 &_size) {
   transforms[0].setScale(_size);
   transforms[1].setPosition(glm::vec3(0.0f, -0.1f, 0.0f));  // floor
@@ -69,8 +70,8 @@ void TRoom::setScale(const glm::vec3 &_size) {
   transforms[5].setPosition(glm::vec3(0.0f, 5.0f, -30.0f)); // frontWall
   transforms[6].setPosition(glm::vec3(0.0f, 5.0f, 30.0f));  // backWall
   for (size_t i = 1; i < transforms.size(); ++i)
-    transforms[i].setModelMatrix(transforms[0].getModelMatrix *
-                                 transforms[i].getModelMatrix);
+    transforms[i].setModelMatrix(transforms[0].getModelMatrix() *
+                                 transforms[i].getModelMatrix());
 }
 
 void TRoom::setPosition(const glm::vec3 &pos) {
@@ -83,8 +84,8 @@ void TRoom::setPosition(const glm::vec3 &pos) {
   transforms[5].setPosition(glm::vec3(0.0f, 5.0f, -30.0f)); // frontWall
   transforms[6].setPosition(glm::vec3(0.0f, 5.0f, 30.0f));  // backWall
   for (size_t i = 1; i < transforms.size(); ++i)
-    transforms[i].setModelMatrix(transforms[0].getModelMatrix *
-                                 transforms[i].getModelMatrix);
+    transforms[i].setModelMatrix(transforms[0].getModelMatrix() *
+                                 transforms[i].getModelMatrix());
 }
 
 void TRoom::setRotation(const btScalar &yaw, const btScalar &pitch,
@@ -98,46 +99,44 @@ void TRoom::setRotation(const btScalar &yaw, const btScalar &pitch,
   transforms[5].setPosition(glm::vec3(0.0f, 5.0f, -30.0f)); // frontWall
   transforms[6].setPosition(glm::vec3(0.0f, 5.0f, 30.0f));  // backWall
   for (size_t i = 1; i < transforms.size(); ++i)
-    transforms[i].setModelMatrix(transforms[0].getModelMatrix *
-                                 transforms[i].getModelMatrix);
+    transforms[i].setModelMatrix(transforms[0].getModelMatrix() *
+                                 transforms[i].getModelMatrix());
 }
 
-void TRoom::initDraw(const std::vector<TObject*>& objects) {
-} 
+void TRoom::drawElements(const std::vector<TObject*>& objects) {
+  GLuint vao = meshes->getMesh(kCube)->getVAO();
+  glUseProgram(shaderProgramUnique);
+  glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+  GLint vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
+  glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+  for (auto iter : objects) {
+    std::vector<glm::mat4> vec = iter->getModelMatrixes();
+    GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
+    glBindTexture(GL_TEXTURE_2D, iter->getTexture("wall"));
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[3]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[4]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[5]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[6]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glBindTexture(GL_TEXTURE_2D, iter->getTexture("floor"));
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[1]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glBindTexture(GL_TEXTURE_2D, iter->getTexture("ceiling"));
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+        glm::value_ptr(iter->getModelMatrixes()[2]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+  }
+  glBindVertexArray(0);
+}
 
-// void Room::initDraw(const std::vector<Room*> objects) {
-//     initBuffer();
-//     glUseProgram(shaderProgram);
-//     glm::mat4* modelMatrixes = new glm::mat4[(int)(objects.size()*4)];
-//     for (int i = 0; i < objects.size(); ++i) {
-//         modelMatrixes[i*4] = objects[i]->leftWall.getModelMatrix();
-//         modelMatrixes[i*4 + 1] = objects[i]->rightWall.getModelMatrix();
-//         modelMatrixes[i*4 + 2] = objects[i]->frontWall.getModelMatrix();
-//         modelMatrixes[i*4 + 3] = objects[i]->backWall.getModelMatrix();
-//     }
-//     glBindBuffer(GL_ARRAY_BUFFER, Room::meshBuffer);
-//     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) *
-//     4, &modelMatrixes[0], GL_STATIC_DRAW); GLuint vao =
-//     objects[0]->mesh->getVAO(); glBindVertexArray(vao);
-//     glEnableVertexAttribArray(3);
-//     glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
-//     (void*)0); glEnableVertexAttribArray(4); glVertexAttribPointer(4, 4,
-//     GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-//     glEnableVertexAttribArray(5);
-//     glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
-//     (void*)(2 * sizeof(glm::vec4))); glEnableVertexAttribArray(6);
-//     glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
-//     (void*)(3 * sizeof(glm::vec4)));
-
-//     glVertexAttribDivisor(3, 1);
-//     glVertexAttribDivisor(4, 1);
-//     glVertexAttribDivisor(5, 1);
-//     glVertexAttribDivisor(6, 1);
-//     glBindVertexArray(0);
-//     delete[] modelMatrixes;
-// }
-
-// void Room::drawElements(const std::vector<Room*> objects) {
 //     glUseProgram(shaderProgram);
 //     glm::mat4* modelMatrixes = new glm::mat4[(int)(objects.size()*4)];
 //     for (int i = 0; i < objects.size(); ++i) {
@@ -179,4 +178,36 @@ void TRoom::initDraw(const std::vector<TObject*>& objects) {
 //         GL_UNSIGNED_INT, 0);
 //     }
 //     glBindVertexArray(0);
+// }
+
+// void Room::initDraw(const std::vector<Room*> objects) {
+//     initBuffer();
+//     glUseProgram(shaderProgram);
+//     glm::mat4* modelMatrixes = new glm::mat4[(int)(objects.size()*4)];
+//     for (int i = 0; i < objects.size(); ++i) {
+//         modelMatrixes[i*4] = objects[i]->leftWall.getModelMatrix();
+//         modelMatrixes[i*4 + 1] = objects[i]->rightWall.getModelMatrix();
+//         modelMatrixes[i*4 + 2] = objects[i]->frontWall.getModelMatrix();
+//         modelMatrixes[i*4 + 3] = objects[i]->backWall.getModelMatrix();
+//     }
+//     glBindBuffer(GL_ARRAY_BUFFER, Room::meshBuffer);
+//     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) *
+//     4, &modelMatrixes[0], GL_STATIC_DRAW); GLuint vao =
+//     objects[0]->mesh->getVAO(); glBindVertexArray(vao);
+//     glEnableVertexAttribArray(3);
+//     glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
+//     (void*)0); glEnableVertexAttribArray(4); glVertexAttribPointer(4, 4,
+//     GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+//     glEnableVertexAttribArray(5);
+//     glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
+//     (void*)(2 * sizeof(glm::vec4))); glEnableVertexAttribArray(6);
+//     glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4),
+//     (void*)(3 * sizeof(glm::vec4)));
+
+//     glVertexAttribDivisor(3, 1);
+//     glVertexAttribDivisor(4, 1);
+//     glVertexAttribDivisor(5, 1);
+//     glVertexAttribDivisor(6, 1);
+//     glBindVertexArray(0);
+//     delete[] modelMatrixes;
 // }

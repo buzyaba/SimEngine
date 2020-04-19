@@ -8,7 +8,7 @@
 #include "Core/SmartThing.h"
 #include "Core/ObjectOfObservation.h"
 #include "Core/Properties.h"
-#include "Core/Scene.h"
+#include "Core/StaticObject.h"
 #include "Core/ManagementProgram.h"
 #include "Core/DataStore.h"
 #include "Core/DataPacket.h"
@@ -23,7 +23,7 @@ protected:
   ///
   std::vector<TObjectOfObservation*> objects;
   std::vector<TSmartThing*> things;
-  std::vector<TScene*> scene;
+  std::vector<TStaticObject*> staticObjects;
 
   TEnvironmentScript* script;
   IManagementProgram* program;

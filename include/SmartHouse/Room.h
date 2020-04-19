@@ -5,8 +5,9 @@
 
 class TRoom : public TStaticObject {
 private:
-//     void initBuffer() override;
-//     unsigned int getMeshBuffer() override {return meshBuffer;};
+    void initBuffer() override {};
+    unsigned int getMeshBuffer() override { return -1;}
+    // unsigned int getMeshBuffer() override {return meshBuffer;};
 // protected:
 //     static unsigned int meshBuffer;
 public:
@@ -16,7 +17,7 @@ public:
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) override;
     void setScreenTexture(GLuint _text) { otherTextures["screen"] = _text; }
     void drawElements(const std::vector<TObject*>& objects);
-    void initDraw(const std::vector<TObject*>& objects);
+    void initDraw(const std::vector<TObject*>& objects) {}
     // virtual std::vector<glm::mat4> getModelMatrixes() override;
 };
 

@@ -1,4 +1,4 @@
-﻿#include <exception>
+﻿#include <stdexcept>
 #include "Core/Properties.h"
 
 TProperties::TProperties(std::string _name) : name(_name),

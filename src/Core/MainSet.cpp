@@ -2,6 +2,7 @@
 #include "SmartHouse/Terminal.h"
 #include <Engine/FirstPersonView.hpp>
 #include "SmartHouse/Room.h"
+#include "SmartHouse/SmartSocket.h"
 // #include "TrafficSimData/Street.h"
 
 TMainSet::TMainSet()
@@ -31,11 +32,12 @@ TRoomSet::TRoomSet() : TMainSet()
     objects.resize(1, new TTerminal("Terminal"));
     allGObjects.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
     staticObjects.resize(1, new TRoom("Room"));
-    thing.resize(1, new TSmartSocket("SmartSocket"));
+    allGObjects.insert(std::make_pair("Room", std::vector<TObject*>(1, staticObjects.back())));
+    things.resize(1, new TSmartSocket("SmartSocket"));
 
-    for (int i = 0; i < thing.size() && i < objects.size(); i++)
+    for (int i = 0; i < things.size() && i < objects.size(); i++)
     {
-      thing[i]->AddObject(*objects[i]);
+      things[i]->AddObject(*objects[i]);
     }
 }
 

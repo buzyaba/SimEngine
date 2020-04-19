@@ -17,9 +17,9 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
   mainSet = _mainSet;
     //new TMainSet();
 
-  objects = mainSet->GetObject();
-  things = mainSet->GetThing();
-  scene = mainSet->GetScene();
+  objects = mainSet->GetObjects();
+  things = mainSet->GetThings();
+  staticObjects = mainSet->GetStaticObjects();
 
   if (_millisecondsOfTimeStep > 0)
     timeStep = _millisecondsOfTimeStep;
@@ -57,9 +57,9 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
   currentStep = 0;
   mainSet = TSetFactory::Create(0);
     //new TMainSet();
-  objects = mainSet->GetObject();
-  things = mainSet->GetThing();
-  scene = mainSet->GetScene();
+  objects = mainSet->GetObjects();
+  things = mainSet->GetThings();
+  staticObjects = mainSet->GetStaticObjects();
 
   if (_millisecondsOfTimeStep > 0)
     timeStep = _millisecondsOfTimeStep;
@@ -110,7 +110,6 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
     currentStep = t;
     // TODO: FIX COMMENTED STUFF
     // script->UpdateObjectsProperties(time);
-
     for (int i = 0; i < objects.size(); i++)
     {      
       objects[i]->Update();      
@@ -176,13 +175,13 @@ void TWorkManager::Iteration(unsigned long int time){
 }
 
 void TWorkManager::InitDraw() {
-    for(const auto& elem : mainSet->GetAllGObject()){
+    for(const auto& elem : mainSet->GetAllGObjects()){
         elem.second[0]->initDraw(elem.second);
     }
 }
 
 void TWorkManager::DrawElements() {
-    for(const auto& elem : mainSet->GetAllGObject()) {
+    for(const auto& elem : mainSet->GetAllGObjects()) {
         elem.second[0]->drawElements(elem.second);
     }
 }
