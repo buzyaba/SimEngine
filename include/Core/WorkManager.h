@@ -36,9 +36,11 @@ protected:
   double delay;
   
 public:
-  TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
+  TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0,
+  double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
   TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep = 1000, 
-  double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
+               double _delay = 0, double _fractionOfTimeStep = -1.0, 
+               unsigned int _maxStep = 1000);
   ~TWorkManager();
   void Start(const unsigned short& _enableVisualisation = 1);
   void Stop();
