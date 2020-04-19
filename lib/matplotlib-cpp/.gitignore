@@ -33,6 +33,11 @@
 
 # Build
 /examples/build/*
+/build/*
 
-# vim temp files
-*.sw*
+# Images
+*.png
+*.jpg
+*.pdf
+*.eps
+*.gif

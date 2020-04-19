@@ -1,38 +1,57 @@
-# Use C++11, dont warn on long-to-float conversion
-CXXFLAGS += -std=c++11 -Wno-conversion
+# Python header include: Put the path to Python.h here
+includes = -I /usr/local/Cellar/python/3.7.4/Frameworks/Python.framework/Versions/3.7/include/python3.7m
 
-# Default to using system's default version of python
-PYTHON_BIN     ?= python
-PYTHON_CONFIG  := $(PYTHON_BIN)-config
-PYTHON_INCLUDE ?= $(shell $(PYTHON_CONFIG) --includes)
-EXTRA_FLAGS    := $(PYTHON_INCLUDE)
-LDFLAGS        += $(shell $(PYTHON_CONFIG) --libs)
+# Numpy include: Put the path to numpy/arrayobject.h
+includes +=  -I /usr/local/lib/python3.7/site-packages/numpy/core/include
 
-# Either finds numpy or set -DWITHOUT_NUMPY
-EXTRA_FLAGS     += $(shell $(PYTHON_BIN) $(CURDIR)/numpy_flags.py)
-WITHOUT_NUMPY   := $(findstring $(EXTRA_FLAGS), WITHOUT_NUMPY)
+# Python libraries include: Add the path to the directory containing libpython*.a here
+includes += -L /usr/local/Cellar/python/3.7.4/Frameworks/Python.framework/Versions/3.7/lib
 
-# Examples requiring numpy support to compile
-EXAMPLES_NUMPY  := surface colorbar
-EXAMPLES        := minimal basic modern animation nonblock xkcd quiver bar \
-	           fill_inbetween fill update subplot2grid lines3d \
-                   $(if $(WITHOUT_NUMPY),,$(EXAMPLES_NUMPY))
+# Link your Python version
+linkings = -lpython3.7
 
-# Prefix every example with 'examples/build/'
-EXAMPLE_TARGETS := $(patsubst %,examples/build/%,$(EXAMPLES))
+# Compiler definitions
+definitions = -std=c++11
 
-.PHONY: examples
+# Eigen include
+eigen_include = -I /usr/local/include/eigen3
 
-examples: $(EXAMPLE_TARGETS)
+# Executable names for examples (w/o Eigen)
+example_execs = minimal modern basic animation nonblock xkcd quiver bar surface subplot fill_inbetween fill update
 
-docs:
-	doxygen
-	moxygen doc/xml --noindex -o doc/api.md
+# Executable names for examples using Eigen
+eigen_execs = eigen loglog semilogx semilogy small spy
 
-# Assume every *.cpp file is a separate example
-$(EXAMPLE_TARGETS): examples/build/%: examples/%.cpp matplotlibcpp.h
-	mkdir -p examples/build
-	$(CXX) -o $@ $< $(EXTRA_FLAGS) $(CXXFLAGS) $(LDFLAGS)
+# Example targets (default if just 'make' is called)
+examples: $(example_execs)
 
+# Eigen example targets
+eigen: $(eigen_execs)
+
+# All examples
+all: examples eigen
+
+# Run all examples
+run: run_examples run_eigen
+
+# Compiler instructions for examples
+$(example_execs): %: examples/%.cpp matplotlibcpp.h
+	g++ $< $(includes) $(linkings) -o examples/$@ $(definitions)
+
+# Run examples
+run_examples:
+	for exec in $(example_execs); do ./examples/$$exec; done
+
+# Compiler instructions for Eigen examples
+$(eigen_execs): %: examples/%.cpp matplotlibcpp.h
+	g++ $< $(includes) $(eigen_include) $(linkings) -o examples/$@ $(definitions)
+
+# Run Eigen examples
+run_eigen:
+	for exec in $(eigen_execs); do ./examples/$$exec; done
+
+# Clean all
 clean:
-	rm -f ${EXAMPLE_TARGETS}
+	# -f to silent warnings if file does not exist
+	for exec in $(example_execs); do rm -f examples/$$exec; done
+	for exec in $(eigen_execs); do rm -f examples/$$exec; done
