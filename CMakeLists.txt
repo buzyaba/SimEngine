@@ -42,6 +42,7 @@ endif()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
@@ -64,7 +65,6 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
 include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
-include_directories("${CMAKE_SOURCE_DIR}/lib/packages/numpy/core/include")
 
 #add tests
 enable_testing()
