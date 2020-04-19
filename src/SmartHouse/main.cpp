@@ -1,3 +1,4 @@
+#define WITHOUT_NUMPY
 #include <Engine/Renderer.hpp>
 // #include <SmartHouse/Table.hpp>
 // #include <SmartHouse/Room.hpp>
@@ -29,19 +30,15 @@ void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int m
 void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
 void drawPlot() {
-	std::vector<std::vector<double>> x, y, z;
-    for (double i = -5; i <= 5;  i += 0.25) {
-        std::vector<double> x_row, y_row, z_row;
-        for (double j = -5; j <= 5; j += 0.25) {
-            x_row.push_back(i);
-            y_row.push_back(j);
-            z_row.push_back(::std::sin(::std::hypot(i, j)));
-        }
-		x.push_back(x_row);
-        y.push_back(y_row);
-        z.push_back(z_row);
+	float x_i = 0;
+	std::vector<float> x;
+	std::vector<float> y;
+	while(x_i < 10) {
+		x.emplace_back(x_i);
+		y.emplace_back(std::sin(x_i));
+		x_i += 0.01;
 	}
-	plt::plot_surface(x, y, z);
+	plt::plot(x, y);
 	plt::show();
 }
 
