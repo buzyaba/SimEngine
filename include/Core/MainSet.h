@@ -2,7 +2,7 @@
 #include <map>
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
-#include "Core/Scene.h"
+#include "Core/StaticObject.h"
 #include <Engine/WindowManager.hpp>
 
 
@@ -11,17 +11,17 @@ class TMainSet
 {
 protected:
   std::vector<TObjectOfObservation*> objects;
-  std::vector<TScene*> scene;
-  std::vector<TSmartThing*> thing;
-  std::map<std::string, std::vector<TObject*>> allGObject;
+  std::vector<TStaticObject*> staticObjects;
+  std::vector<TSmartThing*> things;
+  std::map<std::string, std::vector<TObject*>> allGObjects;
   WindowManager* window;
 public:
   TMainSet();
   WindowManager* GetWindow() {return window;}
-  std::vector<TObjectOfObservation*> GetObject();
-  std::vector<TScene*> GetScene();
-  std::vector<TSmartThing*> GetThing();
-  const std::map<std::string, std::vector<TObject*>>& GetAllGObject() {return allGObject;}
+  std::vector<TObjectOfObservation*> GetObjects();
+  std::vector<TStaticObject*> GetStaticObjects();
+  std::vector<TSmartThing*> GetThings();
+  const std::map<std::string, std::vector<TObject*>>& GetAllGObjects() {return allGObjects;}
 
 };
 

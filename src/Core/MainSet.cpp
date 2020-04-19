@@ -1,7 +1,7 @@
 ﻿#include "Core/MainSet.h"
-#include "SmartHouse/TTerminal.h"
+#include "SmartHouse/Terminal.h"
 #include <Engine/FirstPersonView.hpp>
-// #include "SmartHouseData/Room.h"
+#include "SmartHouse/Room.h"
 // #include "TrafficSimData/Street.h"
 
 TMainSet::TMainSet()
@@ -9,19 +9,19 @@ TMainSet::TMainSet()
 
 }
 
-std::vector<TObjectOfObservation*> TMainSet::GetObject()
+std::vector<TObjectOfObservation*> TMainSet::GetObjects()
 {
   return objects;
 }
 
-std::vector<TScene*> TMainSet::GetScene()
+std::vector<TStaticObject*> TMainSet::GetStaticObjects()
 {
-  return scene;
+  return staticObjects;
 }
 
-std::vector<TSmartThing*> TMainSet::GetThing()
+std::vector<TSmartThing*> TMainSet::GetThings()
 {
-  return thing;
+  return things;
 }
 
 TRoomSet::TRoomSet() : TMainSet()
@@ -29,14 +29,14 @@ TRoomSet::TRoomSet() : TMainSet()
     /// пока что заглушка
     window = new FirstPersonView(800, 600, "Smart House");
     objects.resize(1, new TTerminal("Terminal"));
-    allGObject.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
-    //   scene.resize(1, new TRoom("Room"));
-    //   thing.resize(1, new TSmartSocket("SmartSocket"));
+    allGObjects.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
+    staticObjects.resize(1, new TRoom("Room"));
+    thing.resize(1, new TSmartSocket("SmartSocket"));
 
-    //   for (int i = 0; i < thing.size() && i < objects.size(); i++)
-    //   {
-    //     thing[i]->AddObject(*objects[i]);
-    //   }
+    for (int i = 0; i < thing.size() && i < objects.size(); i++)
+    {
+      thing[i]->AddObject(*objects[i]);
+    }
 }
 
 TStreetSet::TStreetSet() : TMainSet()

@@ -1,4 +1,4 @@
-#include "SmartHouse/TTerminal.h"
+#include "SmartHouse/Terminal.h"
 
 unsigned int TTerminal::meshBuffer = -1;
 GLuint TTerminal::mainTexture = -1;
@@ -36,7 +36,7 @@ TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& s
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
     transforms.resize(5);
 
-    transforms[0].setPosition(pos + glm::vec3(0.0f, 0.0f, 0.0f)); //main Transform
+    transforms[0].setPosition(pos); //main Transform
     transforms[0].setScale(scale);
     transforms[1].setScale(glm::vec3(1.0f,1.0f,0.1f) * scale); //monitor 
     transforms[2].setScale(glm::vec3(0.2f,0.1f,0.2f) * scale); //stand1
@@ -97,29 +97,6 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
     transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
-    // for (auto& elem : transforms)
-    //     elem.setRotation(yaw, pitch, roll);
-    // TObject::setRotation(yaw, pitch, roll);
-    // glm::vec3 vec(transforms[0].getPosition());
-    // transforms[0].setPosition(vec);
-    // transforms[0].setRotation(yaw, pitch, roll);
-    // transforms[0].setPosition(vec + glm::vec3(0.0f, 1.3f,0.0f));
-    // vec = transforms[1].getPosition();
-    // transforms[1].setPosition(vec);
-    // transforms[1].setRotation(yaw, pitch, roll);
-    // transforms[1].setPosition(vec);
-    // vec = transforms[2].getPosition();
-    // transforms[2].setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    // transforms[2].setRotation(yaw, pitch, roll);
-    // transforms[2].setPosition(vec);
-    // vec = transforms[3].getPosition();
-    // transforms[3].setPosition(vec - glm::vec3(0.0f, 0.2f, 0.0f));
-    // transforms[3].setRotation(yaw, pitch, roll);
-    // transforms[3].setPosition(vec + glm::vec3(0.0f, 0.2f, 0.0f));
-    // vec = transforms[4].getPosition();
-    // transforms[4].setPosition(vec - glm::vec3(0.0f, 1.3f,0.091f));
-    // transforms[4].setRotation(yaw, pitch, roll);
-    // transforms[4].setPosition(vec + glm::vec3(0.0f, 1.3f,0.091f));
 }
 
 // std::vector<glm::mat4> TTerminal::getModelMatrixes() {
