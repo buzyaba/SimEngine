@@ -14,6 +14,3 @@
 	path = lib/stb
 	url = https://github.com/nothings/stb.git
 
-[submodule "lib/matplotlib-cpp"]
-	path = lib/matplotlib-cpp
-	url = https://github.com/lava/matplotlib-cpp.git
