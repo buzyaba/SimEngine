@@ -64,6 +64,7 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
 include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
+include_directories("${CMAKE_SOURCE_DIR}/lib/packages/numpy/core/include")
 
 #add tests
 enable_testing()
