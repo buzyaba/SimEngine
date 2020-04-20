@@ -172,26 +172,28 @@ void TTerminal::drawElements(const std::vector<TObject*>& objects) {
 }
 
 void TTerminal::Update() {
-    // TObjectOfObservation::Update();
+    TObjectOfObservation::Update();
 
-    // if (!isWork && this->properties[0]->GetValues()[0] == 1)
-    //   this->properties[1]->SetValues({ 100 });
+    if (!isWork && this->properties["IsWork"]->GetValues()["IsWork"] == 1)
+      this->properties["PowerConsumption"]->SetValues({{ "PowerConsumption", 100 }});
 
-    // if (this->properties[0]->GetValues()[0] != 0)
-    // {
-    //   std::vector<double>& tmp = this->properties[1]->GetValues();
-    //   tmp[0] += (double(rand()) / RAND_MAX) * (tmp[0] * 0.05) - tmp[0] * 0.025;
-    //   if (tmp[0] <= 0)
-    //     this->properties[0]->SetValues({ 0 });
-    // }
-    // else
-    //   this->properties[1]->SetValues({ 0 });
+    if (this->properties["IsWork"]->GetValues()["IsWork"] != 0)
+    {
+      std::map<std::string, double>& tmp = this->properties["PowerConsumption"]->GetValues();
+      tmp["PowerConsumption"] += (double(rand()) / RAND_MAX) * (tmp["PowerConsumption"] * 0.05) - tmp["PowerConsumption"] * 0.025;
+      if (tmp["PowerConsumption"] <= 0)
+        this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0 }});
+    }
+    else
+      this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0 }});
 
-    // if (this->properties[1]->GetValues()[0] <= 0)
-    // {
-    //   this->properties[0]->SetValues({ 0 });
-    //   this->properties[1]->SetValues({ 0 });
-    // }
+    if (this->properties["PowerConsumption"]->GetValues()["PowerConsumption"] <= 0)
+    {
+      this->properties["IsWork"]->SetValues({{"IsWork", 0}});
+      this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0 }});
+    }
 
-    // isWork = this->properties[0]->GetValues()[0] == 1;
+    isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
+    if (isWork) setScreenTexture(Renderer::getTextures()[WINDOWS]);
+    else setScreenTexture(Renderer::getTextures()[SCREENSAVER]);
 }

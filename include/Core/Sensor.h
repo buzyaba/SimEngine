@@ -27,9 +27,9 @@ protected:
   /// наблюдаемые объекты
   std::vector<TObjectOfObservation*> objects;
   /// Последнее количество объектов наблюдения
-  int oldObjectCount;
+  size_t oldObjectCount;
   /// Свойства всех наблюдаемых объектов
-  std::vector<std::vector<IProperties*>> objectsProperties;
+  std::vector<std::map<std::string, IProperties*>> objectsProperties;
   /// используемый пакет
   TDataPacket* packet;
   /// Свойства объектов

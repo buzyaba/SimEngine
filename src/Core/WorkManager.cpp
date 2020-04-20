@@ -32,24 +32,33 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
 
   delay = _delay;
 
-  std::vector<IObject*> allObject(objects.size() + things.size());
+  // !! Не забыть переделать
+  std::vector<IObject*> allObject(objects.size());
   int j = 0;
   for (int i = 0; i < objects.size(); i++)
   {
     allObject[j] = objects[i];
     j++;
   }
-  for (int i = 0; i < things.size(); i++)
-  {
-    allObject[j] = things[i];
-    j++;
-  }
 
-//   script = new TEnvironmentScript(allObject, "", _maxStep);
-//   program = TProgramFactory::Create(0, things);
-//   storage = new TDataStore(allObject, "A");
+  // std::vector<IObject*> allObject(objects.size() + things.size());
+  // int j = 0;
+  // for (int i = 0; i < objects.size(); i++)
+  // {
+  //   allObject[j] = objects[i];
+  //   j++;
+  // }
+  // for (int i = 0; i < things.size(); i++)
+  // {
+  //   allObject[j] = things[i];
+  //   j++;
+  // }
+
+  script = new TEnvironmentScript(allObject, "TestScript", _maxStep);
+  program = TProgramFactory::Create(0, things);
+  storage = new TDataStore(allObject, "DataStore");
     maxStep = _maxStep;
-  }
+}
 
 TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay,  double _fractionOfTimeStep, unsigned int _maxStep)
 {
@@ -84,10 +93,10 @@ TWorkManager::TWorkManager(unsigned int _millisecondsOfTimeStep, double _delay, 
     allObject[j] = things[i];
     j++;
   }
-//   script = new TEnvironmentScript(allObject, "", _maxStep);
-//   program = TProgramFactory::Create(0, things);
+  script = new TEnvironmentScript(allObject, "", _maxStep);
+  program = TProgramFactory::Create(0, things);
 //   storage = new TDataStore(allObject, "A");
-//   maxStep = _maxStep;
+  maxStep = _maxStep;
 }
 
 TWorkManager::~TWorkManager()
@@ -109,16 +118,16 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
     currentTime = time;
     currentStep = t;
     // TODO: FIX COMMENTED STUFF
-    // script->UpdateObjectsProperties(time);
+    script->UpdateObjectsProperties(time);
     for (int i = 0; i < objects.size(); i++)
     {      
       objects[i]->Update();      
     }
-    // storage->AddAllProperties(time);
+    storage->AddAllProperties(time);
     
-    // program->Run();  
+    program->Run();  
 
-    //storage->PrintToConsole();
+    storage->PrintToConsole();
     std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
     std::chrono::milliseconds delta =
       std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
@@ -131,8 +140,8 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
       std::this_thread::sleep_for(delta);
   }
 
-  // storage->PrintToFile();
-  // program->End();
+  storage->PrintToFile();
+  program->End();
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
