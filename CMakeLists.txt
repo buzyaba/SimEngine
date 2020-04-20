@@ -62,6 +62,7 @@ endif()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
@@ -70,8 +71,10 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/output_system)
 
 find_package(OpenGL REQUIRED)
+find_package(Python3 COMPONENTS Development)
 
 include_directories(${OPENGL_INCLUDE_DIRS})
+include_directories(${Python3_INCLUDE_DIRS})
 
 include_directories("${CMAKE_SOURCE_DIR}/lib")
 include_directories("${CMAKE_SOURCE_DIR}/include")
@@ -81,7 +84,7 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
-#include_directories("${dislin_includedir}")
+include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
 
 #add tests
 enable_testing()

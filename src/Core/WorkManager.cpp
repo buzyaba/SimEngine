@@ -105,6 +105,8 @@ TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, 
 
 TWorkManager::~TWorkManager()
 {
+  auto temp = mainSet->GetWindow();
+  delete temp;
   delete program;
 }
 

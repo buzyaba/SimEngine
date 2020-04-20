@@ -1,3 +1,4 @@
+#define WITHOUT_NUMPY
 #include <Engine/Renderer.hpp>
 // #include <SmartHouse/Table.hpp>
 // #include <SmartHouse/Room.hpp>
@@ -11,8 +12,10 @@
 #include "Core/EmptyProgram.h"
 
 #include "Core/common.h"
+#include "matplotlibcpp.h"
 
 TWorkManager* workManager;
+namespace plt = matplotlibcpp;
 
 int tick = 0;
 bool windowFlag = false;
@@ -26,16 +29,39 @@ void cameraMovement(float dt);
 void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
 void updateMouse(GLFWwindow* window, double xpos, double ypos);
 
-int main(int argc, char** argv) {
+void drawPlot() {
+	float x_i = 0;
+	std::vector<float> x;
+	std::vector<float> y;
+	while(x_i < 10) {
+		x.emplace_back(x_i);
+		y.emplace_back(std::sin(x_i));
+		x_i += 0.01;
+	}
+	plt::plot(x, y);
+	plt::show();
+}
+
+void startWork() {
 	auto mainSet = TSetFactory::Create(0);//!!!!
   	workManager = new TWorkManager(mainSet);
   	workManager->InitDraw();
   	workManager->Start(1);
+}
+
+int main(int argc, char** argv) {
+	auto plt_thread = std::thread(drawPlot);
+	auto work_thread = std::thread(startWork);
 //   auto previousTime = std::chrono::high_resolution_clock::now();
 //   while(!window.isWindowShouldClose()) {
 //     auto currentTime = std::chrono::high_resolution_clock::now();
 // 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
 // 	Renderer::getDynamicsWorld()->stepSimulation(dt);
+	work_thread.join();
+	delete workManager;
+	std::cout << "Workmanager stopped\n";
+	std::cout << "Waiting for plt\n";
+	plt_thread.join();
   	Renderer::terminate();
   	return 0;
 }
