@@ -27,5 +27,6 @@ public:
   virtual void ExcludeObject(TObjectOfObservation& object);
   virtual void ExcludeObject(std::string _name);
 
-
+  /// Создание клона объекта
+  virtual TSmartThing* Clone();
 };

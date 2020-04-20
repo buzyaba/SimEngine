@@ -24,8 +24,11 @@ public:
 
   /// Возвращает имя класса (используется для динамического создания модели)
   virtual std::string ClassName() = 0;
+  /// Создание клона объекта
+  virtual IObject* Clone() = 0;
 };
 
+/// Реализация базового объекта имеющего набор свойств и имя.
 class TObject: public IObject {
   private:
     static void initShader();
@@ -41,20 +44,32 @@ class TObject: public IObject {
     std::map<std::string, GLuint> otherTextures;
     MeshContainer* meshes;
     // Logic
+    /// Имя объекта
     std::string name;
+    /// Набор свойств объекта
     std::map<std::string, IProperties*> properties;
   public:
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
     virtual ~TObject() {delete rigidBody;}
     // Logic
+    /// Задает значение свойства с именем равным property.name берет значения из property
     virtual void SetProperty(IProperties& property) override;
+    /// Задает значение values своству с именем propertyName
     virtual void SetProperty(const std::map<std::string, double>& values, std::string propertyName) override;
+    /// Возвращает все свойства данного объекта
     virtual std::map<std::string, IProperties*>& GetProperties() override;
+    /// Возвращает свойство с именем _name
     virtual IProperties& GetProperty(const std::string& _name = "") override;
+
+    /// Возвращает имя объекта (используется для работы с объектами)
     virtual std::string GetName() override;
+    /// Задает имя объекта
     virtual void SetName(std::string name) override;
+    /// Возвращает имя класса (используется для динамического создания модели)
     virtual std::string ClassName();
+    /// Создание клона объекта
+    virtual IObject* Clone();
     // GL
     virtual void setScale(const glm::vec3& _size) = 0;
     virtual void setPosition(const glm::vec3& pos);

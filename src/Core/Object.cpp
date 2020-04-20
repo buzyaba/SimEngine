@@ -114,3 +114,8 @@ std::vector<glm::mat4> TObject::getModelMatrixes() {
         vec[i] = transforms[i].getModelMatrix();
     return vec;
 }
+
+IObject* TObject::Clone()
+{
+  return new TObject(*this);
+}

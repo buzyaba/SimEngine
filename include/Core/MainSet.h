@@ -17,6 +17,7 @@ protected:
   WindowManager* window;
 public:
   TMainSet();
+  TMainSet(std::string xmlFile = "");
   WindowManager* GetWindow() {return window;}
   std::vector<TObjectOfObservation*> GetObjects();
   std::vector<TStaticObject*> GetStaticObjects();
@@ -40,9 +41,11 @@ public:
 class TSetFactory
 {
 public:
-  static TMainSet* Create(int a = 0)
+  static TMainSet* Create(int a = 0, std::string xmlFile = "")
   {
-    if (a == 0)
+    if (xmlFile != "")
+      return new TMainSet(xmlFile);
+    if (a <= 0)
       return new TRoomSet();
     else
       return new TStreetSet();

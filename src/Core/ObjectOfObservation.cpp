@@ -129,3 +129,8 @@ std::vector<IProperties*>& TObjectOfObservation::GetAllProperties()
 //   }
   return allProperties;
 }
+
+TObjectOfObservation* TObjectOfObservation::Clone()
+{
+  return new TObjectOfObservation(*this);
+}
