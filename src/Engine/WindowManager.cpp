@@ -12,10 +12,7 @@ WindowManager::WindowManager(const std::uint32_t& screenWidth, const std::uint32
     glfwMakeContextCurrent(window);
     glewInit();
     glEnable(GL_DEPTH_TEST);
-	// Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(0.0f, 5.0f, 8.0f), 
-    //                     glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	Renderer::initTextures();
-    //init physics
     Renderer::initPhysics();
 }
 
@@ -25,4 +22,14 @@ void WindowManager::runWindow(const float& dt, const std::function<void()>& rend
     glfwSwapBuffers(window);
     glfwPollEvents();
     this->cameraMovement(dt);
+}
+
+void WindowManager::setVisibility(bool _switch) noexcept{
+    if (!_switch) {
+        glfwPollEvents();
+        glfwHideWindow(window);
+    } else {
+        glfwPollEvents();
+        glfwShowWindow(window);
+    }
 }

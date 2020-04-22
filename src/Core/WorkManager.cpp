@@ -6,17 +6,18 @@
 #include "Core/EmptyProgram.h"
 
 #include "Core/common.h"
+#include <Engine/FirstPersonView.hpp>
+#include <Engine/IsometricView.hpp>
 
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep, 
+TWorkManager::TWorkManager(WindowManager* _window, TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep, 
   double _delay, double _fractionOfTimeStep, unsigned long _maxStep) {
   currentTime = 0;
   currentStep = 0;
   mainSet = _mainSet;
-    //new TMainSet();
-
+  window = _window;
   objects = mainSet->GetObjects();
   things = mainSet->GetThings();
   staticObjects = mainSet->GetStaticObjects();
@@ -60,7 +61,7 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
     maxStep = _maxStep;
 }
 
-TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, unsigned int _millisecondsOfTimeStep,
+TWorkManager::TWorkManager(WindowManager* _window, int type, std::string _script, std::string _xmlFile, unsigned int _millisecondsOfTimeStep,
   double _delay,  double _fractionOfTimeStep, unsigned long int _maxStep)
 {
   xmlScript = _script;
@@ -68,7 +69,7 @@ TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, 
   currentTime = 0;
   currentStep = 0;
   mainSet = TSetFactory::Create(type, xmlFile);
-    //new TMainSet();
+  window = _window;
   objects = mainSet->GetObjects();
   things = mainSet->GetThings();
   staticObjects = mainSet->GetStaticObjects();
@@ -105,8 +106,7 @@ TWorkManager::TWorkManager(int type, std::string _script, std::string _xmlFile, 
 
 TWorkManager::~TWorkManager()
 {
-  auto temp = mainSet->GetWindow();
-  delete temp;
+  delete window;
   delete program;
 }
 
@@ -118,9 +118,15 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
   std::chrono::time_point<std::chrono::steady_clock> startWork = std::chrono::steady_clock::now();
 
+  if (_enableVisualisation) {
+    window->setVisibility(true);
+  } else {
+    window->setVisibility(false);
+  }
+
   unsigned long int time = 0;
   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
-  for (int t = 0; t < maxStep && !mainSet->GetWindow()->isWindowShouldClose(); t++)
+  for (int t = 0; t < maxStep && !window->isWindowShouldClose(); t++)
   {
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     time = (t * timeStep) / 1000;
@@ -141,11 +147,10 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
     std::chrono::milliseconds delta =
       std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
     float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end-start).count();
-    if (_enableVisualisation == 1)
-      mainSet->GetWindow()->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    window->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	                                              glClearColor(0.2f, 1.f, 0.f, 1.f);
                                                 this->DrawElements();});
-    else
+    if (_enableVisualisation == 0)
       std::this_thread::sleep_for(delta);
   }
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();

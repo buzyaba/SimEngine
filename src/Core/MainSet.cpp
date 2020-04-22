@@ -156,7 +156,6 @@ std::vector<TSmartThing*> TMainSet::GetThings()
 TRoomSet::TRoomSet() : TMainSet()
 {
     /// пока что заглушка
-    window = new FirstPersonView(800, 600, "Smart House");
     objects.resize(1, new TTerminal("Terminal"));
     allGObjects.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
     staticObjects.resize(1, new TRoom("Room"));

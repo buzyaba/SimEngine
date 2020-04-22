@@ -14,11 +14,9 @@ protected:
   std::vector<TStaticObject*> staticObjects;
   std::vector<TSmartThing*> things;
   std::map<std::string, std::vector<TObject*>> allGObjects;
-  WindowManager* window;
 public:
   TMainSet() = default;
   TMainSet(std::string xmlFile);
-  WindowManager* GetWindow() {return window;}
   std::vector<TObjectOfObservation*> GetObjects();
   std::vector<TStaticObject*> GetStaticObjects();
   std::vector<TSmartThing*> GetThings();
