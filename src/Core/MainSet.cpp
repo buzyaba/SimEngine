@@ -30,31 +30,33 @@ void ParseString(std::string str, std::vector<double>& tt)
 
   delete[] s;
 }
-
+  // Тут надо подумать над парсингом строки, потому что сейчас любая ошибка (не соответствие имени проперти и значения) все уронит
 void SetProperty(IObject* object, std::string nameProperty, std::string valueProperty)
 {
   if (nameProperty == "Name")
     object->SetName(valueProperty);
-
-  std::vector<IProperties*>& propertys = object->GetProperties();
-  for (int i = 0; i < propertys.size(); i++)
-  {
-    if (propertys[i]->GetName() == nameProperty)
-    {
-      std::vector<double> tempVal;
-      ParseString(valueProperty, tempVal);
-      object->SetProperty(tempVal, nameProperty);
+  IProperties* tempProp = object->GetProperties()[nameProperty];
+  if (tempProp) {
+    std::vector<double> tempVal;
+    ParseString(valueProperty, tempVal);
+    std::map<std::string, double> tmpPropMap = tempProp->GetValues();
+    size_t iter = 0;
+    for (auto& elem : tmpPropMap) {
+      if (iter != tempVal.size()) {
+        elem.second = tempVal[iter++];
+      }
     }
+    object->SetProperty(*tempProp);
   }
 }
 
 TMainSet::TMainSet(std::string xmlFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
-  std::vector<TScene*> LocalScene;
+  std::vector<TStaticObject*> StaticObjects;
   std::vector<TSmartThing*> LocalThing;
 
-  LocalScene.push_back(new TRoom("Room"));
+  StaticObjects.push_back(new TRoom("Room"));
 
   LocalObjects.push_back(new TTerminal("Terminal"));
 
@@ -74,19 +76,19 @@ TMainSet::TMainSet(std::string xmlFile)
     std::string value = iter.child_value();
 
     /// Создаем новые сцены
-    for (int i = 0; i < LocalScene.size(); i++)
+    for (int i = 0; i < StaticObjects.size(); i++)
     {
-      if (LocalScene[i]->ClassName() == name)
+      if (StaticObjects[i]->ClassName() == name)
       {
-        TScene* newScene = LocalScene[i]->Clone();
+        TStaticObject* newStaticObject = StaticObjects[i]->Clone();
         for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          SetProperty(newScene, nameProperty, valueProperty);
+          SetProperty(newStaticObject, nameProperty, valueProperty);
         }
 
-        scene.push_back(newScene);
+        staticObjects.push_back(newStaticObject);
       }
     }
 
@@ -130,7 +132,7 @@ TMainSet::TMainSet(std::string xmlFile)
           }
         }
 
-        thing.push_back(newThing);
+        things.push_back(newThing);
       }
     }
   }

@@ -38,12 +38,12 @@ protected:
 
 public:
   TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0,
-  double _fractionOfTimeStep = -1.0, unsigned int _maxStep = 1000);
+  double _fractionOfTimeStep = -1.0, unsigned long _maxStep = 1000);
   TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep = 1000, 
                double _delay = 0, double _fractionOfTimeStep = -1.0, 
-               unsigned int _maxStep = 1000);
+               unsigned long _maxStep = 1000);
   TWorkManager(int type = 0, std::string _script = "", std::string _xmlFile = "", unsigned int _millisecondsOfTimeStep = 1000,
-    double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned long int _maxStep = 1000);
+    double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned long _maxStep = 1000);
   ~TWorkManager();
   void Start(const unsigned short& _enableVisualisation = 1);
   void Stop();

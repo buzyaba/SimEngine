@@ -22,5 +22,6 @@ public:
     void setScreenTexture(GLuint _text) { otherTextures["screen"] = _text; }
     void drawElements(const std::vector<TObject*>& objects);
     void initDraw(const std::vector<TObject*>& objects);
+    virtual TObjectOfObservation* Clone() { return new TTerminal(*this); };
     // virtual std::vector<glm::mat4> getModelMatrixes() override;
 };

@@ -3,6 +3,11 @@
 TStaticObject::TStaticObject(std::string _name) : TObject(_name) {
 }
 
+// TStaticObject* TStaticObject::Clone()
+// {
+//   return new TStaticObject(*this);
+// }
+
 // TScene::TScene(std::string _name) : TObject(_name)
 // {
 // }

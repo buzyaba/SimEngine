@@ -9,10 +9,10 @@ add_definitions(-DGLEW_NO_GLU)
 add_definitions(-DGLEW_STATIC)
 
 target_link_libraries(SmartHouse
+						Core
 						pugixml 
 						output_system
 						libglewmx_static
-						Core
 						Python3::Python
 						BulletDynamics
 						BulletCollision

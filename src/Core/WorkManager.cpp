@@ -11,7 +11,7 @@ unsigned long int currentTime;
 unsigned long int currentStep;
 
 TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep, 
-  double _delay, double _fractionOfTimeStep, unsigned int _maxStep) {
+  double _delay, double _fractionOfTimeStep, unsigned long _maxStep) {
   currentTime = 0;
   currentStep = 0;
   mainSet = _mainSet;
@@ -54,7 +54,7 @@ TWorkManager::TWorkManager(TMainSet* _mainSet, unsigned int _millisecondsOfTimeS
   //   j++;
   // }
 
-  script = new TEnvironmentScript(allObject, "TestScript", _maxStep);
+  script = new TEnvironmentScript(allObject, static_cast<std::string>("TestScript"), _maxStep, 1);
   program = TProgramFactory::Create(0, things);
   storage = new TDataStore(allObject, "DataStore");
     maxStep = _maxStep;

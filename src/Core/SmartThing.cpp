@@ -53,7 +53,7 @@ void TSmartThing::ExcludeObject(std::string _name)
       sensors[i]->ExcludeObject(_name);
 }
 
-TSmartThing* TSmartThing::Clone()
-{
-  return new TSmartThing(*this);
-}
+// TSmartThing* TSmartThing::Clone()
+// {
+//   return new TSmartThing(*this);
+// }

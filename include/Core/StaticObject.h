@@ -9,6 +9,8 @@ class TStaticObject : public TObject {
 public:
     // What should we do here? Idk...
     TStaticObject(std::string _name);
+    /// Создание клона объекта
+  virtual TStaticObject* Clone() = 0;
 };
 
 /// Базовый элемент сцены

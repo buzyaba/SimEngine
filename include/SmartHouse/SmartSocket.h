@@ -15,4 +15,5 @@ public:
   virtual void setPosition(const glm::vec3& pos) override {}
   void drawElements(const std::vector<TObject*>& objects) {}
   void initDraw(const std::vector<TObject*>& objects) {}
+  virtual TSmartThing* Clone() { return new TSmartSocket(*this); };
 };

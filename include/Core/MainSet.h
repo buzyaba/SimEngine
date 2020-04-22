@@ -16,8 +16,8 @@ protected:
   std::map<std::string, std::vector<TObject*>> allGObjects;
   WindowManager* window;
 public:
-  TMainSet();
-  TMainSet(std::string xmlFile = "");
+  TMainSet() = default;
+  TMainSet(std::string xmlFile);
   WindowManager* GetWindow() {return window;}
   std::vector<TObjectOfObservation*> GetObjects();
   std::vector<TStaticObject*> GetStaticObjects();

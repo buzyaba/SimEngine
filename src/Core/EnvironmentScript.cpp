@@ -91,11 +91,8 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 
       for (int i = 0; i < objects.size(); i++)
       {
-        objectPropertyIntervals[i].resize(objects[i]->GetProperties().size());
-        for (int j = 0; j < objects[i]->GetProperties().size(); j++)
-        {
-          objectPropertyIntervals[i][j].SetProperty(*(objects[i]->GetProperties()[j]), intervalCount, startTime, endTime);
-        }
+        for (auto& elem : objects[i]->GetProperties())
+          objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, startTime, endTime);
       }
     }
 
@@ -108,17 +105,15 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
 
-          for (int j = 0; j < objectPropertyIntervals[i].size(); i++)
-          {
-            if (objectPropertyIntervals[i][j].nameProperty == nameProperty)
-            {
-              objectPropertyIntervals[i][j].isSet = true;
+          for (auto & elem : objectPropertyIntervals[i]) {
+            if (elem.first == nameProperty) {
+              elem.second.isSet = true;
               std::vector<int> tt(intervalCount);
               ParseString(valueProperty, tt);
 
               for (int k = 0; k < intervalCount; k++)
               {
-                objectPropertyIntervals[i][j].value[k][0] = tt[k];
+                elem.second.value[k][0] = tt[k];
               }
             }
           }

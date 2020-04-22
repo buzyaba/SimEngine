@@ -115,7 +115,7 @@ std::vector<glm::mat4> TObject::getModelMatrixes() {
     return vec;
 }
 
-IObject* TObject::Clone()
-{
-  return new TObject(*this);
-}
+// IObject* TObject::Clone()
+// {
+//   return new TObject(*this);
+// }
