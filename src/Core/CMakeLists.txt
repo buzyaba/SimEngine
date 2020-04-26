@@ -1,8 +1,7 @@
-file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*") #��������� � ���������� hdrs ��� ����� � ����������� .h
-file(GLOB srcs "*.cpp")#��������� � ���������� srcs ��� ����� � ����������� .h
+file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*")
+file(GLOB srcs "*.cpp")
 
 add_definitions(-DGLEW_NO_GLU)
-add_definitions(-DGLEW_STATIC)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
