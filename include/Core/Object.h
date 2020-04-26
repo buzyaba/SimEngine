@@ -67,7 +67,7 @@ class TObject: public IObject {
     /// Задает имя объекта
     virtual void SetName(std::string name) override;
     /// Возвращает имя класса (используется для динамического создания модели)
-    virtual std::string ClassName();
+    virtual std::string ClassName() = 0;
     // /// Создание клона объекта   !!! это точно нам надо?
     // virtual IObject* Clone() = 0;
     // GL

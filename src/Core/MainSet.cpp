@@ -86,6 +86,8 @@ TMainSet::TMainSet(std::string xmlFile)
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
           SetProperty(newStaticObject, nameProperty, valueProperty);
+          // Я пока не придумал что делать с этим
+          allGObjects.insert(std::make_pair("Room", std::vector<TObject*>(1, staticObjects.back())));
         }
 
         staticObjects.push_back(newStaticObject);
@@ -103,6 +105,8 @@ TMainSet::TMainSet(std::string xmlFile)
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
           SetProperty(newObject, nameProperty, valueProperty);
+          // Я пока не придумал что делать с этим
+          allGObjects.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
         }
 
         objects.push_back(newObject);

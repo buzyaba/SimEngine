@@ -17,4 +17,5 @@ public:
     void initDraw(const std::vector<TObject*>& objects) {}
     virtual TStaticObject* Clone() { return new TRoom(*this); };
     // virtual std::vector<glm::mat4> getModelMatrixes() override;
+    virtual std::string ClassName() override { return std::string("TRoom"); }
 };

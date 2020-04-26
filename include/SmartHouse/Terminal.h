@@ -23,5 +23,6 @@ public:
     void drawElements(const std::vector<TObject*>& objects);
     void initDraw(const std::vector<TObject*>& objects);
     virtual TObjectOfObservation* Clone() { return new TTerminal(*this); };
+    virtual std::string ClassName() override { return std::string("TTerminal"); }
     // virtual std::vector<glm::mat4> getModelMatrixes() override;
 };
