@@ -1,14 +1,8 @@
 #define WITHOUT_NUMPY
-#ifdef _DEBUG
-#undef _DEBUG
-#include <python.h>
-#define _DEBUG
-#else
-#include <python.h>
-#endif
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <algorithm>
 #include <Engine/FirstPersonView.hpp>
 #include "Core/WorkManager.h"
 
