@@ -1,32 +1,101 @@
 #include "gtest/gtest.h"
-// #include "Core/Object.h"
-// #include "Core/Scene.h"
-// #include "Core/ObjectOfObservation.h"
-// #include "Core/Sensor.h"
-// #include "Core/Properties.h"
-// #include "Core/Actuator.h"
-// #include "Core/SmartThing.h"
-// #include "Core/DataStore.h"
-// #include "Core/WorkManager.h"
-// #include "Core/DataPacket.h"
-// #include "Core/ManagementProgram.h"
-// #include "Core/EnvironmentScript.h"
+#include "Core/Actuator.h"
+#include "SmartHouse/Terminal.h"
+#include "Core/Properties.h"
 
+TEST(ActuatorTest, Can_Create_Cnstance) {
+    ASSERT_NO_THROW(TActuator("name"));
+}
 
-// TEST(ActuatorTest, CanCreate)
-// {
-//   //virtual void AddObject(TObjectOfObservation * object) = 0;
-//   //virtual void ExcludeObject(TObjectOfObservation * object) = 0;
-//   //virtual void ExcludeObject(std::string objectName) = 0;
+TEST(ActuatorTest, Add_Object_And_Change_Property) {
+    TActuator actuator("name");
+    TTerminal* terminal = new TTerminal("Terminal");
 
-//   //virtual void ChangeActuatorProperty(IProperties & _property) = 0;
-//   //virtual void ChangeProperty(IProperties & property, TObjectOfObservation & object) = 0;
-//   //virtual void ChangeProperty(IProperties & property, std::string _objectName) = 0;
-//   //virtual void SetDataPacket(TDataPacket & packet) = 0;
+    auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
 
-//   //std::string GetName()
+    actuator.AddObject(*terminal);
+    actuator.ChangeProperty(property, "Terminal");
 
+    auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
 
-//   //void SetName(std::string _name)
-//   // EXPECT_EQ(4, 2 + 2);
-// }
+    delete terminal;
+    ASSERT_DOUBLE_EQ(100, real);
+}
+
+TEST(ActuatorTest, Change_Property_By_Reference) {
+    TActuator actuator("name");
+    TTerminal* terminal = new TTerminal("Terminal");
+
+    auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+
+    actuator.AddObject(*terminal);
+    actuator.ChangeProperty(property, *terminal);
+
+    auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+
+    delete terminal;
+    ASSERT_DOUBLE_EQ(100, real);
+}
+
+TEST(ActuatorTest, Exclude_Object_By_Reference) {
+    TActuator actuator("name");
+    TTerminal* terminal = new TTerminal("Terminal");
+
+    actuator.AddObject(*terminal);
+    actuator.ExcludeObject(*terminal);
+
+    auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+    actuator.ChangeProperty(property, *terminal);
+
+    auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+
+    delete terminal;
+    ASSERT_NE(100, real);
+}
+
+TEST(ActuatorTest, Exclude_Object_By_Name) {
+    TActuator actuator("name");
+    TTerminal* terminal = new TTerminal("Terminal");
+
+    actuator.AddObject(*terminal);
+    actuator.ExcludeObject("Terminal");
+
+    auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+    actuator.ChangeProperty(property, "Terminal");
+
+    auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+
+    delete terminal;
+    ASSERT_NE(100, real);
+}
+
+TEST(ActuatorTest, Copying_Constructor) {
+    TActuator actuator1("a1");
+    
+    TTerminal* terminal = new TTerminal("Terminal");
+    actuator1.AddObject(*terminal);
+
+    TActuator actuator2(actuator1);
+
+    auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+    actuator2.ChangeProperty(property, "Terminal");
+
+    auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+
+    delete terminal;
+    ASSERT_EQ(100, real);
+}
+
+TEST(ActuatorTest, Get_Actuator_Name) {
+    TActuator actuator("sample text");
+
+    ASSERT_EQ("sample text", actuator.GetName());
+}
+
+TEST(ActuatorTest, Set_Actuator_Name) {
+    TActuator actuator("sample text");
+
+    actuator.SetName("new text");
+
+    ASSERT_EQ("new text", actuator.GetName());
+}
