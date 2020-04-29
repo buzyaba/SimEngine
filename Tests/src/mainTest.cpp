@@ -4,6 +4,8 @@
 	
 int main(int argc, char ** argv) {
     WindowManager window(1, 1, "Test", false);
+	Renderer::initTextures();
+    Renderer::initPhysics();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
