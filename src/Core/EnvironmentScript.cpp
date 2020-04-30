@@ -114,7 +114,7 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 
               for (int k = 0; k < intervalCount; k++)
               {
-                elem.second.value[k][0] = tt[k];
+                elem.second.value[k][nameProperty] = tt[k];
               }
             }
           }
