@@ -18,14 +18,14 @@ void myTickCallback(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
 
 int main(int argc, char** argv) {
 	WM = new FirstPersonView(800, 600, "Smart House");
-	auto mainSet = TSetFactory::Create(0);//!!!!
-  	workManager = new TWorkManager(WM, mainSet);
+	// auto mainSet = TSetFactory::Create(0);//!!!!
+  	// workManager = new TWorkManager(WM, mainSet);
 
-	// auto cwd = Renderer::getCWD();
-    // auto c_cwd = cwd;
-    // std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
-    // auto i = c_cwd.find("SIMENGINE");
-	// workManager = new TWorkManager(WM, -1, cwd.substr(0,i+9) + "/ConfigFiles/conf.xml", cwd.substr(0,i+9) + "/ConfigFiles/Room.xml", 1000, 0.0, -1.0, 1000);//60*60*24*30);
+	auto cwd = Renderer::getCWD();
+    auto c_cwd = cwd;
+    std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
+    auto i = c_cwd.find("SIMENGINE");
+	workManager = new TWorkManager(WM, -1, cwd.substr(0,i+9) + "/ConfigFiles/conf.xml", cwd.substr(0,i+9) + "/ConfigFiles/Room.xml", 1000, 0.0, -1.0, 1000);//60*60*24*30);
 
   	workManager->InitDraw();
   	workManager->Start(1);
