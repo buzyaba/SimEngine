@@ -1,7 +1,10 @@
 ﻿#include "Core/MainSet.h"
 
-#include "SmartHouseData/Room.h"
-#include "TrafficSimData/Street.h"
+#include "SmartHouse/Terminal.h"
+#include <Engine/FirstPersonView.hpp>
+#include "SmartHouse/Room.h"
+#include "SmartHouse/SmartSocket.h"
+// #include "TrafficSimData/Street.h"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -27,31 +30,38 @@ void ParseString(std::string str, std::vector<double>& tt)
 
   delete[] s;
 }
-
+  // Тут надо подумать над парсингом строки, потому что сейчас любая ошибка (не соответствие имени проперти и значения) все уронит
 void SetProperty(IObject* object, std::string nameProperty, std::string valueProperty)
 {
   if (nameProperty == "Name")
     object->SetName(valueProperty);
-
-  std::vector<IProperties*>& propertys = object->GetProperties();
-  for (int i = 0; i < propertys.size(); i++)
-  {
-    if (propertys[i]->GetName() == nameProperty)
-    {
-      std::vector<double> tempVal;
-      ParseString(valueProperty, tempVal);
-      object->SetProperty(tempVal, nameProperty);
-    }
+  else {
+      IProperties* tempProp = object->GetProperties()[nameProperty];
+      if (tempProp) {
+          std::vector<double> tempVal;
+          ParseString(valueProperty, tempVal);
+          std::map<std::string, double> tmpPropMap = tempProp->GetValues();
+          size_t iter = 0;
+          for (auto& elem : tmpPropMap) {
+              if (iter != tempVal.size()) {
+                  elem.second = tempVal[iter++];
+              }
+          }
+          object->SetProperty(*tempProp);
+      }
   }
 }
 
 TMainSet::TMainSet(std::string xmlFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
-  std::vector<TScene*> LocalScene;
+  std::vector<TStaticObject*> StaticObjects;
   std::vector<TSmartThing*> LocalThing;
 
-  LocalScene.push_back(new TRoom("Room"));
+  std::vector<TObject*> test;
+  test.push_back(new TTerminal("Terminal"));
+
+  StaticObjects.push_back(new TRoom("Room"));
 
   LocalObjects.push_back(new TTerminal("Terminal"));
 
@@ -70,20 +80,20 @@ TMainSet::TMainSet(std::string xmlFile)
     std::string name = iter.name();
     std::string value = iter.child_value();
 
-    /// Создаем новые сцены
-    for (int i = 0; i < LocalScene.size(); i++)
+    /// Создаем новые статические объекты
+    for (int i = 0; i < StaticObjects.size(); i++)
     {
-      if (LocalScene[i]->ClassName() == name)
+      if (StaticObjects[i]->ClassName() == name)
       {
-        TScene* newScene = LocalScene[i]->Clone();
+        TStaticObject* newStaticObject = StaticObjects[i]->Clone();
         for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0; iter2 = iter2.next_sibling())
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          SetProperty(newScene, nameProperty, valueProperty);
+          SetProperty(newStaticObject, nameProperty, valueProperty);
         }
-
-        scene.push_back(newScene);
+        staticObjects.push_back(newStaticObject);
+        allGObjects.insert(std::make_pair(name, std::vector<TObject*>(1, staticObjects.back())));
       }
     }
 
@@ -101,6 +111,7 @@ TMainSet::TMainSet(std::string xmlFile)
         }
 
         objects.push_back(newObject);
+        allGObjects.insert(std::make_pair(name, std::vector<TObject*>(1, objects.back())));
       }
     }
 
@@ -114,9 +125,6 @@ TMainSet::TMainSet(std::string xmlFile)
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          
-          SetProperty(newThing, nameProperty, valueProperty);
-          
           if (nameProperty == "Object")
           {
             for (int j = 0; j < objects.size(); j++)
@@ -124,79 +132,83 @@ TMainSet::TMainSet(std::string xmlFile)
               if (objects[j]->GetName() == valueProperty)
                 newThing->AddObject(*objects[j]);
             }
-          }
+          } else           
+            SetProperty(newThing, nameProperty, valueProperty);
+          
         }
 
-        thing.push_back(newThing);
+        things.push_back(newThing);
       }
     }
   }
 }
 
-std::vector<TObjectOfObservation*> TMainSet::GetObject()
+std::vector<TObjectOfObservation*> TMainSet::GetObjects()
 {
   return objects;
 }
 
-std::vector<TScene*> TMainSet::GetScene()
+std::vector<TStaticObject*> TMainSet::GetStaticObjects()
 {
-  return scene;
+  return staticObjects;
 }
 
-std::vector<TSmartThing*> TMainSet::GetThing()
+std::vector<TSmartThing*> TMainSet::GetThings()
 {
-  return thing;
+  return things;
 }
 
 TRoomSet::TRoomSet() : TMainSet()
 {
-  /// пока что заглушка
-  objects.resize(1, new TTerminal("Terminal"));
-  scene.resize(1, new TRoom("Room"));
-  thing.resize(1, new TSmartSocket("SmartSocket"));
+    /// пока что заглушка
+    objects.resize(1, new TTerminal("Terminal"));
+    allGObjects.insert(std::make_pair("Terminal", std::vector<TObject*>(1, objects.back())));
+    staticObjects.resize(1, new TRoom("Room"));
+    allGObjects.insert(std::make_pair("Room", std::vector<TObject*>(1, staticObjects.back())));
+    things.resize(1, new TSmartSocket("SmartSocket"));
 
-  for (int i = 0; i < thing.size() && i < objects.size(); i++)
-  {
-    thing[i]->AddObject(*objects[i]);
-  }
+    for (int i = 0; i < things.size() && i < objects.size(); i++)
+    {
+      things[i]->AddObject(*objects[i]);
+    }
 }
 
 TStreetSet::TStreetSet() : TMainSet()
 {
-  /// пока что заглушка
-  objects.resize(5, nullptr);
-  std::vector<double> coord(2, 100);
-  TCarCreator* carCreator = new TCarCreator("CarCreator");
-  carCreator->SetProperty(coord, "Coordinate");
+//   /// пока что заглушка
+//   objects.resize(5, nullptr);
+//   std::vector<double> coord(2, 100);
+//   TCarCreator* carCreator = new TCarCreator("CarCreator");
+//   carCreator->SetProperty(coord, "Coordinate");
 
-  coord[1] = 108;
-  TCarDestroyer* carDestroyer = new TCarDestroyer("CarDestroyer");
-  carDestroyer->SetProperty(coord, "Coordinate");
+//   coord[1] = 108;
+//   TCarDestroyer* carDestroyer = new TCarDestroyer("CarDestroyer");
+//   carDestroyer->SetProperty(coord, "Coordinate");
 
-  objects[0] = carCreator;
-  objects[4] = carDestroyer;
+//   objects[0] = carCreator;
+//   objects[4] = carDestroyer;
 
-  coord[1] = 102;
-  objects[1] = new TRoad("Road1");
-  objects[1]->SetProperty(coord, "Coordinate");
-  coord[1] = 104;
-  objects[2] = new TRoad("Road2");
-  objects[2]->SetProperty(coord, "Coordinate");
-  coord[1] = 106;
-  objects[3] = new TRoad("Road3");
-  objects[3]->SetProperty(coord, "Coordinate");
+//   coord[1] = 102;
+//   objects[1] = new TRoad("Road1");
+//   objects[1]->SetProperty(coord, "Coordinate");
+//   coord[1] = 104;
+//   objects[2] = new TRoad("Road2");
+//   objects[2]->SetProperty(coord, "Coordinate");
+//   coord[1] = 106;
+//   objects[3] = new TRoad("Road3");
+//   objects[3]->SetProperty(coord, "Coordinate");
 
-  objects[3]->AddNeighboringObject(*objects[4]);
-  objects[2]->AddNeighboringObject(*objects[3]);
-  objects[1]->AddNeighboringObject(*objects[2]);
-  objects[0]->AddNeighboringObject(*objects[1]);
+//   objects[3]->AddNeighboringObject(*objects[4]);
+//   objects[2]->AddNeighboringObject(*objects[3]);
+//   objects[1]->AddNeighboringObject(*objects[2]);
+//   objects[0]->AddNeighboringObject(*objects[1]);
 
-  scene.resize(1, new TStreet("Street"));
+//   scene.resize(1, new TStreet("Street"));
 
-  TTrafficLight* trafficLight = new TTrafficLight("TrafficLight", objects[3]);
-  trafficLight->AddObject(*objects[3]);
-  trafficLight->AddObject(*objects[2]);
-  trafficLight->AddObject(*objects[1]);
+//   TTrafficLight* trafficLight = new TTrafficLight("TrafficLight", objects[3]);
+//   trafficLight->AddObject(*objects[3]);
+//   trafficLight->AddObject(*objects[2]);
+//   trafficLight->AddObject(*objects[1]);
 
-  thing.resize(1, trafficLight);
+//   thing.resize(1, trafficLight);
 }

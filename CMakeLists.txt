@@ -62,6 +62,7 @@ endif()
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
@@ -69,43 +70,13 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
 #build output system
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/output_system)
 
-#add tests
-enable_testing()
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
-add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
-
-
-#Создаем папки
-if (IS_MICROSOFT_COMPILER)
-
-  set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-  set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
-  set_property(TARGET gtest PROPERTY FOLDER "3rd-party")  
-  
-  set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
-  set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
-  set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
-  set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
-  set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
-  set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
-  set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
-  set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
-  set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
-  set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
-  set_property(TARGET gmock PROPERTY FOLDER "3rd-party")
-  set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
-  #set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
-  #set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
-  #set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
-  set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
-  set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
-  set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")  
-endif()
-
 find_package(OpenGL REQUIRED)
+find_package(Python3 COMPONENTS Development)
 
 include_directories(${OPENGL_INCLUDE_DIRS})
+include_directories(${Python3_INCLUDE_DIRS})
 
+include_directories("${CMAKE_SOURCE_DIR}/lib")
 include_directories("${CMAKE_SOURCE_DIR}/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/glew/include")
@@ -113,8 +84,39 @@ include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
-#include_directories("${dislin_includedir}")
+include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
+
+#add tests
+enable_testing()
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
+add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+#Создаем папки
+if (IS_MICROSOFT_COMPILER)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
+set_property(TARGET gtest PROPERTY FOLDER "3rd-party")  
+
+set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
+set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
+set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
+set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
+set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
+set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
+set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
+set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
+set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
+set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
+set_property(TARGET gmock PROPERTY FOLDER "3rd-party")
+set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
+#set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
+#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
+#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
+set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
+set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
+set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")  
+endif()
 

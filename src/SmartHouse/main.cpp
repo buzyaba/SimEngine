@@ -1,38 +1,48 @@
-#include <SmartHouse/SmartHouse.hpp>
+#define WITHOUT_NUMPY
 #include <chrono>
+#include <thread>
+#include <iostream>
+#include <algorithm>
+#include <Engine/FirstPersonView.hpp>
+#include "Core/WorkManager.h"
 
-enum{screenWidth = 800, screenHeight = 600};
+TWorkManager* workManager;
+WindowManager* WM;
+
+int tick = 0;
+bool windowFlag = false;
+
+void initApplication();
+void myTickCallback(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
 
 
 int main(int argc, char** argv) {
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Smart House", NULL, NULL);
-  glfwMakeContextCurrent(window);
-  initMousePosition(screenWidth/2, screenHeight/2); 
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
-  glfwSetKeyCallback(window, updateKeyboard); // keyboard events
-  glfwSetCursorPosCallback(window, updateMouse); // mouse events
-  glewInit();
-  initApplication();
-  auto previousTime = std::chrono::high_resolution_clock::now();
-  while(!glfwWindowShouldClose(window)) {
-    auto currentTime = std::chrono::high_resolution_clock::now();
-		float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
+	WM = new FirstPersonView(800, 600, "Smart House");
+	// auto mainSet = TSetFactory::Create(0);//!!!!
+  	// workManager = new TWorkManager(WM, mainSet);
 
-		Renderer::getDynamicsWorld()->stepSimulation(dt);
-    // Some render stuff
-    renderScene();
+	auto cwd = Renderer::getCWD();
+    auto c_cwd = cwd;
+    std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
+    auto i = c_cwd.find("SIMENGINE");
+	workManager = new TWorkManager(WM, -1, cwd.substr(0,i+9) + "/ConfigFiles/conf.xml", cwd.substr(0,i+9) + "/ConfigFiles/Room.xml", 1000, 0.0, -1.0, 1000);//60*60*24*30);
 
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-    cameraMovement(dt); // every frame movement
-    previousTime = currentTime;
-  }
-  glfwTerminate();
-  Renderer::terminate();
-  return 0;
+  	workManager->InitDraw();
+  	workManager->Start(1);
+//   auto previousTime = std::chrono::high_resolution_clock::now();
+//   while(!window.isWindowShouldClose()) {
+//     auto currentTime = std::chrono::high_resolution_clock::now();
+// 	float dt = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - previousTime).count();
+// 	Renderer::getDynamicsWorld()->stepSimulation(dt);
+	delete workManager;
+  	return 0;
+}
+
+void myTickCallback(btDynamicsWorld *_dynamicsWorld, btScalar
+    timeStep) {
+		
+}
+
+void initApplication() {
+	Renderer::getDynamicsWorld()->setInternalTickCallback(myTickCallback);
 }

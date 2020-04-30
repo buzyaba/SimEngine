@@ -17,7 +17,7 @@ protected:
   /// Имя базы данных
   std::string name;
   std::vector<IObject*> allObjects;
-  std::vector<IProperties*> allObjectsProperties;
+  std::map<std::string, IProperties*> allObjectsProperties;
   std::vector<std::string> tableHeader;
   std::vector < std::vector<std::string>> table;
 
@@ -29,42 +29,34 @@ public:
     isFirstPrintToConsole = true;
     allObjects = _allObjects;
     name = _name;
-    int size = 0;
+    tableHeader.push_back("Time");
     for (int i = 0; i < allObjects.size(); i++)
     {
-      size += allObjects[i]->GetProperties().size();
-    }
-
-    int k = 0;
-    allObjectsProperties.resize(size);
-    tableHeader.resize(size + 1);
-    tableHeader[0] = "Time";
-
-    for (int i = 0; i < allObjects.size(); i++)
-    {
-      std::vector<IProperties*>& tmp = allObjects[i]->GetProperties();
-      for (int j = 0; j < tmp.size(); j++)
-      {
-        allObjectsProperties[k] = tmp[j];
-        tableHeader[k + 1] = allObjects[i]->GetName() + "_" + tmp[j]->GetName();
-        k++;
+      std::map<std::string, IProperties*>& tmp = allObjects[i]->GetProperties();
+      for (auto& elem : tmp) {
+        allObjectsProperties.insert(elem);
+        tableHeader.push_back(allObjects[i]->GetName() + "_" + elem.first);
       }
     }
-
   };
 
   virtual void AddAllProperties(unsigned long time)
   {
     std::vector<std::string> str(allObjectsProperties.size() + 1);
     str[0] = std::to_string(time);
-    for (int i = 0; i < allObjectsProperties.size(); i++)
+    size_t iter = 1;
+    for (auto& elem : allObjectsProperties)
     {      
-      std::vector<double>& tmp = allObjectsProperties[i]->GetValues();
-      str[i + 1] = std::to_string(tmp[0]);
-      for (int j = 1; j < tmp.size(); j++)
-        str[i + 1] = str[i + 1] + "_" + std::to_string(tmp[j]);
+      std::map<std::string, double>& tmp = elem.second->GetValues();
+      auto it = tmp.begin();
+      str[iter] = std::to_string(it->second);
+      it++;
+      while (it != tmp.end()) {
+        str[iter] = str[iter] + "_" + std::to_string(it->second);
+        it++;
+      }
+      iter++;
     }
-
     table.push_back(str);
   }
 
@@ -74,7 +66,7 @@ public:
     ///
   }
 
-  virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time)
+  virtual std::map<std::string, IProperties*> GddPropertyForObject(unsigned long time)
   {
     return allObjectsProperties;
   }

@@ -1,5 +1,7 @@
-file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*") #Добавляем в переменную hdrs все файлы с расширением .h
-file(GLOB srcs "*.cpp")#Добавляем в переменную srcs все файлы с расширением .h
+file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*")
+file(GLOB srcs "*.cpp")
+
+add_definitions(-DGLEW_NO_GLU)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)

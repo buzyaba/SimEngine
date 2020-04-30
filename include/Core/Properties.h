@@ -2,89 +2,79 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 /**
 Класс свойств объектов, описывает различные параметры, характеристики и своства различных объектов
-Свойство содержит вектор double значени с соответствующими имена и\или строку - значение.
-Например: свойство "координаты объекта" содержит вектор значений (1, 1, 1) с именами ("x", "y", "z")
+Свойство содержит словарь double значени с соответствующими имена и\или строку - значение.
+Например: свойство "координаты объекта" содержит словарь значений (1, 1, 1) с именами ("x", "y", "z")
 */
-class IProperties
-{
+class IProperties {
 public:
-  /// Возвращает вектор значени свойства
-  virtual std::vector<double>& GetValues() = 0;
-  /// Задает вектор значений для свойства
-  virtual void SetValues(const std::vector<double>& _values) = 0;
+    /// Возвращает словарь свойства
+    virtual std::map<std::string, double>& GetValues() = 0;
+    /// Задает словарь для свойства
+    virtual void SetValues(const std::map<std::string, double>& _map) = 0;
 
-  /// Возвращает имена для конкретных значений свойства
-  virtual std::vector<std::string>& GetNames() = 0;
-  /// Задает имена для значений свойства
-  virtual void SetNames(const std::vector<std::string>& _names) = 0;
+    /// Возвращает значение с именем name
+    virtual double GetValue(std::string name) = 0;
+    /// Изменяет значение с именем name
+    virtual void SetValue(std::string name, double val) = 0;
 
-  /// Вохвращает значение с именем name
-  virtual double GetValue(std::string name) = 0;
+    /// Возвращает имя свойства
+    virtual std::string GetName() = 0;
 
-  /// Возвращает имя свойства
-  virtual std::string GetName() = 0;
+    /// Наблюдается ли это свойство стандартным сенсором
+    virtual bool IsObserved() = 0;
+    /// Задает наблюдается ли это свойство стандартным сенсором
+    virtual void SetIsObserved(bool _isObserved) = 0;
 
-  /// Наблюдается ли это свойство стандартным сенсором
-  virtual bool IsObserved() = 0;
-  /// Задает наблюдается ли это свойство стандартным сенсором
-  virtual void SetIsObserved(bool _isObserved) = 0;
-
-  /// Возвращает строковое значение своства
-  virtual std::string GetStringValue() = 0;
-  /// Задает строковое значение свойства, после чего своство становится строковым
-  virtual void SetStringValue(std::string val) = 0;
+    /// Возвращает строковое значение свойства
+    virtual std::string GetStringValue() = 0;
+    /// Задает строковое значение свойства, после чего свойство становится строковым
+    virtual void SetStringValue(std::string val) = 0;
 };
 
 
 ///Класс с базовой реализациейинтерфейса свойств объектов, описывает параметры различных объектов
-class TProperties : public IProperties
-{
+class TProperties : public IProperties  {
 protected:
-  /// вектор значений в соответствии с именами
-  std::vector<double> values;
-  /// вектор имен значений
-  std::vector<std::string> names;
-  /// Нублюдается ли это свойство сенсорами
-  bool isObserved;
-  /// имя данного свойства
-  std::string name;
-  /// Является свойство строковым или нет
-  bool isString;
-  /// Строка значения сойства
-  std::string stringValue;
+    /// словарь значений в соответствии с именами
+    std::map<std::string, double> propMap;
+    /// Нублюдается ли это свойство сенсорами
+    bool isObserved;
+    /// имя данного свойства
+    std::string name;
+    /// Является свойство строковым или нет
+    bool isString;
+    /// Строка значения свойства
+    std::string stringValue;
 public:
+    TProperties(std::string _name = "");
+    TProperties(std::map<std::string, double> _map,
+        bool _isObserved = false, std::string _name = "");
+    TProperties(const TProperties& properties);
 
-  TProperties(std::vector<double> _values, std::vector<std::string> _names,
-    bool _isObserved = false, std::string _name = "");
-  TProperties(int _size = 0, std::string _name = "");
-  TProperties(const TProperties& properties);
+    /// Возвращает словарь свойства
+    virtual std::map<std::string, double>& GetValues() override { return propMap; } 
+    /// Задает словарь для свойства
+    virtual void SetValues(const std::map<std::string, double>& _map) override { propMap = _map; }
 
-  /// Возвращает вектор значени свойства
-  virtual std::vector<double>& GetValues();
-  /// Задает вектор значений для свойства
-  virtual void SetValues(const std::vector<double>& _values);
+    /// Возвращает значение с именем name
+    virtual double GetValue(std::string name) override;
+    /// Изменяет значение с именем name
+    virtual void SetValue(std::string name, double val) override;
 
-  /// Возвращает имена для конкретных значений свойства
-  virtual std::vector<std::string>& GetNames();
-  /// Задает имена для значений свойства
-  virtual void SetNames(const std::vector<std::string>& _names);
+    /// Возвращает имя свойства
+    virtual std::string GetName() override { return name; }
 
-  /// Вохвращает значение с именем name
-  virtual double GetValue(std::string name);
+    /// Наблюдается ли это свойство стандартным сенсором
+    virtual bool IsObserved() override { return isObserved; }
+    /// Задает наблюдается ли это свойство стандартным сенсором
+    virtual void SetIsObserved(bool _isObserved) override { isObserved = _isObserved; }
 
-  /// Возвращает имя свойства
-  virtual std::string GetName();
-
-  /// Наблюдается ли это свойство стандартным сенсором
-  virtual bool IsObserved();
-  /// Задает наблюдается ли это свойство стандартным сенсором
-  virtual void SetIsObserved(bool _isObserved);
-
-  /// Возвращает строковое значение своства
-  virtual std::string GetStringValue();
-  /// Задает строковое значение свойства, после чего своство становится строковым
-  virtual void SetStringValue(std::string val);
+    /// Возвращает строковое значение свойства
+    virtual std::string GetStringValue() override;
+    /// Задает строковое значение свойства, после чего свойство становится строковым
+    virtual void SetStringValue(std::string val) override;
 };

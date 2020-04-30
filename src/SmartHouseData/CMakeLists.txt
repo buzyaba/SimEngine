@@ -1,11 +1,11 @@
-file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/SmartHouseData/*.h*") #Добавляем в переменную hdrs все файлы с расширением .h
-file(GLOB srcs "*.cpp")#Добавляем в переменную srcs все файлы с расширением .h
+# file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/SmartHouseData/*.h*") #пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ hdrs пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ .h
+# file(GLOB srcs "*.cpp")#пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ srcs пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ .h
 
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
+# find_package(OpenMP)
+# if (OPENMP_FOUND)
+#     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+# endif()
 
-add_library(SmartHouseData STATIC ${srcs} ${hdrs}) 
+# add_library(SmartHouseData STATIC ${srcs} ${hdrs}) 
 

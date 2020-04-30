@@ -5,11 +5,14 @@ add_executable(SmartHouse ${source_files} ${engine_source})
 
 #target_link_libraries(SmartHouse glfw ${OPENGL_LIBRARIES})
 
-add_definitions(-DGLEW_STATIC)
+add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(SmartHouse
-						
+						Core
+						pugixml 
+						output_system
 						libglewmx_static
+						Python3::Python
 						BulletDynamics
 						BulletCollision
 						LinearMath 

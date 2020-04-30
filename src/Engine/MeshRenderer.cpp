@@ -1,10 +1,7 @@
 #include <Engine/MeshRenderer.hpp>
-#include <iostream>
+#include <stdexcept>
 
 MeshRenderer::MeshRenderer(MeshType modelType){
-	scale = glm::vec3(1.0f, 1.0f, 1.0f);
-	position = glm::vec3(0.0, 0.0, 0.0);
-
 	switch (modelType){
 
 		case kTriangle: Mesh::setTriangleData(vertices, indices); 
@@ -44,6 +41,35 @@ MeshRenderer::MeshRenderer(MeshType modelType){
 
 }
 
-MeshRenderer::~MeshRenderer() {
-    
+MeshContainer* MeshContainer::instance = 0;
+
+MeshContainer::MeshContainer(): cubeMesh(new MeshRenderer(MeshType::kCube)), 
+								sphereMesh(new MeshRenderer(MeshType::kSphere)),
+								triangleMesh(new MeshRenderer(MeshType::kTriangle)),
+								quadMesh(new MeshRenderer(MeshType::kQuad))
+{
+}
+
+MeshContainer* MeshContainer::getInstance() {
+	if (!instance) {
+		instance = new MeshContainer();
+		return instance;
+	} else {
+		return instance;
+	}
+}
+
+MeshRenderer* MeshContainer::getMesh(MeshType type) {
+	switch (type) {
+	case MeshType::kCube:
+		return cubeMesh;
+	case MeshType::kSphere:
+		return sphereMesh;
+	case MeshType::kTriangle:
+		return triangleMesh;
+	case MeshType::kQuad:
+		return quadMesh;
+	default:
+		throw std::invalid_argument("type must be a member of MeshType enum"); 
+	}
 }

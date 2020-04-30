@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 
 #include "Core/Object.h"
@@ -9,18 +10,19 @@
 
 
 /**
-Класс описание пириуда определенной работы объекта
+Класс описание периода определенной работы объекта
 имя свойства, время начала, время конца, значения
-*/
+**/
 class TPropertyInterval
 {
 public:
   std::string nameProperty;
+  // Что это?
   bool isSet;
 
   std::vector<unsigned long int> startTime;
   std::vector<unsigned long int> endTime;
-  std::vector <std::vector<double>> value;
+  std::vector <std::map<std::string, double>> value;
 
   void SetProperty(IProperties& prop, int intervalCount, std::vector<unsigned long int>& _startTime,
   std::vector<unsigned long int>& _endTime)
@@ -36,7 +38,7 @@ public:
     }
   }
 
-  std::vector<double>& GetValue(unsigned long int time)
+  std::map<std::string, double>& GetValue(unsigned long int time)
   {
     for (int i = 0; i < startTime.size(); i++)
     {
@@ -58,11 +60,12 @@ protected:
   std::string script;
   
   /// Интервалы содержащие время и соответствующее значение для свойств объектов
-  std::vector<std::vector<TPropertyInterval>> objectPropertyIntervals;
+  std::vector<std::map<std::string, TPropertyInterval>> objectPropertyIntervals;
 
 
   /// Меняем свойство найденного объекта в соответствии со скриптом
-  std::vector <IProperties*>& ChangeProperties(int objectIndex, std::vector <IProperties*>& properties, unsigned long int time);
+  std::map<std::string, IProperties*>& ChangeProperties(int objectIndex, 
+        std::map<std::string, IProperties*>& properties, unsigned long int time);
 
   /// Файл с расписанием активности
   std::string xmlFile;
@@ -79,8 +82,8 @@ public:
   TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, 
     unsigned long int& maxTime, int type = 0);
 
-  virtual std::vector <IProperties*>& GetObjectProperties(std::string name, unsigned long int time);
-  virtual std::vector <IProperties*>& GetObjectProperties(IObject& object, unsigned long int time);
+  virtual std::map<std::string, IProperties*>& GetObjectProperties(std::string name, unsigned long int time);
+  virtual std::map<std::string, IProperties*>& GetObjectProperties(IObject& object, unsigned long int time);
 
   virtual void UpdateObjectsProperties(unsigned long int time);
 };

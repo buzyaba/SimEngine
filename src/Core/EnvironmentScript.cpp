@@ -1,17 +1,12 @@
 ﻿#include "Core/EnvironmentScript.h"
 #include "../lib/pugixml/include/pugixml.hpp"
 
-#include <string.h>
-//"pugixml.hpp"
-
-std::vector <IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex,
-  std::vector<IProperties*>& properties, unsigned long int time)
+std::map<std::string, IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, 
+                std::map<std::string, IProperties*>& properties, unsigned long int time)
 {
-  for (int i = 0; i < objectPropertyIntervals[objectIndex].size(); i++)
-  {
-    if (objectPropertyIntervals[objectIndex][i].nameProperty == properties[i]->GetName())
-    {
-      properties[i]->SetValues(objectPropertyIntervals[objectIndex][i].GetValue(time));
+  for (auto& elem : objectPropertyIntervals[objectIndex]) {
+    if (properties[elem.first]) {
+      properties[elem.first]->SetValues(elem.second.GetValue(time));
     }
   }
   return properties;
@@ -40,16 +35,17 @@ void TEnvironmentScript::RandomGen(unsigned long int maxTime)
   objectPropertyIntervals.resize(objects.size());
   for (int i = 0; i < objects.size(); i++)
   {
-    objectPropertyIntervals[i].resize(objects[i]->GetProperties().size());
-    for (int j = 0; j < objects[i]->GetProperties().size(); j++)
+    // А где инициализация objectPropertyIntervals? Нужен скрипт
+    objectPropertyIntervals[i].insert({{"IsWork", TPropertyInterval()}});
+    for (auto& elem : objectPropertyIntervals[i])
     {
-      objectPropertyIntervals[i][j].SetProperty(*(objects[i]->GetProperties()[j]), intervalCount, startTime, endTime);
+      elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
     }
   }
-  objectPropertyIntervals[0][0].isSet = true;
+  objectPropertyIntervals[0]["IsWork"].isSet = true;
   for (int i = 0; i < intervalCount; i++)
   {
-    objectPropertyIntervals[0][0].value[i][0] = rand() % 2;
+    objectPropertyIntervals[0]["IsWork"].value[i]["IsWork"] = rand() % 2;
   }
 }
 
@@ -95,11 +91,9 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 
       for (int i = 0; i < objects.size(); i++)
       {
-        objectPropertyIntervals[i].resize(objects[i]->GetProperties().size());
-        for (int j = 0; j < objects[i]->GetProperties().size(); j++)
-        {
-          objectPropertyIntervals[i][j].SetProperty(*(objects[i]->GetProperties()[j]), intervalCount, startTime, endTime);
-        }
+        for (auto& elem : objects[i]->GetProperties())
+          if(elem.first != "Name" && elem.first != "Object")
+              objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, startTime, endTime);
       }
     }
 
@@ -112,23 +106,19 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
 
-          for (int j = 0; j < objectPropertyIntervals[i].size(); i++)
-          {
-            if (objectPropertyIntervals[i][j].nameProperty == nameProperty)
-            {
-              objectPropertyIntervals[i][j].isSet = true;
+          for (auto & elem : objectPropertyIntervals[i]) {
+            if (elem.first == nameProperty) {
+              elem.second.isSet = true;
               std::vector<int> tt(intervalCount);
               ParseString(valueProperty, tt);
 
               for (int k = 0; k < intervalCount; k++)
               {
-                objectPropertyIntervals[i][j].value[k][0] = tt[k];
+                elem.second.value[k][nameProperty] = tt[k];
               }
             }
           }
         }
-
-
       }
     }
   }
@@ -171,25 +161,25 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
     RandomGen(maxTime);
   }
 
-  //Добвать построение objectPropertyIntervals по скрипту.
+  //Добавить построение objectPropertyIntervals по скрипту.
 }
 
-std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(std::string name, unsigned long int time)
+std::map<std::string, IProperties*>& TEnvironmentScript::GetObjectProperties(std::string name, unsigned long int time)
 {
   for (int i = 0; i < objects.size(); i++)
   {
     if (objects[i] != nullptr)
     {
       if (objects[i]->GetName() == name)
-      {
-        return  ChangeProperties(i, objects[i]->GetProperties(), time);
+      {        
+        return ChangeProperties(i, objects[i]->GetProperties(), time);
       }
     }
   }
   throw - 1;
 }
 
-std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& object, unsigned long int time)
+std::map<std::string, IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& object, unsigned long int time)
 {
   for (int i = 0; i < objects.size(); i++)
   {
@@ -197,7 +187,7 @@ std::vector <IProperties*>& TEnvironmentScript::GetObjectProperties(IObject& obj
     {
       if (objects[i]->GetName() == object.GetName())
       {
-        return  ChangeProperties(i, objects[i]->GetProperties(), time);
+        return ChangeProperties(i, objects[i]->GetProperties(), time);
       }
     }
   }
@@ -211,14 +201,13 @@ void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
   {
     if (objects[i] != nullptr)
     {
-      std::vector<IProperties*>& properties = objects[i]->GetProperties();
-
-      for (int j = 0; j < objectPropertyIntervals[i].size(); j++)
+      std::map<std::string, IProperties*>& properties = objects[i]->GetProperties();
+      for (auto& elem : objectPropertyIntervals[i])
       {
-        if (objectPropertyIntervals[i][j].isSet)
+        if (elem.second.isSet)
         {
-          std::vector<double>& tmp = objectPropertyIntervals[i][j].GetValue(time);
-          properties[j]->SetValues(tmp);
+          std::map<std::string, double>& tmp = elem.second.GetValue(time);
+          properties[elem.first]->SetValues(tmp);
         }
       }
     }

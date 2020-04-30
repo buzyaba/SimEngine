@@ -10,8 +10,8 @@ class TRoom : public TScene
 public:
   TRoom(std::string _name) : TScene(_name)
   {
-    this->properties.resize(1);
-    this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, false, "Dimensions");
+    // this->properties.resize(1);
+    // this->properties[0] = new TProperties({ 20, 20, 20 }, { "Width", "Length", "Height" }, false, "Dimensions");
   }
 
   /// Возвращает имя класса (используется для динамического создания модели)
@@ -27,6 +27,8 @@ public:
   }
 };
 
+<<<<<<< HEAD
+=======
 class TTerminal : public TObjectOfObservation
 {
 protected:
@@ -81,6 +83,7 @@ public:
   }
 };
 
+>>>>>>> origin/master
 
 class TElectricitySensor : public TSensor
 {
@@ -99,16 +102,16 @@ public:
 
   virtual void SetDataPacket(TDataPacket& packet)
   {
-    for (int i = 0; i < objects.size(); i++)
-    {
-      if (objects[i] != nullptr)
-      {
-        if (packet.GetDoubles()[0] == 0)
-          objects[i]->SetProperty({ 0 }, "IsWork");
-        else
-          objects[i]->SetProperty({ 1 }, "IsWork");
-      }
-    }
+    // for (int i = 0; i < objects.size(); i++)
+    // {
+    //   if (objects[i] != nullptr)
+    //   {
+    //     if (packet.GetDoubles()[0] == 0)
+    //       objects[i]->SetProperty({ 0 }, "IsWork");
+    //     else
+    //       objects[i]->SetProperty({ 1 }, "IsWork");
+    //   }
+    // }
   }
 };
 

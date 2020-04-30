@@ -1,7 +1,9 @@
 ﻿#pragma once
 
+#define WITHOUT_NUMPY
 #include "Core/ManagementProgram.h"
 #include "Core/common.h"
+#include "Core/SmartThing.h"
 #include <string>
 #include <stdio.h>
 #include <chrono>
@@ -9,7 +11,10 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include "matplotlibcpp.h"
 //#include "discpp.h"
+
+namespace plt=matplotlibcpp;
 
 
 class TEmptyProgram : public IManagementProgram
@@ -26,8 +31,6 @@ protected:
   std::vector < std::vector<std::string>> table;
   /// Набор наблюдаемых сенсоров
   std::vector <ISensor*> sensors;
-  /// Рисование графиков
-  //Dislin g;
 
   std::vector <double> xArray;
   std::vector < std::vector <double>> yArray;
@@ -36,117 +39,75 @@ protected:
   std::vector <std::string> title2;
   double minx, miny, maxx, maxy;
 
-  void InitPlot(bool f = false)
-  {
-    //g.metafl("XWIN");
-    //g.scrmod("revers");
-
-    //g.disini();
-    ////if (!f)
-    ////  g.winmod("NONE");
-
-    //g.name("Time", "x");
-    //g.name("Values", "y");
-
-    //g.labdig(-1, "x");
-    //g.ticks(9, "x");
-    //g.ticks(10, "y");
-
-    //minx = 0;
-    //miny = 0;
-    //maxx = 0;
-    //maxy = 0;
-  }
-
   void CreatePlotData()
   {
-    //if (yArray.size() < (tableHeader.size() - 1))
-    //{
-    //  yArray.resize(tableHeader.size() - 1);
-    //}
-    //for (int j = 0; j < yArray.size(); j++)
-    //{
-    //  yArray[j].clear();
-    //  yArray[j].resize(0);
-    //}
+    if (yArray.size() < (tableHeader.size() - 1))
+    {
+     yArray.resize(tableHeader.size() - 1);
+    }
+    for (int j = 0; j < yArray.size(); j++)
+    {
+     yArray[j].clear();
+     yArray[j].resize(0);
+    }
 
-    //xArray.clear();
-    //xArray.resize(currentTime);
-    //for (unsigned long int t = 0; t < currentTime; t++)
-    //{
-    //  xArray[t] = double(t);
-    //}
+    xArray.clear();
+    xArray.resize(currentTime);
+    for (unsigned long int t = 0; t < currentTime; t++)
+    {
+     xArray[t] = double(t);
+    }
 
-    //maxx = double(currentTime + 1);
+    maxx = double(currentTime + 1);
 
-    //double value;
-    //for (int u = 0; u < table.size() - 1; u++)
-    //{
-    //  for (int i = 0; i < table[u].size() - 1; i++)
-    //  {
-    //    value = atof(table[u][i + 1].c_str());
+    double value;
+    for (int u = 0; u < table.size() - 1; u++)
+    {
+     for (int i = 0; i < table[u].size() - 1; i++)
+     {
+       value = atof(table[u][i + 1].c_str());
 
-    //    if (maxy < value)
-    //      maxy = value;
-    //    if (miny > value)
-    //      miny = value;
+       if (maxy < value)
+         maxy = value;
+       if (miny > value)
+         miny = value;
 
-    //    yArray[i].push_back(value);
-    //  }
-    //}
+       yArray[i].push_back(value);
+     }
+    }
 
-    //title2.resize(tableHeader.size() - 1);
-    //for (int u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
-    //{
-    //  title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
-    //}
+    title2.resize(tableHeader.size() - 1);
+    for (int u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
+    {
+     title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
+    }
   }
 
   void Plot()
   {
-    //if (table.size() < 3)
-    //  return;
+    if (table.size() < 3)
+     return;
 
-    //CreatePlotData();
+    CreatePlotData();
 
-    //int count = yArray.size();
-    //int xn = yArray[0].size();
+    int count = yArray.size();
+    int xn = yArray[0].size();
 
-    //g.erase();
-    //g.endgrf();
-    //g.color("fore");
-    //g.pagera();
-    //g.complx();
-    //g.axspos(450, 1800);
-    //g.axslen(2200, 1200);
-
-    //if (maxx == minx)
-    //  maxx += 1;
-    //if (maxy == miny)
-    //  maxy += 1;
+    if (maxx == minx)
+     maxx += 1;
+    if (maxy == miny)
+     maxy += 1;
 
     //double xstep = (maxx - minx) / 4.0;
     //double ystep = (maxy - miny) / 4.0;
     //g.graf(minx, maxx, minx, xstep,
     //  miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
 
-
-    //for (int i = 0; (i < 3) && (i < title2.size()); i++)
-    //  g.titlin(title2[i].c_str(), i + 1);
-
-    //g.color("fore");
-    //g.height(50);
-    //g.title();
-
-
-    //g.setrgb(0.7, 0.7, 0.7);
-    //g.grid(1, 1);
-
-    //g.color("red");
-
-    //for (int k = 0; k < count; k++)
-    //  g.curve(xArray.data(), yArray[k].data(), xn);
-
+    for (int k = 0; k < count; k++)
+      plt::plot(xArray, yArray[k]);
+    plt::xlabel("Time");
+    plt::ylabel("Values");
+    plt::show();
     //g.sendbf();
   }
 
@@ -192,9 +153,7 @@ public:
       fprintf(file, "\n");
     }
 
-    InitPlot();
     Plot();
-    FinPlot();
 
     fclose(file);
   }
@@ -278,44 +237,44 @@ public:
 
   virtual void Run()
   {
-    TEmptyProgram::Run();
-    double carCount = 0;
-    if (sensors.size() > 0)
-    {
-      double* val = sensors[0]->GetDataPacket().GetDoubles();
-      int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
-      for (int j = 0; j < dataCount; j++)
-      {
-        carCount += val[j];
-      }
-      table[table.size() - 1].push_back(std::to_string(carCount));
-    }
-    double* packetVal = sendPacket.GetDoubles();
+    // TEmptyProgram::Run();
+    // double carCount = 0;
+    // if (sensors.size() > 0)
+    // {
+    //   double* val = sensors[0]->GetDataPacket().GetDoubles();
+    //   int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
+    //   for (int j = 0; j < dataCount; j++)
+    //   {
+    //     carCount += val[j];
+    //   }
+    //   table[table.size() - 1].push_back(std::to_string(carCount));
+    // }
+    // double* packetVal = sendPacket.GetDoubles();
 
-    bool isUpdate = false;
+    // bool isUpdate = false;
 
-    if (currentStep % 17 == 0)
-    {
-      isUpdate = true;
-      packetVal[0] = (int(packetVal[0]) + 1) % 2;
-    }
+    // if (currentStep % 17 == 0)
+    // {
+    //   isUpdate = true;
+    //   packetVal[0] = (int(packetVal[0]) + 1) % 2;
+    // }
 
-    if (isUpdate)
-    {
-      for (int i = 0; i < things.size(); i++)
-      {
-        things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
-        int IsNotGo = int(packetVal[0]);
+    // if (isUpdate)
+    // {
+    //   for (int i = 0; i < things.size(); i++)
+    //   {
+    //     things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
+    //     int IsNotGo = int(packetVal[0]);
 
-        if (IsNotGo == 1)
-          things[i]->SetProperty({ 2 }, "Color");
-        else
-          things[i]->SetProperty({ 0 }, "Color");
-      }
-    }
+    //     if (IsNotGo == 1)
+    //       things[i]->SetProperty({ 2 }, "Color");
+    //     else
+    //       things[i]->SetProperty({ 0 }, "Color");
+    //   }
+    // }
 
-    for (int i = 0; i < things.size(); i++)
-      things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
+    // for (int i = 0; i < things.size(); i++)
+    //   things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
   }
 };
 

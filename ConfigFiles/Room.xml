@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
   <TRoom>
-	<Name>Room</Name>
+	<Name>Room1</Name>
   </TRoom>
   <TTerminal>
 	<Name>Terminal1</Name>

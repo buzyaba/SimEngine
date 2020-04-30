@@ -1,15 +1,4 @@
-#include <Engine/Object.hpp>
-
-GLuint Primitive::shaderProgram = -1;
-GLuint Primitive::shaderProgramSingle = -1;
-
-
-void Primitive::initShader() {
-    ShaderLoader shader;
-    shaderProgram = shader.CreateProgram("../../../assets/shaders/texturedModel.vs", "../../../assets/shaders/texturedModel.fs");
-    shaderProgramSingle = shader.CreateProgram("../../../assets/shaders/texturedModelSingle.vs", "../../../assets/shaders/texturedModel.fs");
-}
-
+#include <Engine/Transform.hpp>
 
 Transform::Transform() {
     pos = glm::vec3(0);
@@ -65,32 +54,4 @@ void Transform::setScale(const glm::vec3& _scale) {
 
 	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
     modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
-}
-
-Primitive::Primitive() {
-    if (shaderProgram == -1) {
-        Primitive::initShader();
-    }
-}
-
-
-void Primitive::setPosition(const glm::vec3& pos) {
-    btTransform _transform(rigidBody->getWorldTransform());
-
-    _transform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-    rigidBody->setWorldTransform(_transform);
-    rigidBody->getMotionState()->setWorldTransform(_transform);
-
-    transform.setPosition(pos);
-
-}
-
-void Primitive::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
-    btTransform t(rigidBody->getWorldTransform());
-    btQuaternion rotate(btRadians(yaw), btRadians(pitch), btRadians(roll));
-    t.setRotation(rotate);
-
-    rigidBody->setWorldTransform(t);
-    rigidBody->getMotionState()->setWorldTransform(t);
-    transform.setRotation(yaw, pitch, roll);
 }

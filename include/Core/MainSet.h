@@ -1,7 +1,9 @@
 ﻿#pragma once
+#include <map>
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
-#include "Core/Scene.h"
+#include "Core/StaticObject.h"
+#include <Engine/WindowManager.hpp>
 
 
 /// Возвращает набор элементов по базовому скрипту
@@ -9,14 +11,17 @@ class TMainSet
 {
 protected:
   std::vector<TObjectOfObservation*> objects;
-  std::vector<TScene*> scene;
-  std::vector<TSmartThing*> thing;
+  std::vector<TStaticObject*> staticObjects;
+  std::vector<TSmartThing*> things;
+  std::map<std::string, std::vector<TObject*>> allGObjects;
 public:
-  TMainSet(std::string xmlFile = "");
+  TMainSet() = default;
+  TMainSet(std::string xmlFile);
+  std::vector<TObjectOfObservation*> GetObjects();
+  std::vector<TStaticObject*> GetStaticObjects();
+  std::vector<TSmartThing*> GetThings();
+  const std::map<std::string, std::vector<TObject*>>& GetAllGObjects() {return allGObjects;}
 
-  std::vector<TObjectOfObservation*> GetObject();
-  std::vector<TScene*> GetScene();
-  std::vector<TSmartThing*> GetThing();
 };
 
 class TRoomSet : public TMainSet
