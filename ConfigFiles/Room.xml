@@ -5,10 +5,15 @@
   </TRoom>
   <TTerminal>
 	<Name>Terminal1</Name>
+  <Coordinate>1 0 -5</Coordinate>
+  </TTerminal>
+  <TTerminal>
+	<Name>Terminal2</Name>
+  <Coordinate>5 0 -5</Coordinate>
   </TTerminal>
   <TSmartSocket>
 	<Name>SmartSocket1</Name>
 	<Object>Terminal1</Object>
+  <Object>Terminal2</Object>
   </TSmartSocket>  
-  
 </config>
