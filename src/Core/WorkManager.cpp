@@ -158,7 +158,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
   std::cout << "End\n" << deltaWork.count() << std::endl;
 
-  storage->PrintToFile();
+      storage->PrintToFile();
   program->End();
 }
 

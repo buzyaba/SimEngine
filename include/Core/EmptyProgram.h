@@ -167,7 +167,7 @@ public:
     {
       double* val = sensors[i]->GetDataPacket().GetDoubles();
       int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
-      for (int j = 0; j < dataCount; j++)
+      for (int j = 0; j < 6; j++)
       {
         str.push_back(std::to_string(val[j]));
       }

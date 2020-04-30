@@ -40,7 +40,7 @@ void SetProperty(IObject* object, std::string nameProperty, std::string valuePro
       if (tempProp) {
           std::vector<double> tempVal;
           ParseString(valueProperty, tempVal);
-          std::map<std::string, double> tmpPropMap = tempProp->GetValues();
+          std::map<std::string, double>& tmpPropMap = tempProp->GetValues();
           size_t iter = 0;
           for (auto& elem : tmpPropMap) {
               if (iter != tempVal.size()) {
@@ -93,7 +93,7 @@ TMainSet::TMainSet(std::string xmlFile)
           SetProperty(newStaticObject, nameProperty, valueProperty);
         }
         staticObjects.push_back(newStaticObject);
-        allGObjects.insert(std::make_pair(name, std::vector<TObject*>(1, staticObjects.back())));
+        allGObjects.insert(std::make_pair(newStaticObject->GetName(), std::vector<TObject*>(1, staticObjects.back())));
       }
     }
 
@@ -111,7 +111,7 @@ TMainSet::TMainSet(std::string xmlFile)
         }
 
         objects.push_back(newObject);
-        allGObjects.insert(std::make_pair(name, std::vector<TObject*>(1, objects.back())));
+        allGObjects.insert(std::make_pair(newObject->GetName(), std::vector<TObject*>(1, objects.back())));
       }
     }
 

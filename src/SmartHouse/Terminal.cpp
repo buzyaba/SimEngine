@@ -8,7 +8,7 @@ TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& s
     properties.insert({std::string("PowerConsumption"), new TProperties(std::map<std::string, double>{
         {"PowerConsumption", 0}}, true, "PowerConsumption")});
     properties.insert({std::string("Coordinate"), new TProperties(std::map<std::string, double>{
-        {"X", 10}, {"Y", 10}}, false, "Coordinate")});
+        {"X", 0 }, {"Y", 0 }, {"Z", 0 } }, false, "Coordinate")});
     isWork = false;
     //GL
     if (mainTexture == -1)
@@ -105,6 +105,12 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
 // }
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
+    printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
+this->properties["Coordinate"]->GetValues()["Y"],
+this->properties["Coordinate"]->GetValues()["Z"]);
+    setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
+                  this->properties["Coordinate"]->GetValues()["Y"],
+                  this->properties["Coordinate"]->GetValues()["Z"] });
     initBuffer();
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];

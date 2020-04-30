@@ -56,8 +56,9 @@ TDataPacket& TSensor::GetDataPacket()
   {
     for (auto& elem : objectsProperties[i])
           if (elem.second != nullptr && elem.second->IsObserved())
-            for (auto& iter : elem.second->GetValues())
-              data[t] = iter.second;
+              for (auto& iter : elem.second->GetValues()) {
+                  data[t++] = iter.second;
+              }
     // for (int j = 0; j < vals[i].size(); j++)
     // {
     //   if (vals[i][j] != nullptr)
