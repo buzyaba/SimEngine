@@ -35,18 +35,20 @@ void SetProperty(IObject* object, std::string nameProperty, std::string valuePro
 {
   if (nameProperty == "Name")
     object->SetName(valueProperty);
-  IProperties* tempProp = object->GetProperties()[nameProperty];
-  if (tempProp) {
-    std::vector<double> tempVal;
-    ParseString(valueProperty, tempVal);
-    std::map<std::string, double> tmpPropMap = tempProp->GetValues();
-    size_t iter = 0;
-    for (auto& elem : tmpPropMap) {
-      if (iter != tempVal.size()) {
-        elem.second = tempVal[iter++];
+  else {
+      IProperties* tempProp = object->GetProperties()[nameProperty];
+      if (tempProp) {
+          std::vector<double> tempVal;
+          ParseString(valueProperty, tempVal);
+          std::map<std::string, double>& tmpPropMap = tempProp->GetValues();
+          size_t iter = 0;
+          for (auto& elem : tmpPropMap) {
+              if (iter != tempVal.size()) {
+                  elem.second = tempVal[iter++];
+              }
+          }
+          object->SetProperty(*tempProp);
       }
-    }
-    object->SetProperty(*tempProp);
   }
 }
 
@@ -55,6 +57,9 @@ TMainSet::TMainSet(std::string xmlFile)
   std::vector<TObjectOfObservation*> LocalObjects;
   std::vector<TStaticObject*> StaticObjects;
   std::vector<TSmartThing*> LocalThing;
+
+  std::vector<TObject*> test;
+  test.push_back(new TTerminal("Terminal"));
 
   StaticObjects.push_back(new TRoom("Room"));
 
@@ -75,7 +80,7 @@ TMainSet::TMainSet(std::string xmlFile)
     std::string name = iter.name();
     std::string value = iter.child_value();
 
-    /// Создаем новые сцены
+    /// Создаем новые статические объекты
     for (int i = 0; i < StaticObjects.size(); i++)
     {
       if (StaticObjects[i]->ClassName() == name)
@@ -87,8 +92,8 @@ TMainSet::TMainSet(std::string xmlFile)
           std::string valueProperty = iter2.child_value();
           SetProperty(newStaticObject, nameProperty, valueProperty);
         }
-
         staticObjects.push_back(newStaticObject);
+        allGObjects.insert(std::make_pair(newStaticObject->GetName(), std::vector<TObject*>(1, staticObjects.back())));
       }
     }
 
@@ -106,6 +111,7 @@ TMainSet::TMainSet(std::string xmlFile)
         }
 
         objects.push_back(newObject);
+        allGObjects.insert(std::make_pair(newObject->GetName(), std::vector<TObject*>(1, objects.back())));
       }
     }
 
@@ -119,9 +125,6 @@ TMainSet::TMainSet(std::string xmlFile)
         {
           std::string nameProperty = iter2.name();
           std::string valueProperty = iter2.child_value();
-          
-          SetProperty(newThing, nameProperty, valueProperty);
-          
           if (nameProperty == "Object")
           {
             for (int j = 0; j < objects.size(); j++)
@@ -129,7 +132,9 @@ TMainSet::TMainSet(std::string xmlFile)
               if (objects[j]->GetName() == valueProperty)
                 newThing->AddObject(*objects[j]);
             }
-          }
+          } else           
+            SetProperty(newThing, nameProperty, valueProperty);
+          
         }
 
         things.push_back(newThing);

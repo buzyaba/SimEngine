@@ -61,10 +61,6 @@ void TObject::SetName(std::string _name) {
     throw - 1;
 }
 
-std::string TObject::ClassName() {
-  return std::string("TObject");
-}
-
 // TODO: Graphic part and constructor
 
 void TObject::setPosition(const glm::vec3& pos) {

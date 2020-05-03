@@ -3,5 +3,6 @@
   <maxStep>50</maxStep>
   <intervalCount>5</intervalCount>
   <time>0_5_20_30_40_50</time>
-  <Terminal>1_0_1_0_1</Terminal>
+  <Terminal1><IsWork>1_0_1_0_1</IsWork></Terminal1>
+  <Terminal2><IsWork>0_1_0_1_0</IsWork></Terminal2>
 </config>

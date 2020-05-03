@@ -17,7 +17,7 @@ protected:
   /// Имя базы данных
   std::string name;
   std::vector<IObject*> allObjects;
-  std::map<std::string, IProperties*> allObjectsProperties;
+  std::vector<IProperties*> allObjectsProperties;
   std::vector<std::string> tableHeader;
   std::vector < std::vector<std::string>> table;
 
@@ -34,7 +34,7 @@ public:
     {
       std::map<std::string, IProperties*>& tmp = allObjects[i]->GetProperties();
       for (auto& elem : tmp) {
-        allObjectsProperties.insert(elem);
+        allObjectsProperties.push_back(elem.second);
         tableHeader.push_back(allObjects[i]->GetName() + "_" + elem.first);
       }
     }
@@ -47,7 +47,7 @@ public:
     size_t iter = 1;
     for (auto& elem : allObjectsProperties)
     {      
-      std::map<std::string, double>& tmp = elem.second->GetValues();
+      std::map<std::string, double>& tmp = elem->GetValues();
       auto it = tmp.begin();
       str[iter] = std::to_string(it->second);
       it++;
@@ -66,7 +66,7 @@ public:
     ///
   }
 
-  virtual std::map<std::string, IProperties*> GddPropertyForObject(unsigned long time)
+  virtual std::vector<IProperties*> AddPropertyForObject(unsigned long time)
   {
     return allObjectsProperties;
   }

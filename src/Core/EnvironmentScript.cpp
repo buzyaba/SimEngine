@@ -92,7 +92,8 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
       for (int i = 0; i < objects.size(); i++)
       {
         for (auto& elem : objects[i]->GetProperties())
-          objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, startTime, endTime);
+          if(elem.first != "Name" && elem.first != "Object")
+              objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, startTime, endTime);
       }
     }
 
@@ -113,7 +114,7 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 
               for (int k = 0; k < intervalCount; k++)
               {
-                elem.second.value[k][0] = tt[k];
+                elem.second.value[k][nameProperty] = tt[k];
               }
             }
           }
