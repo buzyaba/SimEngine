@@ -11,7 +11,7 @@ target_link_libraries(SmartHouse
 						Core
 						pugixml 
 						output_system
-						libglewmx_static
+						libglew_static
 						Python3::Python
 						BulletDynamics
 						BulletCollision

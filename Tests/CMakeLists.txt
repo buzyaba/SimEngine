@@ -26,7 +26,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 						pugixml
 						output_system
 						Python3::Python
-                        libglewmx_static
+                        libglew_static
 						BulletDynamics
 						BulletCollision
 						LinearMath 
