@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#ifndef WITHOUT_NUMPY
-  #define WITHOUT_NUMPY
-#endif
+#include "matplotlibcpp.h"
 #include "Core/ManagementProgram.h"
 #include "Core/common.h"
 #include "Core/SmartThing.h"
@@ -13,7 +11,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include "matplotlibcpp.h"
 //#include "discpp.h"
 
 namespace plt=matplotlibcpp;
