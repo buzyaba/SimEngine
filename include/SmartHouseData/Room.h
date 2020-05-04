@@ -27,8 +27,6 @@ public:
   }
 };
 
-<<<<<<< HEAD
-=======
 class TTerminal : public TObjectOfObservation
 {
 protected:
@@ -83,7 +81,6 @@ public:
   }
 };
 
->>>>>>> origin/master
 
 class TElectricitySensor : public TSensor
 {

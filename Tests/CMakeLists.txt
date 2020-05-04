@@ -18,7 +18,7 @@ file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/*.cpp)
 list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/main.cpp)
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
-add_executable(${PROJECT_NAME_STR} ${SRC_FILES} ${ENG_FILES} ${SMART_HOUSE}) #${TRAFFIC_SIM})
+add_executable(${PROJECT_NAME_STR} ${SRC_FILES} ${ENG_FILES} ${SMART_HOUSE} ${TRAFFIC_SIM})
 set_target_properties(${PROJECT_NAME_STR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTS_OUTPUT_DIRECTORY})
 target_link_libraries(${PROJECT_NAME_STR}
 						gtest
