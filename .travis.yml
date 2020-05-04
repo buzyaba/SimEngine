@@ -4,12 +4,13 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      services: xvfb
       addons:
         apt:
           sources: ubuntu-toolchain-r-test
           packages: g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
+           
     - os: linux
       dist: bionic
       addons:
@@ -37,6 +38,9 @@ install:
 - sudo apt-get install xorg-dev
 - sudo apt-get install libgl1-mesa-dev
 - sudo apt-get install mesa-common-dev
+
+before_script:
+- export DISPLAY=:99.0
 
 script: 
 - git submodule update --init --recursive

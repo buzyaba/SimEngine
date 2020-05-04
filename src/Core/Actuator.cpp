@@ -1,4 +1,5 @@
 ﻿#include "Core/Actuator.h"
+#include <algorithm>
 
 TActuator::TActuator(std::string _name)
 {
@@ -30,7 +31,8 @@ void TActuator::ExcludeObject(TObjectOfObservation& object)
     if (objects[i] == &object)
     {
       objects[i] = nullptr;
-      ///Дописать перепаковку
+      auto&& it = std::remove(objects.begin(), objects.end(), nullptr);
+      objects.resize(it-objects.begin());
     }
   }
 }
@@ -44,8 +46,8 @@ void TActuator::ExcludeObject(std::string objectName)
       if (objects[i]->GetName() == objectName)
       {
         objects[i] = nullptr;
-
-        ///Дописать перепаковку
+        auto it = std::remove(objects.begin(), objects.end(), nullptr);
+        objects.resize(it-objects.begin());
       }
     }
   }
@@ -83,6 +85,7 @@ void TActuator::ChangeProperty(IProperties& property, std::string _objectName)
 
 void TActuator::SetDataPacket(TDataPacket& packet)
 {
+  this->packet=&packet;
 }
 
 std::string TActuator::GetName()

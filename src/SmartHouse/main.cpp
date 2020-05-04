@@ -1,4 +1,3 @@
-#define WITHOUT_NUMPY
 #include <chrono>
 #include <thread>
 #include <iostream>

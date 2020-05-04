@@ -2,12 +2,16 @@
 
 GLFWwindow* WindowManager::window = nullptr;
 
-WindowManager::WindowManager(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, const std::string winName) {
+WindowManager::WindowManager(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
+                             const std::string winName,
+                             bool _visible) 
+{
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_VISIBLE, _visible);
     window = glfwCreateWindow(screenWidth, screenHeight, winName.c_str(), NULL, NULL);
     glfwMakeContextCurrent(window);
     glewInit();

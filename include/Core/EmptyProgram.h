@@ -1,6 +1,6 @@
 ﻿#pragma once
-
 #define WITHOUT_NUMPY
+#include "matplotlibcpp.h"
 #include "Core/ManagementProgram.h"
 #include "Core/common.h"
 #include "Core/SmartThing.h"
@@ -11,7 +11,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include "matplotlibcpp.h"
 //#include "discpp.h"
 
 namespace plt=matplotlibcpp;
@@ -91,29 +90,12 @@ protected:
     CreatePlotData();
 
     int count = yArray.size();
-    int xn = yArray[0].size();
-
-    if (maxx == minx)
-     maxx += 1;
-    if (maxy == miny)
-     maxy += 1;
-
-    //double xstep = (maxx - minx) / 4.0;
-    //double ystep = (maxy - miny) / 4.0;
-    //g.graf(minx, maxx, minx, xstep,
-    //  miny - ((maxy - miny) * 0.1), maxy + ((maxy - miny) * 0.1), miny, ystep);
 
     for (int k = 0; k < count; k++)
       plt::plot(xArray, yArray[k]);
     plt::xlabel("Time");
     plt::ylabel("Values");
     plt::show();
-    //g.sendbf();
-  }
-
-  void FinPlot()
-  {
-    //g.disfin();
   }
 
 public:

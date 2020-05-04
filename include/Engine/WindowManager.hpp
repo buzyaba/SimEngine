@@ -12,7 +12,7 @@ protected:
     virtual void cameraMovement(float dt) {};
 public: 
     WindowManager(const std::uint32_t& screenWidth = 800, const std::uint32_t& screenHeight = 600, 
-                  const std::string winName = "Window");
+                  const std::string winName = "Window", bool _visible = true);
     int isWindowShouldClose() const noexcept {return glfwWindowShouldClose(window);}
     void setVisibility(bool _switch) noexcept;
     virtual ~WindowManager() {Renderer::terminate();glfwDestroyWindow(window); glfwTerminate();}

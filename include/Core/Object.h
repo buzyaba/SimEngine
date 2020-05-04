@@ -51,7 +51,7 @@ class TObject: public IObject {
   public:
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
-    virtual ~TObject() {delete rigidBody;}
+    virtual ~TObject();
     // Logic
     /// Задает значение свойства с именем равным property.name берет значения из property
     virtual void SetProperty(IProperties& property) override;

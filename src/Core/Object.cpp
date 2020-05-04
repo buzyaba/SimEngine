@@ -111,6 +111,11 @@ std::vector<glm::mat4> TObject::getModelMatrixes() {
     return vec;
 }
 
+TObject::~TObject() {
+  Renderer::getDynamicsWorld()->removeRigidBody(rigidBody);
+  delete rigidBody;
+}
+
 // IObject* TObject::Clone()
 // {
 //   return new TObject(*this);
