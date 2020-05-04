@@ -67,6 +67,7 @@ set(glew-cmake_BUILD_SINGLE_CONTEXT OFF)
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/glfw")
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/glew")
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/bulletphys")
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
