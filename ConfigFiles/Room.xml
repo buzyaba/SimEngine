@@ -11,9 +11,19 @@
 	<Name>Terminal2</Name>
   <Coordinate>5 0 -5</Coordinate>
   </TTerminal>
+  <TTerminal>
+  <Name>Terminal3</Name>
+  <Coordinate>-2 0 -5</Coordinate>
+  </TTerminal>
+  <TTerminal>
+  <Name>Terminal4</Name>
+  <Coordinate>-5 0 -5</Coordinate>
+  </TTerminal>
   <TSmartSocket>
 	<Name>SmartSocket1</Name>
 	<Object>Terminal1</Object>
   <Object>Terminal2</Object>
-  </TSmartSocket>  
+  <Object>Terminal3</Object>
+  <Object>Terminal4</Object>
+  </TSmartSocket>
 </config>

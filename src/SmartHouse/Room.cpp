@@ -2,8 +2,7 @@
 
 // unsigned int TRoom::meshBuffer = -1;
 
-TRoom::TRoom(std::string _name, const glm::vec3 &pos,
-             const glm::vec3 &scale)
+TRoom::TRoom(std::string _name, const glm::vec3 &pos, const glm::vec3 &scale)
     : TStaticObject(_name) {
   properties.insert({std::string("Dimensions"),
                      new TProperties(
@@ -103,11 +102,12 @@ void TRoom::setRotation(const btScalar &yaw, const btScalar &pitch,
                                  transforms[i].getModelMatrix());
 }
 
-void TRoom::drawElements(const std::vector<TObject*>& objects) {
+void TRoom::drawElements(const std::vector<TObject *> &objects) {
   GLuint vao = meshes->getMesh(kCube)->getVAO();
   glUseProgram(shaderProgramUnique);
   glBindVertexArray(vao);
-  glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
+  glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() *
+                 Renderer::getCamera()->getViewMatrix();
   GLint vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
   glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
   for (auto iter : objects) {
@@ -115,25 +115,31 @@ void TRoom::drawElements(const std::vector<TObject*>& objects) {
     GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
     glBindTexture(GL_TEXTURE_2D, iter->getTexture("wall"));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[3]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[3]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[4]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[4]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[5]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[5]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[6]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[6]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
     glBindTexture(GL_TEXTURE_2D, iter->getTexture("floor"));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[1]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[1]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
     glBindTexture(GL_TEXTURE_2D, iter->getTexture("ceiling"));
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
-        glm::value_ptr(iter->getModelMatrixes()[2]));
-    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
+                       glm::value_ptr(iter->getModelMatrixes()[2]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
   }
   glBindVertexArray(0);
 }
