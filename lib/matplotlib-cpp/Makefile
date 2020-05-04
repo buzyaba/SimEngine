@@ -1,57 +1,41 @@
-# Python header include: Put the path to Python.h here
-includes = -I /usr/local/Cellar/python/3.7.4/Frameworks/Python.framework/Versions/3.7/include/python3.7m
+# Use C++11, dont warn on long-to-float conversion
+CXXFLAGS += -std=c++11 -Wno-conversion
 
-# Numpy include: Put the path to numpy/arrayobject.h
-includes +=  -I /usr/local/lib/python3.7/site-packages/numpy/core/include
+# Default to using system's default version of python
+PYTHON_BIN     ?= python3
+PYTHON_CONFIG  := $(PYTHON_BIN)-config
+PYTHON_INCLUDE ?= $(shell $(PYTHON_CONFIG) --includes)
+EXTRA_FLAGS    := $(PYTHON_INCLUDE)
+# NOTE: Since python3.8, the correct invocation is `python3-config --libs --embed`. 
+# So of course the proper way to get python libs for embedding now is to
+# invoke that, check if it crashes, and fall back to just `--libs` if it does.
+LDFLAGS        += $(shell if $(PYTHON_CONFIG) --libs --embed >/dev/null; then $(PYTHON_CONFIG) --libs --embed; else $(PYTHON_CONFIG) --libs; fi)
 
-# Python libraries include: Add the path to the directory containing libpython*.a here
-includes += -L /usr/local/Cellar/python/3.7.4/Frameworks/Python.framework/Versions/3.7/lib
+# Either finds numpy or set -DWITHOUT_NUMPY
+EXTRA_FLAGS     += $(shell $(PYTHON_BIN) $(CURDIR)/numpy_flags.py)
+WITHOUT_NUMPY   := $(findstring $(EXTRA_FLAGS), WITHOUT_NUMPY)
 
-# Link your Python version
-linkings = -lpython3.7
+# Examples requiring numpy support to compile
+EXAMPLES_NUMPY  := surface colorbar
+EXAMPLES        := minimal basic modern animation nonblock xkcd quiver bar \
+	           fill_inbetween fill update subplot2grid lines3d \
+                   $(if $(WITHOUT_NUMPY),,$(EXAMPLES_NUMPY))
 
-# Compiler definitions
-definitions = -std=c++11
+# Prefix every example with 'examples/build/'
+EXAMPLE_TARGETS := $(patsubst %,examples/build/%,$(EXAMPLES))
 
-# Eigen include
-eigen_include = -I /usr/local/include/eigen3
+.PHONY: examples
 
-# Executable names for examples (w/o Eigen)
-example_execs = minimal modern basic animation nonblock xkcd quiver bar surface subplot fill_inbetween fill update
+examples: $(EXAMPLE_TARGETS)
 
-# Executable names for examples using Eigen
-eigen_execs = eigen loglog semilogx semilogy small spy
+docs:
+	doxygen
+	moxygen doc/xml --noindex -o doc/api.md
 
-# Example targets (default if just 'make' is called)
-examples: $(example_execs)
+# Assume every *.cpp file is a separate example
+$(EXAMPLE_TARGETS): examples/build/%: examples/%.cpp matplotlibcpp.h
+	mkdir -p examples/build
+	$(CXX) -o $@ $< $(EXTRA_FLAGS) $(CXXFLAGS) $(LDFLAGS)
 
-# Eigen example targets
-eigen: $(eigen_execs)
-
-# All examples
-all: examples eigen
-
-# Run all examples
-run: run_examples run_eigen
-
-# Compiler instructions for examples
-$(example_execs): %: examples/%.cpp matplotlibcpp.h
-	g++ $< $(includes) $(linkings) -o examples/$@ $(definitions)
-
-# Run examples
-run_examples:
-	for exec in $(example_execs); do ./examples/$$exec; done
-
-# Compiler instructions for Eigen examples
-$(eigen_execs): %: examples/%.cpp matplotlibcpp.h
-	g++ $< $(includes) $(eigen_include) $(linkings) -o examples/$@ $(definitions)
-
-# Run Eigen examples
-run_eigen:
-	for exec in $(eigen_execs); do ./examples/$$exec; done
-
-# Clean all
 clean:
-	# -f to silent warnings if file does not exist
-	for exec in $(example_execs); do rm -f examples/$$exec; done
-	for exec in $(eigen_execs); do rm -f examples/$$exec; done
+	rm -f ${EXAMPLE_TARGETS}
