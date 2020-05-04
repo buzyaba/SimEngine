@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#define WITHOUT_NUMPY
 #include "matplotlibcpp.h"
 #include "Core/ManagementProgram.h"
 #include "Core/common.h"
