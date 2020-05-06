@@ -11,12 +11,20 @@ target_link_libraries(SmartHouse
 						Core
 						pugixml 
 						output_system
-						libglewmx_static
-						Python3::Python
+						libglewmx_static						
 						BulletDynamics
 						BulletCollision
 						LinearMath 
-						glfw ${OPENGL_LIBRARIES})
+						glfw )
+						
+						
+if (${BUILD_PLOTTER})
+	target_link_libraries(SmartHouse
+							Python3::Python
+							${OPENGL_LIBRARIES})
+endif()
+						
+						
 #if (WIN32)
 #    target_link_libraries(TrafficSim 
 #        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletDynamics_Debug.lib

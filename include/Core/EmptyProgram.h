@@ -11,11 +11,11 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+
+#ifdef USE_PLOTTER
 #include "matplotlibcpp.h"
-//#include "discpp.h"
-
 namespace plt=matplotlibcpp;
-
+#endif
 
 class TEmptyProgram : public IManagementProgram
 {
@@ -85,6 +85,7 @@ protected:
 
   void Plot()
   {
+#ifdef USE_PLOTTER
     if (table.size() < 3)
      return;
 
@@ -109,6 +110,7 @@ protected:
     plt::ylabel("Values");
     plt::show();
     //g.sendbf();
+#endif
   }
 
   void FinPlot()
