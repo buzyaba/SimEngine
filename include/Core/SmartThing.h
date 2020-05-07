@@ -30,3 +30,15 @@ public:
   /// Создание клона объекта
   virtual TSmartThing* Clone() = 0;
 };
+
+///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с умными вещами
+typedef std::vector <TSmartThing*> CreateSmartThing();
+///Тип функции-деструктора, которая экспортируется подключаемой библиотекой с умными вещами
+typedef void DestroySmartThing(std::vector <TSmartThing*>);
+
+///Префикс для фуккций, экспортируемых подключаемой библиотекой
+#ifdef WIN32
+#define LIB_EXPORT_API __declspec(dllexport)
+#else
+#define LIB_EXPORT_API
+#endif

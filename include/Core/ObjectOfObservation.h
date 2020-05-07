@@ -39,3 +39,15 @@ public:
   /// Создание клона объекта
   virtual TObjectOfObservation* Clone() = 0;
 };
+
+///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с объектами
+typedef std::vector <TObjectOfObservation*> CreateObjectOfObservation();
+///Тип функции-деструктора, которая экспортируется подключаемой библиотекой с объектами
+typedef void DestroyObjectOfObservation(std::vector <TObjectOfObservation*>);
+
+///Префикс для фуккций, экспортируемых подключаемой библиотекой
+#ifdef WIN32
+#define LIB_EXPORT_API __declspec(dllexport)
+#else
+#define LIB_EXPORT_API
+#endif
