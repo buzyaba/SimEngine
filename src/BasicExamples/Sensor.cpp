@@ -1,4 +1,4 @@
-﻿#include "Core/Sensor.h"
+﻿#include "BasicExamples/Sensor.h"
 
 TSensor::TSensor(std::string _name) : packet(nullptr)
 {

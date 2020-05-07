@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <map>
-#include "Core/ObjectOfObservation.h"
-#include "Core/SmartThing.h"
-#include "Core/StaticObject.h"
+#include "BasicExamples/ObjectOfObservation.h"
+#include "BasicExamples/SmartThing.h"
+#include "BasicExamples/StaticObject.h"
 #include <Engine/WindowManager.hpp>
 
 

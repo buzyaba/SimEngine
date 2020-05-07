@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Core/WorkManager.h"
-#include "Core/EmptyProgram.h"
+#include "BasicExamples/EmptyProgram.h"
 
 #include "Core/common.h"
 #include <Engine/FirstPersonView.hpp>

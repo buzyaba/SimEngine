@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/Renderer.hpp"
-#include "Core/ObjectOfObservation.h"
+#include "BasicExamples/ObjectOfObservation.h"
 
 class TTerminal : public TObjectOfObservation
 {

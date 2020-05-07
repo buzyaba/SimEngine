@@ -13,4 +13,7 @@
 [submodule "lib/stb"]
 	path = lib/stb
 	url = https://github.com/nothings/stb.git
+[submodule "lib/Eigen3"]
+	path = lib/Eigen3
+	url = https://github.com/OPM/eigen3.git
 

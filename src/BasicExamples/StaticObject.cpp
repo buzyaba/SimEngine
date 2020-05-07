@@ -1,4 +1,4 @@
-﻿#include "Core/StaticObject.h"
+﻿#include "BasicExamples/StaticObject.h"
 
 TStaticObject::TStaticObject(std::string _name) : TObject(_name) {
 }

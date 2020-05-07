@@ -3,15 +3,15 @@
 #include <string>
 #include <vector>
 
-#include "Core/Sensor.h"
-#include "Core/Actuator.h"
-#include "Core/SmartThing.h"
-#include "Core/ObjectOfObservation.h"
-#include "Core/Properties.h"
-#include "Core/StaticObject.h"
-#include "Core/ManagementProgram.h"
+#include "BasicExamples/Sensor.h"
+#include "BasicExamples/Actuator.h"
+#include "BasicExamples/SmartThing.h"
+#include "BasicExamples/ObjectOfObservation.h"
+#include "BasicExamples/Properties.h"
+#include "BasicExamples/StaticObject.h"
+#include "BasicExamples/ManagementProgram.h"
 #include "Core/DataStore.h"
-#include "Core/DataPacket.h"
+#include "BasicExamples/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
 #include <Engine/WindowManager.hpp>

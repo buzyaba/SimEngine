@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Core/Properties.h"
+#include "BasicExamples/Properties.h"
 #include <Engine/Transform.hpp>
 #include <Engine/MeshRenderer.hpp>
 #include <map>

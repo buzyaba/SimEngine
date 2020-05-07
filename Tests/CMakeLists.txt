@@ -20,6 +20,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 						pugixml
 						output_system
 						Core
+						BasicExamples
                         TrafficSimData
                         libglewmx_static
 						BulletDynamics

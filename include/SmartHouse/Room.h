@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/Renderer.hpp"
-#include "Core/StaticObject.h"
+#include "BasicExamples/StaticObject.h"
 
 class TRoom : public TStaticObject {
 private:

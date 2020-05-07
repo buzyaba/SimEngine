@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Core/Object.h"
+#include "BasicExamples/Object.h"
 
 
 /// Базовая реализация для наблюдаемых объектов

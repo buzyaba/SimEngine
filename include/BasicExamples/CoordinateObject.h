@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Core/ObjectOfObservation.h"
+#include "BasicExamples/ObjectOfObservation.h"
 
 class TCoordinateObject : public TObjectOfObservation
 {

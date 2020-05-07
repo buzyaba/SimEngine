@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "Core/DataPacket.h"
-#include "Core/Properties.h"
-#include "Core/ObjectOfObservation.h"
+#include "BasicExamples/DataPacket.h"
+#include "BasicExamples/Properties.h"
+#include "BasicExamples/ObjectOfObservation.h"
 
 /// Базовый интерфейс актуатора
 class IActuator

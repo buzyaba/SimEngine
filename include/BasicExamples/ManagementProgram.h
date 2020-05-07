@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Core/DataPacket.h"
+#include "BasicExamples/DataPacket.h"
 
 /// Интерфейс запускаемой программы
 class IManagementProgram

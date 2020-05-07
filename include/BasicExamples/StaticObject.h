@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include "Core/Object.h"
+#include "BasicExamples/Object.h"
 
-// #include "Core/ObjectOfObservation.h"
-// #include "Core/SmartThing.h"
+// #include "BasicExamples/ObjectOfObservation.h"
+// #include "BasicExamples/SmartThing.h"
 
 class TStaticObject : public TObject {
 public:

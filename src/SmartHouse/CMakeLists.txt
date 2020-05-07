@@ -9,6 +9,7 @@ add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(SmartHouse
 						Core
+						BasicExamples
 						pugixml 
 						output_system
 						libglewmx_static						
@@ -20,6 +21,7 @@ target_link_libraries(SmartHouse
 						
 if (${BUILD_PLOTTER})
 	target_link_libraries(SmartHouse
+							MatplotlibC++
 							Python3::Python
 							${OPENGL_LIBRARIES})
 endif()

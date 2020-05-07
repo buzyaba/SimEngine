@@ -1,4 +1,4 @@
-﻿#include "Core/SmartThing.h"
+﻿#include "BasicExamples/SmartThing.h"
 
 TSmartThing::TSmartThing(std::string _name, std::vector<ISensor*> _sensors,
   std::vector<IActuator*> _actuators) : TObject(_name)

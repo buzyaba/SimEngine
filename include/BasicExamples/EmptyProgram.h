@@ -1,9 +1,9 @@
 ﻿#pragma once
 
 #define WITHOUT_NUMPY
-#include "Core/ManagementProgram.h"
+#include "BasicExamples/ManagementProgram.h"
 #include "Core/common.h"
-#include "Core/SmartThing.h"
+#include "BasicExamples/SmartThing.h"
 #include <string>
 #include <stdio.h>
 #include <chrono>

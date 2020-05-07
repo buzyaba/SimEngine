@@ -1,4 +1,4 @@
-file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*")
+file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/BasicExamples/*.h*")
 file(GLOB srcs "*.cpp")
 
 add_definitions(-DGLEW_NO_GLU)
@@ -9,5 +9,5 @@ if (OPENMP_FOUND)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
-add_library(Core STATIC ${srcs} ${hdrs}) 
+add_library(BasicExamples STATIC ${srcs} ${hdrs}) 
 

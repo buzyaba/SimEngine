@@ -28,10 +28,10 @@
 #ifndef __PROBLEMMANAGER_H__
 #define __PROBLEMMANAGER_H__
 
-#include "Core/ManagementProgram.h"
-#include "Core/ObjectOfObservation.h"
-#include "Core/SmartThing.h"
-#include "Core/StaticObject.h"
+#include "BasicExamples/ManagementProgram.h"
+#include "BasicExamples/ObjectOfObservation.h"
+#include "BasicExamples/SmartThing.h"
+#include "BasicExamples/StaticObject.h"
 
 #include <string>
 

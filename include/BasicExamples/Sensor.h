@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "Core/DataPacket.h"
-#include "Core/ObjectOfObservation.h"
+#include "BasicExamples/DataPacket.h"
+#include "BasicExamples/ObjectOfObservation.h"
 
 /// Интерфейс сенсор который может наблюдать за объектами
 class ISensor
