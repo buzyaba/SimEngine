@@ -152,7 +152,7 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   this->objects = _objects;
   this->script = _script;
 
-  if (type == -1)
+  if (_script != "")
   {
     LoadXML(maxTime);
   }

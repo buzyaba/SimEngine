@@ -148,7 +148,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
       std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
     float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end-start).count();
     window->runWindow(dt, [&](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	                                              glClearColor(0.2f, 1.f, 0.f, 1.f);
+	                                              glClearColor(1, 1, 1, 1);
                                                 this->DrawElements();});
     if (_enableVisualisation == 0)
       std::this_thread::sleep_for(delta);

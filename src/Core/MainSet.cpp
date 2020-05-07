@@ -4,7 +4,7 @@
 #include <Engine/FirstPersonView.hpp>
 #include "SmartHouse/Room.h"
 #include "SmartHouse/SmartSocket.h"
-// #include "TrafficSimData/Street.h"
+#include "TrafficSim/Street.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -62,6 +62,7 @@ TMainSet::TMainSet(std::string xmlFile)
   test.push_back(new TTerminal("Terminal"));
 
   StaticObjects.push_back(new TRoom("Room"));
+  StaticObjects.push_back(new TStreet("Street"));
 
   LocalObjects.push_back(new TTerminal("Terminal"));
 
@@ -175,6 +176,8 @@ TRoomSet::TRoomSet() : TMainSet()
 
 TStreetSet::TStreetSet() : TMainSet()
 {
+    staticObjects.resize(1, new TStreet("Street"));
+    allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
 //   /// пока что заглушка
 //   objects.resize(5, nullptr);
 //   std::vector<double> coord(2, 100);

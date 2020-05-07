@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <Engine/IsometricView.hpp>
+#include <Engine/FirstPersonView.hpp>
 #include <Core/WorkManager.h>
 
 void initApplication();
@@ -12,13 +13,14 @@ WindowManager* window;
 
 int main(int argc, char** argv) {
 	window = new IsometricView(800, 600, "TrafficSim");
-	workManager = new TWorkManager(window, 1);
-	// auto cwd = Renderer::getCWD();
-    // auto c_cwd = cwd;
-    // std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
-    // auto i = c_cwd.find("SIMENGINE");
-	// workManager = new TWorkManager(window, -1, cwd.substr(0,i+9) + "/ConfigFiles/conf.xml", 
-	// 	cwd.substr(0,i+9) + "/ConfigFiles/Street.xml", 1000, 0.0, -1.0, 1000);
+	auto cwd = Renderer::getCWD();
+    auto c_cwd = cwd;
+    std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
+    auto i = c_cwd.find("SIMENGINE");
+	workManager = new TWorkManager(window, 1, cwd.substr(0,i+9) + "/ConfigFiles/conf_traffic.xml",
+		cwd.substr(0,i+9) + "/ConfigFiles/Street.xml");
+	workManager->InitDraw();
+	workManager->Start();
 	delete workManager;
 	return 0;
 }

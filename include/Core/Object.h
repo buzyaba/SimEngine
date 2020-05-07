@@ -32,7 +32,6 @@ public:
 class TObject: public IObject {
   private:
     static void initShader();
-    static void initMeshes();
   protected:
     // GL
     virtual unsigned int getMeshBuffer() = 0;

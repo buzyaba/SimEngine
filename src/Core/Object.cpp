@@ -61,8 +61,6 @@ void TObject::SetName(std::string _name) {
     throw - 1;
 }
 
-// TODO: Graphic part and constructor
-
 void TObject::setPosition(const glm::vec3& pos) {
     btTransform _transform(rigidBody->getWorldTransform());
 

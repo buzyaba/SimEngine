@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+    <TStreet>
+        <Name>Street1</Name>
+        <Dimensions>500 500</Dimensions>
+    </TStreet>
 </config>
