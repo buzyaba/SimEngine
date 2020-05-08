@@ -55,7 +55,7 @@ protected:
 
 
   /// Итерация работы программы
-  void Iteration(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
+  void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
   /// Отрисовка всех элементов
   void DrawElements();
 public:

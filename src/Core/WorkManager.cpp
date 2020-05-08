@@ -60,7 +60,7 @@ TWorkManager::~TWorkManager()
   delete program;
 }
 
-void TWorkManager::Iteration(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
+void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
 {
   std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
   time = (t * parameters.millisecondsInTimeStep) / 1000;
@@ -110,9 +110,9 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   time = 0;
   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep * parameters.timeAcceleration));
 #ifdef USE_OpenGL
-  for (int t = 0; t < maxStep && !window->isWindowShouldClose(); t++)
+  for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
 #else
-  for (unsigned int t = 0; t < parameters.maxStep; t++)
+  for (unsigned long int t = 0; t < parameters.maxStep; t++)
 #endif
   {
     Iteration(t, delayTime, _enableVisualisation);
@@ -121,7 +121,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
-  std::cout << "End\n" << deltaWork.count() << std::endl;
+  std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms." << std::endl;
 
   storage->PrintToFile();
 
