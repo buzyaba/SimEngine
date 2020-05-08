@@ -45,7 +45,7 @@ void TParameters::DefaultParameters()
   type = -1;
   millisecondsInTimeStep = 1000;
   timeAcceleration = 0.0;
-  maxStep = 1000; ////60*60*24*30//~месяц
+  maxStep = 1000; ////60*60*24*30;//~месяц
 }
 
 void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)
@@ -108,6 +108,8 @@ void TParameters::LoadXML()
       {
         ParseString(value, objectOfObservationDllsFile);
       }
+      for (auto& v : objectOfObservationDllsFile)
+        problemManager.LoadProblemLibrary(v, TProblemManager::OBJECT_OF_OBSERVATION);
     }
     else if (name == "smartThingDllsFile")
     {
@@ -115,6 +117,8 @@ void TParameters::LoadXML()
       {
         ParseString(value, smartThingDllsFile);
       }
+      for (auto& v : smartThingDllsFile)
+        problemManager.LoadProblemLibrary(v, TProblemManager::SMART_THING);
     }
     else if (name == "staticObjectDllsFile")
     {
@@ -122,10 +126,13 @@ void TParameters::LoadXML()
       {
         ParseString(value, staticObjectDllsFile);
       }
+      for (auto& v: staticObjectDllsFile)
+        problemManager.LoadProblemLibrary(v, TProblemManager::STATIC_OBJECT);
     }
     else if (name == "managementProgramDllFile")
     {
       managementProgramDllFile = value;
+      problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
     }
     else if (name == "type")
     {

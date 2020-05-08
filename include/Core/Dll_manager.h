@@ -43,8 +43,6 @@
   #include <dlfcn.h>
 #endif
 
-
-
 /**
 Класс, реализующий загрузку и выгрузку подключамеых библиотек с задачами
 
@@ -53,15 +51,6 @@
 class TProblemManager
 {
 protected:
-
-  enum DLL_TYPE
-  {
-    ManagementProgram = 0,
-    ObjectOfObservation = 1,
-    SmartThing = 2,
-    StaticObject = 3
-  };
-
   ///Указатель на дескриптор загруженной библиотеки
   #ifdef WIN32
     HINSTANCE mLibHandle;
@@ -104,6 +93,13 @@ protected:
   void FreeLibHandler();
 
 public:
+  enum DLL_TYPE
+  {
+    MANAGEMENT_PROGRAM = 0,
+    OBJECT_OF_OBSERVATION = 1,
+    SMART_THING = 2,
+    STATIC_OBJECT = 3
+  };
 
   /**
   Код ошибки, возвращаемый методами #LoadProblemLibrary и #FreeProblemLibrary

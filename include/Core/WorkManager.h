@@ -15,7 +15,7 @@
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
 
-#include "Core/common.h"
+#include "BasicExamples/common.h"
 #include "Core/Parameters.h"
 #ifdef USE_OpenGL
 #include <Engine/WindowManager.hpp>

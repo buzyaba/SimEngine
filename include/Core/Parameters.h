@@ -9,7 +9,8 @@
 #ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
 #endif
-#include "Core/common.h"
+#include "BasicExamples/common.h"
+#include "Core/Dll_manager.h"
 
 class TParameters
 {
@@ -61,6 +62,7 @@ public:
   /// Максимальное число итераций
   unsigned long maxStep;
 
+  TProblemManager problemManager;
 
   TParameters(int argc = -1, char** argv = 0);
 

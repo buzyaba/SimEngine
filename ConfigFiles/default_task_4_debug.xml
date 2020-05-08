@@ -6,8 +6,8 @@
 	<objectOfObservationDllsFile></objectOfObservationDllsFile>
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>
-	<managementProgramDllFile></managementProgramDllFile>
+	<managementProgramDllFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestProgram.dll</managementProgramDllFile>
 	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
-	<timeAcceleration>1</timeAcceleration>
+	<timeAcceleration>0.0</timeAcceleration>
 	<maxStep>100</maxStep>
 </config>

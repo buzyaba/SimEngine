@@ -27,7 +27,13 @@ int main(int argc, char** argv) {
 
   try
   {
-    workManager->Start(1);
+    int _enableVisualisation = 1;
+#ifdef USE_OpenGL
+    _enableVisualisation = 1;
+#else
+    _enableVisualisation = 0;
+#endif
+    workManager->Start(_enableVisualisation);
   }
   catch (...)
   {

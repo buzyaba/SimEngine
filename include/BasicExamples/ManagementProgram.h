@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "BasicExamples/DataPacket.h"
+#include "BasicExamples/SmartThing.h"
 
 /// Интерфейс запускаемой программы
 class IManagementProgram
@@ -8,6 +9,7 @@ protected:
 public:
   virtual void Run() = 0;
   virtual void End() = 0;
+  virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с упровляющей программой

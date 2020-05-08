@@ -2,7 +2,7 @@
 
 #define WITHOUT_NUMPY
 #include "BasicExamples/ManagementProgram.h"
-#include "Core/common.h"
+#include "BasicExamples/common.h"
 #include "BasicExamples/SmartThing.h"
 #include <string>
 #include <stdio.h>
@@ -119,12 +119,19 @@ protected:
   }
 
 public:
+  TEmptyProgram() {};
   TEmptyProgram(std::vector<TSmartThing*>& _things)
+  {
+    SetSmartThing(_things);
+  }
+
+  virtual void SetSmartThing(std::vector<TSmartThing*> _things)
   {
     things = _things;
     fileName = "EmptyProgram";
     tableHeader.resize(1);
     tableHeader[0] = "Time";
+    sensors.clear();
     for (int i = 0; i < things.size(); i++)
     {
       std::vector <ISensor*> sensor = things[i]->GetSensors();
@@ -277,17 +284,5 @@ public:
 
     // for (int i = 0; i < things.size(); i++)
     //   things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
-  }
-};
-
-class TProgramFactory
-{
-public:
-  static TEmptyProgram* Create(int a, std::vector<TSmartThing*>& _things)
-  {
-    if (a <= 0)
-      return new TRoomProgram(_things);
-    else
-      return new TStreetProgram(_things);
   }
 };

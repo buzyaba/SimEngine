@@ -19,9 +19,9 @@
 
 // ------------------------------------------------------------------------------------------------
 TProblemManager::TProblemManager() : mLibHandle(NULL), managementProgram(NULL),
-createManagementProgram(NULL), destroyDestroyManagementProgram(NULL)
+createManagementProgram(NULL), destroyDestroyManagementProgram(NULL), createObjectOfObservation(NULL),
+destroyObjectOfObservation(NULL), createSmartThing(NULL), destroySmartThing(NULL), createStaticObject(NULL), destroyStaticObject(NULL)
 {
-
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
   }
 #endif
 
-  if (type == TProblemManager::ManagementProgram)
+  if (type == TProblemManager::MANAGEMENT_PROGRAM)
   {
 #ifdef WIN32
     createManagementProgram = (CreateManagementProgram*)GetProcAddress(mLibHandle, "create");
@@ -85,7 +85,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
     }
 #endif
   }
-  else if (type == TProblemManager::ObjectOfObservation)
+  else if (type == TProblemManager::OBJECT_OF_OBSERVATION)
   {
 #ifdef WIN32
     createObjectOfObservation = (CreateObjectOfObservation*)GetProcAddress(mLibHandle, "create");
@@ -119,7 +119,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
     }
 #endif
   }
-  else if (type == TProblemManager::SmartThing)
+  else if (type == TProblemManager::SMART_THING)
   {
 #ifdef WIN32
     createSmartThing = (CreateSmartThing*)GetProcAddress(mLibHandle, "create");
@@ -153,7 +153,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
     }
 #endif
   }
-  else if (type == TProblemManager::StaticObject)
+  else if (type == TProblemManager::STATIC_OBJECT)
   {
 #ifdef WIN32
   createStaticObject = (CreateStaticObject*)GetProcAddress(mLibHandle, "create");
@@ -188,7 +188,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
 #endif
   }
 
-  if (type == TProblemManager::ManagementProgram)
+  if (type == TProblemManager::MANAGEMENT_PROGRAM)
   {
     managementProgram = createManagementProgram();
     if (!managementProgram)
@@ -199,9 +199,12 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
       std::cerr << "Cannot create management program instance" << std::endl;
     }
   }
-  else if (type == TProblemManager::ObjectOfObservation)
+  else if (type == TProblemManager::OBJECT_OF_OBSERVATION)
   {
-    objectOfObservations = createObjectOfObservation();
+    std::vector <TObjectOfObservation*> cr = createObjectOfObservation();
+    for (auto& c : cr)
+      objectOfObservations.push_back(c);
+
     if (objectOfObservations.size() == 0)
     {
       FreeLibHandler();
@@ -210,9 +213,12 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
       std::cerr << "Cannot create object of observation instance" << std::endl;
     }
   }
-  else if (type == TProblemManager::SmartThing)
+  else if (type == TProblemManager::SMART_THING)
   {
-    smartThings = createSmartThing();
+    std::vector <TSmartThing*> cr = createSmartThing();
+    for (auto& c : cr)
+      smartThings.push_back(c);
+    
     if (smartThings.size() == 0)
     {
       FreeLibHandler();
@@ -221,9 +227,12 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
       std::cerr << "Cannot create object of observation instance" << std::endl;
     }
   }
-  else if (type == TProblemManager::StaticObject)
+  else if (type == TProblemManager::STATIC_OBJECT)
   {
-    staticObjects = createStaticObject();
+    std::vector <TStaticObject*> cr = createStaticObject();
+    for (auto& c : cr)
+      staticObjects.push_back(c);
+
     if (staticObjects.size() == 0)
     {
       FreeLibHandler();

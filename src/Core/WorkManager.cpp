@@ -3,16 +3,13 @@
 #include <iostream>
 
 #include "Core/WorkManager.h"
-#include "BasicExamples/EmptyProgram.h"
+#include "Core/ProgramFactory.h"
 
-#include "Core/common.h"
+#include "BasicExamples/common.h"
 #ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
 #include <Engine/IsometricView.hpp>
 #endif
-
-unsigned long int currentTime;
-unsigned long int currentStep;
 
 TWorkManager::TWorkManager(TParameters& param) : parameters(param)
 {
@@ -57,7 +54,6 @@ TWorkManager::~TWorkManager()
 #ifdef USE_OpenGL
   delete window;
 #endif
-  delete program;
 }
 
 void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
@@ -76,7 +72,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
 
   program->Run();
 
-  storage->PrintToConsole();
+  //storage->PrintToConsole();
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));

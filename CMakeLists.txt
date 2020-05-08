@@ -112,6 +112,7 @@ if (${BUILD_TESTS})
 endif()
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Dll")
 
 #Создаем папки
 if (IS_MICROSOFT_COMPILER)
