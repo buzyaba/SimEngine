@@ -19,8 +19,10 @@
 
 // ------------------------------------------------------------------------------------------------
 TProblemManager::TProblemManager() : mLibHandle(NULL), managementProgram(NULL),
-createManagementProgram(NULL), destroyDestroyManagementProgram(NULL), createObjectOfObservation(NULL),
-destroyObjectOfObservation(NULL), createSmartThing(NULL), destroySmartThing(NULL), createStaticObject(NULL), destroyStaticObject(NULL)
+createManagementProgram(NULL), destroyDestroyManagementProgram(NULL), 
+createObjectOfObservation(NULL), destroyObjectOfObservation(NULL), 
+createSmartThing(NULL), destroySmartThing(NULL), smartThings(NULL),
+createStaticObject(NULL), destroyStaticObject(NULL), staticObjects(NULL)
 {
 }
 
@@ -215,11 +217,14 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
   }
   else if (type == TProblemManager::SMART_THING)
   {
-    std::vector <TSmartThing*> cr = createSmartThing();
-    for (auto& c : cr)
-      smartThings.push_back(c);
+    if (smartThings == NULL)
+      smartThings = new std::vector <TSmartThing*>();
+
+    std::vector <TSmartThing*>* cr = createSmartThing();
+    for (auto& c : *cr)
+      smartThings->push_back(c);
     
-    if (smartThings.size() == 0)
+    if (smartThings->size() == 0)
     {
       FreeLibHandler();
       createSmartThing = NULL;
@@ -229,11 +234,13 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
   }
   else if (type == TProblemManager::STATIC_OBJECT)
   {
-    std::vector <TStaticObject*> cr = createStaticObject();
-    for (auto& c : cr)
-      staticObjects.push_back(c);
+    if (staticObjects == NULL)
+      staticObjects = new std::vector <TStaticObject*>();
+    std::vector <TStaticObject*>* cr = createStaticObject();
+    for (auto& c : *cr)
+      staticObjects->push_back(c);
 
-    if (staticObjects.size() == 0)
+    if (staticObjects->size() == 0)
     {
       FreeLibHandler();
       createStaticObject = NULL;
@@ -286,18 +293,18 @@ std::vector<TObjectOfObservation*> TProblemManager::GetObjectOfObservations() co
   else
     return std::vector<TObjectOfObservation*>();
 }
-std::vector<TSmartThing*> TProblemManager::GetSmartThing() const
+std::vector<TSmartThing*>* TProblemManager::GetSmartThing() const
 {
-  if (smartThings.size() != 0)
+  if (smartThings != NULL)
     return smartThings;
   else
-  return std::vector<TSmartThing*>();
+    return NULL;
 }
-std::vector<TStaticObject*> TProblemManager::GetStaticObject() const
+std::vector<TStaticObject*>* TProblemManager::GetStaticObject() const
 {
-  if (staticObjects.size() != 0)
+  if (staticObjects != NULL)
     return staticObjects;
   else
-  return std::vector<TStaticObject*>();
+  return NULL;
 }
 // - end of file ----------------------------------------------------------------------------------

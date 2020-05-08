@@ -73,14 +73,14 @@ protected:
   DestroyObjectOfObservation* destroyObjectOfObservation;
 
   ///Указатель на созданный объект, описывающий умные вещи
-  std::vector <TSmartThing*> smartThings;
+  std::vector <TSmartThing*>* smartThings;
   ///Указатель на функцию-фабрику умных вещей
   CreateSmartThing* createSmartThing;
   ///Указатель на функцию-деструктор умных вещей
   DestroySmartThing* destroySmartThing;
 
   ///Указатель на созданный объект, описывающий статичные объекты
-  std::vector <TStaticObject*> staticObjects;
+  std::vector <TStaticObject*>* staticObjects;
   ///Указатель на функцию-фабрику статических объектов
   CreateStaticObject* createStaticObject;
   ///Указатель на функцию-деструктор статических объектов
@@ -137,11 +137,11 @@ public:
 
   /** Метод возвращает множество умных вещей
   */
-  std::vector <TSmartThing*> GetSmartThing() const;
+  std::vector <TSmartThing*>* GetSmartThing() const;
 
   /** Метод возвращает множество статических объектов
-*/
-  std::vector <TStaticObject*> GetStaticObject() const;
+  */
+  std::vector <TStaticObject*>* GetStaticObject() const;
 };
 
 #endif

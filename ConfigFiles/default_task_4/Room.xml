@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-  <TRoom>
-	<Name>Room1</Name>
-  </TRoom>
+  <TTestRoom>
+	<Name>TTestRoom1</Name>
+  </TTestRoom>
   <TTestTerminal1>
 	<Name>TTestTerminal1_1</Name>
   <Coordinate>1 0 -5</Coordinate>
@@ -19,11 +19,11 @@
   <Name>Terminal4</Name>
   <Coordinate>-5 0 -5</Coordinate>
   </TTerminal>
-  <TSmartSocket>
-	<Name>SmartSocket1</Name>
+  <TTestSmartSocket>
+	<Name>TTestSmartSocket1</Name>
   <Object>TTestTerminal1_1</Object>
   <Object>Terminal2</Object>
   <Object>Terminal3</Object>
   <Object>Terminal4</Object>
-  </TSmartSocket>
+  </TTestSmartSocket>
 </config>

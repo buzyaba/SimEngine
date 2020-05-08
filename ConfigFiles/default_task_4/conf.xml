@@ -3,7 +3,7 @@
   <maxStep>200</maxStep>
   <intervalCount>10</intervalCount>
   <time>0_15_50_80_100_110_130_140_150_175_200</time>
-  <Terminal1><IsWork>1_0_1_1_1_0_1_0_0_1_0</IsWork></Terminal1>
+  <TTestTerminal1_1><IsWork>1_0_1_1_1_0_1_0_0_1_0</IsWork></Terminal1>
   <Terminal2><IsWork>1_1_1_0_0_0_0_1_1_1_1</IsWork></Terminal2>
   <Terminal3><IsWork>0_0_1_1_1_0_0_1_0_0_0</IsWork></Terminal3>
   <Terminal4><IsWork>1_1_0_0_0_1_0_1_0_1_1</IsWork></Terminal4>

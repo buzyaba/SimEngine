@@ -65,8 +65,8 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
   test.push_back(new TTerminal("Terminal"));
 
   StaticObjects.push_back(new TRoom("Room"));
-  std::vector<TStaticObject*> sos = GlobalParameters.problemManager.GetStaticObject();
-  for (auto& obj : sos)
+  std::vector<TStaticObject*>* sos = GlobalParameters.problemManager.GetStaticObject();
+  for (auto& obj : *sos)
     StaticObjects.push_back(obj);
 
   LocalObjects.push_back(new TTerminal("Terminal"));
@@ -75,8 +75,8 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
     LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
-  std::vector<TSmartThing*> sts = GlobalParameters.problemManager.GetSmartThing();
-  for (auto& obj : sts)
+  std::vector<TSmartThing*>* sts = GlobalParameters.problemManager.GetSmartThing();
+  for (auto& obj : *sts)
     LocalThing.push_back(obj);
 
   pugi::xml_document doc;
