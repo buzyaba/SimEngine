@@ -1,5 +1,5 @@
 #pragma once
-#include "glew/include/GL/glew.h"
+
 #include "BasicExamples/SmartThing.h"
 #include "TestSwitch.h"
 #include "TestElectricitySensor.h"
