@@ -27,12 +27,10 @@ void TParameters::DefaultParameters()
 
   _window = new FirstPersonView(800, 600, "Smart House");;
 
-  xmlEnvironmentScriptName = cwd.substr(0, i + 9) + "/ConfigFiles/conf.xml";
-  xmlMainSetConfigurationFile = cwd.substr(0, i + 9) + "/ConfigFiles/Room.xml";
-#else
+#endif
+
   xmlEnvironmentScriptName = "";
   xmlMainSetConfigurationFile = "";
-#endif
   xmlCurrentConfiguration = "";
   //objectOfObservationDllsFile;
   //
@@ -84,17 +82,23 @@ void TParameters::LoadXML()
 
     if (name == "xmlEnvironmentScriptName")
     {
-      if (value.find(":") != std::string::npos)
-        xmlEnvironmentScriptName = value; //
-      else
-        xmlEnvironmentScriptName = dirConfigFile + "\\" + value;
+      if (value != "")
+      {
+        if (value.find(":") != std::string::npos)
+          xmlEnvironmentScriptName = value; //
+        else
+          xmlEnvironmentScriptName = dirConfigFile + "\\" + value;
+      }
     }
     else if (name == "xmlMainSetConfigurationFile")
     {
-      if (value.find(":") != std::string::npos)
-        xmlMainSetConfigurationFile = value; //
-      else
-        xmlMainSetConfigurationFile = dirConfigFile + "\\" + value;
+      if (value != "")
+      {
+        if (value.find(":") != std::string::npos)
+          xmlMainSetConfigurationFile = value; //
+        else
+          xmlMainSetConfigurationFile = dirConfigFile + "\\" + value;
+      }
     }
     else if (name == "objectOfObservationDllsFile")
     {
@@ -156,11 +160,10 @@ void TParameters::LoadConsoleParameters(int argc, char** argv)
     exeFile = argv[0];
     std::cout << "Start program " << exeFile << std::endl;
 
-
     if (argc == 1)
     {
       dirConfigFile = "";
-      for (size_t i = exeFile.length() - 1; i >= 0; i--)
+      for (size_t i = exeFile.length() - 1; i > 0; i--)
       {
         if (exeFile[i] == '\\')
         {
@@ -169,7 +172,7 @@ void TParameters::LoadConsoleParameters(int argc, char** argv)
           break;
         }
       }
-
+      std::cout << "AAA\n";
       dirConfigFile += "../../../ConfigFiles";
 
       ConsoleInterface();
@@ -294,6 +297,7 @@ void TParameters::ConsoleInterface()
     DefaultParameters();
   else
   {
+    DefaultParameters();
     this->xmlCurrentConfiguration = configs[t - 2];
     LoadXML();
   }
