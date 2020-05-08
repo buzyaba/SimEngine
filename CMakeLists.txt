@@ -19,6 +19,7 @@ set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 
 option(BUILD_TESTS "Set ON to build tests" ON)
 option(BUILD_PLOTTER "Set ON to build plotter" OFF)
+option(USE_OpenGL "Set ON to use OpenGL" ON)
 
 # Определяем компилятор
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")

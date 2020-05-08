@@ -12,6 +12,50 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
+TWorkManager::TWorkManager(TParameters param)
+{
+  parameters = param;
+  
+  xmlScript = parameters._script;
+  xmlFile = parameters._xmlFile;
+  currentTime = 0;
+  currentStep = 0;
+  mainSet = TSetFactory::Create(parameters.type, xmlFile);
+  window = parameters._window;
+  objects = mainSet->GetObjects();
+  things = mainSet->GetThings();
+  staticObjects = mainSet->GetStaticObjects();
+
+  if (parameters._millisecondsOfTimeStep > 0)
+    timeStep = parameters._millisecondsOfTimeStep;
+  else
+    timeStep = 0;
+  if (parameters._fractionOfTimeStep > 0)
+    fractionOfTimeStep = parameters._fractionOfTimeStep;
+  else
+    fractionOfTimeStep = 0;
+
+  delay = parameters._delay;
+
+  std::vector<IObject*> allObject(objects.size() + things.size());
+  int j = 0;
+  for (int i = 0; i < objects.size(); i++)
+  {
+    allObject[j] = objects[i];
+    j++;
+  }
+  for (int i = 0; i < things.size(); i++)
+  {
+    allObject[j] = things[i];
+    j++;
+  }
+
+  script = new TEnvironmentScript(allObject, xmlScript, parameters._maxStep, parameters.type);
+  program = TProgramFactory::Create(parameters.type, things);
+  storage = new TDataStore(allObject, "../../A");
+  maxStep = parameters._maxStep;
+}
+
 TWorkManager::TWorkManager(WindowManager* _window, TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep, 
   double _delay, double _fractionOfTimeStep, unsigned long _maxStep) {
   currentTime = 0;

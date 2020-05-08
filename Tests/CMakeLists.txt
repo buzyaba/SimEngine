@@ -19,6 +19,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 						gtest
 						pugixml
 						output_system
+						Engine
 						Core
 						BasicExamples
                         TrafficSimData

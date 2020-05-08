@@ -58,14 +58,14 @@ protected:
      xArray[t] = double(t);
     }
 
-    maxx = double(currentTime + 1);
+    maxx = double(currentTime) + 1.0;
 
     double value;
-    for (int u = 0; u < table.size() - 1; u++)
+    for (size_t u = 0; u < table.size() - 1; u++)
     {
-     for (int i = 0; i < table[u].size() - 1; i++)
+     for (size_t i = 0; i < table[u].size() - 1; i++)
      {
-       value = atof(table[u][i + 1].c_str());
+       value = atof(table[u][i + 1ull].c_str());
 
        if (maxy < value)
          maxy = value;
@@ -77,7 +77,7 @@ protected:
     }
 
     title2.resize(tableHeader.size() - 1);
-    for (int u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
+    for (size_t u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
     {
      title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
     }
@@ -192,8 +192,8 @@ public:
 
     double value = 0;
     double sum = 0;
-    int u = table.size() - 1;
-    for (int i = 0; i < table[u].size() - 1; i++)
+    size_t u = table.size() - 1;
+    for (size_t i = 0; i < table[u].size() - 1; i++)
     {
       value = atof(table[u][i + 1].c_str());
       sum += value;
@@ -211,11 +211,11 @@ public:
     double value = 0;
     double sum = 0;
 
-    for (int u = 0; u < table.size() - 1; u++)
+    for (size_t u = 0; u < table.size() - 1; u++)
     {
-      for (int i = 0; i < table[u].size() - 1; i++)
+      for (size_t i = 0; i < table[u].size() - 1; i++)
       {
-        value = atof(table[u][i + 1].c_str());
+        value = atof(table[u][i + 1ull].c_str());
         sum += value;
       }
     }

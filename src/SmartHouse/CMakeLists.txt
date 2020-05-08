@@ -1,4 +1,5 @@
-file(GLOB_RECURSE engine_source "../Engine/*.cpp")
+#file(GLOB_RECURSE engine_source "../Engine/*.cpp")
+file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/SmartHouse/*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
 add_executable(SmartHouse ${source_files} ${engine_source})
@@ -8,6 +9,7 @@ add_executable(SmartHouse ${source_files} ${engine_source})
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(SmartHouse
+						Engine
 						Core
 						BasicExamples
 						pugixml 
