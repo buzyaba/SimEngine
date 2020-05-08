@@ -33,8 +33,8 @@ TProblemManager::~TProblemManager()
 // ------------------------------------------------------------------------------------------------
 int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE type)
 {
-  if (mLibHandle)
-    FreeProblemLibrary();
+  //if (mLibHandle)
+  //  FreeProblemLibrary();
 #ifdef WIN32
   mLibHandle = LoadLibrary(TEXT(libPath.c_str()));
   if (!mLibHandle)

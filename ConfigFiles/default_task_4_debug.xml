@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName></xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile></xmlMainSetConfigurationFile>
-	<objectOfObservationDllsFile></objectOfObservationDllsFile>
+	<xmlEnvironmentScriptName>default_task_4\conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>default_task_4\Room.xml</xmlMainSetConfigurationFile>
+	<objectOfObservationDllsFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestObjectOfObservation.dll</objectOfObservationDllsFile>
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>
 	<managementProgramDllFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestProgram.dll</managementProgramDllFile>

@@ -1,4 +1,5 @@
 ﻿#include "Core/MainSet.h"
+#include "Core/Parameters.h"
 
 #include "SmartHouse/Terminal.h"
 #ifdef USE_OpenGL
@@ -64,10 +65,19 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
   test.push_back(new TTerminal("Terminal"));
 
   StaticObjects.push_back(new TRoom("Room"));
+  std::vector<TStaticObject*> sos = GlobalParameters.problemManager.GetStaticObject();
+  for (auto& obj : sos)
+    StaticObjects.push_back(obj);
 
   LocalObjects.push_back(new TTerminal("Terminal"));
+  std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
+  for (auto& obj : oos)
+    LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
+  std::vector<TSmartThing*> sts = GlobalParameters.problemManager.GetSmartThing();
+  for (auto& obj : sts)
+    LocalThing.push_back(obj);
 
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file(xmlMainSetConfigurationFile.c_str());
