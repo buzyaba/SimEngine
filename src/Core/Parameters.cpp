@@ -26,11 +26,13 @@ void TParameters::DefaultParameters()
   size_t i = c_cwd.find("SIMENGINE");
 
   _window = new FirstPersonView(800, 600, "Smart House");;
-
-#endif
-
+  xmlEnvironmentScriptName = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/conf.xml";
+  xmlMainSetConfigurationFile = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/Room.xml";
+#else
   xmlEnvironmentScriptName = "";
   xmlMainSetConfigurationFile = "";
+#endif
+
   xmlCurrentConfiguration = "";
   //objectOfObservationDllsFile;
   //
@@ -263,19 +265,19 @@ void TParameters::ConsoleInterface()
   }
 #else
 
-  DIR* dir;
-  class dirent* ent;
-  class stat st;
+  //DIR* dir;
+  //class dirent* ent;
+  //class stat st;
 
-  dir = opendir(dirConfigFile);
-  while ((ent = readdir(dir)) != NULL) {
-    const std::string file_name = ent->d_name;
-    const std::string full_file_name = dirConfigFile + "/" + file_name;
-    if (full_file_name.find(".xml") != std::string::npos)
-      configs.push_back(full_file_name);
-    configs.push_back(full_file_name);
-  }
-  closedir(dir);
+  //dir = opendir(dirConfigFile);
+  //while ((ent = readdir(dir)) != NULL) {
+  //  const std::string file_name = ent->d_name;
+  //  const std::string full_file_name = dirConfigFile + "/" + file_name;
+  //  if (full_file_name.find(".xml") != std::string::npos)
+  //    configs.push_back(full_file_name);
+  //  configs.push_back(full_file_name);
+  //}
+  //closedir(dir);
 #endif;
 
 
@@ -289,7 +291,8 @@ void TParameters::ConsoleInterface()
     j++;
   }
   int t = 1;
-  std::cin >> t;
+  if (j != 2)
+    std::cin >> t;
 
   if (t < 1 || t >= j)
     throw "Error task numder";
