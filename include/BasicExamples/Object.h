@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include "BasicExamples/Properties.h"
+#ifdef USE_OpenGL
 #include <Engine/Transform.hpp>
 #include <Engine/MeshRenderer.hpp>
+#endif
 #include <map>
 
 /// Базовый класс реализующий объект имеющий набор свойств и имя.
@@ -37,12 +39,14 @@ class TObject: public IObject {
     // GL
     virtual unsigned int getMeshBuffer() = 0;
     virtual void initBuffer() = 0;
+#ifdef USE_OpenGL
     static GLuint shaderProgramInstanced;
     static GLuint shaderProgramUnique;
     btRigidBody* rigidBody;
     std::vector<Transform> transforms;
     std::map<std::string, GLuint> otherTextures;
     MeshContainer* meshes;
+#endif
     // Logic
     /// Имя объекта
     std::string name;
@@ -51,7 +55,12 @@ class TObject: public IObject {
   public:
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
-    virtual ~TObject() {delete rigidBody;}
+    virtual ~TObject() 
+    {
+#ifdef USE_OpenGL
+      delete rigidBody;
+#endif
+    }
     // Logic
     /// Задает значение свойства с именем равным property.name берет значения из property
     virtual void SetProperty(IProperties& property) override;
@@ -71,6 +80,7 @@ class TObject: public IObject {
     // /// Создание клона объекта
     virtual IObject* Clone() = 0;
     // GL
+#ifdef USE_OpenGL
     virtual void setScale(const glm::vec3& _size) = 0;
     virtual void setPosition(const glm::vec3& pos);
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
@@ -80,8 +90,10 @@ class TObject: public IObject {
     glm::vec3 getScale() { return transforms[0].getScale(); }
     btRigidBody* getRigidBody();
     bool isStatic();
-    virtual void drawElements(const std::vector<TObject*>& objects) = 0;
-    virtual void initDraw(const std::vector<TObject*>& objects) = 0;
     std::vector<glm::mat4> getModelMatrixes();
     GLuint getTexture(std::string _name) { return otherTextures[_name]; }
+#endif
+
+    virtual void drawElements(const std::vector<TObject*>& objects) = 0;
+    virtual void initDraw(const std::vector<TObject*>& objects) = 0;
 };

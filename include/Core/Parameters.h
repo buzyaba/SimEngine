@@ -4,14 +4,17 @@
 #include <thread>
 #include <iostream>
 #include <algorithm>
+#ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
-
+#endif
 #include "Core/common.h"
 
 class TParameters
 {
 public:
+#ifdef USE_OpenGL
   WindowManager* _window;
+#endif
   int type = 0;
   std::string _script = "";
   std::string _xmlFile = "";

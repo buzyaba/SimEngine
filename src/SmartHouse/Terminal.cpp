@@ -1,9 +1,15 @@
 #include "SmartHouse/Terminal.h"
 
 unsigned int TTerminal::meshBuffer = -1;
+#ifdef USE_OpenGL
 GLuint TTerminal::mainTexture = -1;
+#endif
 
-TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& scale) : TObjectOfObservation(_name) {
+TTerminal::TTerminal(std::string _name
+#ifdef USE_OpenGL
+  , const glm::vec3& pos, const glm::vec3& scale
+#endif
+) : TObjectOfObservation(_name) {
     properties.insert({std::string("IsWork"), new TProperties(std::map<std::string, double>{{"IsWork", 0}}, false, "IsWork")});
     properties.insert({std::string("PowerConsumption"), new TProperties(std::map<std::string, double>{
         {"PowerConsumption", 0}}, true, "PowerConsumption")});
@@ -11,6 +17,7 @@ TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& s
         {"X", 0 }, {"Y", 0 }, {"Z", 0 } }, false, "Coordinate")});
     isWork = false;
     //GL
+#ifdef USE_OpenGL
     if (mainTexture == -1)
         mainTexture = Renderer::getTextures()[MONITOR];
     
@@ -50,13 +57,16 @@ TTerminal::TTerminal(std::string _name, const glm::vec3& pos, const glm::vec3& s
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
     transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
+#endif
 }
 
 void TTerminal::initBuffer() {
+#ifdef USE_OpenGL
     if (meshBuffer == -1)
         glGenBuffers(1, &meshBuffer);
+#endif
 }
-
+#ifdef USE_OpenGL
 void TTerminal::setScale(const glm::vec3& _size) {
     // TObject::setScale(_size);
     transforms[0].setScale(_size);
@@ -98,6 +108,7 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
     transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
 }
+#endif
 
 // std::vector<glm::mat4> TTerminal::getModelMatrixes() {
 //     return std::vector<glm::mat4>{transforms[0].getModelMatrix(), transforms[1].getModelMatrix(),
@@ -108,10 +119,13 @@ void TTerminal::initDraw(const std::vector<TObject*>& objects) {
     printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
 this->properties["Coordinate"]->GetValues()["Y"],
 this->properties["Coordinate"]->GetValues()["Z"]);
+
+#ifdef USE_OpenGL
     setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
                   this->properties["Coordinate"]->GetValues()["Y"],
                   this->properties["Coordinate"]->GetValues()["Z"] });
     initBuffer();
+
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
@@ -139,9 +153,11 @@ this->properties["Coordinate"]->GetValues()["Z"]);
     glVertexAttribDivisor(6, 1);
     glBindVertexArray(0);
     delete[] modelMatrixes;    
+#endif
 }
 
 void TTerminal::drawElements(const std::vector<TObject*>& objects) {
+#ifdef USE_OpenGL
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
@@ -175,6 +191,7 @@ void TTerminal::drawElements(const std::vector<TObject*>& objects) {
         glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
+#endif
 }
 
 void TTerminal::Update() {
@@ -200,6 +217,9 @@ void TTerminal::Update() {
     }
 
     isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
+    /// Обновление текстуры
+#ifdef USE_OpenGL
     if (isWork) setScreenTexture(Renderer::getTextures()[WINDOWS]);
     else setScreenTexture(Renderer::getTextures()[SCREENSAVER]);
+#endif
 }

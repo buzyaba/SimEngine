@@ -1,12 +1,16 @@
 ﻿#include "BasicExamples/Object.h"
-#include <Engine/Renderer.hpp>
+
 #include <algorithm>
 
-
+#ifdef USE_OpenGL
+#include <Engine/Renderer.hpp>
 GLuint TObject::shaderProgramInstanced = -1;
 GLuint TObject::shaderProgramUnique = -1;
+#endif
+
 
 void TObject::initShader() {
+#ifdef USE_OpenGL
     ShaderLoader shader;
     auto cwd = Renderer::getCWD();
     std::transform(cwd.begin(), cwd.end(), cwd.begin(), toupper);
@@ -15,13 +19,20 @@ void TObject::initShader() {
       shaderProgramInstanced = shader.CreateProgram(Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.vs", Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.fs");
     if (shaderProgramUnique == -1)
       shaderProgramUnique = shader.CreateProgram(Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModelSingle.vs", Renderer::getCWD().substr(0,i+9) + "/assets/shaders/texturedModel.fs");
+#endif
 }
 
-TObject::TObject(const std::string& _name):rigidBody(nullptr), name(_name) {
+TObject::TObject(const std::string& _name):name(_name)
+#ifdef USE_OpenGL
+, rigidBody(nullptr)
+#endif
+{
+#ifdef USE_OpenGL
   if (shaderProgramInstanced == -1 || shaderProgramUnique == -1) {
     TObject::initShader();
   }
   meshes = MeshContainer::getInstance();
+#endif
 }
 
 TObject::TObject(const TObject& obj) {
@@ -62,7 +73,7 @@ void TObject::SetName(std::string _name) {
 }
 
 // TODO: Graphic part and constructor
-
+#ifdef USE_OpenGL
 void TObject::setPosition(const glm::vec3& pos) {
     btTransform _transform(rigidBody->getWorldTransform());
 
@@ -110,7 +121,7 @@ std::vector<glm::mat4> TObject::getModelMatrixes() {
         vec[i] = transforms[i].getModelMatrix();
     return vec;
 }
-
+#endif
 // IObject* TObject::Clone()
 // {
 //   return new TObject(*this);

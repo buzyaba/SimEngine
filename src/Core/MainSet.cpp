@@ -1,7 +1,9 @@
 ﻿#include "Core/MainSet.h"
 
 #include "SmartHouse/Terminal.h"
+#ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
+#endif
 #include "SmartHouse/Room.h"
 #include "SmartHouse/SmartSocket.h"
 // #include "TrafficSimData/Street.h"

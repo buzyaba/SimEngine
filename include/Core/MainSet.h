@@ -3,8 +3,9 @@
 #include "BasicExamples/ObjectOfObservation.h"
 #include "BasicExamples/SmartThing.h"
 #include "BasicExamples/StaticObject.h"
+#ifdef USE_OpenGL
 #include <Engine/WindowManager.hpp>
-
+#endif
 
 /// Возвращает набор элементов по базовому скрипту
 class TMainSet

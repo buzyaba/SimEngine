@@ -32,20 +32,37 @@ void TEnvironmentScript::RandomGen(unsigned long int maxTime)
     endTime[i] = startTime[i] + interval;
   }
 
+  int isWorkIndex = -1;
   objectPropertyIntervals.resize(objects.size());
   for (int i = 0; i < objects.size(); i++)
   {
-    // А где инициализация objectPropertyIntervals? Нужен скрипт
-    objectPropertyIntervals[i].insert({{"IsWork", TPropertyInterval()}});
-    for (auto& elem : objectPropertyIntervals[i])
+    bool isHaveIsWork = false;
+    for (auto& aa : objects[i]->GetProperties())
     {
-      elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
+      if (aa.second->GetName() == "IsWork")
+      {
+        isHaveIsWork = true;
+        isWorkIndex = i;
+      }
+    }
+    if (isHaveIsWork)
+    {
+      // А где инициализация objectPropertyIntervals? Нужен скрипт
+      objectPropertyIntervals[i].insert({ {"IsWork", TPropertyInterval()} });
+
+      for (auto& elem : objectPropertyIntervals[i])
+      {
+        elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
+      }
     }
   }
-  objectPropertyIntervals[0]["IsWork"].isSet = true;
-  for (int i = 0; i < intervalCount; i++)
+  if (isWorkIndex != -1)
   {
-    objectPropertyIntervals[0]["IsWork"].value[i]["IsWork"] = rand() % 2;
+    objectPropertyIntervals[isWorkIndex]["IsWork"].isSet = true;
+    for (int i = 0; i < intervalCount; i++)
+    {
+      objectPropertyIntervals[isWorkIndex]["IsWork"].value[i]["IsWork"] = rand() % 2;
+    }
   }
 }
 
@@ -152,7 +169,7 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   this->objects = _objects;
   this->script = _script;
 
-  if (type == -1)
+  if (type > 0)
   {
     LoadXML(maxTime);
   }
@@ -202,12 +219,15 @@ void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
     if (objects[i] != nullptr)
     {
       std::map<std::string, IProperties*>& properties = objects[i]->GetProperties();
-      for (auto& elem : objectPropertyIntervals[i])
+      if (objectPropertyIntervals.size() > 0)
       {
-        if (elem.second.isSet)
+        for (auto& elem : objectPropertyIntervals[i])
         {
-          std::map<std::string, double>& tmp = elem.second.GetValue(time);
-          properties[elem.first]->SetValues(tmp);
+          if (elem.second.isSet)
+          {
+            std::map<std::string, double>& tmp = elem.second.GetValue(time);
+            properties[elem.first]->SetValues(tmp);
+          }
         }
       }
     }

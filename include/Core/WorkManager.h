@@ -17,9 +17,9 @@
 
 #include "Core/common.h"
 #include "Core/Parameters.h"
-
+#ifdef USE_OpenGL
 #include <Engine/WindowManager.hpp>
-
+#endif
 
 /// Класс 
 class TWorkManager
@@ -39,19 +39,19 @@ protected:
   unsigned int timeStep;
   double fractionOfTimeStep;
   double delay;
+  unsigned long int time;
   std::string xmlFile, xmlScript;
-
+  std::chrono::time_point<std::chrono::steady_clock> startWork;
+#ifdef USE_OpenGL
   WindowManager* window;
+#endif
+
+  void Step(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
 
 public:
-  // TWorkManager(WindowManager* _window, unsigned int _millisecondsOfTimeStep = 1000, double _delay = 0,
-  //              double _fractionOfTimeStep = -1.0, unsigned long _maxStep = 1000);
-  TWorkManager(TParameters param = parameters);
-  TWorkManager(WindowManager* _window, TMainSet* _mainSet, unsigned int _millisecondsOfTimeStep = 1000,
-    double _delay = 0, double _fractionOfTimeStep = -1.0,
-    unsigned long _maxStep = 1000);
-  TWorkManager(WindowManager* _window, int type = 0, std::string _script = "", std::string _xmlFile = "", unsigned int _millisecondsOfTimeStep = 1000,
-    double _delay = 0, double _fractionOfTimeStep = -1.0, unsigned long _maxStep = 1000);
+
+  TWorkManager(TParameters& param = parameters);
+
   ~TWorkManager();
   void Start(const unsigned short& _enableVisualisation = 1);
   void Stop();
