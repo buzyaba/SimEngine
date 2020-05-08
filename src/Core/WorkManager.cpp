@@ -14,34 +14,22 @@
 unsigned long int currentTime;
 unsigned long int currentStep;
 
-TWorkManager::TWorkManager(TParameters& param)
+TWorkManager::TWorkManager(TParameters& param) : parameters(param)
 {
 #ifdef USE_OpenGL
   window = parameters._window;
 #endif
 
-  parameters = param;
-  
-  xmlScript = parameters._script;
-  xmlFile = parameters._xmlFile;
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(parameters.type, xmlFile);
+  mainSet = TSetFactory::Create(parameters.type, parameters.xmlMainSetConfigurationFile);
 
   objects = mainSet->GetObjects();
   things = mainSet->GetThings();
   staticObjects = mainSet->GetStaticObjects();
 
-  if (parameters._millisecondsOfTimeStep > 0)
-    timeStep = parameters._millisecondsOfTimeStep;
-  else
-    timeStep = 0;
-  if (parameters._fractionOfTimeStep > 0)
-    fractionOfTimeStep = parameters._fractionOfTimeStep;
-  else
-    fractionOfTimeStep = 0;
-
-  delay = parameters._delay;
+  if (parameters.millisecondsInTimeStep < 0)
+    parameters.millisecondsInTimeStep = 0;
 
   std::vector<IObject*> allObject(objects.size() + things.size());
   int j = 0;
@@ -56,10 +44,9 @@ TWorkManager::TWorkManager(TParameters& param)
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, xmlScript, parameters._maxStep, parameters.type);
+  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep, parameters.type);
   program = TProgramFactory::Create(parameters.type, things);
   storage = new TDataStore(allObject, "../../A");
-  maxStep = parameters._maxStep;
 
   startWork = std::chrono::steady_clock::now();
 }
@@ -73,10 +60,10 @@ TWorkManager::~TWorkManager()
   delete program;
 }
 
-void TWorkManager::Step(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
+void TWorkManager::Iteration(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
 {
   std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-  time = (t * timeStep) / 1000;
+  time = (t * parameters.millisecondsInTimeStep) / 1000;
   currentTime = time;
   currentStep = t;
   // TODO: FIX COMMENTED STUFF
@@ -106,9 +93,9 @@ void TWorkManager::Step(unsigned int& t, std::chrono::milliseconds& delayTime, c
 
 void TWorkManager::Start(const unsigned short& _enableVisualisation)
 {
-  std::cout << "Start\n Max Iter = " << maxStep<< std::endl;
-  std::cout << "Max Time = " << double(maxStep * timeStep) / 1000.0 << " seconds" << std::endl;
-  std::cout << "time acceleration = " << delay << " X" << std::endl;
+  std::cout << "Start\n Max Iter = " << parameters.maxStep<< std::endl;
+  std::cout << "Max Time = " << double(parameters.maxStep * parameters.millisecondsInTimeStep) / 1000.0 << " seconds" << std::endl;
+  std::cout << "time acceleration = " << parameters.timeAcceleration << " X" << std::endl;
 
   startWork = std::chrono::steady_clock::now();
 
@@ -121,14 +108,14 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 #endif
 
   time = 0;
-  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(timeStep * delay));
+  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep * parameters.timeAcceleration));
 #ifdef USE_OpenGL
   for (int t = 0; t < maxStep && !window->isWindowShouldClose(); t++)
 #else
-  for (unsigned int t = 0; t < maxStep; t++)
+  for (unsigned int t = 0; t < parameters.maxStep; t++)
 #endif
   {
-    Step(t, delayTime, _enableVisualisation);
+    Iteration(t, delayTime, _enableVisualisation);
   }
 
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
@@ -147,37 +134,15 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
 void TWorkManager::Stop()
 {
+  parameters.maxStep = -1;
 }
 
-void TWorkManager::SetTimeStep(unsigned int _milliseconds)
+void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds)
 {
   if (_milliseconds > 0)
-    timeStep = _milliseconds;
+    parameters.millisecondsInTimeStep = _milliseconds;
   else
-    timeStep = 0;
-}
-
-void TWorkManager::SetProgramStep(double _fractionOfTimeStep)
-{
-  if (_fractionOfTimeStep > 0)
-    fractionOfTimeStep = _fractionOfTimeStep;
-  else
-    fractionOfTimeStep = 0;
-}
-
-void TWorkManager::Iteration(unsigned long int time){
-    currentTime=time;
-    currentStep++;
-    script->UpdateObjectsProperties(time);
-
-    for (int i = 0; i < objects.size(); i++)
-    {      
-      objects[i]->Update();      
-    }  
-
-    storage->AddAllProperties(time);
-    std::cout<<program<<std::endl;
-    program->Run();  
+    parameters.millisecondsInTimeStep = 0;
 }
 
 void TWorkManager::InitDraw() {

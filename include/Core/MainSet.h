@@ -17,7 +17,7 @@ protected:
   std::map<std::string, std::vector<TObject*>> allGObjects;
 public:
   TMainSet() = default;
-  TMainSet(std::string xmlFile);
+  TMainSet(std::string xmlMainSetConfigurationFile);
   std::vector<TObjectOfObservation*> GetObjects();
   std::vector<TStaticObject*> GetStaticObjects();
   std::vector<TSmartThing*> GetThings();
@@ -40,10 +40,10 @@ public:
 class TSetFactory
 {
 public:
-  static TMainSet* Create(int a = 0, std::string xmlFile = "")
+  static TMainSet* Create(int a = 0, std::string xmlMainSetConfigurationFile = "")
   {
-    if (xmlFile != "")
-      return new TMainSet(xmlFile);
+    if (xmlMainSetConfigurationFile != "")
+      return new TMainSet(xmlMainSetConfigurationFile);
     if (a <= 0)
       return new TRoomSet();
     else

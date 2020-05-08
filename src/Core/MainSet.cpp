@@ -54,7 +54,7 @@ void SetProperty(IObject* object, std::string nameProperty, std::string valuePro
   }
 }
 
-TMainSet::TMainSet(std::string xmlFile)
+TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
   std::vector<TStaticObject*> StaticObjects;
@@ -70,7 +70,7 @@ TMainSet::TMainSet(std::string xmlFile)
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
 
   pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_file(xmlFile.c_str());
+  pugi::xml_parse_result result = doc.load_file(xmlMainSetConfigurationFile.c_str());
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");

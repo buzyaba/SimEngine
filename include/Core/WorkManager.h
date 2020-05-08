@@ -25,39 +25,50 @@
 class TWorkManager
 {
 protected:
-  ///
-  std::vector<TObjectOfObservation*> objects;
-  std::vector<TSmartThing*> things;
-  std::vector<TStaticObject*> staticObjects;
-
-  TEnvironmentScript* script;
-  IManagementProgram* program;
-  TDataStore* storage;
-
-  unsigned int maxStep;
-  TMainSet* mainSet;
-  unsigned int timeStep;
-  double fractionOfTimeStep;
-  double delay;
-  unsigned long int time;
-  std::string xmlFile, xmlScript;
-  std::chrono::time_point<std::chrono::steady_clock> startWork;
 #ifdef USE_OpenGL
+  /// Окно для отрисовки 
   WindowManager* window;
 #endif
+  /// Параметры работы программы
+  TParameters& parameters;
 
-  void Step(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
+  /// множество всех наблюдаемых объектов
+  std::vector<TObjectOfObservation*> objects;
+  /// множество всех умных вещей
+  std::vector<TSmartThing*> things;
+  /// множество всех статичных объектов
+  std::vector<TStaticObject*> staticObjects;
 
+  /// расписание работы программы
+  TEnvironmentScript* script;
+  /// Управляющая программа
+  IManagementProgram* program;
+  /// Хранилище информации получаемой на каждой итерации
+  TDataStore* storage;
+  /// набор всех элементов
+  TMainSet* mainSet;
+
+  /// текущее время работы программы 
+  unsigned long int time;
+  /// Время начала работы
+  std::chrono::time_point<std::chrono::steady_clock> startWork;
+
+
+  /// Итерация работы программы
+  void Iteration(unsigned int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
+  /// Отрисовка всех элементов
+  void DrawElements();
 public:
 
-  TWorkManager(TParameters& param = parameters);
-
+  TWorkManager(TParameters& param = GlobalParameters);
   ~TWorkManager();
+  /// Начало работы программы
   void Start(const unsigned short& _enableVisualisation = 1);
+  /// Исскуственная остановка работы (для многопоточной версии)
   void Stop();
-  void SetTimeStep(unsigned int _milliseconds = 1000);
-  void SetProgramStep(double _fractionOfTimeStep = -1.0);
-  void Iteration(unsigned long int time);
+  /// Изменить текущую задержку
+  void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
+  /// Инициализация отрисовки
   void InitDraw();
-  void DrawElements();
+
 };

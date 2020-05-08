@@ -116,9 +116,12 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
 // }
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
-    printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
-this->properties["Coordinate"]->GetValues()["Y"],
-this->properties["Coordinate"]->GetValues()["Z"]);
+
+  printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
+    this->properties["Coordinate"]->GetValues()["Y"],
+    this->properties["Coordinate"]->GetValues()["Z"]);
+
+
 
 #ifdef USE_OpenGL
     setPosition({ this->properties["Coordinate"]->GetValues()["X"], 

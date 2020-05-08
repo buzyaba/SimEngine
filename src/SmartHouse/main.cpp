@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
 
   try
   {
-    parameters.LoadParameters(argc, argv);
+    GlobalParameters.LoadConsoleParameters(argc, argv);
   }
   catch (...)
   {
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 
   try
   {
-    workManager = new TWorkManager(parameters);
+    workManager = new TWorkManager(GlobalParameters);
     workManager->InitDraw();
   }
   catch (...)
