@@ -1,5 +1,5 @@
 #pragma once
-
+#include "glew/include/GL/glew.h"
 #include "BasicExamples/SmartThing.h"
 #include "TestSwitch.h"
 #include "TestElectricitySensor.h"
@@ -7,8 +7,7 @@
 class TTestSmartSocket : public TSmartThing
 {
 public:
-  TTestSmartSocket(std::string _name = "") :
-    TSmartThing(_name, { new TTestElectricitySensor(_name + "TTestElectricitySensor") }, { new TTestSwitch(_name + "TTestSwitch") }) {}
+  TTestSmartSocket(std::string _name = "");
   void initBuffer() override {}
   unsigned int getMeshBuffer() override { return -1; };
 #ifdef USE_OpenGL

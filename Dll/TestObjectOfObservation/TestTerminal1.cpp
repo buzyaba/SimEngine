@@ -2,7 +2,7 @@
 
 unsigned int TTestTerminal1::meshBuffer = -1;
 #ifdef USE_OpenGL
-GLuint TTerminal::mainTexture = -1;
+GLuint TTestTerminal1::mainTexture = -1;
 #endif
 
 TTestTerminal1::TTestTerminal1(std::string _name
@@ -137,7 +137,7 @@ void TTestTerminal1::initDraw(const std::vector<TObject*>& objects) {
             modelMatrixes[i*3 + j-1] = vec[j];
         }
     }
-    glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, TTestTerminal1::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);   
     GLuint vao = meshes->getMesh(kCube)->getVAO();
     glBindVertexArray(vao);
@@ -169,12 +169,12 @@ void TTestTerminal1::drawElements(const std::vector<TObject*>& objects) {
             modelMatrixes[i*3 + j-1] = vec[j];
         }
     }
-    glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, TTestTerminal1::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
     GLuint vao = meshes->getMesh(kCube)->getVAO();
-    glBindTexture(GL_TEXTURE_2D, TTerminal::mainTexture);
+    glBindTexture(GL_TEXTURE_2D, TTestTerminal1::mainTexture);
     glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, TTestTerminal1::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     GLint vpLoc = glGetUniformLocation(shaderProgramInstanced, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
