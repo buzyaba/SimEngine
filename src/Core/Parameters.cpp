@@ -250,6 +250,13 @@ std::string TParameters::Print()
   result += "double timeAcceleration = \t" + std::to_string(timeAcceleration) + "\n";
   /// Максимальное число итераций
   result += "unsigned long maxStep = \t" + std::to_string(maxStep) + "\n";
+
+#ifdef USE_DLL_OBJ
+  result += "USE DLL";
+#else
+  result += "  NOT USE DLL !!!";
+#endif
+
   return result;
 }
 

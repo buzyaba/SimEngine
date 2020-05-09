@@ -35,6 +35,8 @@ TProblemManager::~TProblemManager()
 // ------------------------------------------------------------------------------------------------
 int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE type)
 {
+#ifdef USE_DLL_OBJ
+
   //if (mLibHandle)
   //  FreeProblemLibrary();
 #ifdef WIN32
@@ -248,7 +250,7 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
       std::cerr << "Cannot create object of observation instance" << std::endl;
     }
   }
-
+#endif
   return TProblemManager::OK_;
 }
 
