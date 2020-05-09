@@ -3,10 +3,10 @@
 	<type>-1</type>
 	<xmlEnvironmentScriptName>default_task_4\conf.xml</xmlEnvironmentScriptName> 
 	<xmlMainSetConfigurationFile>default_task_4\Room.xml</xmlMainSetConfigurationFile>
-	<objectOfObservationDllsFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestObjectOfObservation.dll</objectOfObservationDllsFile>
-	<smartThingDllsFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestSmartThing.dll</smartThingDllsFile> 
-	<staticObjectDllsFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestStaticObject.dll</staticObjectDllsFile>
-	<managementProgramDllFile>C:\Users\Bkmz\NP\SimEngine\_buildMP\bin\Debug\TestProgram.dll</managementProgramDllFile>
+	<objectOfObservationDllsFile>..\_buildMP\bin\Debug\TestObjectOfObservation.dll</objectOfObservationDllsFile>
+	<smartThingDllsFile>..\_buildMP\bin\Debug\TestSmartThing.dll</smartThingDllsFile> 
+	<staticObjectDllsFile>..\_buildMP\bin\Debug\TestStaticObject.dll</staticObjectDllsFile>
+	<managementProgramDllFile>..\_buildMP\bin\Debug\TestProgram.dll</managementProgramDllFile>
 	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
 	<timeAcceleration>0.0</timeAcceleration>
 	<maxStep>100</maxStep>

@@ -109,7 +109,11 @@ void TParameters::LoadXML()
         ParseString(value, objectOfObservationDllsFile);
       }
       for (auto& v : objectOfObservationDllsFile)
+      {
+        if (v.find(":") == std::string::npos)
+          v = dirConfigFile + "\\" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::OBJECT_OF_OBSERVATION);
+      }
     }
     else if (name == "smartThingDllsFile")
     {
@@ -118,7 +122,11 @@ void TParameters::LoadXML()
         ParseString(value, smartThingDllsFile);
       }
       for (auto& v : smartThingDllsFile)
+      {
+        if (v.find(":") == std::string::npos)
+          v = dirConfigFile + "\\" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::SMART_THING);
+      }
     }
     else if (name == "staticObjectDllsFile")
     {
@@ -126,12 +134,18 @@ void TParameters::LoadXML()
       {
         ParseString(value, staticObjectDllsFile);
       }
-      for (auto& v: staticObjectDllsFile)
+      for (auto& v : staticObjectDllsFile)
+      {
+        if (v.find(":") == std::string::npos)
+          v = dirConfigFile + "\\" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::STATIC_OBJECT);
+      }
     }
     else if (name == "managementProgramDllFile")
     {
       managementProgramDllFile = value;
+      if (managementProgramDllFile.find(":") == std::string::npos)
+        managementProgramDllFile = dirConfigFile + "\\" + managementProgramDllFile;
       problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
     }
     else if (name == "type")

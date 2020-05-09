@@ -257,12 +257,14 @@ int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE typ
 // ------------------------------------------------------------------------------------------------
 void TProblemManager::FreeLibHandler()
 {
+#ifdef USE_DLL_OBJ
 #ifdef WIN32
   FreeLibrary(mLibHandle);
 #else
   dlclose(mLibHandle);
 #endif
   mLibHandle = NULL;
+#endif
 }
 
 // ------------------------------------------------------------------------------------------------
