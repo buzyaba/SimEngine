@@ -17,6 +17,11 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/R
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/DEBUG" )
 set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 
+option(BUILD_TESTS "Set ON to build tests" ON)
+option(BUILD_PLOTTER "Set ON to build plotter" OFF)
+option(USE_OpenGL "Set ON to use OpenGL" ON)
+option(BUILD_DLL "Set ON to build Dll" OFF)
+
 # Определяем компилятор
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 	set(IS_GNU_COMPILER True)
@@ -59,10 +64,16 @@ endif()
   #message(WARNING "dislin = ${CMAKE_SIZEOF_VOID_P}")
 
 #add graphic libraries
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
+if (${USE_OpenGL})
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
+	add_definitions(-DUSE_OpenGL)
+endif()
+
+if (${BUILD_PLOTTER})
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
+endif()
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
@@ -70,53 +81,83 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
 #build output system
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/output_system)
 
-find_package(OpenGL REQUIRED)
-find_package(Python3 COMPONENTS Development)
+# Поиск пакетов
 
-include_directories(${OPENGL_INCLUDE_DIRS})
-include_directories(${Python3_INCLUDE_DIRS})
+if (${BUILD_PLOTTER})
+	find_package(Python3 COMPONENTS Development)
+	add_definitions(-DUSE_PLOTTER)
+	include_directories(${Python3_INCLUDE_DIRS})	
+	include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
+endif()
+
+if (${USE_OpenGL})
+	include_directories(${OPENGL_INCLUDE_DIRS})
+	find_package(OpenGL REQUIRED)
+	include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/glew/include")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
+endif()
 
 include_directories("${CMAKE_SOURCE_DIR}/lib")
 include_directories("${CMAKE_SOURCE_DIR}/include")
-include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")
-include_directories("${CMAKE_SOURCE_DIR}/lib/glew/include")
-include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
-include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
-include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
-include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
-include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
+
 
 #add tests
-enable_testing()
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
-add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
+if (${BUILD_TESTS})
+	enable_testing()
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/googletest")
+	add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
+endif()
 
+if (${BUILD_DLL})
+	add_definitions(-DUSE_DLL_OBJ)
+endif()	
+
+#подключение основного кода, ВСЕ КОНСТАНТЫ И ПЕРЕМЕННЫЕ ДОЛЖНЫ БЫТЬ ОПРЕДЕЛЕНЫ ДО ЭТОГО
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+# Создавать ли dll c дополнительными объектами
+if (${BUILD_DLL})
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Dll")
+endif()
 
 #Создаем папки
 if (IS_MICROSOFT_COMPILER)
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
-set_property(TARGET gtest PROPERTY FOLDER "3rd-party")  
+	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+	set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
+	
+	if (${BUILD_TESTS})
+		set_property(TARGET gtest PROPERTY FOLDER "3rd-party")  
+		set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")  
+		set_property(TARGET gmock PROPERTY FOLDER "3rd-party")
+		set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
+	endif()
+	
+	if (${USE_OpenGL})
+		set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
+		set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
+		set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
+		set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
+		set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
+		set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
+		set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
+		set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
+		set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
+		set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
 
-set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
-set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
-set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
-set_property(TARGET gmock PROPERTY FOLDER "3rd-party")
-set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
-#set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
-#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
-#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
-set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
-set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
-set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")  
+		#set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
+		#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
+		#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
+		set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
+		set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
+	endif()
+
+	if (${BUILD_PLOTTER})
+		set_property(TARGET MatplotlibC++ PROPERTY FOLDER "3rd-party")  
+	endif()
 endif()
 

@@ -2,7 +2,11 @@
 
 // unsigned int TRoom::meshBuffer = -1;
 
-TRoom::TRoom(std::string _name, const glm::vec3 &pos, const glm::vec3 &scale)
+TRoom::TRoom(std::string _name
+#ifdef USE_OpenGL
+  , const glm::vec3 &pos, const glm::vec3 &scale
+#endif
+)
     : TStaticObject(_name) {
   properties.insert({std::string("Dimensions"),
                      new TProperties(
@@ -10,6 +14,7 @@ TRoom::TRoom(std::string _name, const glm::vec3 &pos, const glm::vec3 &scale)
                              {"Width", 20}, {"Length", 20}, {"Height", 20}},
                          false, "Dimensions")});
   // GL
+#ifdef USE_OpenGL
   otherTextures.insert({"wall", Renderer::getTextures()[WALL]});
   otherTextures.insert({"ceiling", Renderer::getTextures()[CEILING]});
   otherTextures.insert({"floor", Renderer::getTextures()[FLOOR]});
@@ -53,13 +58,14 @@ TRoom::TRoom(std::string _name, const glm::vec3 &pos, const glm::vec3 &scale)
   transforms[5].setScale(glm::vec3(30.0f, 5.0f, 0.1f) * scale);
   transforms[6].setPosition(pos + glm::vec3(0.0f, 5.0f, 30.0f)); // backWall
   transforms[6].setScale(glm::vec3(30.0f, 5.0f, 0.1f) * scale);
+#endif
 }
 
 // void TRoom::initBuffer() {
 //   if (meshBuffer == -1)
 //     glGenBuffers(1, &meshBuffer);
 // }
-
+#ifdef USE_OpenGL
 void TRoom::setScale(const glm::vec3 &_size) {
   transforms[0].setScale(_size);
   transforms[1].setPosition(glm::vec3(0.0f, -0.1f, 0.0f));  // floor
@@ -101,8 +107,9 @@ void TRoom::setRotation(const btScalar &yaw, const btScalar &pitch,
     transforms[i].setModelMatrix(transforms[0].getModelMatrix() *
                                  transforms[i].getModelMatrix());
 }
-
+#endif
 void TRoom::drawElements(const std::vector<TObject *> &objects) {
+#ifdef USE_OpenGL
   GLuint vao = meshes->getMesh(kCube)->getVAO();
   glUseProgram(shaderProgramUnique);
   glBindVertexArray(vao);
@@ -142,4 +149,5 @@ void TRoom::drawElements(const std::vector<TObject *> &objects) {
                    GL_UNSIGNED_INT, 0);
   }
   glBindVertexArray(0);
+#endif
 }

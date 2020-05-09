@@ -1,5 +1,9 @@
-﻿#include "Core/EnvironmentScript.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+
+#include "Core/EnvironmentScript.h"
 #include "../lib/pugixml/include/pugixml.hpp"
+
+#include <string.h>
 
 std::map<std::string, IProperties*>& TEnvironmentScript::ChangeProperties(int objectIndex, 
                 std::map<std::string, IProperties*>& properties, unsigned long int time)
@@ -32,20 +36,37 @@ void TEnvironmentScript::RandomGen(unsigned long int maxTime)
     endTime[i] = startTime[i] + interval;
   }
 
+  int isWorkIndex = -1;
   objectPropertyIntervals.resize(objects.size());
   for (int i = 0; i < objects.size(); i++)
   {
-    // А где инициализация objectPropertyIntervals? Нужен скрипт
-    objectPropertyIntervals[i].insert({{"IsWork", TPropertyInterval()}});
-    for (auto& elem : objectPropertyIntervals[i])
+    bool isHaveIsWork = false;
+    for (auto& aa : objects[i]->GetProperties())
     {
-      elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
+      if (aa.second->GetName() == "IsWork")
+      {
+        isHaveIsWork = true;
+        isWorkIndex = i;
+      }
+    }
+    if (isHaveIsWork)
+    {
+      // А где инициализация objectPropertyIntervals? Нужен скрипт
+      objectPropertyIntervals[i].insert({ {"IsWork", TPropertyInterval()} });
+
+      for (auto& elem : objectPropertyIntervals[i])
+      {
+        elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
+      }
     }
   }
-  objectPropertyIntervals[0]["IsWork"].isSet = true;
-  for (int i = 0; i < intervalCount; i++)
+  if (isWorkIndex != -1)
   {
-    objectPropertyIntervals[0]["IsWork"].value[i]["IsWork"] = rand() % 2;
+    objectPropertyIntervals[isWorkIndex]["IsWork"].isSet = true;
+    for (int i = 0; i < intervalCount; i++)
+    {
+      objectPropertyIntervals[isWorkIndex]["IsWork"].value[i]["IsWork"] = rand() % 2;
+    }
   }
 }
 
@@ -53,14 +74,14 @@ void TEnvironmentScript::RandomGen(unsigned long int maxTime)
 
 void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 {
-  if (script == "")
+  if (xmlEnvironmentScriptName == "")
     return;
   int intervalCount = 0;
 
   objectPropertyIntervals.resize(objects.size());
 
   pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_file(script.c_str());
+  pugi::xml_parse_result result = doc.load_file(xmlEnvironmentScriptName.c_str());
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
@@ -80,7 +101,7 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
     {
       startTime.resize(intervalCount);
       endTime.resize(intervalCount);
-      std::vector<int> tt(intervalCount + 1);
+      std::vector<double> tt(intervalCount + 1);
       ParseString(value, tt);
 
       for (int i = 0; i < intervalCount; i++)
@@ -109,7 +130,7 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
           for (auto & elem : objectPropertyIntervals[i]) {
             if (elem.first == nameProperty) {
               elem.second.isSet = true;
-              std::vector<int> tt(intervalCount);
+              std::vector<double> tt(intervalCount);
               ParseString(valueProperty, tt);
 
               for (int k = 0; k < intervalCount; k++)
@@ -124,9 +145,9 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
   }
 }
 
-void TEnvironmentScript::ParseString(std::string str, std::vector<int>& tt)
+void TEnvironmentScript::ParseString(std::string str, std::vector<double>& tt)
 {
-  int intervalCount = tt.size();
+  size_t intervalCount = tt.size();
   char* s = new char[str.length() + 1];
   int l = 0;
   strcpy(s, str.c_str());
@@ -145,14 +166,14 @@ void TEnvironmentScript::ParseString(std::string str, std::vector<int>& tt)
   delete[] s;
 }
 
-TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string _script,
+TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string xmlEnvironmentScriptName,
   unsigned long int& maxTime, int type)
 {
 
   this->objects = _objects;
-  this->script = _script;
+  this->xmlEnvironmentScriptName = xmlEnvironmentScriptName;
 
-  if (type == -1)
+  if (xmlEnvironmentScriptName != "")//(type > 0)
   {
     LoadXML(maxTime);
   }
@@ -202,12 +223,15 @@ void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
     if (objects[i] != nullptr)
     {
       std::map<std::string, IProperties*>& properties = objects[i]->GetProperties();
-      for (auto& elem : objectPropertyIntervals[i])
+      if (objectPropertyIntervals.size() > 0)
       {
-        if (elem.second.isSet)
+        for (auto& elem : objectPropertyIntervals[i])
         {
-          std::map<std::string, double>& tmp = elem.second.GetValue(time);
-          properties[elem.first]->SetValues(tmp);
+          if (elem.second.isSet)
+          {
+            std::map<std::string, double>& tmp = elem.second.GetValue(time);
+            properties[elem.first]->SetValues(tmp);
+          }
         }
       }
     }
