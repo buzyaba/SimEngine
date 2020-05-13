@@ -2,6 +2,5 @@
 <config>
     <TStreet>
         <Name>Street1</Name>
-        <Dimensions>500 500</Dimensions>
     </TStreet>
 </config>

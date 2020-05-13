@@ -1,9 +1,9 @@
 #include <TrafficSim/Street.hpp>
 #include <Engine/Renderer.hpp>
 
-TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec2& _scale): TStaticObject(_name) {
+TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec3& _scale): TStaticObject(_name) {
     // TODO: ХАРДКОД ЛЮТЫЙ, ВЕРНИСЬ И ИЗМЕНИ ВСЁ НА НОРМАЛЬНОЕ
-    properties.insert({"Dimensions", new TProperties{{{"Width", 500}, {"Length", 500}}, false, "Dimensions"}});
+    properties.insert({"Dimensions", new TProperties{{{"Width", 500}, {"Length", 500}, {"Height", 1}}, false, "Dimensions"}});
 
     otherTextures.insert({"ground", Renderer::getTextures()[GRASS]});
 
@@ -11,7 +11,7 @@ TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec2& _sca
       btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(_pos.x, _pos.y, _pos.z)));
       
     btCollisionShape *shape =
-      new btBoxShape(btVector3(_scale.x, 1, _scale.y));
+      new btBoxShape(btVector3(_scale.x, _scale.y, _scale.z));
 
     btScalar mass = 0.0f;
     btVector3 Inertia(0, 0, 0);
@@ -32,7 +32,7 @@ TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec2& _sca
     transforms.resize(1);
 
     transforms[0].setPosition(_pos);
-    transforms[0].setScale(glm::vec3(500, 1, 500));
+    transforms[0].setScale({500, 1, 500});
 }
 
 void TStreet::setScale(const glm::vec3& _size) {

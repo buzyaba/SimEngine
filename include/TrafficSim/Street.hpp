@@ -8,7 +8,7 @@ class TStreet: public TStaticObject {
     unsigned int getMeshBuffer() noexcept override { return -1;}
  public:
     explicit TStreet(std::string _name = "", const glm::vec3& _pos = glm::vec3(0.0f), 
-                                             const glm::vec2& _scale = glm::vec2(1.f));
+                                             const glm::vec3& _scale = glm::vec3(1.f));
     virtual std::string ClassName() noexcept override {return "TStreet";}
     virtual TStaticObject* Clone() {return new TStreet;}
     virtual void setScale(const glm::vec3& _size) override;
