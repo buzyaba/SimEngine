@@ -1,6 +1,6 @@
 
 #include "gtest/gtest.h"
-#include "Core/Properties.h"
+#include "BasicExamples/Properties.h"
 
 TEST(PropertiesTest, Default_Constructor) {
     ASSERT_NO_THROW(TProperties prop);

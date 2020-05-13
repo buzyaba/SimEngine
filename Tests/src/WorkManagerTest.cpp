@@ -18,7 +18,7 @@
 //   //~TWorkManager();
 //   //void Start();
 //   //void Stop();
-//   //void SetTimeStep(unsigned int _milliseconds = 1000);
+//   //void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
 //   //void SetProgramStep(double _fractionOfTimeStep = -1.0);
 //   // EXPECT_EQ(4, 2 + 2);
 // };

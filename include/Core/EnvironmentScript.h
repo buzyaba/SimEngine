@@ -5,8 +5,8 @@
 #include <map>
 
 
-#include "Core/Object.h"
-#include "Core/Properties.h"
+#include "BasicExamples/Object.h"
+#include "BasicExamples/Properties.h"
 
 
 /**
@@ -57,7 +57,7 @@ protected:
   /// Управляемые объекты
   std::vector<IObject*> objects;
   /// Имя(полный путь) скрипта
-  std::string script;
+  std::string xmlEnvironmentScriptName;
   
   /// Интервалы содержащие время и соответствующее значение для свойств объектов
   std::vector<std::map<std::string, TPropertyInterval>> objectPropertyIntervals;
@@ -67,19 +67,16 @@ protected:
   std::map<std::string, IProperties*>& ChangeProperties(int objectIndex, 
         std::map<std::string, IProperties*>& properties, unsigned long int time);
 
-  /// Файл с расписанием активности
-  std::string xmlFile;
-
   /// Случайное заполнение расписания
   void RandomGen(unsigned long int maxTime);
   
   /// Случайное заполнение расписания
   void LoadXML(unsigned long int& maxTime);
 
-  void ParseString(std::string str, std::vector<int>& tt);
+  void ParseString(std::string str, std::vector<double>& tt);
 
 public:
-  TEnvironmentScript(std::vector<IObject*> _objects, std::string _script, 
+  TEnvironmentScript(std::vector<IObject*> _objects, std::string xmlEnvironmentScriptName, 
     unsigned long int& maxTime, int type = 0);
 
   virtual std::map<std::string, IProperties*>& GetObjectProperties(std::string name, unsigned long int time);

@@ -24,13 +24,30 @@ target_link_libraries(${PROJECT_NAME_STR}
 						gtest
 						Core
 						pugixml
-						output_system
-						Python3::Python
-                        libglewmx_static
-						BulletDynamics
-						BulletCollision
-						LinearMath 
-						glfw ${OPENGL_LIBRARIES})
+						output_system						
+						Core
+						BasicExamples
+                        TrafficSimData
+                        )
+						
+if (${USE_OpenGL})
+	target_link_libraries(${PROJECT_NAME_STR}
+							Engine
+							libglewmx_static						
+							BulletDynamics
+							BulletCollision
+							LinearMath 
+							glfw  ${OPENGL_LIBRARIES}
+	)
+endif()
+						
+						
+#if (${BUILD_PLOTTER})
+#	target_link_libraries(${PROJECT_NAME_STR}
+#							MatplotlibC++
+#							Python3::Python
+#							)
+#endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set_target_properties(${PROJECT_NAME_STR} PROPERTIES LINK_FLAGS "-lm -Wl,--no-as-needed -ldl -lpthread")

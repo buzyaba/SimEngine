@@ -46,6 +46,6 @@ script:
 - git submodule update --init --recursive
 - mkdir _build
 - cd _build
-- cmake ..
+- cmake -DBUILD_TESTS=ON -DBUILD_PLOTTER=OFF -DUSE_OpenGL=OFF ..
 - cmake --build .
 - bin/RELEASE/tests

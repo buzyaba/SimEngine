@@ -1,7 +1,10 @@
 ﻿#include "Core/MainSet.h"
+#include "Core/Parameters.h"
 
 #include "SmartHouse/Terminal.h"
+#ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
+#endif
 #include "SmartHouse/Room.h"
 #include "SmartHouse/SmartSocket.h"
 #include "TrafficSim/Street.hpp"
@@ -52,7 +55,7 @@ void SetProperty(IObject* object, std::string nameProperty, std::string valuePro
   }
 }
 
-TMainSet::TMainSet(std::string xmlFile)
+TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
   std::vector<TStaticObject*> StaticObjects;
@@ -62,14 +65,28 @@ TMainSet::TMainSet(std::string xmlFile)
   test.push_back(new TTerminal("Terminal"));
 
   StaticObjects.push_back(new TRoom("Room"));
-  StaticObjects.push_back(new TStreet("Street"));
+  std::vector<TStaticObject*>* sos = GlobalParameters.problemManager.GetStaticObject();
+  if (sos != NULL)
+  {
+    for (auto& obj : *sos)
+      StaticObjects.push_back(obj);
+  }
 
   LocalObjects.push_back(new TTerminal("Terminal"));
+  std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
+  for (auto& obj : oos)
+    LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
+  std::vector<TSmartThing*>* sts = GlobalParameters.problemManager.GetSmartThing();
+  if (sos != NULL)
+  {
+    for (auto& obj : *sts)
+      LocalThing.push_back(obj);
+  }
 
   pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_file(xmlFile.c_str());
+  pugi::xml_parse_result result = doc.load_file(xmlMainSetConfigurationFile.c_str());
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
