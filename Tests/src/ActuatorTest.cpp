@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "Core/Actuator.h"
+#include "BasicExamples/Actuator.h"
 #include "SmartHouse/Terminal.h"
-#include "Core/Properties.h"
+#include "BasicExamples/Properties.h"
 
 TEST(ActuatorTest, Can_Create_Cnstance) {
     ASSERT_NO_THROW(TActuator("name"));

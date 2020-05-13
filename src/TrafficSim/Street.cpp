@@ -1,10 +1,16 @@
 #include <TrafficSim/Street.hpp>
+#ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
+#endif
 
-TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec3& _scale): TStaticObject(_name) {
-    // TODO: ХАРДКОД ЛЮТЫЙ, ВЕРНИСЬ И ИЗМЕНИ ВСЁ НА НОРМАЛЬНОЕ
+TStreet::TStreet(std::string _name
+    #ifdef USE_OpenGL
+    ,const glm::vec3& _pos, 
+    const glm::vec3& _scale
+    #endif
+    ): TStaticObject(_name) {
     properties.insert({"Dimensions", new TProperties{{{"Width", 500}, {"Length", 500}, {"Height", 1}}, false, "Dimensions"}});
-
+    #ifdef USE_OpenGL
     otherTextures.insert({"ground", Renderer::getTextures()[GRASS]});
 
     btDefaultMotionState *MotionState = new btDefaultMotionState(btTransform(
@@ -33,8 +39,10 @@ TStreet::TStreet(std::string _name, const glm::vec3& _pos, const glm::vec3& _sca
 
     transforms[0].setPosition(_pos);
     transforms[0].setScale({500, 1, 500});
+    #endif
 }
 
+#ifdef USE_OpenGL
 void TStreet::setScale(const glm::vec3& _size) {
     btCollisionShape *shape =
       new btBoxShape(btVector3(_size.x, 1, _size.y));
@@ -56,8 +64,10 @@ void TStreet::setRotation(const btScalar& yaw, const btScalar& pitch, const btSc
 
     transforms[0].setRotation(yaw, pitch, roll);
 }
+#endif
 
 void TStreet::drawElements(const std::vector<TObject*>& objects) {
+    #ifdef USE_OpenGL
     auto vao = meshes->getMesh(kCube)->getVAO();
 
     glUseProgram(shaderProgramUnique);
@@ -79,4 +89,5 @@ void TStreet::drawElements(const std::vector<TObject*>& objects) {
                        GL_UNSIGNED_INT, 0);
     }
     glBindVertexArray(0);
+    #endif
 }

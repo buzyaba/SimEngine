@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <vector>
 #include <Engine/IsometricView.hpp>
-#include <Engine/FirstPersonView.hpp>
 #include <Core/WorkManager.h>
 
 void initApplication();

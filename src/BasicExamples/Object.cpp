@@ -72,11 +72,8 @@ void TObject::SetName(std::string _name) {
     throw - 1;
 }
 
-<<<<<<< HEAD:src/Core/Object.cpp
-=======
 // TODO: Graphic part and constructor
 #ifdef USE_OpenGL
->>>>>>> 912d0dfb076cfe2473b7c27e2cbd673d8a3a2834:src/BasicExamples/Object.cpp
 void TObject::setPosition(const glm::vec3& pos) {
     btTransform _transform(rigidBody->getWorldTransform());
 
@@ -124,16 +121,7 @@ std::vector<glm::mat4> TObject::getModelMatrixes() {
         vec[i] = transforms[i].getModelMatrix();
     return vec;
 }
-<<<<<<< HEAD:src/Core/Object.cpp
-
-TObject::~TObject() {
-  Renderer::getDynamicsWorld()->removeRigidBody(rigidBody);
-  delete rigidBody;
-}
-
-=======
 #endif
->>>>>>> 912d0dfb076cfe2473b7c27e2cbd673d8a3a2834:src/BasicExamples/Object.cpp
 // IObject* TObject::Clone()
 // {
 //   return new TObject(*this);

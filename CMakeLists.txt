@@ -64,17 +64,6 @@ endif()
   #message(WARNING "dislin = ${CMAKE_SIZEOF_VOID_P}")
 
 #add graphic libraries
-<<<<<<< HEAD
-option (glew-cmake_BUILD_SHARED "Build shared libraries" ON)
-set(glew-cmake_BUILD_SHARED OFF)
-option(glew-cmake_BUILD_SINGLE_CONTEXT "Build the single context glew library" ON)
-set(glew-cmake_BUILD_SINGLE_CONTEXT OFF)
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/glfw")
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/glew")
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/bulletphys")
-add_subdirectory("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
-=======
 if (${USE_OpenGL})
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
@@ -85,7 +74,6 @@ endif()
 if (${BUILD_PLOTTER})
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
 endif()
->>>>>>> 912d0dfb076cfe2473b7c27e2cbd673d8a3a2834
 
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
@@ -139,27 +127,6 @@ endif()
 #Создаем папки
 if (IS_MICROSOFT_COMPILER)
 
-<<<<<<< HEAD
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
-set_property(TARGET gtest PROPERTY FOLDER "3rd-party")  
-
-set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
-set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
-set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
-set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
-set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
-set_property(TARGET gmock PROPERTY FOLDER "3rd-party")
-set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")
-set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
-set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
-set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")  
-=======
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 	set_property(TARGET pugixml PROPERTY FOLDER "3rd-party")
 	
@@ -192,6 +159,5 @@ set_property(TARGET gtest_main PROPERTY FOLDER "3rd-party")
 	if (${BUILD_PLOTTER})
 		set_property(TARGET MatplotlibC++ PROPERTY FOLDER "3rd-party")  
 	endif()
->>>>>>> 912d0dfb076cfe2473b7c27e2cbd673d8a3a2834
 endif()
 

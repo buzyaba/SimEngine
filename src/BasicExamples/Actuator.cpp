@@ -1,9 +1,5 @@
-<<<<<<< HEAD:src/Core/Actuator.cpp
-﻿#include "Core/Actuator.h"
-#include <algorithm>
-=======
 ﻿#include "BasicExamples/Actuator.h"
->>>>>>> 912d0dfb076cfe2473b7c27e2cbd673d8a3a2834:src/BasicExamples/Actuator.cpp
+#include <algorithm>
 
 TActuator::TActuator(std::string _name)
 {

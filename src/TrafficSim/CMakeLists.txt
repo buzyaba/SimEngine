@@ -1,33 +1,34 @@
-file(GLOB_RECURSE engine_source "../Engine/*.cpp")
+file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/TrafficSim/*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
-file(GLOB SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/*.cpp)
-list(REMOVE_ITEM SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/main.cpp)
+add_executable(TrafficSim ${source_files} ${hdrs})
 
-add_executable(TrafficSim ${source_files} ${engine_source} ${SMART_HOUSE})
-
-#target_link_libraries(TrafficSim glfw ${OPENGL_LIBRARIES})
 
 add_definitions(-DGLEW_NO_GLU)
 
-target_link_libraries(TrafficSim 
-                        Core
-                        pugixml 
-                        output_system
-                        libglewmx_static
-                        Python3::Python
-                        BulletDynamics
-                        BulletCollision
-                        LinearMath 
-                        glfw ${OPENGL_LIBRARIES})
-#if (WIN32)
-#    target_link_libraries(TrafficSim 
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletDynamics_Debug.lib
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletCollision_Debug.lib
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/LinearMath_Debug.lib)
-#else ()
-#    target_link_libraries(TrafficSim 
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletDynamics/libBulletDynamics.a
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletCollision/libBulletCollision.a
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/LinearMath/libLinearMath.a)
-#endif(WIN32)
+target_link_libraries(TrafficSim						
+						Core
+						BasicExamples
+						pugixml 
+						output_system
+						)
+						
+if (${USE_OpenGL})
+	target_link_libraries(TrafficSim
+							Engine
+							glfw 
+							libglewmx_static						
+							BulletDynamics
+							BulletCollision
+							LinearMath 
+							${OPENGL_LIBRARIES}
+	)
+endif()
+						
+						
+if (${BUILD_PLOTTER})
+	target_link_libraries(TrafficSim
+							MatplotlibC++
+							Python3::Python
+							)
+endif()
