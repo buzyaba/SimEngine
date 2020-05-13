@@ -2,7 +2,10 @@
 file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/SmartHouse/*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
-add_executable(SmartHouse ${source_files} ${hdrs})
+file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/*.cpp)
+list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/main.cpp)
+
+add_executable(SmartHouse ${source_files} ${hdrs} ${TRAFFIC_SIM})
 
 #target_link_libraries(SmartHouse glfw ${OPENGL_LIBRARIES})
 

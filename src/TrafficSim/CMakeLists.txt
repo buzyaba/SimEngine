@@ -1,12 +1,15 @@
 file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/TrafficSim/*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
-add_executable(TrafficSim ${source_files} ${hdrs})
+file(GLOB SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/*.cpp)
+list(REMOVE_ITEM SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/main.cpp)
+
+add_executable(TrafficSim ${source_files} ${hdrs} ${SMART_HOUSE})
 
 
 add_definitions(-DGLEW_NO_GLU)
 
-target_link_libraries(TrafficSim						
+target_link_libraries(TrafficSim					
 						Core
 						BasicExamples
 						pugixml 
