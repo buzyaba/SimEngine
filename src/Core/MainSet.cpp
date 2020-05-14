@@ -1,10 +1,13 @@
 ﻿#include "Core/MainSet.h"
+#include "Core/Parameters.h"
 
 #include "SmartHouse/Terminal.h"
+#ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
+#endif
 #include "SmartHouse/Room.h"
 #include "SmartHouse/SmartSocket.h"
-// #include "TrafficSimData/Street.h"
+#include "TrafficSim/Street.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -52,20 +55,35 @@ void SetProperty(IObject* object, std::string nameProperty, std::string valuePro
   }
 }
 
-TMainSet::TMainSet(std::string xmlFile)
+TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
 {
   std::vector<TObjectOfObservation*> LocalObjects;
   std::vector<TStaticObject*> StaticObjects;
   std::vector<TSmartThing*> LocalThing;
 
   StaticObjects.push_back(new TRoom("Room"));
+  std::vector<TStaticObject*>* sos = GlobalParameters.problemManager.GetStaticObject();
+  if (sos != NULL)
+  {
+    for (auto& obj : *sos)
+      StaticObjects.push_back(obj);
+  }
 
   LocalObjects.push_back(new TTerminal("Terminal"));
+  std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
+  for (auto& obj : oos)
+    LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
+  std::vector<TSmartThing*>* sts = GlobalParameters.problemManager.GetSmartThing();
+  if (sos != NULL)
+  {
+    for (auto& obj : *sts)
+      LocalThing.push_back(obj);
+  }
 
   pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_file(xmlFile.c_str());
+  pugi::xml_parse_result result = doc.load_file(xmlMainSetConfigurationFile.c_str());
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
@@ -172,6 +190,8 @@ TRoomSet::TRoomSet() : TMainSet()
 
 TStreetSet::TStreetSet() : TMainSet()
 {
+    staticObjects.resize(1, new TStreet("Street"));
+    allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
 //   /// пока что заглушка
 //   objects.resize(5, nullptr);
 //   std::vector<double> coord(2, 100);

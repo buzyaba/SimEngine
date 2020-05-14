@@ -1,2 +1,0 @@
-#include <TrafficSim/TrafficLight.hpp>
-

@@ -1,4 +1,5 @@
 #pragma once
+#ifdef USE_OpenGL
 #include <Engine/Object.hpp>
 #include <Engine/Renderer.hpp>
 #include <Engine/MeshRenderer.hpp>
@@ -26,3 +27,4 @@ class Desktop : public Primitive {
         void static drawElements(const std::vector<Desktop*> objects);
         void static initDraw(const std::vector<Desktop*> objects);
 };
+#endif

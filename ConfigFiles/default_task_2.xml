@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<type>-1</type>
+	<xmlEnvironmentScriptName></xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile></xmlMainSetConfigurationFile>
+	<objectOfObservationDllsFile></objectOfObservationDllsFile>
+	<smartThingDllsFile></smartThingDllsFile> 
+	<staticObjectDllsFile></staticObjectDllsFile>
+	<managementProgramDllFile></managementProgramDllFile>
+	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
+	<timeAcceleration>1</timeAcceleration>
+	<maxStep>100</maxStep>
+</config>

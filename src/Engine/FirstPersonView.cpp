@@ -1,10 +1,10 @@
 #include "Engine/FirstPersonView.hpp"
 
-bool keys[1024];
-GLfloat lastX;
-GLfloat lastY;
-GLfloat yaw;	
-GLfloat pitch;
+static bool keys[1024];
+static GLfloat lastX;
+static GLfloat lastY;
+static GLfloat yaw;	
+static GLfloat pitch;
 
 FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
                                  const std::string winName, bool _visible): WindowManager(screenWidth, screenHeight, winName, _visible) {
