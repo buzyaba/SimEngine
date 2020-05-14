@@ -159,7 +159,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::cout << "End\n" << deltaWork.count() << std::endl;
 
   storage->PrintToFile();
-  glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); // enable cursor
+  window->setCursor(true);
   program->End();
 }
 

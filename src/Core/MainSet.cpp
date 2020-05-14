@@ -58,9 +58,6 @@ TMainSet::TMainSet(std::string xmlFile)
   std::vector<TStaticObject*> StaticObjects;
   std::vector<TSmartThing*> LocalThing;
 
-  std::vector<TObject*> test;
-  test.push_back(new TTerminal("Terminal"));
-
   StaticObjects.push_back(new TRoom("Room"));
 
   LocalObjects.push_back(new TTerminal("Terminal"));

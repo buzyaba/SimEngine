@@ -18,5 +18,5 @@ public:
     virtual ~WindowManager() {Renderer::terminate();glfwDestroyWindow(window); glfwTerminate();}
     virtual void runWindow(const float& dt, const std::function<void()>& renderFunc = 
                            [](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); glClearColor(1.f, 1.f, 1.f, 1.f);});
-    GLFWwindow* getWindow() { return window; }
+    void setCursor(bool _switch) noexcept;
 };

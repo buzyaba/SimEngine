@@ -16,13 +16,13 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
     yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
     pitch =   0.0f;
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
+	setCursor(false);
     glfwSetKeyCallback(window, updateKeyboard); // keyboard events
     glfwSetCursorPosCallback(window, updateMouse); // mouse events
 }
 
 void FirstPersonView::cameraMovement(float dt) {
-    GLfloat cameraSpeed = 15.0f * dt;
+    GLfloat cameraSpeed = 2.5f * dt;
 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
 	if (keys[GLFW_KEY_W])
