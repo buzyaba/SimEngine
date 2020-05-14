@@ -1,15 +1,21 @@
 #include <TrafficSim/Road.hpp>
+#ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
+#endif
 
-GLuint TRoad::meshBuffer = -1;
+std::uint32_t TRoad::meshBuffer = -1;
 
-TRoad::TRoad(std::string _name, const glm::vec3& _pos, const glm::vec3& _scale): TObjectOfObservation(_name) {
+TRoad::TRoad(std::string _name
+    #ifdef USE_OpenGL
+    ,const glm::vec3& _pos, const glm::vec3& _scale
+    #endif
+    ): TObjectOfObservation(_name) {
     properties.insert({"IsBblockieren", new TProperties(std::map<std::string, double>{{"IsBblockieren", 0}}, false, "IsBblockieren")});
     properties.insert({"Coordinate", new TProperties(std::map<std::string, double>{{"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate")});
     properties.insert({"Dimensions", new TProperties{{{"Width", 10}, {"Length", 20}, {"Height", 1}}, false, "Dimensions"}});
     properties.insert({"IsBusy", new TProperties(std::map<std::string, double>{{"IsBusy", 0}}, false, "IsBusy")});
     properties.insert({"IsHaveStandingCar", new TProperties(std::map<std::string, double>{{"IsHaveStandingCar", 0}}, true, "IsHaveStangingCar")});
-
+    #ifdef USE_OpenGL
     otherTextures.insert({"road", Renderer::getTextures()[ROAD]});
 
     btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(_pos.x, _pos.y, _pos.z)));
@@ -35,8 +41,10 @@ TRoad::TRoad(std::string _name, const glm::vec3& _pos, const glm::vec3& _scale):
 
     transforms[0].setPosition(_pos);
     transforms[0].setScale(_scale);
+    #endif
 }
 
+#ifdef USE_OpenGL
 void TRoad::setScale(const glm::vec3& _size) {
     btCollisionShape *shape =
       new btBoxShape(btVector3(_size.x, 1, _size.y));
@@ -58,8 +66,10 @@ void TRoad::setRotation(const btScalar& yaw, const btScalar& pitch, const btScal
 
     transforms[0].setRotation(yaw, pitch, roll);
 }
+#endif
 
 void TRoad::initDraw(const std::vector<TObject*>& objects) {
+    #ifdef USE_OpenGL
     setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
                   this->properties["Coordinate"]->GetValues()["Y"],
                   this->properties["Coordinate"]->GetValues()["Z"] });
@@ -89,10 +99,12 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
     glVertexAttribDivisor(5, 1);
     glVertexAttribDivisor(6, 1);
     glBindVertexArray(0);
-    delete[] modelMatrixes;    
+    delete[] modelMatrixes;
+    #endif
 }
 
 void TRoad::drawElements(const std::vector<TObject*>& objects) {
+    #ifdef USE_OpenGL
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
     for (int i = 0; i < objects.size(); ++i) {
@@ -111,9 +123,12 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
     glDrawElementsInstanced(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 3);
     glBindVertexArray(0);
     delete[] modelMatrixes;
+    #endif
 }
 
 void TRoad::initBuffer() {
+    #ifdef USE_OpenGL
     if (meshBuffer == -1)
         glGenBuffers(1, &meshBuffer);
+    #endif
 }

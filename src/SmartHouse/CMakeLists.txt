@@ -33,7 +33,7 @@ endif()
 						
 if (${BUILD_PLOTTER})
 	target_link_libraries(SmartHouse
-							MatplotlibC++
+							#MatplotlibC++
 							Python3::Python
 							)
 endif()

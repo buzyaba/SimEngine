@@ -65,6 +65,10 @@ endif()
 
 #add graphic libraries
 if (${USE_OpenGL})
+	option (glew-cmake_BUILD_SHARED "Build shared libraries" ON)
+	set(glew-cmake_BUILD_SHARED OFF)
+	option(glew-cmake_BUILD_SINGLE_CONTEXT "Build the single context glew library" ON)
+	set(glew-cmake_BUILD_SINGLE_CONTEXT OFF)
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")

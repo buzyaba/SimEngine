@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 	// workManager->Start();
 	// delete workManager;
 	// return 0;
-	  =try
+  try
   {
     GlobalParameters.LoadConsoleParameters(argc, argv);
   }
