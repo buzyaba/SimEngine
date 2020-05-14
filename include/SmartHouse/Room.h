@@ -18,11 +18,9 @@ public:
     virtual void setScale(const glm::vec3& _size) override;
     virtual void setPosition(const glm::vec3& pos) override;
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) override;
-    void setScreenTexture(GLuint _text) { otherTextures["screen"] = _text; }
 #endif
     void drawElements(const std::vector<TObject*>& objects);
     void initDraw(const std::vector<TObject*>& objects) {}
     virtual TStaticObject* Clone() { return new TRoom(); };
-    // virtual std::vector<glm::mat4> getModelMatrixes() override;
     virtual std::string ClassName() override { return std::string("TRoom"); }
 };

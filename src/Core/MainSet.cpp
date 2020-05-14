@@ -6,6 +6,7 @@
 #include <Engine/FirstPersonView.hpp>
 #endif
 #include "SmartHouse/Room.h"
+#include "SmartHouse/Table.h"
 #include "SmartHouse/SmartSocket.h"
 #include "TrafficSim/Street.hpp"
 
@@ -62,6 +63,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
   std::vector<TSmartThing*> LocalThing;
 
   StaticObjects.push_back(new TRoom("Room"));
+  StaticObjects.push_back(new TTable("Table"));
   std::vector<TStaticObject*>* sos = GlobalParameters.problemManager.GetStaticObject();
   if (sos != NULL)
   {
