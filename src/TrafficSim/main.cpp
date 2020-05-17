@@ -1,3 +1,4 @@
+#define WITHOUT_NUMPY
 #include <chrono>
 #include <algorithm>
 #include <vector>
