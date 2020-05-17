@@ -64,6 +64,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
 
   StaticObjects.push_back(new TRoom("Room"));
   StaticObjects.push_back(new TTable("Table"));
+  StaticObjects.push_back(new TStreet("Street"));
   std::vector<TStaticObject*>* sos = GlobalParameters.problemManager.GetStaticObject();
   if (sos != NULL)
   {

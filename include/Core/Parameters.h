@@ -8,6 +8,7 @@
 #include <string>
 #ifdef USE_OpenGL
 #include <Engine/FirstPersonView.hpp>
+#include <Engine/IsometricView.hpp>
 #endif
 #include "BasicExamples/common.h"
 #include "Core/Dll_manager.h"
@@ -17,6 +18,8 @@ class TParameters
 protected:
   /// Установка значений по умолчанию
   void DefaultParameters();
+  /// Генерация
+  void GenerateParameters();
   /// Загрузка параметров из XML
   void LoadXML();
   /// Строка с адресом файла запустившего окно

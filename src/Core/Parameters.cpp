@@ -24,7 +24,6 @@ void TParameters::DefaultParameters()
   auto c_cwd = cwd;
   std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
   size_t i = c_cwd.find("SIMENGINE");
-
   _window = new FirstPersonView(800, 600, "Smart House");;
   xmlEnvironmentScriptName = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/conf.xml";
   xmlMainSetConfigurationFile = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/Room.xml";
@@ -46,6 +45,16 @@ void TParameters::DefaultParameters()
   millisecondsInTimeStep = 1000;
   timeAcceleration = 0.0;
   maxStep = 1000; ////60*60*24*30;//~месяц
+}
+
+void TParameters::GenerateParameters()
+{
+#ifdef USE_OpenGL
+    if (type <= 0)
+        _window = new FirstPersonView(800, 600, "Smart House");
+    else
+        _window = new IsometricView(800, 600, "Traffic Simulator");
+#endif
 }
 
 void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)
@@ -143,10 +152,12 @@ void TParameters::LoadXML()
     }
     else if (name == "managementProgramDllFile")
     {
-      managementProgramDllFile = value;
-      if (managementProgramDllFile.find(":") == std::string::npos)
-        managementProgramDllFile = dirConfigFile + "\\" + managementProgramDllFile;
-      problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
+        if (value != "") {
+            managementProgramDllFile = value;
+            if (managementProgramDllFile.find(":") == std::string::npos)
+                managementProgramDllFile = dirConfigFile + "\\" + managementProgramDllFile;
+            problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
+        }
     }
     else if (name == "type")
     {
@@ -216,6 +227,7 @@ void TParameters::LoadConsoleParameters(int argc, char** argv)
       }
 
       LoadXML();
+      GenerateParameters();
       std::cout << "\n\n" << Print() << "\n" << std::endl;
     }
   }
@@ -328,9 +340,9 @@ void TParameters::ConsoleInterface()
     DefaultParameters();
   else
   {
-    DefaultParameters();
     this->xmlCurrentConfiguration = configs[t - 2];
     LoadXML();
+    GenerateParameters();
   }
 
   std::cout << "\n\n" << Print() << "\n" << std::endl;

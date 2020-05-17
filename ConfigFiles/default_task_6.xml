@@ -2,7 +2,7 @@
 <config>
 	<type>1</type>
 	<xmlEnvironmentScriptName>default_task_6\conf.xml</xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile>default_task_3\Street.xml</xmlMainSetConfigurationFile>
+	<xmlMainSetConfigurationFile>default_task_6\Street.xml</xmlMainSetConfigurationFile>
 	<objectOfObservationDllsFile></objectOfObservationDllsFile>
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>

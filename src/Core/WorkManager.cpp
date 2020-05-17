@@ -80,7 +80,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
 
 #ifdef USE_OpenGL
   window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.2f, 1.f, 0.f, 1.f);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
   this->DrawElements(); });
 #endif
   if (_enableVisualisation == 0)
