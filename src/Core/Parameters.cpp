@@ -8,6 +8,14 @@
 #include <string>
 #include <string.h>
 
+#ifdef _WIN32
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
 #ifdef WIN32
 #include <Windows.h>
 #else
@@ -20,7 +28,6 @@ TParameters GlobalParameters;
 void TParameters::DefaultParameters()
 {
 #ifdef USE_OpenGL
-  cwd = Renderer::getCWD();
   auto c_cwd = cwd;
   std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
   size_t i = c_cwd.find("SIMENGINE");
@@ -98,7 +105,7 @@ void TParameters::LoadXML()
         if (value.find(":") != std::string::npos)
           xmlEnvironmentScriptName = value; //
         else
-          xmlEnvironmentScriptName = dirConfigFile + "\\" + value;
+          xmlEnvironmentScriptName = dirConfigFile + "/" + value;
       }
     }
     else if (name == "xmlMainSetConfigurationFile")
@@ -108,7 +115,7 @@ void TParameters::LoadXML()
         if (value.find(":") != std::string::npos)
           xmlMainSetConfigurationFile = value; //
         else
-          xmlMainSetConfigurationFile = dirConfigFile + "\\" + value;
+          xmlMainSetConfigurationFile = dirConfigFile + "/" + value;
       }
     }
     else if (name == "objectOfObservationDllsFile")
@@ -120,7 +127,7 @@ void TParameters::LoadXML()
       for (auto& v : objectOfObservationDllsFile)
       {
         if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "\\" + v;
+          v = dirConfigFile + "/" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::OBJECT_OF_OBSERVATION);
       }
     }
@@ -133,7 +140,7 @@ void TParameters::LoadXML()
       for (auto& v : smartThingDllsFile)
       {
         if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "\\" + v;
+          v = dirConfigFile + "/" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::SMART_THING);
       }
     }
@@ -146,18 +153,19 @@ void TParameters::LoadXML()
       for (auto& v : staticObjectDllsFile)
       {
         if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "\\" + v;
+          v = dirConfigFile + "/" + v;
         problemManager.LoadProblemLibrary(v, TProblemManager::STATIC_OBJECT);
       }
     }
     else if (name == "managementProgramDllFile")
     {
-        if (value != "") {
-            managementProgramDllFile = value;
-            if (managementProgramDllFile.find(":") == std::string::npos)
-                managementProgramDllFile = dirConfigFile + "\\" + managementProgramDllFile;
-            problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
-        }
+      if (value != "")
+      {
+        managementProgramDllFile = value;
+        if (managementProgramDllFile.find(":") == std::string::npos)
+          managementProgramDllFile = dirConfigFile + "/" + managementProgramDllFile;
+        problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
+      }
     }
     else if (name == "type")
     {
@@ -180,6 +188,9 @@ void TParameters::LoadXML()
 
 TParameters::TParameters(int argc, char** argv)
 {
+  char buff[FILENAME_MAX]; //create string buffer to hold path
+  GetCurrentDir(buff, FILENAME_MAX);
+  cwd = buff;
   LoadConsoleParameters(argc, argv);
 }
 
@@ -191,24 +202,14 @@ void TParameters::LoadConsoleParameters(int argc, char** argv)
   }
   else if (argc >= 1)
   {
-    exeFile = argv[0];
-    std::cout << "Start program " << exeFile << std::endl;
+    std::cout << "Start program " << cwd << std::endl;
 
     if (argc == 1)
     {
-      dirConfigFile = "";
-      for (size_t i = exeFile.length() - 1; i > 0; i--)
-      {
-        if (exeFile[i] == '\\')
-        {
-          for (unsigned int j = 0; j <= i; j++)
-            dirConfigFile += exeFile[j];
-          break;
-        }
-      }
-      std::cout << "AAA\n";
-      dirConfigFile += "../../../ConfigFiles";
-
+      auto c_cwd = cwd;
+      std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
+      size_t i = c_cwd.find("SIMENGINE");
+      dirConfigFile = cwd.substr(0, i + 9) + "/ConfigFiles";
       ConsoleInterface();
     }
     else
@@ -304,20 +305,17 @@ void TParameters::ConsoleInterface()
     } while (FindNextFile(h, &file_data));
   }
 #else
-
-  //DIR* dir;
-  //class dirent* ent;
-  //class stat st;
-
-  //dir = opendir(dirConfigFile);
-  //while ((ent = readdir(dir)) != NULL) {
-  //  const std::string file_name = ent->d_name;
-  //  const std::string full_file_name = dirConfigFile + "/" + file_name;
-  //  if (full_file_name.find(".xml") != std::string::npos)
-  //    configs.push_back(full_file_name);
-  //  configs.push_back(full_file_name);
-  //}
-  //closedir(dir);
+  DIR* dir;
+  dirent* ent;
+  const char *dirConfig = dirConfigFile.c_str();
+  dir = opendir(dirConfig);
+  while ((ent = readdir(dir)) != NULL) {
+   const std::string file_name = ent->d_name;
+   const std::string full_file_name = dirConfigFile + "/" + file_name;
+   if (full_file_name.find(".xml") != std::string::npos)
+     configs.push_back(full_file_name);
+  }
+  closedir(dir);
 #endif;
 
 
@@ -340,6 +338,7 @@ void TParameters::ConsoleInterface()
     DefaultParameters();
   else
   {
+    std::cout<<"CONFIGS "<<configs[t - 2];
     this->xmlCurrentConfiguration = configs[t - 2];
     LoadXML();
     GenerateParameters();

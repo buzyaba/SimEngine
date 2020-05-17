@@ -3,6 +3,10 @@
   <TRoom>
 	<Name>Room1</Name>
   </TRoom>
+  <TTable>
+	<Name>Table1</Name>
+  <Coordinate>1 0 -5</Coordinate>
+  </TTable>
   <TTerminal>
 	<Name>Terminal1</Name>
   <Coordinate>1 0 -5</Coordinate>
