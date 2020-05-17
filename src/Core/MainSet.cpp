@@ -8,6 +8,7 @@
 #include "SmartHouse/Room.h"
 #include "SmartHouse/SmartSocket.h"
 #include "TrafficSim/Street.hpp"
+#include "TrafficSim/Road.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -74,6 +75,9 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
   }
 
   LocalObjects.push_back(new TTerminal("Terminal"));
+  LocalObjects.push_back(new TRoad("Road"));
+  LocalObjects.push_back(new TCarCreator("CarCreator"));
+  LocalObjects.push_back(new TCarDestroyer("CarDestroyer"));
   std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
   for (auto& obj : oos)
     LocalObjects.push_back(obj);
@@ -194,8 +198,8 @@ TRoomSet::TRoomSet() : TMainSet()
 
 TStreetSet::TStreetSet() : TMainSet()
 {
-    staticObjects.resize(1, new TStreet("Street"));
-    allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
+    // staticObjects.resize(1, new TStreet("Street"));
+    // allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
 //   /// пока что заглушка
 //   objects.resize(5, nullptr);
 //   std::vector<double> coord(2, 100);

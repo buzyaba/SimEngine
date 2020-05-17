@@ -12,7 +12,7 @@ TRoad::TRoad(std::string _name
     ): TObjectOfObservation(_name) {
     properties.insert({"IsBblockieren", new TProperties(std::map<std::string, double>{{"IsBblockieren", 0}}, false, "IsBblockieren")});
     properties.insert({"Coordinate", new TProperties(std::map<std::string, double>{{"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate")});
-    properties.insert({"Dimensions", new TProperties{{{"Width", 10}, {"Length", 20}, {"Height", 1}}, false, "Dimensions"}});
+    properties.insert({"Dimensions", new TProperties{{{"Width", 10}, {"Length", 20}, {"Height", 0.1}}, false, "Dimensions"}});
     properties.insert({"IsBusy", new TProperties(std::map<std::string, double>{{"IsBusy", 0}}, false, "IsBusy")});
     properties.insert({"IsHaveStandingCar", new TProperties(std::map<std::string, double>{{"IsHaveStandingCar", 0}}, true, "IsHaveStangingCar")});
     #ifdef USE_OpenGL
@@ -73,6 +73,9 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
     setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
                   this->properties["Coordinate"]->GetValues()["Y"],
                   this->properties["Coordinate"]->GetValues()["Z"] });
+    setScale({ this->properties["Dimensions"]->GetValues()["Length"],
+                  this->properties["Dimensions"]->GetValues()["Width"],
+                  this->properties["Dimensions"]->GetValues()["Height"] });
     initBuffer();
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
@@ -132,3 +135,25 @@ void TRoad::initBuffer() {
         glGenBuffers(1, &meshBuffer);
     #endif
 }
+
+#ifdef USE_OpenGL
+TCarDestroyer::TCarDestroyer(std::string _name, 
+                             const glm::vec3& _pos, 
+                             const glm::vec3& _scale):TRoad(_name, _pos, _scale)
+{
+
+}
+
+TCarCreator::TCarCreator(std::string _name, const glm::vec3& _pos, const glm::vec3& _scale): TRoad(_name, _pos, _scale) {
+    properties.insert({ "IsCreat", new TProperties(std::map<std::string, double>{ {"IsCreat", 1}}, true, "IsCreat") });
+}
+#else
+TCarDestroyer::TCarDestroyer(std::string _name) : TRoad(_name)
+{
+
+}
+
+CarCreator::TCarCreator(std::string _name) : TRoad(_name) {
+    properties.insert({ "IsCreat", new TProperties(std::map<std::string, double>{ {"IsCreat", 1}}, true, "IsCreat") });
+}
+#endif
