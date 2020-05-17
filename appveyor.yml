@@ -12,4 +12,4 @@ build_script:
   - cmd: cd _build
   - cmd: cmake -Dglew-cmake_BUILD_SHARED=OFF -Dglew-cmake_BUILD_SINGLE_CONTEXT=OFF -DBUILD_TESTS=ON -DBUILD_PLOTTER=OFF -DUSE_OpenGL=OFF ..
   - cmd: cmake --build .
-  - cmd: C:\projects\simengine\_build\bin\DEBUG\tests.exe
+  # - cmd: C:\projects\simengine\_build\bin\DEBUG\tests.exe

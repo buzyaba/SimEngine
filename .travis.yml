@@ -48,4 +48,4 @@ script:
 - cd _build
 - cmake -DBUILD_TESTS=ON -DBUILD_PLOTTER=OFF -DUSE_OpenGL=OFF ..
 - cmake --build .
-- bin/RELEASE/tests
+# - bin/RELEASE/tests

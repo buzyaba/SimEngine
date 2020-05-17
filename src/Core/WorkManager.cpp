@@ -122,7 +122,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   storage->PrintToFile();
 
 #ifdef USE_OpenGL
-  glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); // enable cursor
+  window->setCursor(true); // enable cursor
 #endif
 
   program->End();

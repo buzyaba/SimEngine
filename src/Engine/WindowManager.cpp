@@ -37,3 +37,9 @@ void WindowManager::setVisibility(bool _switch) noexcept{
         glfwShowWindow(window);
     }
 }
+void WindowManager::setCursor(bool _switch) noexcept {
+    if (_switch)
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // enable cursor
+    else
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
+}
