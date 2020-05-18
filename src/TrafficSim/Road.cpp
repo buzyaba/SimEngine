@@ -12,7 +12,7 @@ TRoad::TRoad(std::string _name
     ): TObjectOfObservation(_name) {
     properties.insert({"IsBblockieren", new TProperties(std::map<std::string, double>{{"IsBblockieren", 0}}, false, "IsBblockieren")});
     properties.insert({"Coordinate", new TProperties(std::map<std::string, double>{{"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate")});
-    properties.insert({"Dimensions", new TProperties{{{"Width", 10}, {"Length", 20}, {"Height", 0.1}}, false, "Dimensions"}});
+    properties.insert({"Dimensions", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Dimensions"}});
     properties.insert({"IsBusy", new TProperties(std::map<std::string, double>{{"IsBusy", 0}}, false, "IsBusy")});
     properties.insert({"IsHaveStandingCar", new TProperties(std::map<std::string, double>{{"IsHaveStandingCar", 0}}, true, "IsHaveStangingCar")});
     #ifdef USE_OpenGL
@@ -74,8 +74,8 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
                   this->properties["Coordinate"]->GetValues()["Y"],
                   this->properties["Coordinate"]->GetValues()["Z"] });
     setScale({ this->properties["Dimensions"]->GetValues()["Length"],
-                  this->properties["Dimensions"]->GetValues()["Width"],
-                  this->properties["Dimensions"]->GetValues()["Height"] });
+                  this->properties["Dimensions"]->GetValues()["Height"],
+                  this->properties["Dimensions"]->GetValues()["Width"] });
     initBuffer();
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];

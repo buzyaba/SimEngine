@@ -10,6 +10,7 @@
 #include "SmartHouse/SmartSocket.h"
 #include "TrafficSim/Street.hpp"
 #include "TrafficSim/Road.hpp"
+#include "TrafficSim/Car.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
