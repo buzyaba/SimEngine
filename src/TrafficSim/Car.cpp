@@ -47,7 +47,7 @@ void TCar::Update()
 {
 	TObjectOfObservation::Update();
 	auto&& val = this->properties["WayIndex"]->GetValues();
-	val["WayIndex"] = rand() % static_cast<int>(this->properties["WayIndexCount"]->GetValues()[0]);
+	val["WayIndex"] = rand() % 100;//rand() % static_cast<int>(this->properties["WayIndexCount"]->GetValues()["WayIndexCount"]);
 	this->properties["WayIndex"]->SetValues(val);
 }
 
