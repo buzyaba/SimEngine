@@ -116,17 +116,11 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
 // }
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
-
-  printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
-    this->properties["Coordinate"]->GetValues()["Y"],
-    this->properties["Coordinate"]->GetValues()["Z"]);
-
-
-
 #ifdef USE_OpenGL
-    setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
-                  this->properties["Coordinate"]->GetValues()["Y"],
-                  this->properties["Coordinate"]->GetValues()["Z"] });
+    for(auto& elem : objects )
+        elem->setPosition({ elem->GetProperty("Coordinate").GetValues()["X"], 
+                  elem->GetProperty("Coordinate").GetValues()["Y"],
+                  elem->GetProperty("Coordinate").GetValues()["Z"] });
     initBuffer();
 
     glUseProgram(shaderProgramInstanced);
@@ -162,6 +156,7 @@ void TTerminal::initDraw(const std::vector<TObject*>& objects) {
 void TTerminal::drawElements(const std::vector<TObject*>& objects) {
 #ifdef USE_OpenGL
     glUseProgram(shaderProgramInstanced);
+    glBindTexture(GL_TEXTURE_2D, TTerminal::mainTexture);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
         std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
@@ -172,7 +167,6 @@ void TTerminal::drawElements(const std::vector<TObject*>& objects) {
     glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
     GLuint vao = meshes->getMesh(kCube)->getVAO();
-    glBindTexture(GL_TEXTURE_2D, TTerminal::mainTexture);
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, TTerminal::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
@@ -220,7 +214,7 @@ void TTerminal::Update() {
     }
 
     isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
-    /// Обновление текстуры
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 #ifdef USE_OpenGL
     if (isWork) setScreenTexture(Renderer::getTextures()[WINDOWS]);
     else setScreenTexture(Renderer::getTextures()[SCREENSAVER]);

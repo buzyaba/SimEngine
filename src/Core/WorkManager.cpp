@@ -150,5 +150,7 @@ void TWorkManager::InitDraw() {
 void TWorkManager::DrawElements() {
     for(const auto& elem : mainSet->GetAllGObjects()) {
         elem.second[0]->drawElements(elem.second);
+
+        // glfwSwapBuffers(window->getWindow());
     }
 }

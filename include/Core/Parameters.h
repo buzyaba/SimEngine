@@ -24,8 +24,6 @@ protected:
   void LoadXML();
   /// Строка с адресом файла запустившего окно
   std::string cwd;
-  /// Путь до запущенного exe-шника
-  std::string exeFile;
   /// директория с файлами конфигурации
   std::string dirConfigFile;
   /// Разбиение строки на подстроки по пробелу

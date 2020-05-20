@@ -44,11 +44,11 @@ TTable::TTable(std::string _name
     transforms[3].setScale(glm::vec3(0.1f,1.5f,0.1f) * scale);  // tableLeg2
     transforms[4].setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); // tableLeg3
     transforms[5].setScale(glm::vec3(0.1f,1.5f,0.1f) * scale); // tableLeg4 
-    transforms[1].setPosition(pos + glm::vec3(0.0f, 3.0f,0.0f)); // countertop
-    transforms[2].setPosition(pos + glm::vec3(-2.9f, 1.5f,-1.4f)); //tableLeg1
-    transforms[3].setPosition(pos + glm::vec3(-2.9f, 1.5f, 1.4f)); // tableLeg2
-    transforms[4].setPosition(pos + glm::vec3(2.9f, 1.5f,-1.4f));// tableLeg3
-    transforms[5].setPosition(pos + glm::vec3(2.9f, 1.5f,1.4f)); // tableLeg4
+    transforms[1].setPosition(glm::vec3(0.0f, 3.0f,0.0f)); // countertop
+    transforms[2].setPosition(glm::vec3(-2.9f, 1.5f,-1.4f)); //tableLeg1
+    transforms[3].setPosition(glm::vec3(-2.9f, 1.5f, 1.4f)); // tableLeg2
+    transforms[4].setPosition(glm::vec3(2.9f, 1.5f,-1.4f));// tableLeg3
+    transforms[5].setPosition(glm::vec3(2.9f, 1.5f,1.4f)); // tableLeg4
     transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
@@ -117,17 +117,11 @@ void TTable::setRotation(const btScalar& yaw, const btScalar& pitch, const btSca
 // }
 
 void TTable::initDraw(const std::vector<TObject*>& objects) {
-
-  printf("COORDINATE %f %f %f \n", this->properties["Coordinate"]->GetValues()["X"],
-    this->properties["Coordinate"]->GetValues()["Y"],
-    this->properties["Coordinate"]->GetValues()["Z"]);
-
-
-
 #ifdef USE_OpenGL
-    setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
-                  this->properties["Coordinate"]->GetValues()["Y"],
-                  this->properties["Coordinate"]->GetValues()["Z"] });
+    for(auto& elem : objects )
+        elem->setPosition({ elem->GetProperty("Coordinate").GetValues()["X"], 
+                  elem->GetProperty("Coordinate").GetValues()["Y"],
+                  elem->GetProperty("Coordinate").GetValues()["Z"] });
     initBuffer();
 
     glUseProgram(shaderProgramInstanced);
@@ -163,6 +157,7 @@ void TTable::initDraw(const std::vector<TObject*>& objects) {
 void TTable::drawElements(const std::vector<TObject*>& objects) {
 #ifdef USE_OpenGL
     glUseProgram(shaderProgramInstanced);
+    glBindTexture(GL_TEXTURE_2D, TTable::mainTexture);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*5];
     for (int i = 0; i < objects.size(); ++i) {
         std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
@@ -173,13 +168,12 @@ void TTable::drawElements(const std::vector<TObject*>& objects) {
     glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
     glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 5, &modelMatrixes[0], GL_STATIC_DRAW);
     GLuint vao = meshes->getMesh(kCube)->getVAO();
-    glBindTexture(GL_TEXTURE_2D, TTable::mainTexture);
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
     glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
     GLint vpLoc = glGetUniformLocation(shaderProgramInstanced, "vp");
     glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-    glDrawElementsInstanced(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 3);
+    glDrawElementsInstanced(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 5);
     glBindVertexArray(0);
     delete[] modelMatrixes;
 

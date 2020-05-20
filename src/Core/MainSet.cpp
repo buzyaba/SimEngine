@@ -111,7 +111,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
           SetProperty(newStaticObject, nameProperty, valueProperty);
         }
         staticObjects.push_back(newStaticObject);
-        allGObjects.insert(std::make_pair(newStaticObject->GetName(), std::vector<TObject*>(1, staticObjects.back())));
+        allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
       }
     }
 
@@ -129,7 +129,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
         }
 
         objects.push_back(newObject);
-        allGObjects.insert(std::make_pair(newObject->GetName(), std::vector<TObject*>(1, objects.back())));
+        allGObjects[newObject->ClassName()].push_back(newObject);
       }
     }
 

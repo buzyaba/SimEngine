@@ -19,4 +19,5 @@ public:
     virtual void runWindow(const float& dt, const std::function<void()>& renderFunc = 
                            [](){glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); glClearColor(1.f, 1.f, 1.f, 1.f);});
     void setCursor(bool _switch) noexcept;
+    GLFWwindow* getWindow() { return window; }
 };

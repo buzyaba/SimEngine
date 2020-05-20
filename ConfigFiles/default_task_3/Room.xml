@@ -3,10 +3,6 @@
   <TRoom>
 	<Name>Room1</Name>
   </TRoom>
-  <TTable>
-	<Name>Table1</Name>
-  <Coordinate>1 0 -5</Coordinate>
-  </TTable>
   <TTerminal>
 	<Name>Terminal1</Name>
   <Coordinate>1 0 -5</Coordinate>
@@ -30,4 +26,12 @@
   <Object>Terminal3</Object>
   <Object>Terminal4</Object>
   </TSmartSocket>
+  <TTable>
+	<Name>Table1</Name>
+  <Coordinate>3 0 -5</Coordinate>
+  </TTable>
+  <!-- <TTable>
+	<Name>Table2</Name>
+  <Coordinate>-7 0 -5</Coordinate>
+  </TTable> -->
 </config>
