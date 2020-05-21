@@ -20,7 +20,7 @@
 #include <Windows.h>
 #else
 #include <dirent.h>
-#endif;
+#endif
 
 
 TParameters GlobalParameters;
@@ -181,7 +181,7 @@ void TParameters::LoadXML()
     }
     else if (name == "maxStep")
     {
-      sscanf(value.c_str(), "%d", &maxStep);
+      sscanf(value.c_str(), "%ld", &maxStep);
     }
   }
 }
@@ -316,7 +316,7 @@ void TParameters::ConsoleInterface()
      configs.push_back(full_file_name);
   }
   closedir(dir);
-#endif;
+#endif
 
 
   std::cout << "1. Start default task 1" << std::endl;

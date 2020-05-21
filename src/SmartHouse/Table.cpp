@@ -156,26 +156,37 @@ void TTable::initDraw(const std::vector<TObject*>& objects) {
 
 void TTable::drawElements(const std::vector<TObject*>& objects) {
 #ifdef USE_OpenGL
-    glUseProgram(shaderProgramInstanced);
     glBindTexture(GL_TEXTURE_2D, TTable::mainTexture);
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*5];
-    for (int i = 0; i < objects.size(); ++i) {
-        std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
-        for (size_t j = 1; j < 6; ++j) {
-            modelMatrixes[i*5 + j-1] = vec[j];
-        }
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 5, &modelMatrixes[0], GL_STATIC_DRAW);
     GLuint vao = meshes->getMesh(kCube)->getVAO();
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
-    glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() * Renderer::getCamera()->getViewMatrix();
-    GLint vpLoc = glGetUniformLocation(shaderProgramInstanced, "vp");
-    glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
-    glDrawElementsInstanced(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 5);
-    glBindVertexArray(0);
-    delete[] modelMatrixes;
-
+  glUseProgram(shaderProgramUnique);
+  glBindVertexArray(vao);
+  glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() *
+                 Renderer::getCamera()->getViewMatrix();
+  GLint vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
+  glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+    GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");    
+  for (auto iter : objects) {
+    std::vector<glm::mat4> vec = iter->getModelMatrixes();
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+                       glm::value_ptr(iter->getModelMatrixes()[1]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+                       glm::value_ptr(iter->getModelMatrixes()[2]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+                       glm::value_ptr(iter->getModelMatrixes()[3]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+                       glm::value_ptr(iter->getModelMatrixes()[4]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+                       glm::value_ptr(iter->getModelMatrixes()[5]));
+    glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+                   GL_UNSIGNED_INT, 0);
+  }
 #endif
 }

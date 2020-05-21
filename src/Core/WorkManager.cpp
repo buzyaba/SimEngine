@@ -62,7 +62,6 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   time = (t * parameters.millisecondsInTimeStep) / 1000;
   currentTime = time;
   currentStep = t;
-  // TODO: FIX COMMENTED STUFF
   script->UpdateObjectsProperties(time);
   for (int i = 0; i < objects.size(); i++)
   {
@@ -77,11 +76,14 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
   float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
-
 #ifdef USE_OpenGL
-  window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  this->DrawElements(); });
+  start = std::chrono::steady_clock::now();
+  while ((end - start) < delta) {
+    window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    this->DrawElements(); });
+    end = std::chrono::steady_clock::now();
+  }
 #endif
   if (_enableVisualisation == 0)
     std::this_thread::sleep_for(delta);
@@ -104,7 +106,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 #endif
 
   time = 0;
-  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep * parameters.timeAcceleration));
+  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
 #ifdef USE_OpenGL
   for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
 #else
@@ -117,7 +119,8 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
-  std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms." << std::endl;
+  std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms.\n "<< 
+  "Simulation time = \t" << static_cast<double>(parameters.maxStep * parameters.millisecondsInTimeStep) / 60000 <<" minutes\n" << std::endl;
 
   storage->PrintToFile();
 
@@ -150,7 +153,5 @@ void TWorkManager::InitDraw() {
 void TWorkManager::DrawElements() {
     for(const auto& elem : mainSet->GetAllGObjects()) {
         elem.second[0]->drawElements(elem.second);
-
-        // glfwSwapBuffers(window->getWindow());
     }
 }

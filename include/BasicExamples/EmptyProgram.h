@@ -144,10 +144,8 @@ public:
         fprintf(file, "%s;", table[i][j].c_str());
       fprintf(file, "\n");
     }
-
-    Plot();
-
     fclose(file);
+    Plot();
   }
 
   virtual void Run()

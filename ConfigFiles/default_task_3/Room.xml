@@ -5,19 +5,19 @@
   </TRoom>
   <TTerminal>
 	<Name>Terminal1</Name>
-  <Coordinate>1 0 -5</Coordinate>
+  <Coordinate>5 3.1 -15</Coordinate>
   </TTerminal>
   <TTerminal>
 	<Name>Terminal2</Name>
-  <Coordinate>5 0 -5</Coordinate>
+  <Coordinate>10 3.1 -5</Coordinate>
   </TTerminal>
   <TTerminal>
   <Name>Terminal3</Name>
-  <Coordinate>-2 0 -5</Coordinate>
+  <Coordinate>-5 3.1 -15</Coordinate>
   </TTerminal>
   <TTerminal>
   <Name>Terminal4</Name>
-  <Coordinate>-5 0 -5</Coordinate>
+  <Coordinate>-10 3.1 -5</Coordinate>
   </TTerminal>
   <TSmartSocket>
 	<Name>SmartSocket1</Name>
@@ -28,10 +28,18 @@
   </TSmartSocket>
   <TTable>
 	<Name>Table1</Name>
-  <Coordinate>3 0 -5</Coordinate>
+  <Coordinate>10 0 -5</Coordinate>
   </TTable>
-  <!-- <TTable>
+  <TTable>
 	<Name>Table2</Name>
-  <Coordinate>-7 0 -5</Coordinate>
-  </TTable> -->
+  <Coordinate>-10 0 -5</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table3</Name>
+  <Coordinate>-5 0 -15</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table4</Name>
+  <Coordinate>5 0 -15</Coordinate>
+  </TTable>
 </config>
