@@ -22,7 +22,7 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
 }
 
 void FirstPersonView::cameraMovement(float dt) {
-    GLfloat cameraSpeed = 2.5f * dt;
+    GLfloat cameraSpeed = 12.0f * dt;
 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
 	if (keys[GLFW_KEY_W])

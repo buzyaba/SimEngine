@@ -75,13 +75,16 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-  float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
 #ifdef USE_OpenGL
   start = std::chrono::steady_clock::now();
+  auto lastFrame = glfwGetTime();
   while ((end - start) < delta) {
+    auto currentFrame = glfwGetTime();
+    auto dt = currentFrame - lastFrame;
     window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     this->DrawElements(); });
+    lastFrame = currentFrame;
     end = std::chrono::steady_clock::now();
   }
 #endif
