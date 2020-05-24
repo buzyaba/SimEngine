@@ -58,7 +58,8 @@ class TObject: public IObject {
     virtual ~TObject() 
     {
 #ifdef USE_OpenGL
-      delete rigidBody;
+        if (rigidBody)
+            delete rigidBody;
 #endif
     }
     // Logic

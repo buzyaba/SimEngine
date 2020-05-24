@@ -258,15 +258,15 @@ public:
         things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
         int IsNotGo = int(packetVal[0]);
 
-        // if (IsNotGo == 1)
-          // things[i]->SetProperty({ 2 }, "Color");
-        // else
-          // things[i]->SetProperty({ 0 }, "Color");
+         if (IsNotGo == 1)
+             things[i]->SetProperty({ {"Color", 2} }, "Color");
+         else
+           things[i]->SetProperty({ {"Color", 0} }, "Color");
       }
     }
 
     for (int i = 0; i < things.size(); i++) {
-      // things[i]->SetProperty({ carCount }, "NumberOfStandingCars");
+       things[i]->SetProperty({ {"NumberOfStandingCars", carCount} }, "NumberOfStandingCars");
   }
 };
 

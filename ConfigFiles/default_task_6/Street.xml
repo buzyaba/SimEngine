@@ -103,4 +103,8 @@
         <Name>Road1</Name>
         <Coordinate>0 0.5 480</Coordinate>
     </TCarCreator>
+    <TTrafficLight>
+        <Name>TrafficLight1</Name>
+        <Object>Road13</Object>
+    </TTrafficLight>
 </config>

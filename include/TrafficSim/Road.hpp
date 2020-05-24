@@ -4,7 +4,7 @@
 #include "BasicExamples/common.h"
 
 class TRoad: public TObjectOfObservation {
- protected:
+protected:
     unsigned long int oldGoTime;
     std::vector <TRoad*> roadNeighboring;
     static std::vector<TRoad*> allRoads;

@@ -11,6 +11,7 @@
 #include "TrafficSim/Street.hpp"
 #include "TrafficSim/Road.hpp"
 #include "TrafficSim/Car.hpp"
+#include "TrafficSim/TrafficLight.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -83,6 +84,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
     LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
+  LocalThing.push_back(new TTrafficLight("TrafficLight"));
   std::vector<TSmartThing*>* sts = GlobalParameters.problemManager.GetSmartThing();
   if (sos != NULL)
   {

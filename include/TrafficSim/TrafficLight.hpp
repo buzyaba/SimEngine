@@ -7,8 +7,8 @@
 class TTrafficLight : public TSmartThing
 {
 public:
-    TTrafficLight(std::string _name = "", TObjectOfObservation* _blockedRoad=nullptr) :
-        TSmartThing(_name, { new TMachineNumberSensor(_name + "MachineNumberSensor") }, { new TBarrage(_name + "Barrage", _blockedRoad) }) {
+    TTrafficLight(std::string _name = "") :
+        TSmartThing(_name, { new TMachineNumberSensor(_name + "MachineNumberSensor") }, { new TBarrage(_name + "Barrage") }) {
         properties.insert({ "NumberOfStandingCars", new TProperties(std::map<std::string, double>{ {"NumberOfStandingCars", 0}}, true, "NumberOfStandingCars") });
         properties.insert({ "Color", new TProperties(std::map<std::string, double>{ {"Color", 0}, }, true, "Color") });
     }

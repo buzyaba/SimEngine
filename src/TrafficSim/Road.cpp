@@ -22,6 +22,7 @@ TRoad::TRoad(std::string _name
 	oldGoTime = currentStep;
 #ifdef USE_OpenGL
 	otherTextures.insert({ "road", Renderer::getTextures()[ROAD] });
+	otherTextures.insert({ "car", Renderer::getTextures()[CAR] });
 
 	btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(_pos.x, _pos.y, _pos.z)));
 
@@ -42,10 +43,15 @@ TRoad::TRoad(std::string _name
 
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
 
-	transforms.resize(1);
+	transforms.resize(2);
 
 	transforms[0].setPosition(_pos);
 	transforms[0].setScale(_scale);
+
+	transforms[1].setPosition(_pos+glm::vec3{ 0, 0.1, 0 });
+	transforms[1].setScale(glm::vec3{5, 5, 10});
+
+
 
 	if (allRoads.size() == 0) {
 		allRoads.push_back(this);
@@ -72,12 +78,16 @@ void TRoad::setPosition(const glm::vec3& pos) {
 	TObjectOfObservation::setPosition(pos);
 
 	transforms[0].setPosition(pos);
+	transforms[1].setPosition({ 0, 0.1, 0 });
+	transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
 }
 
 void TRoad::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
 	TObjectOfObservation::setRotation(yaw, pitch, roll);
 
 	transforms[0].setRotation(yaw, pitch, roll);
+	transforms[1].setPosition({ 0, 0.1, 0 });
+	transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
 }
 #endif
 
@@ -117,16 +127,6 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
 	glBindVertexArray(0);
 	delete[] modelMatrixes;
 
-	/*std::vector<TObject*> cars;
-	for (auto& obj : objects) {
-		auto _obs = dynamic_cast<TRoad*>(obj);
-		auto child = _obs->GetChildObject();
-		if (child.size() != 0)
-			if (child[0] != nullptr) {
-				cars.push_back(child[0]);
-			}
-	}
-	cars[0]->initDraw(cars);*/
 #endif
 }
 
@@ -151,16 +151,24 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 	glBindVertexArray(0);
 	delete[] modelMatrixes;
 
-	/*std::vector<TObject*> cars;
-	for (auto& obj : objects) {
-		auto _obs = dynamic_cast<TRoad*>(obj);
-		auto child = _obs->GetChildObject();
-		if (child.size() != 0)
-			if (child[0] != nullptr) {
-				cars.push_back(child[0]);
-			}
+	for (auto&& obj : objects) {
+		if (obj->GetProperty("IsBusy").GetValue("IsBusy")) {
+			GLuint vao = meshes->getMesh(kCube)->getVAO();
+			glUseProgram(shaderProgramUnique);
+			glBindVertexArray(vao);
+			glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() *
+				Renderer::getCamera()->getViewMatrix();
+			GLint vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
+			glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+			std::vector<glm::mat4> vec = obj->getModelMatrixes();
+			GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
+			glBindTexture(GL_TEXTURE_2D, obj->getTexture("car"));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE,
+				glm::value_ptr(vec[1]));
+			glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+				GL_UNSIGNED_INT, 0);
+		}
 	}
-	cars[0]->drawElements(cars);*/
 #endif
 }
 
@@ -314,9 +322,9 @@ void TCarCreator::Update()
 		child = this->childObjects[0];
 	if ((child == nullptr) && (properties["IsCreat"]->GetValues()["IsCreat"] == 1))
 	{
-		/*TCar* car = new TCar("Car");
+		TCar* car = new TCar("Car");
 		car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
-		this->AddChildObject(*car);*/
+		this->AddChildObject(*car);
 	}
 }
 

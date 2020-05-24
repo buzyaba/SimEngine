@@ -5,24 +5,20 @@
 class TBarrage : public TActuator
 {
 protected:
-    TObjectOfObservation* blockedRoad;
 public:
-    TBarrage(std::string _name, TObjectOfObservation* _br) : TActuator(_name) {
-        if (_br != nullptr) {
-            blockedRoad = _br;
-        }
-        else {
-            throw - 1;
-        }
+    TBarrage(std::string _name) : TActuator(_name) {
+        //if (_br != nullptr) {
+        //    blockedRoad = _br;
+        //}
     }
 
     virtual void SetDataPacket(TDataPacket& packet)
     {
-        if (blockedRoad != nullptr) {
+        if (objects.size()) {
             if (packet.GetDoubles()[0] == 0)
-                blockedRoad->SetProperty({{"IsBlockieren", 0}}, "IsBlockieren");
+                objects[0]->SetProperty({{"IsBblockieren", 0}}, "IsBblockieren");
             else
-                blockedRoad->SetProperty({{"IsBlockieren", 1}}, "IsBlockieren");
+                objects[0]->SetProperty({{"IsBblockieren", 1}}, "IsBblockieren");
         }
     }
 };
