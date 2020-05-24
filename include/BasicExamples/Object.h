@@ -2,6 +2,7 @@
 #include "BasicExamples/Properties.h"
 #ifdef USE_OpenGL
 #include <Engine/Transform.hpp>
+#include <Engine/Renderer.hpp>
 #include <Engine/MeshRenderer.hpp>
 #endif
 #include <map>

@@ -7,6 +7,7 @@ class TRoad: public TObjectOfObservation {
  protected:
     unsigned long int oldGoTime;
     std::vector <TRoad*> roadNeighboring;
+    static std::vector<TRoad*> allRoads;
     bool isCanGo;
     //GL
     static unsigned int meshBuffer;

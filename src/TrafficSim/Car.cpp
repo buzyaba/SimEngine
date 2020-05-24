@@ -1,4 +1,5 @@
 #include <TrafficSim/Car.hpp>
+#include <random>
 #ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
 #endif
@@ -32,8 +33,6 @@ TCar::TCar(std::string _name
 	rigidBody->setRestitution(1.0f);
 	rigidBody->setFriction(0.0f);
 
-	rigidBody->setCollisionFlags(btCollisionObject::CF_STATIC_OBJECT);
-
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
 
 	transforms.resize(1);
@@ -47,7 +46,9 @@ void TCar::Update()
 {
 	TObjectOfObservation::Update();
 	auto&& val = this->properties["WayIndex"]->GetValues();
-	val["WayIndex"] = rand() % 100;//rand() % static_cast<int>(this->properties["WayIndexCount"]->GetValues()["WayIndexCount"]);
+	std::default_random_engine generator;
+	std::poisson_distribution<int> poisson;
+	val["WayIndex"] = poisson(generator) % static_cast<int>(this->properties["WayIndexCount"]->GetValues()["WayIndexCount"]);
 	this->properties["WayIndex"]->SetValues(val);
 }
 
@@ -88,7 +89,7 @@ void TCar::initDraw(const std::vector<TObject*>& objects) {
 	glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
 	for (int i = 0; i < objects.size(); ++i) {
 		std::vector<glm::mat4> mat = objects[i]->getModelMatrixes();
-		modelMatrixes[i] = mat[i];
+		modelMatrixes[i] = mat[0];
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, TCar::meshBuffer);
@@ -119,7 +120,7 @@ void TCar::drawElements(const std::vector<TObject*>& objects) {
 	glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
 	for (int i = 0; i < objects.size(); ++i) {
 		std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
-		modelMatrixes[i] = vec[i];
+		modelMatrixes[i] = vec[0];
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, TCar::meshBuffer);
 	glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);

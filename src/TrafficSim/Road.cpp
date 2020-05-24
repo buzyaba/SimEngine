@@ -5,6 +5,7 @@
 #endif
 
 std::uint32_t TRoad::meshBuffer = -1;
+std::vector<TRoad*> TRoad::allRoads = {};
 
 TRoad::TRoad(std::string _name
 #ifdef USE_OpenGL
@@ -45,6 +46,14 @@ TRoad::TRoad(std::string _name
 
 	transforms[0].setPosition(_pos);
 	transforms[0].setScale(_scale);
+
+	if (allRoads.size() == 0) {
+		allRoads.push_back(this);
+	}
+	else {
+		AddNeighboringObject(*allRoads.back());
+		allRoads.push_back(this);
+	}
 #endif
 }
 
@@ -85,7 +94,7 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
 	glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
 	for (int i = 0; i < objects.size(); ++i) {
 		std::vector<glm::mat4> mat = objects[i]->getModelMatrixes();
-		modelMatrixes[i] = mat[i];
+		modelMatrixes[i] = mat[0];
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, TRoad::meshBuffer);
@@ -107,6 +116,17 @@ void TRoad::initDraw(const std::vector<TObject*>& objects) {
 	glVertexAttribDivisor(6, 1);
 	glBindVertexArray(0);
 	delete[] modelMatrixes;
+
+	/*std::vector<TObject*> cars;
+	for (auto& obj : objects) {
+		auto _obs = dynamic_cast<TRoad*>(obj);
+		auto child = _obs->GetChildObject();
+		if (child.size() != 0)
+			if (child[0] != nullptr) {
+				cars.push_back(child[0]);
+			}
+	}
+	cars[0]->initDraw(cars);*/
 #endif
 }
 
@@ -116,7 +136,7 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 	glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()];
 	for (int i = 0; i < objects.size(); ++i) {
 		std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
-		modelMatrixes[i] = vec[i];
+		modelMatrixes[i] = vec[0];
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, TRoad::meshBuffer);
 	glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
@@ -130,6 +150,17 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 	glDrawElementsInstanced(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(), GL_UNSIGNED_INT, 0, (int)objects.size() * 3);
 	glBindVertexArray(0);
 	delete[] modelMatrixes;
+
+	/*std::vector<TObject*> cars;
+	for (auto& obj : objects) {
+		auto _obs = dynamic_cast<TRoad*>(obj);
+		auto child = _obs->GetChildObject();
+		if (child.size() != 0)
+			if (child[0] != nullptr) {
+				cars.push_back(child[0]);
+			}
+	}
+	cars[0]->drawElements(cars);*/
 #endif
 }
 
@@ -283,9 +314,9 @@ void TCarCreator::Update()
 		child = this->childObjects[0];
 	if ((child == nullptr) && (properties["IsCreat"]->GetValues()["IsCreat"] == 1))
 	{
-		TCar* car = new TCar("Car");
+		/*TCar* car = new TCar("Car");
 		car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
-		this->AddChildObject(*car);
+		this->AddChildObject(*car);*/
 	}
 }
 

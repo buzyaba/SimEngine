@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-  <maxStep>1000</maxStep>
+  <maxStep>200</maxStep>
   <intervalCount>10</intervalCount>
   <time>0_15_50_80_100_110_130_140_150_175_200</time>
 </config>
