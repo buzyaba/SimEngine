@@ -1,5 +1,6 @@
 #include <TrafficSim/Road.hpp>
 #include <TrafficSim/Car.hpp>
+#include <iostream>
 #ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
 #endif
@@ -16,7 +17,7 @@ TRoad::TRoad(std::string _name
 	properties.insert({ "Coordinate", new TProperties(std::map<std::string, double>{ {"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate") });
 	properties.insert({ "Dimensions", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Dimensions"} });
 	properties.insert({ "IsBusy", new TProperties(std::map<std::string, double>{ {"IsBusy", 0}}, false, "IsBusy") });
-	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStangingCar") });
+	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStandingCar") });
 
 	isCanGo = true;
 	oldGoTime = currentStep;
@@ -175,13 +176,12 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 void TRoad::Update()
 {
 	TObjectOfObservation::Update();
-
 	Go();
 	auto&& isHaveStandingCar = properties["IsHaveStandingCar"]->GetValues();
 	if ((this->properties["IsBusy"]->GetValues()["IsBusy"] == 1) && !isCanGo)
-		isHaveStandingCar["IsBusy"] = 1;
+		isHaveStandingCar["IsHaveStandingCar"] = 1;
 	else
-		isHaveStandingCar["IsBusy"] = 0;
+		isHaveStandingCar["IsHaveStandingCar"] = 0;
 	this->properties["IsHaveStandingCar"]->SetValues(isHaveStandingCar);
 }
 

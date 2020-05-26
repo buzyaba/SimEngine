@@ -22,6 +22,5 @@ public:
     void initDraw(const std::vector<TObject*>& objects);
     virtual TObjectOfObservation* Clone() { return new TCar(); }
     virtual std::string ClassName() override { return "TCar"; }
-    // FIX THAT LATER
     virtual void Update() override;
 };
