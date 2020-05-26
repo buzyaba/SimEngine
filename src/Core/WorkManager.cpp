@@ -125,7 +125,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms.\n "<< 
   "Simulation time = \t" << static_cast<double>(parameters.maxStep * parameters.millisecondsInTimeStep) / 60000 <<" minutes\n" << std::endl;
 
-  storage->PrintToFile();
+  // storage->PrintToFile();
 
 #ifdef USE_OpenGL
   window->setCursor(true); // enable cursor

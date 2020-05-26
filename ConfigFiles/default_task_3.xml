@@ -8,6 +8,6 @@
 	<staticObjectDllsFile></staticObjectDllsFile>
 	<managementProgramDllFile></managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
-	<timeAcceleration>1</timeAcceleration>
+	<timeAcceleration>0</timeAcceleration>
 	<maxStep>200</maxStep>
 </config>

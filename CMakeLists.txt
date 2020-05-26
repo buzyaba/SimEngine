@@ -18,7 +18,7 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/DEB
 set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 
 option(BUILD_TESTS "Set ON to build tests" ON)
-option(BUILD_PLOTTER "Set ON to build plotter" OFF)
+option(BUILD_PLOTTER "Set ON to build plotter" ON)
 option(USE_OpenGL "Set ON to use OpenGL" ON)
 option(BUILD_DLL "Set ON to build Dll" OFF)
 

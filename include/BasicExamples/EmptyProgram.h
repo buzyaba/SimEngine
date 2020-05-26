@@ -51,16 +51,18 @@ protected:
     }
 
     xArray.clear();
-    xArray.resize(currentTime);
-    for (unsigned long int t = 0; t < currentTime; t++)
+    xArray.resize(currentStep + 1);
+    int i = 0;
+    unsigned long int timeStep = currentTime / currentStep;
+    for (unsigned long int t = 0; t < currentTime; t+=timeStep)
     {
-     xArray[t] = double(t);
+     xArray[i++] = double(t);
     }
 
     maxx = double(currentTime) + 1.0;
 
     double value;
-    for (size_t u = 0; u < table.size() - 1; u++)
+    for (size_t u = 0; u < table.size(); u++)
     {
      for (size_t i = 0; i < table[u].size() - 1; i++)
      {
@@ -177,15 +179,6 @@ public:
   virtual void Run()
   {
     TEmptyProgram::Run();
-
-    double value = 0;
-    double sum = 0;
-    size_t u = table.size() - 1;
-    for (size_t i = 0; i < table[u].size() - 1; i++)
-    {
-      value = atof(table[u][i + 1].c_str());
-      sum += value;
-    }
     /*
     std::string s = "curl -v -X POST -d \"{\\\"Power\\\": " +
       std::to_string(sum) +
@@ -209,7 +202,10 @@ public:
     }
 
     std::cout << "Power consumption = " << sum << std::endl;
-
+    if (sum > 50)
+      std::cout << "Electricity bill = " << sum * 6.45 <<" rub\n";
+    else 
+      std::cout << "Electricity bill = " << sum * 3.71 <<" rub\n";
     TEmptyProgram::End();
   }
 };

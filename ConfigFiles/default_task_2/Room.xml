@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <TRoom>
+	<Name>Room1</Name>
+  </TRoom>
+  <TTerminal>
+	<Name>Terminal1</Name>
+  <Coordinate>5 3.1 -15</Coordinate>
+  </TTerminal>
+  <TTerminal>
+	<Name>Terminal2</Name>
+  <Coordinate>10 3.1 -5</Coordinate>
+  </TTerminal>
+  <TTerminal>
+  <Name>Terminal3</Name>
+  <Coordinate>-5 3.1 -15</Coordinate>
+  </TTerminal>
+  <TTerminal>
+  <Name>Terminal4</Name>
+  <Coordinate>-10 3.1 -5</Coordinate>
+  </TTerminal>
+  <TSmartSocket>
+	<Name>SmartSocket1</Name>
+	<Object>Terminal1</Object>
+  <Object>Terminal2</Object>
+  <Object>Terminal3</Object>
+  <Object>Terminal4</Object>
+  </TSmartSocket>
+  <TTable>
+	<Name>Table1</Name>
+  <Coordinate>10 0 -5</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table2</Name>
+  <Coordinate>-10 0 -5</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table3</Name>
+  <Coordinate>-5 0 -15</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table4</Name>
+  <Coordinate>5 0 -15</Coordinate>
+  </TTable>
+</config>
