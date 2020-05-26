@@ -62,7 +62,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   time = (t * parameters.millisecondsInTimeStep) / 1000;
   currentTime = time;
   currentStep = t;
-  // TODO: FIX COMMENTED STUFF
+
   script->UpdateObjectsProperties(time);
   for (int i = 0; i < objects.size(); i++)
   {
