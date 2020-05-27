@@ -28,18 +28,61 @@
   </TSmartSocket>
   <TTable>
 	<Name>Table1</Name>
-  <Coordinate>10 0 -5</Coordinate>
+  <Coordinate>20 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table2</Name>
-  <Coordinate>-10 0 -5</Coordinate>
+  <Coordinate>-20 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table3</Name>
-  <Coordinate>-5 0 -15</Coordinate>
+  <Coordinate>-12 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table4</Name>
-  <Coordinate>5 0 -15</Coordinate>
+  <Coordinate>12 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+  <Name>Table5</Name>
+  <Coordinate>-4 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table6</Name>
+  <Coordinate>4 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+  <Name>Table7</Name>
+  <Coordinate>23 0 16</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table8</Name>
+  <Coordinate>23 0 8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table9</Name>
+  <Coordinate>23 0 0</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table10</Name>
+  <Coordinate>23 0 -8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table11</Name>
+  <Coordinate>-23 0 -8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table12</Name>
+  <Coordinate>-23 0 0</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table13</Name>
+  <Coordinate>-6 0 16</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
   </TTable>
 </config>

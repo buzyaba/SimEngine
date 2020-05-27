@@ -11,7 +11,7 @@ TRoom::TRoom(std::string _name
   properties.insert({std::string("Dimensions"),
                      new TProperties(
                          std::map<std::string, double>{
-                             {"Width", 20}, {"Length", 20}, {"Height", 20}},
+                             {"Width", 15}, {"Length", 15}, {"Height", 15}},
                          false, "Dimensions")});
   // GL
 #ifdef USE_OpenGL
@@ -47,17 +47,17 @@ TRoom::TRoom(std::string _name
   transforms[0].setScale(scale);
 
   transforms[1].setPosition(pos + glm::vec3(0.0f, -0.1f, 0.0f)); // floor
-  transforms[1].setScale(glm::vec3(30.0f, 0.1f, 30.0f) * scale);
+  transforms[1].setScale(glm::vec3(25.0f, 0.1f, 20.0f) * scale);
   transforms[2].setPosition(pos + glm::vec3(0.0f, 10.0f, 0.0f)); // ceiling
-  transforms[2].setScale(glm::vec3(30.0f, 0.1f, 30.0f) * scale);
-  transforms[3].setPosition(pos + glm::vec3(30.0f, 5.0f, 0.0f)); // rightWall
-  transforms[3].setScale(glm::vec3(0.1f, 5.0f, 30.0f) * scale);
-  transforms[4].setPosition(pos + glm::vec3(-30.0f, 5.0f, 0.0f)); // leftWall
-  transforms[4].setScale(glm::vec3(0.1f, 5.0f, 30.0f) * scale);
-  transforms[5].setPosition(pos + glm::vec3(0.0f, 5.0f, -30.0f)); // frontWall
-  transforms[5].setScale(glm::vec3(30.0f, 5.0f, 0.1f) * scale);
-  transforms[6].setPosition(pos + glm::vec3(0.0f, 5.0f, 30.0f)); // backWall
-  transforms[6].setScale(glm::vec3(30.0f, 5.0f, 0.1f) * scale);
+  transforms[2].setScale(glm::vec3(25.0f, 0.1f, 20.0f) * scale);
+  transforms[3].setPosition(pos + glm::vec3(25.0f, 5.0f, 0.0f)); // rightWall
+  transforms[3].setScale(glm::vec3(0.1f, 5.0f, 20.0f) * scale);
+  transforms[4].setPosition(pos + glm::vec3(-25.0f, 5.0f, 0.0f)); // leftWall
+  transforms[4].setScale(glm::vec3(0.1f, 5.0f, 20.0f) * scale);
+  transforms[5].setPosition(pos + glm::vec3(0.0f, 5.0f, -20.0f)); // frontWall
+  transforms[5].setScale(glm::vec3(25.0f, 5.0f, 0.1f) * scale);
+  transforms[6].setPosition(pos + glm::vec3(0.0f, 5.0f, 20.0f)); // backWall
+  transforms[6].setScale(glm::vec3(25.0f, 5.0f, 0.1f) * scale);
 #endif
 }
 

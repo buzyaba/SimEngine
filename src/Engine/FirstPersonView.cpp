@@ -8,7 +8,7 @@ static GLfloat pitch;
 
 FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
                                  const std::string winName, bool _visible): WindowManager(screenWidth, screenHeight, winName, _visible) {
-    Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(0.0f, 5.0f, 8.0f), 
+    Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(-15.0f, 5.0f, 11.0f), 
                         glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     
     lastX = screenWidth/2;
@@ -16,7 +16,7 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
     yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
     pitch =   0.0f;
 
-	// setCursor(false);
+	  setCursor(false);
     glfwSetKeyCallback(window, updateKeyboard); // keyboard events
     glfwSetCursorPosCallback(window, updateMouse); // mouse events
 }

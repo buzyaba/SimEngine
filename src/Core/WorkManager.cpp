@@ -78,7 +78,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
 #ifdef USE_OpenGL
   start = std::chrono::steady_clock::now();
   auto lastFrame = glfwGetTime();
-  while ((end - start) < delta) {
+  do {
     auto currentFrame = glfwGetTime();
     auto dt = currentFrame - lastFrame;
     window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -86,7 +86,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
     this->DrawElements(); });
     lastFrame = currentFrame;
     end = std::chrono::steady_clock::now();
-  }
+  } while((end - start) < delta);
 #endif
   if (_enableVisualisation == 0)
     std::this_thread::sleep_for(delta);
@@ -109,7 +109,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 #endif
 
   time = 0;
-  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
+   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
 #ifdef USE_OpenGL
   for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
 #else

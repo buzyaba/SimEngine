@@ -12,6 +12,13 @@ TTable::TTable(std::string _name
 ) : TStaticObject(_name) {
     properties.insert({std::string("Coordinate"), new TProperties(std::map<std::string, double>{
         {"X", 0 }, {"Y", 0 }, {"Z", 0 } }, false, "Coordinate")});
+    properties.insert({std::string("Rotate"), new TProperties(std::map<std::string, double>{
+        {"Yaw", 0 }, {"Pitch", 0 }, {"Roll", 0 } }, false, "Rotate")});
+    properties.insert({std::string("Dimensions"),
+                     new TProperties(
+                         std::map<std::string, double>{
+                             {"Width", 1}, {"Length", 1}, {"Height", 1}},
+                         false, "Dimensions")});
     //GL
 #ifdef USE_OpenGL
     if (mainTexture == -1)
@@ -118,39 +125,44 @@ void TTable::setRotation(const btScalar& yaw, const btScalar& pitch, const btSca
 
 void TTable::initDraw(const std::vector<TObject*>& objects) {
 #ifdef USE_OpenGL
-    for(auto& elem : objects )
+    for(auto& elem : objects ) {
+        elem->setRotation(elem->GetProperty("Rotate").GetValues()["Yaw"], 
+                  elem->GetProperty("Rotate").GetValues()["Pitch"],
+                  elem->GetProperty("Rotate").GetValues()["Roll"]);
         elem->setPosition({ elem->GetProperty("Coordinate").GetValues()["X"], 
                   elem->GetProperty("Coordinate").GetValues()["Y"],
                   elem->GetProperty("Coordinate").GetValues()["Z"] });
-    initBuffer();
-
-    glUseProgram(shaderProgramInstanced);
-    glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*5];
-    for (int i = 0; i < objects.size(); ++i) {
-        std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
-        for (size_t j = 1; j < 6; ++j) {
-            modelMatrixes[i*5 + j-1] = vec[j];
-        }
+        
     }
-    glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
-    glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 5, &modelMatrixes[0], GL_STATIC_DRAW);   
-    GLuint vao = meshes->getMesh(kCube)->getVAO();
-    glBindVertexArray(vao);
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-    glEnableVertexAttribArray(5);
-    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-    glEnableVertexAttribArray(6);
-    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+    // initBuffer();
 
-    glVertexAttribDivisor(3, 1);
-    glVertexAttribDivisor(4, 1);
-    glVertexAttribDivisor(5, 1);
-    glVertexAttribDivisor(6, 1);
-    glBindVertexArray(0);
-    delete[] modelMatrixes;    
+    // glUseProgram(shaderProgramInstanced);
+    // glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*5];
+    // for (int i = 0; i < objects.size(); ++i) {
+    //     std::vector<glm::mat4> vec = objects[i]->getModelMatrixes();
+    //     for (size_t j = 1; j < 6; ++j) {
+    //         modelMatrixes[i*5 + j-1] = vec[j];
+    //     }
+    // }
+    // glBindBuffer(GL_ARRAY_BUFFER, TTable::meshBuffer);
+    // glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 5, &modelMatrixes[0], GL_STATIC_DRAW);   
+    // GLuint vao = meshes->getMesh(kCube)->getVAO();
+    // glBindVertexArray(vao);
+    // glEnableVertexAttribArray(3);
+    // glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    // glEnableVertexAttribArray(4);
+    // glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    // glEnableVertexAttribArray(5);
+    // glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    // glEnableVertexAttribArray(6);
+    // glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+    // glVertexAttribDivisor(3, 1);
+    // glVertexAttribDivisor(4, 1);
+    // glVertexAttribDivisor(5, 1);
+    // glVertexAttribDivisor(6, 1);
+    // glBindVertexArray(0);
+    // delete[] modelMatrixes;    
 #endif
 }
 
