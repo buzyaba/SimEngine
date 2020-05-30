@@ -364,3 +364,79 @@ public:
         TEmptyProgram::End();
     }
 };
+
+class TStreetAutoProgram : public TEmptyProgram {
+    TDataPacket sendPacket;
+    int carThreshold;
+public:
+    TStreetAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+    {
+        tableHeader.push_back("carCount");
+        double* packetVal = sendPacket.GetDoubles();
+        packetVal[0] = 0;
+        carThreshold = 1;
+    }
+
+    virtual void Run()
+    {
+        TEmptyProgram::Run();
+
+        double carCount = 0;
+        if (sensors.size() > 0)
+        {
+            double* val = sensors[0]->GetDataPacket().GetDoubles();
+            int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
+            for (int j = 0; j < dataCount; j++)
+            {
+                carCount += val[j];
+            }
+            table[table.size() - 1].push_back(std::to_string(carCount));
+        }
+        //double* packetVal = sendPacket.GetDoubles();
+
+        ////bool isUpdate = false;
+
+        ////isUpdate = true;
+        ////if (carCount <= carThreshold)
+        ////    packetVal[0] = (int(packetVal[0]) + 1) % 2;
+        ////else
+        ////    packetVal[0] = 0;
+
+        //if (1)
+        //{
+        //    for (int i = 0; i < things.size(); i++)
+        //    {
+        //        things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
+        //        int IsNotGo = int(packetVal[0]);
+
+        //        if (IsNotGo == 1)
+        //            things[i]->SetProperty({ {"Color", 2} }, "Color");
+        //        else
+        //            things[i]->SetProperty({ {"Color", 0} }, "Color");
+        //    }
+        //}
+
+        for (int i = 0; i < things.size(); i++) {
+            things[i]->SetProperty({ {"NumberOfStandingCars", carCount} }, "NumberOfStandingCars");
+        }
+    };
+
+    virtual void End()
+    {
+        double value = 0;
+        double sum = 0;
+
+        for (int u = 0; u < table.size() - 1; u++)
+        {
+            for (int i = 0; i < table[u].size() - 1; i++)
+            {
+                value = atof(table[u][i + 1].c_str());
+                sum += value;
+            }
+        }
+
+        std::cout << "Car count = " << sum << std::endl;
+
+        TEmptyProgram::End();
+    }
+};

@@ -23,6 +23,8 @@ IManagementProgram* TProgramFactory::Create(int a, std::vector<TSmartThing*>& _t
             return new TStreetProgram(_things);
         if (a == 2)
             return new TStreetPeakProgram(_things);
+        if (a == 3)
+            return new TStreetAutoProgram(_things);
     }
   }
 }
