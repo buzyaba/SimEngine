@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-enum Textures {CAR, GRASS, ROAD, GRAY, BLACK, WINDOWS, SCREENSAVER, TABLE, WALL, FLOOR, CEILING, MONITOR};
+enum Textures {CAR, GRASS, ROAD, GRAY, BLACK, WINDOWS, SCREENSAVER, TABLE, WALL, FLOOR, CEILING, MONITOR, GREEN, RED};
 
 class Renderer {
     private:

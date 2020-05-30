@@ -21,14 +21,18 @@ TRoad::TRoad(std::string _name
 	properties.insert({ "Coordinate", new TProperties(std::map<std::string, double>{ {"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate") });
 	properties.insert({ "Dimensions", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Dimensions"} });
 	properties.insert({ "IsBusy", new TProperties(std::map<std::string, double>{ {"IsBusy", 0}}, false, "IsBusy") });
+	properties.insert({ "Blocking", new TProperties(std::map<std::string, double>{ {"Blocking", 0}}, false, "Blocking") });
 	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStandingCar") });
 
 	isCanGo = true;
-	blocking = false;
 	oldGoTime = currentStep;
 #ifdef USE_OpenGL
 	otherTextures.insert({ "road", Renderer::getTextures()[ROAD] });
 	otherTextures.insert({ "car", Renderer::getTextures()[CAR] });
+	otherTextures.insert({ "gray", Renderer::getTextures()[GRAY] });
+	otherTextures.insert({ "green", Renderer::getTextures()[GREEN]});
+	otherTextures.insert({ "red", Renderer::getTextures()[RED]});
+	otherTextures.insert({ "black", Renderer::getTextures()[BLACK]});
 
 	btDefaultMotionState* MotionState = new btDefaultMotionState(btTransform(btQuaternion(0.0f, 0.0f, 0.0f, 1.0f), btVector3(_pos.x, _pos.y, _pos.z)));
 
@@ -49,13 +53,25 @@ TRoad::TRoad(std::string _name
 
 	Renderer::getDynamicsWorld()->addRigidBody(rigidBody);
 
-	transforms.resize(2);
+	transforms.resize(6);
 
 	transforms[0].setPosition(_pos);
 	transforms[0].setScale(_scale);
 
-	transforms[1].setPosition(_pos+glm::vec3{ 0, 0.1, 0 });
-	transforms[1].setScale(glm::vec3{5, 5, 10});
+	transforms[1].setPosition(glm::vec3{ 0, 4, 0 });
+	transforms[1].setScale(glm::vec3{5, 4, 10});
+
+	transforms[2].setPosition(glm::vec3{ 9, 20, 10 });
+	transforms[2].setScale(glm::vec3{ 1, 20, 1 });
+
+	transforms[3].setPosition(glm::vec3{ 9, 40, 10 });
+	transforms[3].setScale(glm::vec3{ 3, 7, 3 });
+
+	transforms[4].setPosition(glm::vec3{ 9, 43, 13.5});
+	transforms[4].setScale(glm::vec3{ 2, 2, 2 });
+
+	transforms[5].setPosition(glm::vec3{ 9, 38, 13.5});
+	transforms[5].setScale(glm::vec3{ 2, 2, 2 });
 
 
 
@@ -84,16 +100,40 @@ void TRoad::setPosition(const glm::vec3& pos) {
 	TObjectOfObservation::setPosition(pos);
 
 	transforms[0].setPosition(pos);
-	transforms[1].setPosition({ 0, 0.1, 0 });
+	transforms[1].setPosition({ 0, 4, 0 });
 	transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+
+	transforms[2].setPosition(glm::vec3{ 9, 20, 10 });
+	transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+
+	transforms[3].setPosition(glm::vec3{ 9, 40, 10 });
+	transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+
+	transforms[4].setPosition(glm::vec3{ 9, 43, 13.5 });
+	transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
+
+	transforms[5].setPosition(glm::vec3{ 9, 38, 13.5 });
+	transforms[5].setModelMatrix(transforms[0].getModelMatrix() * transforms[5].getModelMatrix());
 }
 
 void TRoad::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
 	TObjectOfObservation::setRotation(yaw, pitch, roll);
 
 	transforms[0].setRotation(yaw, pitch, roll);
-	transforms[1].setPosition({ 0, 0.1, 0 });
+	transforms[1].setPosition({ 0, 4, 0 });
 	transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
+
+	transforms[2].setPosition(glm::vec3{ 9, 20, 10 });
+	transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
+
+	transforms[3].setPosition(glm::vec3{ 9, 40, 10 });
+	transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
+
+	transforms[4].setPosition(glm::vec3{ 9, 43, 13.5 });
+	transforms[4].setModelMatrix(transforms[0].getModelMatrix() * transforms[4].getModelMatrix());
+
+	transforms[5].setPosition(glm::vec3{ 9, 38, 13.5 });
+	transforms[5].setModelMatrix(transforms[0].getModelMatrix() * transforms[5].getModelMatrix());
 }
 #endif
 
@@ -145,7 +185,7 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 		modelMatrixes[i] = vec[0];
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, TRoad::meshBuffer);
-	glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4) * 3, &modelMatrixes[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (int)objects.size() * sizeof(glm::mat4), &modelMatrixes[0], GL_STATIC_DRAW);
 	GLuint vao = meshes->getMesh(kCube)->getVAO();
 	glBindTexture(GL_TEXTURE_2D, otherTextures["road"]);
 	glBindVertexArray(vao);
@@ -174,7 +214,50 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 			glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
 				GL_UNSIGNED_INT, 0);
 		}
+
+		if (obj->GetProperty("Blocking").GetValue("Blocking")) {
+			GLuint vaoKube = meshes->getMesh(kCube)->getVAO();
+			GLuint vaoSphere = meshes->getMesh(kSphere)->getVAO();
+			glUseProgram(shaderProgramUnique);
+			glBindVertexArray(vaoKube);
+			glm::mat4 vp = Renderer::getCamera()->getProjectionMatrix() *
+				Renderer::getCamera()->getViewMatrix();
+			GLint vpLoc = glGetUniformLocation(shaderProgramUnique, "vp");
+			glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(vp));
+			std::vector<glm::mat4> vec = obj->getModelMatrixes();
+			GLint modelLoc = glGetUniformLocation(shaderProgramUnique, "model");
+			glBindTexture(GL_TEXTURE_2D, obj->getTexture("gray"));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[2]));
+			glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+				GL_UNSIGNED_INT, 0);
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[3]));
+			glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
+				GL_UNSIGNED_INT, 0);
+			glBindVertexArray(vaoSphere);
+			if (obj->GetProperty("IsBblockieren").GetValue("IsBblockieren")) {
+				glBindTexture(GL_TEXTURE_2D, obj->getTexture("black"));
+				glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[5]));
+				glDrawElements(GL_TRIANGLES, meshes->getMesh(kSphere)->getIndices().size(),
+					GL_UNSIGNED_INT, 0);
+				glBindTexture(GL_TEXTURE_2D, obj->getTexture("red"));
+				glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[4]));
+				glDrawElements(GL_TRIANGLES, meshes->getMesh(kSphere)->getIndices().size(),
+					GL_UNSIGNED_INT, 0);
+			}
+			else {
+				glBindTexture(GL_TEXTURE_2D, obj->getTexture("black"));
+				glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[4]));
+				glDrawElements(GL_TRIANGLES, meshes->getMesh(kSphere)->getIndices().size(),
+					GL_UNSIGNED_INT, 0);
+				glBindTexture(GL_TEXTURE_2D, obj->getTexture("green"));
+				glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(vec[5]));
+				glDrawElements(GL_TRIANGLES, meshes->getMesh(kSphere)->getIndices().size(),
+					GL_UNSIGNED_INT, 0);
+			}
+
+		}
 	}
+	glBindVertexArray(0);
 #endif
 }
 

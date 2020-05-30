@@ -6,7 +6,6 @@
 class TRoad: public TObjectOfObservation {
 protected:
     unsigned long int oldGoTime;
-    bool blocking;
     std::vector <TRoad*> roadNeighboring;
     static std::vector<TRoad*> allRoads;
     bool isCanGo;
@@ -34,7 +33,6 @@ protected:
    virtual int AddChildObject(TObjectOfObservation& obect);
    virtual void ExcludeChildObject(TObjectOfObservation& obect);
    virtual void Go();
-   virtual void Block() {blocking = !blocking;}
    virtual bool IsCanGo();
    virtual void Update() override;
    std::vector<TRoad*> getAllRoads() const { return allRoads; }

@@ -3,5 +3,5 @@
   <maxStep>2000</maxStep>
   <intervalCount>10</intervalCount>
   <time>0_15_50_80_100_110_130_140_150_175_2000</time>
-  <Road13><IsBblockieren>1_1_1_1_1_1_1_1_1_1_0</IsBblockieren></Road13>
+  <Road13><IsBblockieren>1_1_1_1_1_1_1_1_1_0_0</IsBblockieren></Road13>
 </config>
