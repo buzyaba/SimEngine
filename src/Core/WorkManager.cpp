@@ -104,7 +104,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 #endif
 
   time = 0;
-  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
+  std::chrono::milliseconds delayTime(static_cast<unsigned long int>((double)parameters.millisecondsInTimeStep / parameters.timeAcceleration));
 #ifdef USE_OpenGL
   for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
 #else
