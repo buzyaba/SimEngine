@@ -1,6 +1,10 @@
 #include <TrafficSim/Road.hpp>
 #include <TrafficSim/Car.hpp>
+#include <random>
+#include <chrono>
 #include <iostream>
+#include <algorithm>
+#include <numeric>
 #ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
 #endif
@@ -20,6 +24,7 @@ TRoad::TRoad(std::string _name
 	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStandingCar") });
 
 	isCanGo = true;
+	blocking = false;
 	oldGoTime = currentStep;
 #ifdef USE_OpenGL
 	otherTextures.insert({ "road", Renderer::getTextures()[ROAD] });
@@ -176,13 +181,32 @@ void TRoad::drawElements(const std::vector<TObject*>& objects) {
 void TRoad::Update()
 {
 	TObjectOfObservation::Update();
+
 	Go();
+
 	auto&& isHaveStandingCar = properties["IsHaveStandingCar"]->GetValues();
+
 	if ((this->properties["IsBusy"]->GetValues()["IsBusy"] == 1) && !isCanGo)
 		isHaveStandingCar["IsHaveStandingCar"] = 1;
 	else
 		isHaveStandingCar["IsHaveStandingCar"] = 0;
+
 	this->properties["IsHaveStandingCar"]->SetValues(isHaveStandingCar);
+
+	auto blocked = properties["IsBblockieren"]->GetValue("IsBblockieren");
+	int sum = 0;
+	auto&& it = allRoads.rbegin();
+	if (blocked) {
+		for (; (*it) != this; ++it);
+		auto res = 
+			std::accumulate(allRoads.rbegin(), it, 0,
+				[&](auto a, auto b) {
+					return a + b->GetProperty("IsHaveStandingCar").GetValue("IsHaveStandingCar");
+				});
+		isHaveStandingCar = properties["IsHaveStandingCar"]->GetValues();
+		isHaveStandingCar["IsHaveStandingCar"] = res;
+		properties["IsHaveStandingCar"]->SetValues(isHaveStandingCar);
+	}
 }
 
 bool TRoad::IsCanGo()
@@ -318,13 +342,18 @@ void TCarCreator::Update()
 {
 	TRoad::Update();
 	TObjectOfObservation* child = nullptr;
+	std::default_random_engine generator;
+	generator.seed(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	std::poisson_distribution<int> poisson(100);
 	if (this->childObjects.size() > 0)
 		child = this->childObjects[0];
 	if ((child == nullptr) && (properties["IsCreat"]->GetValues()["IsCreat"] == 1))
-	{
-		TCar* car = new TCar("Car");
-		car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
-		this->AddChildObject(*car);
+	{	
+		if (poisson(generator)%100 > 85) {
+			TCar* car = new TCar("Car");
+			car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
+			this->AddChildObject(*car);
+		}
 	}
 }
 

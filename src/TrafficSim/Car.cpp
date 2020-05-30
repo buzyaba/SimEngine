@@ -1,5 +1,6 @@
 #include <TrafficSim/Car.hpp>
 #include <random>
+#include <chrono>
 #ifdef USE_OpenGL
 #include <Engine/Renderer.hpp>
 #endif
@@ -45,6 +46,7 @@ void TCar::Update()
 	TObjectOfObservation::Update();
 	auto&& val = this->properties["WayIndex"]->GetValues();
 	std::default_random_engine generator;
+	generator.seed(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 	std::poisson_distribution<int> poisson;
 	val["WayIndex"] = poisson(generator) % static_cast<int>(this->properties["WayIndexCount"]->GetValues()["WayIndexCount"]);
 	this->properties["WayIndex"]->SetValues(val);

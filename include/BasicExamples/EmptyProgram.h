@@ -230,6 +230,7 @@ public:
   virtual void Run()
   {
     TEmptyProgram::Run();
+
     double carCount = 0;
     if (sensors.size() > 0)
     {
