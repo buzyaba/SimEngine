@@ -432,7 +432,7 @@ void TCarCreator::Update()
 		child = this->childObjects[0];
 	if ((child == nullptr) && (properties["IsCreat"]->GetValues()["IsCreat"] == 1))
 	{	
-		if (poisson(generator)%100 > 50) {
+		if (poisson(generator)%100 == 0) {
 			TCar* car = new TCar("Car");
 			car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
 			this->AddChildObject(*car);

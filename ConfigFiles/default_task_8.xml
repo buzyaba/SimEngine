@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<type>1</type>
-	<xmlEnvironmentScriptName>default_task_6/conf.xml</xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile>default_task_6/Street.xml</xmlMainSetConfigurationFile>
+	<type>3</type>
+	<xmlEnvironmentScriptName>default_task_7/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>default_task_7/Street.xml</xmlMainSetConfigurationFile>
 	<objectOfObservationDllsFile></objectOfObservationDllsFile>
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>

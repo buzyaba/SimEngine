@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <TStreet>
+        <Name>Street1</Name>
+    </TStreet>
+    <TCarDestroyer>
+        <Name>Road25</Name>
+        <Coordinate>0 0.5 -480</Coordinate>
+    </TCarDestroyer>
+    <TRoad>
+        <Name>Road24</Name>
+        <Coordinate>0 0.5 -440</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road23</Name>
+        <Coordinate>0 0.5 -400</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road22</Name>
+        <Coordinate>0 0.5 -360</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road21</Name>
+        <Coordinate>0 0.5 -320</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road20</Name>
+        <Coordinate>0 0.5 -280</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road19</Name>
+        <Coordinate>0 0.5 -240</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road18</Name>
+        <Coordinate>0 0.5 -200</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road17</Name>
+        <Coordinate>0 0.5 -160</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road16</Name>
+        <Coordinate>0 0.5 -120</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road15</Name>
+        <Coordinate>0 0.5 -80</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road14</Name>
+        <Coordinate>-0 0.5 -40</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road13</Name>
+        <Coordinate>0 0.5 0</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road12</Name>
+        <Coordinate>-0 0.5 40</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road11</Name>
+        <Coordinate>0 0.5 80</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road10</Name>
+        <Coordinate>0 0.5 120</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road9</Name>
+        <Coordinate>0 0.5 160</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road8</Name>
+        <Coordinate>0 0.5 200</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road7</Name>
+        <Coordinate>0 0.5 240</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road6</Name>
+        <Coordinate>0 0.5 280</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road5</Name>
+        <Coordinate>0 0.5 320</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road4</Name>
+        <Coordinate>0 0.5 360</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road3</Name>
+        <Coordinate>0 0.5 400</Coordinate>
+    </TRoad>
+    <TRoad>
+        <Name>Road2</Name>
+        <Coordinate>0 0.5 440</Coordinate>
+    </TRoad>
+    <TCarCreator>
+        <Name>Road1</Name>
+        <Coordinate>0 0.5 480</Coordinate>
+    </TCarCreator>
+    <TTrafficLight>
+        <Name>TrafficLight1</Name>
+        <Object>Road13</Object>
+    </TTrafficLight>
+</config>

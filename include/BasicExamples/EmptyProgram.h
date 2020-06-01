@@ -219,12 +219,18 @@ public:
 class TStreetProgram : public TEmptyProgram
 {
   TDataPacket sendPacket;
+  int timeGreen;
+  int timeRed;
+  int waitingTime;
 public:
   TStreetProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
   {
     tableHeader.push_back("carCount");
     double* packetVal = sendPacket.GetDoubles();
     packetVal[0] = 0;
+    timeGreen = 30;
+    timeRed = 120;
+    waitingTime = 1;
   }
 
   virtual void Run()
@@ -242,28 +248,34 @@ public:
       }
       table[table.size() - 1].push_back(std::to_string(carCount));
     }
+
     double* packetVal = sendPacket.GetDoubles();
 
     bool isUpdate = false;
 
-    if (currentStep % 17 == 0)
-    {
-      isUpdate = true;
-      packetVal[0] = (int(packetVal[0]) + 1) % 2;
+    if (currentStep % waitingTime == 0) {
+        isUpdate = true;
+        packetVal[0] = (int(packetVal[0]) + 1) % 2;
+        if (packetVal[0]) {
+            waitingTime = timeRed;
+        }
+        else {
+            waitingTime = timeGreen;
+        }
     }
 
     if (isUpdate)
     {
-      for (int i = 0; i < things.size(); i++)
-      {
-        things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
-        int IsNotGo = int(packetVal[0]);
+        for (int i = 0; i < things.size(); i++)
+        {
+            things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
+            int IsNotGo = int(packetVal[0]);
 
-         if (IsNotGo == 1)
-             things[i]->SetProperty({ {"Color", 2} }, "Color");
-         else
-           things[i]->SetProperty({ {"Color", 0} }, "Color");
-      }
+            if (IsNotGo == 1)
+                things[i]->SetProperty({ {"Color", 2} }, "Color");
+            else
+                things[i]->SetProperty({ {"Color", 0} }, "Color");
+        }
     }
 
     for (int i = 0; i < things.size(); i++) {
@@ -293,12 +305,20 @@ public:
 
 class TStreetPeakProgram : public TEmptyProgram {
     TDataPacket sendPacket;
+    int peakTime;
+    int timeGreen;
+    int timeRed;
+    int waitingTime;
 public:
     TStreetPeakProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
     {
         tableHeader.push_back("carCount");
         double* packetVal = sendPacket.GetDoubles();
         packetVal[0] = 0;
+        peakTime = 10;
+        timeGreen = 30;
+        timeRed = 120;
+        waitingTime = 1;
     }
 
     virtual void Run()
@@ -316,14 +336,25 @@ public:
             }
             table[table.size() - 1].push_back(std::to_string(carCount));
         }
+
         double* packetVal = sendPacket.GetDoubles();
 
         bool isUpdate = false;
 
-        if (currentStep % 17 == 0)
+        if (currentStep % waitingTime == 0 || (currentStep / 60) % peakTime == 0 ||
+                                              (currentStep / 60) % (peakTime+8) == 0) 
         {
             isUpdate = true;
-            packetVal[0] = (int(packetVal[0]) + 1) % 2;
+            if ((currentStep / 60) % peakTime == 0 || (currentStep / 60) % (peakTime + 8) == 0)
+                packetVal[0] = 0;
+            else
+                packetVal[0] = (int(packetVal[0]) + 1) % 2;
+            if (packetVal[0]) {
+                waitingTime = timeRed;
+            }
+            else {
+                waitingTime = timeGreen;
+            }
         }
 
         if (isUpdate)
@@ -343,7 +374,7 @@ public:
         for (int i = 0; i < things.size(); i++) {
             things[i]->SetProperty({ {"NumberOfStandingCars", carCount} }, "NumberOfStandingCars");
         }
-    };
+    }
 
     virtual void End()
     {
@@ -368,13 +399,19 @@ public:
 class TStreetAutoProgram : public TEmptyProgram {
     TDataPacket sendPacket;
     int carThreshold;
+    int timeGreen;
+    int timeRed;
+    int waitingTime;
 public:
     TStreetAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
     {
         tableHeader.push_back("carCount");
         double* packetVal = sendPacket.GetDoubles();
         packetVal[0] = 0;
-        carThreshold = 1;
+        carThreshold = 10;
+        timeGreen = 30;
+        timeRed = 120;
+        waitingTime = 1;
     }
 
     virtual void Run()
@@ -392,29 +429,36 @@ public:
             }
             table[table.size() - 1].push_back(std::to_string(carCount));
         }
-        //double* packetVal = sendPacket.GetDoubles();
+        double* packetVal = sendPacket.GetDoubles();
 
-        ////bool isUpdate = false;
+        bool isUpdate = false;
 
-        ////isUpdate = true;
-        ////if (carCount <= carThreshold)
-        ////    packetVal[0] = (int(packetVal[0]) + 1) % 2;
-        ////else
-        ////    packetVal[0] = 0;
+        if (currentStep % waitingTime == 0 || carCount >= carThreshold) {
+            isUpdate = true;
+            if (carCount < carThreshold)
+                packetVal[0] = (int(packetVal[0]) + 1) % 2;
+            else
+                packetVal[0] = 0;
 
-        //if (1)
-        //{
-        //    for (int i = 0; i < things.size(); i++)
-        //    {
-        //        things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
-        //        int IsNotGo = int(packetVal[0]);
+            if (packetVal[0]) {
+                waitingTime = timeRed;
+            }
+            else {
+                waitingTime = timeGreen;
+            }
+        }
 
-        //        if (IsNotGo == 1)
-        //            things[i]->SetProperty({ {"Color", 2} }, "Color");
-        //        else
-        //            things[i]->SetProperty({ {"Color", 0} }, "Color");
-        //    }
-        //}
+        if (isUpdate)
+            for (int i = 0; i < things.size(); i++)
+            {
+                things[i]->GetActuators()[0]->SetDataPacket(sendPacket);
+                int IsNotGo = int(packetVal[0]);
+
+                if (IsNotGo == 1)
+                    things[i]->SetProperty({ {"Color", 2} }, "Color");
+                else
+                    things[i]->SetProperty({ {"Color", 0} }, "Color");
+            }
 
         for (int i = 0; i < things.size(); i++) {
             things[i]->SetProperty({ {"NumberOfStandingCars", carCount} }, "NumberOfStandingCars");
