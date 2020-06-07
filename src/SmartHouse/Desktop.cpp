@@ -185,7 +185,7 @@ void TDesktop::Update() {
     {
       std::map<std::string, double>& tmp = this->properties["PowerConsumption"]->GetValues();
     //   tmp["PowerConsumption"] += (double(rand()) / RAND_MAX) * (tmp["PowerConsumption"] * 0.05) - tmp["PowerConsumption"] * 0.025;
-      tmp["PowerConsumption"] = 0.001;
+      tmp["PowerConsumption"] = 0.00217;
       if (tmp["PowerConsumption"] <= 0)
         this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0 }});
     }

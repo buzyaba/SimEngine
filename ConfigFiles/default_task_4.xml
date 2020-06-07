@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName>default_task_3/conf.xml</xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile>default_task_3/Room.xml</xmlMainSetConfigurationFile>
+	<xmlEnvironmentScriptName>default_task_4/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>default_task_4/Room.xml</xmlMainSetConfigurationFile>
 	<objectOfObservationDllsFile></objectOfObservationDllsFile>
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>

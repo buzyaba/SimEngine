@@ -5,41 +5,136 @@
   </TRoom>
   <TTerminal>
 	<Name>Terminal1</Name>
-  <Coordinate>5 3.1 -15</Coordinate>
+  <Coordinate>-23 3.1 0</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
   </TTerminal>
   <TTerminal>
 	<Name>Terminal2</Name>
-  <Coordinate>10 3.1 -5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal3</Name>
-  <Coordinate>-5 3.1 -15</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal4</Name>
-  <Coordinate>-10 3.1 -5</Coordinate>
+  <Coordinate>-23 3.1 -8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
   </TTerminal>
   <TSmartSocket>
 	<Name>SmartSocket1</Name>
 	<Object>Terminal1</Object>
   <Object>Terminal2</Object>
+  </TSmartSocket>
+  <TDesktop>
+  <Name>Desktop1</Name>
+  <Coordinate>-19.5 3.1 -18</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal3</Name>
+  <Coordinate>-12 3.1 -18</Coordinate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop2</Name>
+  <Coordinate>-3.5 3.1 -18</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal4</Name>
+  <Coordinate>4 3.1 -18</Coordinate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop3</Name>
+  <Coordinate>12.5 3.1 -18</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal5</Name>
+  <Coordinate>20 3.1 -18</Coordinate>
+  </TTerminal>
+  <TSmartSocket>
+	<Name>SmartSocket2</Name>
+	<Object>Desktop1</Object>
   <Object>Terminal3</Object>
+  <Object>Desktop2</Object>
   <Object>Terminal4</Object>
+  <Object>Desktop3</Object>
+  <Object>Terminal5</Object>
+  </TSmartSocket>
+  <TDesktop>
+  <Name>Desktop4</Name>
+  <Coordinate>23 3.1 -7.5</Coordinate>
+  <Rotate>0 0 -0.247</Rotate>
+  </TDesktop>
+  <TTerminal>
+	<Name>Terminal6</Name>
+  <Coordinate>23 3.1 0</Coordinate>
+  <Rotate>0 0 -0.247</Rotate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop5</Name>
+  <Coordinate>23 3.1 8.5</Coordinate>
+  <Rotate>0 0 -0.247</Rotate>
+  </TDesktop>
+  <TTerminal>
+	<Name>Terminal7</Name>
+  <Coordinate>23 3.1 16</Coordinate>
+  <Rotate>0 0 -0.247</Rotate>
+  </TTerminal>
+  <TSmartSocket>
+	<Name>SmartSocket3</Name>
+	<Object>Desktop4</Object>
+  <Object>Terminal6</Object>
+  <Object>Desktop5</Object>
+  <Object>Terminal7</Object>
   </TSmartSocket>
   <TTable>
 	<Name>Table1</Name>
-  <Coordinate>10 0 -5</Coordinate>
+  <Coordinate>20 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table2</Name>
-  <Coordinate>-10 0 -5</Coordinate>
+  <Coordinate>-20 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table3</Name>
-  <Coordinate>-5 0 -15</Coordinate>
+  <Coordinate>-12 0 -18</Coordinate>
   </TTable>
   <TTable>
 	<Name>Table4</Name>
-  <Coordinate>5 0 -15</Coordinate>
+  <Coordinate>12 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+  <Name>Table5</Name>
+  <Coordinate>-4 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table6</Name>
+  <Coordinate>4 0 -18</Coordinate>
+  </TTable>
+  <TTable>
+  <Name>Table7</Name>
+  <Coordinate>23 0 16</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table8</Name>
+  <Coordinate>23 0 8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table9</Name>
+  <Coordinate>23 0 0</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table10</Name>
+  <Coordinate>23 0 -8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table11</Name>
+  <Coordinate>-23 0 -8</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table12</Name>
+  <Coordinate>-23 0 0</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table13</Name>
+  <Coordinate>-6 0 16</Coordinate>
+  <Rotate>0 0 0.247</Rotate>
   </TTable>
 </config>

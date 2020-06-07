@@ -11,10 +11,10 @@
 #include <fstream>
 #include <iostream>
 
-#ifdef USE_PLOTTER
+// #ifdef USE_PLOTTER
 #include "matplotlibcpp.h"
 namespace plt=matplotlibcpp;
-#endif
+// #endif
 
 class TEmptyProgram : public IManagementProgram
 {
@@ -176,15 +176,23 @@ public:
 
   }
 
+  void CreatePlot()
+  {
+// #ifdef USE_PLOTTER
+
+  int count = yArray.size();
+
+  for (int k = 0; k < count; k++)
+    plt::plot(xArray, yArray[k]);
+  plt::xlabel("Time (min)");
+  plt::ylabel("kWh");
+  plt::show();
+// #endif
+  }
+
   virtual void Run()
   {
     TEmptyProgram::Run();
-    /*
-    std::string s = "curl -v -X POST -d \"{\\\"Power\\\": " +
-      std::to_string(sum) +
-      " }\" http://localhost:8080/api/v1/FISKOaCIWwS5dlpZtL4c/telemetry --header \"Content-Type:application/json\"";
-    std::system(s.c_str());
-    */
   }
 
   virtual void End()
@@ -192,6 +200,9 @@ public:
     double value = 0;
     double sum = 0;
 
+    xArray.resize(table.size() - 1);
+    yArray.resize(1);
+    yArray[0].resize(table.size() - 1);
     for (size_t u = 0; u < table.size() - 1; u++)
     {
       for (size_t i = 0; i < table[u].size() - 1; i++)
@@ -199,6 +210,8 @@ public:
         value = atof(table[u][i + 1ull].c_str());
         sum += value;
       }
+      xArray[u] = u;
+      yArray[0][u] = sum;
     }
 
     std::cout << "Power consumption = " << sum << std::endl;
@@ -206,8 +219,99 @@ public:
       std::cout << "Electricity bill = " << sum * 6.45 <<" rub\n";
     else 
       std::cout << "Electricity bill = " << sum * 3.71 <<" rub\n";
-    TEmptyProgram::End();
+
+    //DELETE THIS AFTER ALL PLS
+    file = fopen((fileName + ".csv").c_str(), "w");
+
+    for (int j = 0; j < tableHeader.size(); j++)
+      fprintf(file, "%s;\t", tableHeader[j].c_str());
+    fprintf(file, "\n");
+
+    for (int i = 0; i < table.size(); i++)
+    {
+      for (int j = 0; j < table[i].size(); j++)
+        fprintf(file, "%s;", table[i][j].c_str());
+      fprintf(file, "\n");
+    }
+    fclose(file);
+    //ENDS HERE
+    // TEmptyProgram::End();
+    CreatePlot();
   }
+};
+
+class TRoomAutoProgram : public TEmptyProgram
+{
+public:
+  TRoomAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+  {
+    P = 100;
+  }
+
+  void CreatePlot()
+  {
+// #ifdef USE_PLOTTER
+
+  int count = yArray.size();
+
+  for (int k = 0; k < count; k++)
+    plt::plot(xArray, yArray[k]);
+  plt::xlabel("Time (min)");
+  plt::ylabel("kWh");
+  plt::show();
+// #endif
+  }
+
+  virtual void Run()
+  {
+    TEmptyProgram::Run();
+  }
+
+  virtual void End()
+  {
+    double value = 0;
+    double sum = 0;
+
+    xArray.resize(table.size() - 1);
+    yArray.resize(1);
+    yArray[0].resize(table.size() - 1);
+    for (size_t u = 0; u < table.size() - 1; u++)
+    {
+      for (size_t i = 0; i < table[u].size() - 1; i++)
+      {
+        value = atof(table[u][i + 1ull].c_str());
+        sum += value;
+      }
+      xArray[u] = u;
+      yArray[0][u] = sum;
+    }
+
+    std::cout << "Power consumption = " << sum << std::endl;
+    if (sum > P)
+      std::cout << "Electricity bill = " << sum * 6.45 <<" rub\n";
+    else 
+      std::cout << "Electricity bill = " << sum * 3.71 <<" rub\n";
+
+    //DELETE THIS AFTER ALL PLS
+    file = fopen((fileName + ".csv").c_str(), "w");
+
+    for (int j = 0; j < tableHeader.size(); j++)
+      fprintf(file, "%s;\t", tableHeader[j].c_str());
+    fprintf(file, "\n");
+
+    for (int i = 0; i < table.size(); i++)
+    {
+      for (int j = 0; j < table[i].size(); j++)
+        fprintf(file, "%s;", table[i][j].c_str());
+      fprintf(file, "\n");
+    }
+    fclose(file);
+    //ENDS HERE
+    // TEmptyProgram::End();
+    CreatePlot();
+  }
+  private: 
+    double P;
 };
 
 class TStreetProgram : public TEmptyProgram
