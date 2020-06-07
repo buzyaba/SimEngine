@@ -15,6 +15,8 @@ TTerminal::TTerminal(std::string _name
         {"PowerConsumption", 0}}, true, "PowerConsumption")});
     properties.insert({std::string("Coordinate"), new TProperties(std::map<std::string, double>{
         {"X", 0 }, {"Y", 0 }, {"Z", 0 } }, false, "Coordinate")});
+    properties.insert({std::string("Rotate"), new TProperties(std::map<std::string, double>{
+        {"Yaw", 0 }, {"Pitch", 0 }, {"Roll", 0 } }, false, "Rotate")});
     isWork = false;
     //GL
 #ifdef USE_OpenGL
@@ -52,7 +54,7 @@ TTerminal::TTerminal(std::string _name
     transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
     transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
     transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
-    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.095f));
     transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
@@ -73,7 +75,7 @@ void TTerminal::setScale(const glm::vec3& _size) {
     transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
     transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
     transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
-    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.095f));
     transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
@@ -85,7 +87,7 @@ void TTerminal::setPosition(const glm::vec3& pos) {
     transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
     transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
     transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
-    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.095f));
     transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
@@ -93,7 +95,7 @@ void TTerminal::setPosition(const glm::vec3& pos) {
     // transforms[1].setPosition(pos + glm::vec3(0.0f, 1.3f,0.0f));
     // transforms[2].setPosition(pos + glm::vec3(0.0f, 0.0f,0.0f));
     // transforms[3].setPosition(pos + glm::vec3(0.0f, 0.2f, 0.0f));
-    // transforms[4].setPosition(pos + glm::vec3(0.0f, 1.3f,0.091f));
+    // transforms[4].setPosition(pos + glm::vec3(0.0f, 1.3f,0.095f));
 }
 
 void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) {
@@ -102,7 +104,7 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
     transforms[1].setPosition(glm::vec3(0.0f, 1.3f,0.0f));
     transforms[2].setPosition(glm::vec3(0.0f, 0.0f,0.0f));
     transforms[3].setPosition(glm::vec3(0.0f, 0.2f, 0.0f));
-    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.091f));
+    transforms[4].setPosition(glm::vec3(0.0f, 1.3f,0.095f));
     transforms[1].setModelMatrix(transforms[0].getModelMatrix() * transforms[1].getModelMatrix());
     transforms[2].setModelMatrix(transforms[0].getModelMatrix() * transforms[2].getModelMatrix());
     transforms[3].setModelMatrix(transforms[0].getModelMatrix() * transforms[3].getModelMatrix());
@@ -117,10 +119,14 @@ void TTerminal::setRotation(const btScalar& yaw, const btScalar& pitch, const bt
 
 void TTerminal::initDraw(const std::vector<TObject*>& objects) {
 #ifdef USE_OpenGL
-    for(auto& elem : objects )
+    for(auto& elem : objects ) {
+        elem->setRotation(elem->GetProperty("Rotate").GetValues()["Yaw"], 
+                  elem->GetProperty("Rotate").GetValues()["Pitch"],
+                  elem->GetProperty("Rotate").GetValues()["Roll"]);
         elem->setPosition({ elem->GetProperty("Coordinate").GetValues()["X"], 
                   elem->GetProperty("Coordinate").GetValues()["Y"],
                   elem->GetProperty("Coordinate").GetValues()["Z"] });
+    }
     initBuffer();
 
     glUseProgram(shaderProgramInstanced);

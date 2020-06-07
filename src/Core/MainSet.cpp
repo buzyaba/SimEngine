@@ -7,6 +7,7 @@
 #endif
 #include "SmartHouse/Room.h"
 #include "SmartHouse/Table.h"
+#include "SmartHouse/Desktop.hpp"
 #include "SmartHouse/SmartSocket.h"
 #include "TrafficSim/Street.hpp"
 
@@ -73,6 +74,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
   }
 
   LocalObjects.push_back(new TTerminal("Terminal"));
+  LocalObjects.push_back(new TDesktop("Desktop"));
   std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
   for (auto& obj : oos)
     LocalObjects.push_back(obj);

@@ -200,5 +200,6 @@ void TTable::drawElements(const std::vector<TObject*>& objects) {
     glDrawElements(GL_TRIANGLES, meshes->getMesh(kCube)->getIndices().size(),
                    GL_UNSIGNED_INT, 0);
   }
+  glBindVertexArray(0);
 #endif
 }
