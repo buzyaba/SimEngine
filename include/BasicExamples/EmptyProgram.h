@@ -246,6 +246,8 @@ public:
   TRoomAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
   {
     P = 100;
+    dailyLimit = P / 30;
+    dailyPowerConsumption = 0;
   }
 
   void CreatePlot()
@@ -264,7 +266,25 @@ public:
 
   virtual void Run()
   {
-    TEmptyProgram::Run();
+    if ((currentTime % 86400) == 0)
+      dailyPowerConsumption = 0;
+    std::vector<std::string> str(1);
+    str[0] = std::to_string(currentTime);
+
+    for (int i = 0; i < sensors.size(); i++)
+    {
+      double* val = sensors[i]->GetDataPacket().GetDoubles();
+      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+      for (int j = 0; j < dataCount; j++)
+      {
+        if (dailyPowerConsumption > dailyLimit - 0.05)
+          str.push_back(std::to_string(0));
+        else 
+          str.push_back(std::to_string(val[j]));
+        dailyPowerConsumption += val[j];
+      }
+    }
+    table.push_back(str);
   }
 
   virtual void End()
@@ -312,6 +332,8 @@ public:
   }
   private: 
     double P;
+    double dailyPowerConsumption;
+    double dailyLimit;
 };
 
 class TStreetProgram : public TEmptyProgram

@@ -17,7 +17,10 @@ IManagementProgram* TProgramFactory::Create(int a, std::vector<TSmartThing*>& _t
   {
     isLoadInDLL = false;
     if (a <= 0)
-      return new TRoomProgram(_things);
+      if (a == -2)
+        return new TRoomAutoProgram(_things);
+      else
+        return new TRoomProgram(_things);
     else
       return new TStreetProgram(_things);
   }
