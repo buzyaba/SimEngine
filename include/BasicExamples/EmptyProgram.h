@@ -11,10 +11,10 @@
 #include <fstream>
 #include <iostream>
 
-// #ifdef USE_PLOTTER
+ #ifdef USE_PLOTTER
 #include "matplotlibcpp.h"
 namespace plt=matplotlibcpp;
-// #endif
+ #endif
 
 class TEmptyProgram : public IManagementProgram
 {
@@ -178,7 +178,7 @@ public:
 
   void CreatePlot()
   {
-// #ifdef USE_PLOTTER
+ #ifdef USE_PLOTTER
 
   int count = yArray.size();
 
@@ -187,7 +187,7 @@ public:
   plt::xlabel("Time (min)");
   plt::ylabel("kWh");
   plt::show();
-// #endif
+ #endif
   }
 
   virtual void Run()
@@ -252,7 +252,7 @@ public:
 
   void CreatePlot()
   {
-// #ifdef USE_PLOTTER
+ #ifdef USE_PLOTTER
 
   int count = yArray.size();
 
@@ -261,7 +261,7 @@ public:
   plt::xlabel("Time (min)");
   plt::ylabel("kWh");
   plt::show();
-// #endif
+ #endif
   }
 
   virtual void Run()
