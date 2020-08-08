@@ -27,17 +27,9 @@ TParameters GlobalParameters;
 
 void TParameters::DefaultParameters()
 {
-#ifdef USE_OpenGL
-  auto c_cwd = cwd;
-  std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
-  size_t i = c_cwd.find("SIMENGINE");
-  _window = new FirstPersonView(800, 600, "Smart House");;
-  xmlEnvironmentScriptName = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/conf.xml";
-  xmlMainSetConfigurationFile = cwd.substr(0, i + 9) + "/ConfigFiles/default_task_3/Room.xml";
-#else
+
   xmlEnvironmentScriptName = "";
   xmlMainSetConfigurationFile = "";
-#endif
 
   xmlCurrentConfiguration = "";
   //objectOfObservationDllsFile;
@@ -56,12 +48,13 @@ void TParameters::DefaultParameters()
 
 void TParameters::GenerateParameters()
 {
-#ifdef USE_OpenGL
-    if (type <= 0)
-        _window = new FirstPersonView(800, 600, "Smart House");
-    else
-        _window = new IsometricView(800, 600, "Traffic Simulator");
-#endif
+	// ATTENTION
+//#ifdef USE_OpenGL
+//    if (type <= 0)
+//        _window = new FirstPersonView(800, 600, "Smart House");
+//    else
+//        _window = new IsometricView(800, 600, "Traffic Simulator");
+//#endif
 }
 
 void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)

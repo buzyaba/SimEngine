@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.3)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set(SIMENGINE_PROJECT_NAME SimEngine)
 
@@ -71,7 +71,6 @@ if (${USE_OpenGL})
 	set(glew-cmake_BUILD_SINGLE_CONTEXT OFF)
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/bulletphys")
 	add_definitions(-DUSE_OpenGL)
 endif()
 
@@ -102,7 +101,6 @@ if (${USE_OpenGL})
 	include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
-	include_directories("${CMAKE_SOURCE_DIR}/lib/bulletphys/src")
 endif()
 
 include_directories("${CMAKE_SOURCE_DIR}/lib")
@@ -142,22 +140,11 @@ if (IS_MICROSOFT_COMPILER)
 	endif()
 	
 	if (${USE_OpenGL})
-		set_property(TARGET Bullet2FileLoader PROPERTY FOLDER "3rd-party")
-		set_property(TARGET Bullet3Collision PROPERTY FOLDER "3rd-party")
-		set_property(TARGET Bullet3Common PROPERTY FOLDER "3rd-party")
-		set_property(TARGET Bullet3Dynamics PROPERTY FOLDER "3rd-party") 
-		set_property(TARGET Bullet3Geometry PROPERTY FOLDER "3rd-party")
-		set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER "3rd-party")
-		set_property(TARGET BulletCollision PROPERTY FOLDER "3rd-party")
-		set_property(TARGET BulletDynamics PROPERTY FOLDER "3rd-party")  
-		set_property(TARGET BulletInverseDynamics PROPERTY FOLDER "3rd-party")
-		set_property(TARGET BulletSoftBody PROPERTY FOLDER "3rd-party")
-
 		#set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
 		set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
-		set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
+		# set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
 	endif()
 
 	if (${BUILD_PLOTTER})

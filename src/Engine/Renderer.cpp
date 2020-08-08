@@ -44,7 +44,7 @@ void Renderer::initTextures() {
     std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
     auto i = c_cwd.find("SIMENGINE");
     
-    textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/car.jpg"));
+    textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/car.png"));
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/grass.jpg"));
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/road.jpg"));
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/gray.jpg"));
@@ -56,4 +56,6 @@ void Renderer::initTextures() {
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/floor.jpg"));
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/ceiling.jpg"));
     textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/monitor.jpg"));
+textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/green.jpg"));
+    textures.emplace_back(tex.getTextureID(cwd.substr(0,i+9) + "/assets/textures/red.jpg"));
 }

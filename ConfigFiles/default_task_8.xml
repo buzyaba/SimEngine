@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<type>3</type>
+	<xmlEnvironmentScriptName>default_task_7/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>default_task_7/Street.xml</xmlMainSetConfigurationFile>
+	<objectOfObservationDllsFile></objectOfObservationDllsFile>
+	<smartThingDllsFile></smartThingDllsFile> 
+	<staticObjectDllsFile></staticObjectDllsFile>
+	<managementProgramDllFile></managementProgramDllFile>
+	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
+	<timeAcceleration>0</timeAcceleration>
+	<maxStep>1440</maxStep>
+</config>

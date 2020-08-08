@@ -2,13 +2,7 @@
 #include <Engine/Camera.hpp>
 #include <Engine/ShaderLoader.hpp>
 #include <Engine/TextureLoader.hpp>
-#include <btBulletDynamicsCommon.h>
 
-enum CollisionType{
-    STATIC=btCollisionObject::CF_STATIC_OBJECT, 
-    KINEMATIC=btCollisionObject::CF_KINEMATIC_OBJECT,
-    NO_RESPONSE=btCollisionObject::CF_NO_CONTACT_RESPONSE,
-};
 
 class Transform {
     private:
@@ -19,9 +13,6 @@ class Transform {
         explicit Transform();
         glm::mat4 getModelMatrix() {return modelMatrix;};
         void setModelMatrix(glm::mat4 _modelMatrix) { modelMatrix = _modelMatrix; }
-        void setPosition(const glm::vec3& _pos);
-        void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
-        void setScale(const glm::vec3& _scale);
         glm::vec3 getRotation() {return rotation;}
         glm::vec3 getPosition() { return pos; }
         glm::vec3 getScale() { return scale; }

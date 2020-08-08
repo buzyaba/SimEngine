@@ -6,10 +6,6 @@
 #include <algorithm>
 #include <vector>
 #include <string>
-#ifdef USE_OpenGL
-#include <Engine/FirstPersonView.hpp>
-#include <Engine/IsometricView.hpp>
-#endif
 #include "BasicExamples/common.h"
 #include "Core/Dll_manager.h"
 
@@ -29,10 +25,6 @@ protected:
   /// Разбиение строки на подстроки по пробелу
   void ParseString(std::string& str, std::vector<std::string>& tt);
 public:
-#ifdef USE_OpenGL
-  /// Окно для отрисовки 
-  WindowManager* _window;
-#endif
   /* тип задачи
   <= 0 - дефолтная задача
   > 0 - загрузка из xml файлов

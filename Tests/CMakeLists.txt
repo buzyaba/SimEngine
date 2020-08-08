@@ -11,14 +11,14 @@ set(TESTS_OUTPUT_DIRECTORY ${SIMENGINE_OUTPUT_DIRECTORY})
 
 
 file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
-file(GLOB ENG_FILES ${CMAKE_SOURCE_DIR}/src/Engine/*.cpp)
+# file(GLOB ENG_FILES ${CMAKE_SOURCE_DIR}/src/Engine/*.cpp)
 file(GLOB SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/*.cpp)
 list(REMOVE_ITEM SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/main.cpp)
 file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/*.cpp)
 list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/main.cpp)
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
-add_executable(${PROJECT_NAME_STR} ${SRC_FILES} ${ENG_FILES} ${SMART_HOUSE} ${TRAFFIC_SIM})
+add_executable(${PROJECT_NAME_STR} ${SRC_FILES} ${SMART_HOUSE} ${TRAFFIC_SIM})
 set_target_properties(${PROJECT_NAME_STR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TESTS_OUTPUT_DIRECTORY})
 target_link_libraries(${PROJECT_NAME_STR}
 						gtest
@@ -32,11 +32,9 @@ target_link_libraries(${PROJECT_NAME_STR}
 						
 if (${USE_OpenGL})
 	target_link_libraries(${PROJECT_NAME_STR}
-							Engine
-							libglewmx_static						
-							BulletDynamics
-							BulletCollision
-							LinearMath 
+							# Engine
+							libglewmx_static
+							# LinearMath 
 							glfw  ${OPENGL_LIBRARIES}
 	)
 endif()

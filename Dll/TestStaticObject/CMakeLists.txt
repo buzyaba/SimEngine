@@ -14,12 +14,10 @@ target_link_libraries(TestStaticObject
 						
 if (${USE_OpenGL})
 	target_link_libraries(TestStaticObject
-							Engine
+							# Engine
 							glfw 
-							libglewmx_static						
-							BulletDynamics
-							BulletCollision
-							LinearMath 
+							libglewmx_static
+							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)
 endif()
@@ -33,15 +31,4 @@ if (${BUILD_PLOTTER})
 endif()
 
 set_property(TARGET TestStaticObject PROPERTY FOLDER "DLLs") 						
-						
-#if (WIN32)
-#    target_link_libraries(TrafficSim 
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletDynamics_Debug.lib
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/BulletCollision_Debug.lib
-#        ${CMAKE_SOURCE_DIR}/build/lib/Debug/LinearMath_Debug.lib)
-#else ()
-#    target_link_libraries(TrafficSim 
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletDynamics/libBulletDynamics.a
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/BulletCollision/libBulletCollision.a
-#        ${CMAKE_SOURCE_DIR}/build/lib/bulletphys/src/LinearMath/libLinearMath.a)
-#endif(WIN32)
+		

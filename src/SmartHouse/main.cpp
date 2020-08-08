@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   try
   {
     workManager = new TWorkManager(GlobalParameters);
-    workManager->InitDraw();
+    // workManager->InitDraw();
   }
   catch (...)
   {
@@ -27,12 +27,7 @@ int main(int argc, char** argv) {
 
   try
   {
-    int _enableVisualisation = 1;
-#ifdef USE_OpenGL
-    _enableVisualisation = 1;
-#else
-    _enableVisualisation = 0;
-#endif
+    int _enableVisualisation = 0;
     workManager->Start(_enableVisualisation);
   }
   catch (...)

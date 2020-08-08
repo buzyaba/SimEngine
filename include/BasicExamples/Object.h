@@ -1,9 +1,5 @@
 ﻿#pragma once
 #include "BasicExamples/Properties.h"
-#ifdef USE_OpenGL
-#include <Engine/Transform.hpp>
-#include <Engine/MeshRenderer.hpp>
-#endif
 #include <map>
 
 /// Базовый класс реализующий объект имеющий набор свойств и имя.
@@ -32,20 +28,7 @@ public:
 
 /// Реализация базового объекта имеющего набор свойств и имя.
 class TObject: public IObject {
-  private:
-    static void initShader();
   protected:
-    // GL
-    virtual unsigned int getMeshBuffer() = 0;
-    virtual void initBuffer() = 0;
-#ifdef USE_OpenGL
-    static GLuint shaderProgramInstanced;
-    static GLuint shaderProgramUnique;
-    btRigidBody* rigidBody;
-    std::vector<Transform> transforms;
-    std::map<std::string, GLuint> otherTextures;
-    MeshContainer* meshes;
-#endif
     // Logic
     /// Имя объекта
     std::string name;
@@ -54,12 +37,7 @@ class TObject: public IObject {
   public:
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
-    virtual ~TObject() 
-    {
-#ifdef USE_OpenGL
-      delete rigidBody;
-#endif
-    }
+    virtual ~TObject() {}
     // Logic
     /// Задает значение свойства с именем равным property.name берет значения из property
     virtual void SetProperty(IProperties& property) override;
@@ -78,21 +56,4 @@ class TObject: public IObject {
     virtual std::string ClassName() = 0;
     // /// Создание клона объекта
     virtual IObject* Clone() = 0;
-    // GL
-#ifdef USE_OpenGL
-    virtual void setScale(const glm::vec3& _size) = 0;
-    virtual void setPosition(const glm::vec3& pos);
-    virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll);
-    void setCollisionFlags(const CollisionType& _flag);
-    glm::vec3 getPosition();
-    glm::vec3 getRotation();
-    glm::vec3 getScale() { return transforms[0].getScale(); }
-    btRigidBody* getRigidBody();
-    bool isStatic();
-    std::vector<glm::mat4> getModelMatrixes();
-    GLuint getTexture(std::string _name) { return otherTextures[_name]; }
-#endif
-
-    virtual void drawElements(const std::vector<TObject*>& objects) = 0;
-    virtual void initDraw(const std::vector<TObject*>& objects) = 0;
 };

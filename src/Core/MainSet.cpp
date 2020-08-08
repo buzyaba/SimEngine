@@ -2,14 +2,14 @@
 #include "Core/Parameters.h"
 
 #include "SmartHouse/Terminal.h"
-#ifdef USE_OpenGL
-#include <Engine/FirstPersonView.hpp>
-#endif
 #include "SmartHouse/Room.h"
 #include "SmartHouse/Table.h"
-#include "SmartHouse/Desktop.hpp"
 #include "SmartHouse/SmartSocket.h"
+#include "SmartHouse/Desktop.hpp"
 #include "TrafficSim/Street.hpp"
+#include "TrafficSim/Road.hpp"
+#include "TrafficSim/Car.hpp"
+#include "TrafficSim/TrafficLight.hpp"
 
 #include "../lib/pugixml/include/pugixml.hpp"
 
@@ -75,11 +75,15 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
 
   LocalObjects.push_back(new TTerminal("Terminal"));
   LocalObjects.push_back(new TDesktop("Desktop"));
+LocalObjects.push_back(new TRoad("Road"));
+  LocalObjects.push_back(new TCarCreator("CarCreator"));
+  LocalObjects.push_back(new TCarDestroyer("CarDestroyer"));
   std::vector<TObjectOfObservation*> oos = GlobalParameters.problemManager.GetObjectOfObservations();
   for (auto& obj : oos)
     LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
+LocalThing.push_back(new TTrafficLight("TrafficLight"));
   std::vector<TSmartThing*>* sts = GlobalParameters.problemManager.GetSmartThing();
   if (sos != NULL)
   {
@@ -113,6 +117,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
           SetProperty(newStaticObject, nameProperty, valueProperty);
         }
         staticObjects.push_back(newStaticObject);
+        // ATTENTION
         allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
       }
     }
@@ -131,6 +136,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile)
         }
 
         objects.push_back(newObject);
+        // ATTENTION
         allGObjects[newObject->ClassName()].push_back(newObject);
       }
     }
@@ -195,8 +201,8 @@ TRoomSet::TRoomSet() : TMainSet()
 
 TStreetSet::TStreetSet() : TMainSet()
 {
-    staticObjects.resize(1, new TStreet("Street"));
-    allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
+    // staticObjects.resize(1, new TStreet("Street"));
+    // allGObjects.insert(std::make_pair("Street", std::vector<TObject*>(1, staticObjects.back())));
 //   /// пока что заглушка
 //   objects.resize(5, nullptr);
 //   std::vector<double> coord(2, 100);

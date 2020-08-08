@@ -6,16 +6,10 @@
 #include "Core/ProgramFactory.h"
 
 #include "BasicExamples/common.h"
-#ifdef USE_OpenGL
-#include <Engine/FirstPersonView.hpp>
-#include <Engine/IsometricView.hpp>
-#endif
 
 TWorkManager::TWorkManager(TParameters& param) : parameters(param)
 {
-#ifdef USE_OpenGL
-  window = parameters._window;
-#endif
+
 
   currentTime = 0;
   currentStep = 0;
@@ -51,9 +45,7 @@ TWorkManager::TWorkManager(TParameters& param) : parameters(param)
 
 TWorkManager::~TWorkManager()
 {
-#ifdef USE_OpenGL
-  delete window;
-#endif
+
 }
 
 void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
@@ -75,19 +67,6 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-#ifdef USE_OpenGL
-  start = std::chrono::steady_clock::now();
-  auto lastFrame = glfwGetTime();
-  do {
-    auto currentFrame = glfwGetTime();
-    auto dt = currentFrame - lastFrame;
-    window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    this->DrawElements(); });
-    lastFrame = currentFrame;
-    end = std::chrono::steady_clock::now();
-  } while((end - start) < delta);
-#endif
   if (_enableVisualisation == 0)
     std::this_thread::sleep_for(delta);
 }
@@ -100,21 +79,11 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
   startWork = std::chrono::steady_clock::now();
 
-#ifdef USE_OpenGL
-  if (_enableVisualisation) {
-    window->setVisibility(true);
-  } else {
-    window->setVisibility(false);
-  }
-#endif
 
   time = 0;
    std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
-#ifdef USE_OpenGL
-  for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
-#else
+
   for (unsigned long int t = 0; t < parameters.maxStep; t++)
-#endif
   {
     Iteration(t, delayTime, _enableVisualisation);
   }
@@ -127,9 +96,6 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
   // storage->PrintToFile();
 
-#ifdef USE_OpenGL
-  window->setCursor(true); // enable cursor
-#endif
 
   program->End();
 }
@@ -145,16 +111,4 @@ void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds)
     parameters.millisecondsInTimeStep = _milliseconds;
   else
     parameters.millisecondsInTimeStep = 0;
-}
-
-void TWorkManager::InitDraw() {
-    for(const auto& elem : mainSet->GetAllGObjects()){
-        elem.second[0]->initDraw(elem.second);
-    }
-}
-
-void TWorkManager::DrawElements() {
-    for(const auto& elem : mainSet->GetAllGObjects()) {
-        elem.second[0]->drawElements(elem.second);
-    }
 }

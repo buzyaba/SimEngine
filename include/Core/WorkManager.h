@@ -17,18 +17,12 @@
 
 #include "BasicExamples/common.h"
 #include "Core/Parameters.h"
-#ifdef USE_OpenGL
-#include <Engine/WindowManager.hpp>
-#endif
+
 
 /// Класс 
 class TWorkManager
 {
 protected:
-#ifdef USE_OpenGL
-  /// Окно для отрисовки 
-  WindowManager* window;
-#endif
   /// Параметры работы программы
   TParameters& parameters;
 
@@ -56,8 +50,6 @@ protected:
 
   /// Итерация работы программы
   void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
-  /// Отрисовка всех элементов
-  void DrawElements();
 public:
 
   TWorkManager(TParameters& param = GlobalParameters);
@@ -68,7 +60,4 @@ public:
   void Stop();
   /// Изменить текущую задержку
   void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
-  /// Инициализация отрисовки
-  void InitDraw();
-
 };

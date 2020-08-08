@@ -18,12 +18,10 @@ target_link_libraries(TrafficSim
 						
 if (${USE_OpenGL})
 	target_link_libraries(TrafficSim
-							Engine
+							# Engine
 							glfw 
-							libglewmx_static						
-							BulletDynamics
-							BulletCollision
-							LinearMath 
+							libglewmx_static
+							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)
 endif()
