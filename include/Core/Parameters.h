@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
-#include "BasicExamples/common.h"
+#include "Core/common.h"
 #include "Core/Dll_manager.h"
 
 class TParameters

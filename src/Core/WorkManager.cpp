@@ -5,12 +5,10 @@
 #include "Core/WorkManager.h"
 #include "Core/ProgramFactory.h"
 
-#include "BasicExamples/common.h"
+#include "Core/common.h"
 
-TWorkManager::TWorkManager(TParameters& param) : parameters(param)
+TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_) : parameters(parameters_), presenter(presenter_)
 {
-
-
   currentTime = 0;
   currentStep = 0;
   mainSet = TSetFactory::Create(parameters.type, parameters.xmlMainSetConfigurationFile);

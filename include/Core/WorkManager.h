@@ -3,21 +3,21 @@
 #include <string>
 #include <vector>
 
-#include "BasicExamples/Sensor.h"
-#include "BasicExamples/Actuator.h"
-#include "BasicExamples/SmartThing.h"
-#include "BasicExamples/ObjectOfObservation.h"
-#include "BasicExamples/Properties.h"
-#include "BasicExamples/StaticObject.h"
-#include "BasicExamples/ManagementProgram.h"
+#include "Core/Sensor.h"
+#include "Core/Actuator.h"
+#include "Core/SmartThing.h"
+#include "Core/ObjectOfObservation.h"
+#include "Core/Properties.h"
+#include "Core/StaticObject.h"
+#include "Core/ManagementProgram.h"
 #include "Core/DataStore.h"
-#include "BasicExamples/DataPacket.h"
+#include "Core/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
-
-#include "BasicExamples/common.h"
+#include "Core/common.h"
 #include "Core/Parameters.h"
 
+#include "Engine/GraphicPresenter.hpp"
 
 /// Класс 
 class TWorkManager
@@ -25,6 +25,8 @@ class TWorkManager
 protected:
   /// Параметры работы программы
   TParameters& parameters;
+
+  IGraphicPresenter* presenter;
 
   /// множество всех наблюдаемых объектов
   std::vector<TObjectOfObservation*> objects;
@@ -52,7 +54,7 @@ protected:
   void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
 public:
 
-  TWorkManager(TParameters& param = GlobalParameters);
+  TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_);
   ~TWorkManager();
   /// Начало работы программы
   void Start(const unsigned short& _enableVisualisation = 1);

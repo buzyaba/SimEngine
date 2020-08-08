@@ -17,3 +17,6 @@
 	path = lib/Eigen3
 	url = https://github.com/OPM/eigen3.git
 
+[submodule "lib/assimp"]
+	path = lib/assimp
+	url = https://github.com/assimp/assimp.git

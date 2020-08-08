@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicExamples/StaticObject.h"
+#include "Core/StaticObject.h"
 #include <vector>
 
 extern "C" LIB_EXPORT_API std::vector <TStaticObject*> * create();

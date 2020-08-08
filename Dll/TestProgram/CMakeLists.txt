@@ -9,7 +9,7 @@ add_library(TestProgram SHARED ${source_files} ${hdrs})
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(TestProgram
-						BasicExamples
+						Core
 						)
 						
 if (${USE_OpenGL})

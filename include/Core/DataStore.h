@@ -4,10 +4,10 @@
 #include <vector>
 #include <stdio.h>
 
-#include "BasicExamples/Sensor.h"
-#include "BasicExamples/Actuator.h"
-#include "BasicExamples/Object.h"
-#include "BasicExamples/ObjectOfObservation.h"
+#include "Core/Sensor.h"
+#include "Core/Actuator.h"
+#include "Core/Object.h"
+#include "Core/ObjectOfObservation.h"
 
 /// Класс реализующий базовое хранение данных об объектах в базе данных
 /// Пока заглушка

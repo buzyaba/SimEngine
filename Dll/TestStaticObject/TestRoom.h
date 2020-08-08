@@ -2,7 +2,7 @@
 #ifdef USE_OpenGL
 #include "Engine/Renderer.hpp"
 #endif
-#include "BasicExamples/StaticObject.h"
+#include "Core/StaticObject.h"
 
 class TTestRoom : public TStaticObject {
 private:

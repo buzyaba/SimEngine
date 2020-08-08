@@ -2,7 +2,7 @@
 
 #define WITHOUT_NUMPY
 
-#include "BasicExamples/EmptyProgram.h"
+#include "Core/EmptyProgram.h"
 
 #ifdef USE_PLOTTER
 #include "matplotlibcpp.h"

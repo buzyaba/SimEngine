@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicExamples/SmartThing.h"
+#include "Core/SmartThing.h"
 #include <vector>
 
 extern "C" LIB_EXPORT_API std::vector <TSmartThing*>*  create();

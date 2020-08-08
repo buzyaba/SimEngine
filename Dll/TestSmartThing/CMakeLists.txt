@@ -9,7 +9,7 @@ add_library(TestSmartThing SHARED ${source_files} ${hdrs})
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(TestSmartThing
-						BasicExamples
+						Core
 						)
 						
 if (${USE_OpenGL})

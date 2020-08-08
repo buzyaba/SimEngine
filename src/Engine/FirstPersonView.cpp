@@ -16,7 +16,7 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
     yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
     pitch =   0.0f;
 
-	  setCursor(false);
+	setCursor(false);
     glfwSetKeyCallback(window, updateKeyboard); // keyboard events
     glfwSetCursorPosCallback(window, updateMouse); // mouse events
 }

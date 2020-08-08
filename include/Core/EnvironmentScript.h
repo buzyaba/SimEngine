@@ -5,8 +5,8 @@
 #include <map>
 
 
-#include "BasicExamples/Object.h"
-#include "BasicExamples/Properties.h"
+#include "Core/Object.h"
+#include "Core/Properties.h"
 
 
 /**

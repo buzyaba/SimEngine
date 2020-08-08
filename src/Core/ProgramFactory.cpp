@@ -1,6 +1,6 @@
 #include "Core/ProgramFactory.h"
 #include "Core/Parameters.h"
-#include "BasicExamples/EmptyProgram.h"
+#include "Core/EmptyProgram.h"
 
 bool TProgramFactory::isLoadInDLL = false;
 

@@ -9,7 +9,7 @@ add_library(TestStaticObject SHARED ${source_files} ${hdrs})
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(TestStaticObject
-						BasicExamples
+						Core
 						)
 						
 if (${USE_OpenGL})

@@ -12,10 +12,10 @@ set(TESTS_OUTPUT_DIRECTORY ${SIMENGINE_OUTPUT_DIRECTORY})
 
 file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 # file(GLOB ENG_FILES ${CMAKE_SOURCE_DIR}/src/Engine/*.cpp)
-file(GLOB SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/*.cpp)
-list(REMOVE_ITEM SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/SmartHouse/main.cpp)
-file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/*.cpp)
-list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/TrafficSim/main.cpp)
+file(GLOB SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/BasicExamples/SmartHouse/*.cpp)
+list(REMOVE_ITEM SMART_HOUSE ${CMAKE_SOURCE_DIR}/src/BasicExamples/SmartHouse/main.cpp)
+file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/BasicExamples/TrafficSim/*.cpp)
+list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/BasicExamples/TrafficSim/main.cpp)
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 add_executable(${PROJECT_NAME_STR} ${SRC_FILES} ${SMART_HOUSE} ${TRAFFIC_SIM})
@@ -26,8 +26,6 @@ target_link_libraries(${PROJECT_NAME_STR}
 						pugixml
 						output_system						
 						Core
-						BasicExamples
-                        TrafficSimData
                         )
 						
 if (${USE_OpenGL})

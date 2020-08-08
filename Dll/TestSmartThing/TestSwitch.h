@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicExamples/Actuator.h"
+#include "Core/Actuator.h"
 
 class TTestSwitch : public TActuator
 {

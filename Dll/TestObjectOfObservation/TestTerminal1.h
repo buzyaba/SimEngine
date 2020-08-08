@@ -2,7 +2,7 @@
 #ifdef USE_OpenGL
 #include "Engine/Renderer.hpp"
 #endif
-#include "BasicExamples/ObjectOfObservation.h"
+#include "Core/ObjectOfObservation.h"
 
 class TTestTerminal1 : public TObjectOfObservation
 {

@@ -42,7 +42,7 @@ else()
 	message("Unsupported architecture")
 endif()
 
-set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE TYPE INTERNAL FORCE)
+set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING INTERNAL FORCE)
 
 if (NOT (CMAKE_BUILD_TYPE IN_LIST CMAKE_CONFIGURATION_TYPES))
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "build type" FORCE)
@@ -71,7 +71,28 @@ if (${USE_OpenGL})
 	set(glew-cmake_BUILD_SINGLE_CONTEXT OFF)
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw")
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/glew")
-	add_definitions(-DUSE_OpenGL)
+	OPTION( BUILD_SHARED_LIBS
+	"Build package with shared libraries."
+	ON
+	)
+	set(BUILD_SHARED_LIBS OFF)
+	OPTION( ASSIMP_BUILD_ASSIMP_TOOLS
+	"If the supplementary tools for Assimp are built in addition to the library."
+	ON
+	)
+	set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+	OPTION ( ASSIMP_BUILD_TESTS
+	"If the test suite for Assimp is built in addition to the library."
+	ON
+	)
+	set(ASSIMP_BUILD_TESTS OFF)
+	OPTION( ASSIMP_INSTALL
+	"Disable this if you want to use assimp as a submodule."
+	ON
+	)
+	set(ASSIMP_INSTALL OFF) 
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/assimp")
+	add_definitions(-DUSE_OPENGL)
 endif()
 
 if (${BUILD_PLOTTER})
@@ -101,6 +122,7 @@ if (${USE_OpenGL})
 	include_directories("${CMAKE_SOURCE_DIR}/lib/glm")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/assimp/include")
 endif()
 
 include_directories("${CMAKE_SOURCE_DIR}/lib")

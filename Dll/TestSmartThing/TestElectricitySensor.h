@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicExamples/Sensor.h"
+#include "Core/Sensor.h"
 
 class TTestElectricitySensor : public TSensor
 {

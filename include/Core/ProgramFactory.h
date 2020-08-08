@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BasicExamples/ManagementProgram.h"
+#include "Core/ManagementProgram.h"
 
 class TProgramFactory
 {

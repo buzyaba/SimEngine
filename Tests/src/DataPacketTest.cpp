@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "BasicExamples/DataPacket.h"
+#include "Core/DataPacket.h"
 #include <memory>
 
 TEST(DataPacketTest, Can_Create_Instance_char) {
