@@ -1,5 +1,5 @@
 #pragma once
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 #include "Engine/Renderer.hpp"
 #endif
 #include "Core/ObjectOfObservation.h"
@@ -12,21 +12,21 @@ private:
 protected:
     ///Был ли включен терминал
     bool isWork;
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     static GLuint mainTexture;
 #endif
     static unsigned int meshBuffer;
 public:
 
     explicit TTestTerminal1(std::string _name = ""
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
       , const glm::vec3& pos=glm::vec3(0.0f), const glm::vec3& scale=glm::vec3(1.0f)
 #endif
     );
 
     virtual void Update() override;
 
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     virtual void setScale(const glm::vec3& _size) override;
     virtual void setPosition(const glm::vec3& pos) override;
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) override;

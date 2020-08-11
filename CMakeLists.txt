@@ -19,7 +19,7 @@ set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 
 option(BUILD_TESTS "Set ON to build tests" ON)
 option(BUILD_PLOTTER "Set ON to build plotter" OFF)
-option(USE_OpenGL "Set ON to use OpenGL" ON)
+option(USE_OPENGL "Set ON to use OpenGL" ON)
 option(BUILD_DLL "Set ON to build Dll" OFF)
 
 # Определяем компилятор
@@ -64,7 +64,7 @@ endif()
   #message(WARNING "dislin = ${CMAKE_SIZEOF_VOID_P}")
 
 #add graphic libraries
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	option (glew-cmake_BUILD_SHARED "Build shared libraries" ON)
 	set(glew-cmake_BUILD_SHARED OFF)
 	option(glew-cmake_BUILD_SINGLE_CONTEXT "Build the single context glew library" ON)
@@ -114,7 +114,7 @@ if (${BUILD_PLOTTER})
 	include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
 endif()
 
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	include_directories(${OPENGL_INCLUDE_DIRS})
 	find_package(OpenGL REQUIRED)
 	include_directories("${CMAKE_SOURCE_DIR}/lib/glfw/include")
@@ -123,6 +123,7 @@ if (${USE_OpenGL})
 	include_directories("${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/stb")
 	include_directories("${CMAKE_SOURCE_DIR}/lib/assimp/include")
+	include_directories("${CMAKE_SOURCE_DIR}/lib/assimp/contrib")
 endif()
 
 include_directories("${CMAKE_SOURCE_DIR}/lib")
@@ -161,7 +162,7 @@ if (IS_MICROSOFT_COMPILER)
 		set_property(TARGET gmock_main PROPERTY FOLDER "3rd-party") 
 	endif()
 	
-	if (${USE_OpenGL})
+	if (${USE_OPENGL})
 		#set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")

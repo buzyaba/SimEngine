@@ -22,13 +22,13 @@
 
 class TGraphicManager {
 private:
-  WindowManager *_window;
-  std::map<std::string, Model&> modelMap;  
-  std::vector<TGObject*> graphicObjects;
-  Shader _shader;
-
+    WindowManager *_window;
+    std::map<std::string, Model*> modelMap;
+    std::vector<TGObject*> graphicObjects;
+    Shader _shader;
+    Model* createModel(const std::string name);
 public:
-  TGraphicManager(const int type, std::string windowName);
-  void addNewObject(TObject *obj);
-  void startDraw();
+    TGraphicManager(const int type, std::string windowName);
+    void addNewObject(TObject *obj);
+    void startDraw();
 };

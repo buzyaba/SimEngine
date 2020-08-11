@@ -23,3 +23,10 @@ std::string Renderer::getCWD() {
     std::string current_working_dir(buff);
     return current_working_dir;
 }
+
+std::string Renderer::getPath(const std::string path) {
+    auto cwd = Renderer::getCWD();
+    std::transform(cwd.begin(), cwd.end(), cwd.begin(), toupper);
+    auto i = cwd.find("SIMENGINE");
+    return getCWD().substr(0, i+9) + path;
+}

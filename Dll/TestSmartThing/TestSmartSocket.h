@@ -10,7 +10,7 @@ public:
   TTestSmartSocket(std::string _name = "");
   void initBuffer() override {}
   unsigned int getMeshBuffer() override { return -1; };
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
   virtual void setScale(const glm::vec3& _size) override {}
   virtual void setPosition(const glm::vec3& pos) override {}
 #endif

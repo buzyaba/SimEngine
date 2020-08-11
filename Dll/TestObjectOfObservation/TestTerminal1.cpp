@@ -1,12 +1,12 @@
 #include "TestTerminal1.h"
 
 unsigned int TTestTerminal1::meshBuffer = -1;
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 GLuint TTestTerminal1::mainTexture = -1;
 #endif
 
 TTestTerminal1::TTestTerminal1(std::string _name
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
   , const glm::vec3& pos, const glm::vec3& scale
 #endif
 ) : TObjectOfObservation(_name) {
@@ -17,7 +17,7 @@ TTestTerminal1::TTestTerminal1(std::string _name
         {"X", 0 }, {"Y", 0 }, {"Z", 0 } }, false, "Coordinate")});
     isWork = false;
     //GL
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     if (mainTexture == -1)
         mainTexture = Renderer::getTextures()[MONITOR];
     
@@ -61,12 +61,12 @@ TTestTerminal1::TTestTerminal1(std::string _name
 }
 
 void TTestTerminal1::initBuffer() {
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     if (meshBuffer == -1)
         glGenBuffers(1, &meshBuffer);
 #endif
 }
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 void TTestTerminal1::setScale(const glm::vec3& _size) {
     // TObject::setScale(_size);
     transforms[0].setScale(_size);
@@ -123,7 +123,7 @@ void TTestTerminal1::initDraw(const std::vector<TObject*>& objects) {
 
 
 
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     setPosition({ this->properties["Coordinate"]->GetValues()["X"], 
                   this->properties["Coordinate"]->GetValues()["Y"],
                   this->properties["Coordinate"]->GetValues()["Z"] });
@@ -160,7 +160,7 @@ void TTestTerminal1::initDraw(const std::vector<TObject*>& objects) {
 }
 
 void TTestTerminal1::drawElements(const std::vector<TObject*>& objects) {
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     glUseProgram(shaderProgramInstanced);
     glm::mat4* modelMatrixes = new glm::mat4[(int)objects.size()*3];
     for (int i = 0; i < objects.size(); ++i) {
@@ -220,8 +220,8 @@ void TTestTerminal1::Update() {
     }
 
     isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
-    /// Обновление текстуры
-#ifdef USE_OpenGL
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+#ifdef USE_OPENGL
     if (isWork) setScreenTexture(Renderer::getTextures()[WINDOWS]);
     else setScreenTexture(Renderer::getTextures()[SCREENSAVER]);
 #endif

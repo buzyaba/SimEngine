@@ -1,16 +1,17 @@
 #pragma once
 
 #include <GL/glew.h>
-
-#include "stb_image.h"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
+
+#include <stb_image/stb_image.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Engine/Mesh.hpp"
-#include "Engine/Shader.h"
+#include "Engine/Shader.hpp"
 
 #include <fstream>
 #include <iostream>

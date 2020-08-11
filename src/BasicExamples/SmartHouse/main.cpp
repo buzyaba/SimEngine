@@ -38,12 +38,12 @@ int _enableVisualisation = 0;
   TGraphicManager* graphicManager = new TGraphicManager(GlobalParameters.type, "Smart House");
   presenter->setGraphicManager(graphicManager);
   // ????
-  // workManager.sendObjects();
+  workManager->sendObjects();
   _enableVisualisation = 1;
   // what with error handling?
-  std::thread(&TWorkManager::Start, &workManager, _enableVisualisation).detach();
+  std::thread(&TWorkManager::Start, workManager, _enableVisualisation).detach();
   graphicManager->startDraw();
-  workManager.stopWork();
+  workManager->Stop();
   delete graphicManager;
 #else
   try

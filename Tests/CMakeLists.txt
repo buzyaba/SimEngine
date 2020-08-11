@@ -28,7 +28,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 						Core
                         )
 						
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	target_link_libraries(${PROJECT_NAME_STR}
 							# Engine
 							libglewmx_static

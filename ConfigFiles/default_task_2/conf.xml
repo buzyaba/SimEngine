@@ -3,7 +3,7 @@
   <maxStep>43200</maxStep>
   <intervalCount>1</intervalCount>
   <time>0_2592000</time>
-  <Terminal1><IsWork>1_1</IsWork></Terminal1>
+  <!-- <Terminal1><IsWork>1_1</IsWork></Terminal1>
   <Terminal2><IsWork>1_1</IsWork></Terminal2>
   <Terminal3><IsWork>1_1</IsWork></Terminal3>
   <Terminal4><IsWork>1_1</IsWork></Terminal4>
@@ -14,5 +14,5 @@
   <Desktop2><IsWork>1_1</IsWork></Desktop2>
   <Desktop3><IsWork>1_1</IsWork></Desktop3>
   <Desktop4><IsWork>1_1</IsWork></Desktop4>
-  <Desktop5><IsWork>1_1</IsWork></Desktop5>
+  <Desktop5><IsWork>1_1</IsWork></Desktop5> -->
 </config>

@@ -110,3 +110,11 @@ void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds)
   else
     parameters.millisecondsInTimeStep = 0;
 }
+
+void TWorkManager::sendObjects() {
+    for (auto& vec : mainSet->GetAllGObjects()) {
+        for (auto elem : vec.second) {
+            presenter->addTObject(elem);
+        }
+    }
+}

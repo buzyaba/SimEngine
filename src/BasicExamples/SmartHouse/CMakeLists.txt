@@ -17,11 +17,12 @@ target_link_libraries(SmartHouse
 						output_system
 						)
 						
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	target_link_libraries(SmartHouse
 							Engine
 							glfw 
 							libglewmx_static
+							assimp
 							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)

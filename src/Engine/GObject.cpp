@@ -25,5 +25,5 @@ void TGObject::draw() {
   model = glm::scale(model, _transform->getScale());
   // model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0, 1.0, 0.0));
   _shader.setMat4("model", model);
-  _model.Draw(_shader);
+  _model->Draw(_shader);
 }

@@ -15,11 +15,12 @@ target_link_libraries(TrafficSim
 						output_system
 						)
 						
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	target_link_libraries(TrafficSim
-							# Engine
+							Engine
 							glfw 
 							libglewmx_static
+							assimp
 							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)

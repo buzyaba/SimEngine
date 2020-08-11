@@ -6,12 +6,12 @@
 
 class TGObject {
 private:
-  GObjectProperties *_transform;
-  Model &_model;
+  TGObjectProperties *_transform;
+  Model *_model;
   Shader &_shader;
 
 public:
-  TGObject(GObjectProperties *transform, Model &model, Shader &shader)
+  TGObject(TGObjectProperties *transform, Model *model, Shader &shader)
       : _transform(transform), _model(model), _shader(shader) {}
   void draw();
 };

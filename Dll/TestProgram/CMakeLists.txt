@@ -12,7 +12,7 @@ target_link_libraries(TestProgram
 						Core
 						)
 						
-if (${USE_OpenGL})
+if (${USE_OPENGL})
 	target_link_libraries(TestProgram
 							# Engine
 							glfw 

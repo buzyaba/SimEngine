@@ -53,7 +53,6 @@ protected:
   /// Итерация работы программы
   void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
 public:
-
   TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_);
   ~TWorkManager();
   /// Начало работы программы
@@ -62,4 +61,5 @@ public:
   void Stop();
   /// Изменить текущую задержку
   void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
+  void sendObjects();
 };

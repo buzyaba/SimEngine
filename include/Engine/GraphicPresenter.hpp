@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Object.hpp"
+#include "Core/Object.h"
 
 #ifdef USE_OPENGL
 #include "GraphicManager.hpp"

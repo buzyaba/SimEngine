@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-  <TRoom>
+  <!-- <TRoom>
 	<Name>Room1</Name>
   </TRoom>
   <TTerminal>
@@ -77,7 +77,7 @@
   <Object>Terminal6</Object>
   <Object>Desktop5</Object>
   <Object>Terminal7</Object>
-  </TSmartSocket>
+  </TSmartSocket> -->
   <TTable>
 	<Name>Table1</Name>
   <Coordinate>20 0 -18</Coordinate>
@@ -102,7 +102,7 @@
 	<Name>Table6</Name>
   <Coordinate>4 0 -18</Coordinate>
   </TTable>
-  <TTable>
+  <!-- <TTable>
   <Name>Table7</Name>
   <Coordinate>23 0 16</Coordinate>
   <Rotate>0 0 0.247</Rotate>
@@ -136,5 +136,5 @@
   <Name>Table13</Name>
   <Coordinate>-6 0 16</Coordinate>
   <Rotate>0 0 0.247</Rotate>
-  </TTable>
+  </TTable> -->
 </config>

@@ -1,5 +1,5 @@
 #pragma once
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 #include "Engine/Renderer.hpp"
 #endif
 #include "Core/StaticObject.h"
@@ -10,11 +10,11 @@ private:
     unsigned int getMeshBuffer() override { return -1;}
 public:
     explicit TTestRoom(std::string _name = ""
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
       , const glm::vec3& pos=glm::vec3(0.0f), const glm::vec3& scale=glm::vec3(1.0f)
 #endif
     );
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
     virtual void setScale(const glm::vec3& _size) override;
     virtual void setPosition(const glm::vec3& pos) override;
     virtual void setRotation(const btScalar& yaw, const btScalar& pitch, const btScalar& roll) override;

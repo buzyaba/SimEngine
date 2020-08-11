@@ -3,7 +3,7 @@
 // unsigned int TRoom::meshBuffer = -1;
 
 TTestRoom::TTestRoom(std::string _name
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
   , const glm::vec3 &pos, const glm::vec3 &scale
 #endif
 )
@@ -14,7 +14,7 @@ TTestRoom::TTestRoom(std::string _name
                              {"Width", 20}, {"Length", 20}, {"Height", 20}},
                          false, "Dimensions")});
   // GL
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
   otherTextures.insert({"wall", Renderer::getTextures()[WALL]});
   otherTextures.insert({"ceiling", Renderer::getTextures()[CEILING]});
   otherTextures.insert({"floor", Renderer::getTextures()[FLOOR]});
@@ -65,7 +65,7 @@ TTestRoom::TTestRoom(std::string _name
 //   if (meshBuffer == -1)
 //     glGenBuffers(1, &meshBuffer);
 // }
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 void TTestRoom::setScale(const glm::vec3 &_size) {
   transforms[0].setScale(_size);
   transforms[1].setPosition(glm::vec3(0.0f, -0.1f, 0.0f));  // floor
@@ -109,7 +109,7 @@ void TTestRoom::setRotation(const btScalar &yaw, const btScalar &pitch,
 }
 #endif
 void TTestRoom::drawElements(const std::vector<TObject *> &objects) {
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
   GLuint vao = meshes->getMesh(kCube)->getVAO();
   glUseProgram(shaderProgramUnique);
   glBindVertexArray(vao);

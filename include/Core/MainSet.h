@@ -3,7 +3,7 @@
 #include "Core/ObjectOfObservation.h"
 #include "Core/SmartThing.h"
 #include "Core/StaticObject.h"
-#ifdef USE_OpenGL
+#ifdef USE_OPENGL
 #include <Engine/WindowManager.hpp>
 #endif
 
@@ -22,7 +22,6 @@ public:
   std::vector<TStaticObject*> GetStaticObjects();
   std::vector<TSmartThing*> GetThings();
   const std::map<std::string, std::vector<TObject*>>& GetAllGObjects() {return allGObjects;}
-
 };
 
 class TRoomSet : public TMainSet

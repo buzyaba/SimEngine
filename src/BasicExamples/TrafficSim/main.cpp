@@ -41,9 +41,9 @@ int _enableVisualisation = 0;
   // workManager.sendObjects();
   _enableVisualisation = 1;
   // what with error handling?
-  std::thread(&TWorkManager::Start, &workManager, _enableVisualisation).detach();
+  std::thread(&TWorkManager::Start, workManager, _enableVisualisation).detach();
   graphicManager->startDraw();
-  workManager.stopWork();
+  workManager->Stop();
   delete graphicManager;
 #else
   try

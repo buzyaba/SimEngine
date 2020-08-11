@@ -1,17 +1,27 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "Engine/GraphicManager.hpp"
 
 TGraphicManager::TGraphicManager(const int type, std::string windowName)
-    : _shader(Utils::getPath("/assets/shaders/VertexShader.vs").c_str(),
-              Utils::getPath("/assets/shaders/FragmentShader.fs").c_str())) {
+    : _shader(Renderer::getPath("/assets/shaders/VertexShader.vs").c_str(),
+              Renderer::getPath("/assets/shaders/FragmentShader.fs").c_str()) {
   if (type <= 0)
        _window = new FirstPersonView(800, 600, windowName);
   else
       _window = new IsometricView(800, 600, windowName);
 }
 
+Model* TGraphicManager::createModel(const std::string name) {
+    return new Model(Renderer::getPath("/assets/models/" + name + "/" + name + ".obj"));
+}
+
 void TGraphicManager::addNewObject(TObject *obj) {
-  GObjectProperties *objectTransform = new GObjectProperties(obj);
-  TGObject *object = new TGObject(objectTransform, _tableModel, _shader);
+  TGObjectProperties *objectTransform = new TGObjectProperties(obj);
+  auto name = objectTransform->getName();
+  auto elem = modelMap.find(name);
+  if (elem == modelMap.end()) {
+      modelMap.insert({name, createModel(name)});
+  }
+  TGObject *object = new TGObject(objectTransform, modelMap.at(name), _shader);
   graphicObjects.push_back(object);
 }
 
