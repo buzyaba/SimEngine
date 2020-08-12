@@ -1,14 +1,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Engine/GraphicManager.hpp"
 
+WindowManager* TGraphicManager::createWindow(const int type, const int width, const int height, const std::string name) {
+  if (type <= 0)
+      return new FirstPersonView(width, height, name);
+  else
+      return new IsometricView(width, height, name);
+  return nullptr;
+}
+
 TGraphicManager::TGraphicManager(const int type, std::string windowName)
     : _shader(Renderer::getPath("/assets/shaders/VertexShader.vs").c_str(),
-              Renderer::getPath("/assets/shaders/FragmentShader.fs").c_str()) {
-  if (type <= 0)
-       _window = new FirstPersonView(800, 600, windowName);
-  else
-      _window = new IsometricView(800, 600, windowName);
-}
+              Renderer::getPath("/assets/shaders/FragmentShader.fs").c_str()),
+      _window(createWindow(type, 800, 600, windowName)) {}
 
 Model* TGraphicManager::createModel(const std::string name) {
     return new Model(Renderer::getPath("/assets/models/" + name + "/" + name + ".obj"));
@@ -31,7 +35,7 @@ void TGraphicManager::startDraw() {
     _window->runWindow(0.01f, [&]() {
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        for (auto *elem : graphicObjects)
+      for (auto *elem : graphicObjects)
         elem->draw();
     });
 

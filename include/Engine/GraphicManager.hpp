@@ -27,6 +27,7 @@ private:
     std::vector<TGObject*> graphicObjects;
     Shader _shader;
     Model* createModel(const std::string name);
+    WindowManager* createWindow(const int type, const int width, const int height, const std::string name);
 public:
     TGraphicManager(const int type, std::string windowName);
     void addNewObject(TObject *obj);
