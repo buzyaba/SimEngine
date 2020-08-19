@@ -1,4 +1,5 @@
 #include "Engine/FirstPersonView.hpp"
+#include <iostream>
 
 static bool keys[1024];
 static GLfloat lastX;
@@ -9,7 +10,7 @@ static GLfloat pitch;
 FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
                                  const std::string winName, bool _visible): WindowManager(screenWidth, screenHeight, winName, _visible) {
     Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(-15.0f, 5.0f, 11.0f), 
-                        glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                        glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     
     lastX = screenWidth/2;
     lastY = screenHeight/2;
@@ -22,16 +23,16 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
 }
 
 void FirstPersonView::cameraMovement(float dt) {
-    GLfloat cameraSpeed = 12.0f * dt;
+    GLfloat cameraSpeed = 15.0f * dt;
 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
 	if (keys[GLFW_KEY_W])
 	{
-		prevCamPos += cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+		prevCamPos += Renderer::getCamera()->getCameraFront() * cameraSpeed;
 	}
 	if (keys[GLFW_KEY_S])
 	{
-		prevCamPos -= cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+		prevCamPos -= Renderer::getCamera()->getCameraFront() * cameraSpeed;
 	}
 	if (keys[GLFW_KEY_D])
 	{
@@ -41,7 +42,7 @@ void FirstPersonView::cameraMovement(float dt) {
 	{
 		prevCamPos -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
 	}
-	prevCamPos[1] = 5.0f;
+	prevCamPos[1] = 2.0f;
 	Renderer::getCamera()->moveCamera(prevCamPos);
 }
 

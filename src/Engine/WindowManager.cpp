@@ -1,4 +1,5 @@
 #include "Engine/WindowManager.hpp"
+#include <iostream>
 
 GLFWwindow* WindowManager::window = nullptr;
 
@@ -13,6 +14,7 @@ WindowManager::WindowManager(const std::uint32_t& screenWidth, const std::uint32
     glfwWindowHint(GLFW_VISIBLE, _visible);
     window = glfwCreateWindow(screenWidth, screenHeight, winName.c_str(), NULL, NULL);
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(2); 	
     glewInit();
     glEnable(GL_DEPTH_TEST);
 }

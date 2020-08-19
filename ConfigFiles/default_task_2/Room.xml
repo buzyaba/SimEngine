@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-  <!-- <TRoom>
+  <TRoom>
 	<Name>Room1</Name>
+  <Coordinate>0 0 0</Coordinate>
   </TRoom>
-  <TTerminal>
+  <!-- <TTerminal>
 	<Name>Terminal1</Name>
   <Coordinate>-23 3.1 0</Coordinate>
   <Rotate>0 0 0.247</Rotate>
@@ -102,7 +103,7 @@
 	<Name>Table6</Name>
   <Coordinate>4 0 -18</Coordinate>
   </TTable>
-  <!-- <TTable>
+  <TTable>
   <Name>Table7</Name>
   <Coordinate>23 0 16</Coordinate>
   <Rotate>0 0 0.247</Rotate>
@@ -136,5 +137,5 @@
   <Name>Table13</Name>
   <Coordinate>-6 0 16</Coordinate>
   <Rotate>0 0 0.247</Rotate>
-  </TTable> -->
+  </TTable>
 </config>

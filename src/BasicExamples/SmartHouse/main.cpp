@@ -6,36 +6,32 @@
 #include "Engine/GraphicManager.hpp"
 #include <thread>
 #endif
+#include <iostream>
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 
-  try
-  {
+  try {
     GlobalParameters.LoadConsoleParameters(argc, argv);
-  }
-  catch (...)
-  {
+  } catch (...) {
     std::cout << "Error Load Parameters!!!" << std::endl;
   }
   IGraphicPresenter *presenter;
-  TWorkManager* workManager;
+  TWorkManager *workManager;
 #ifdef USE_OPENGL
   presenter = new TGraphicPresenter();
 #else
   presenter = new IGraphicPresenter();
 #endif
-  try
-  {
+  try {
     workManager = new TWorkManager(GlobalParameters, presenter);
-  }
-  catch (...)
-  {
+  } catch (...) {
     std::cout << "Error Create WorkManager!!!" << std::endl;
   }
 
-int _enableVisualisation = 0;
+  int _enableVisualisation = 0;
 #ifdef USE_OPENGL
-  TGraphicManager* graphicManager = new TGraphicManager(GlobalParameters.type, "Smart House");
+  TGraphicManager *graphicManager =
+      new TGraphicManager(GlobalParameters.type, "Smart House");
   presenter->setGraphicManager(graphicManager);
   // ????
   workManager->sendObjects();
@@ -46,12 +42,9 @@ int _enableVisualisation = 0;
   workManager->Stop();
   delete graphicManager;
 #else
-  try
-  {
+  try {
     workManager->Start(_enableVisualisation);
-  }
-  catch (...)
-  {
+  } catch (...) {
     std::cout << "Error Start WorkManager!!!" << std::endl;
   }
 #endif
