@@ -35,8 +35,8 @@ public:
   }
 
   void Draw(Shader shader) {
-    for (unsigned int i = 0; i < _meshes.size(); i++)
-      _meshes[i].Draw(shader);
+    for (auto& cur_mesh : _meshes)
+      cur_mesh.second.Draw(shader);
   }
 
 private:
@@ -100,7 +100,7 @@ private:
   void processNode(aiNode *node, const aiScene *scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
       aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-      _meshes.push_back(processMesh(mesh, scene));
+      _meshes.insert({ mesh->mName.C_Str(), (processMesh(mesh, scene))});
     }
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
       processNode(node->mChildren[i], scene);
@@ -217,7 +217,7 @@ private:
 
 private:
   std::map<std::string, Texture> _textures_loaded;
-  vector<Mesh> _meshes;
+  std::map<std::string, Mesh> _meshes;
   string _directory;
   std::vector<std::string> _texture_formats;
 };
