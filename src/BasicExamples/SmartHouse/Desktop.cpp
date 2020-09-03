@@ -7,7 +7,7 @@ TDesktop::TDesktop(std::string _name) : TObjectOfObservation(_name) {
       {"PowerConsumption",
        new TProperties({{"PowerConsumption", 0}}, true, "PowerConsumption")});
   properties.insert(
-      {"Scale", new TProperties({{"Width", 1}, {"Length", 1}, {"Height", 1}},
+      {"Scale", new TProperties({{"Width", 3}, {"Length", 3}, {"Height", 3}},
                                 false, "Scale")});
   properties.insert(
       {"Coordinate",

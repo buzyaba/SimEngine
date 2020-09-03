@@ -14,7 +14,7 @@ TTerminal::TTerminal(std::string _name) : TObjectOfObservation(_name) {
        new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                        false, "Rotate")});
   properties.insert(
-      {"Scale", new TProperties({{"Width", 1}, {"Length", 1}, {"Height", 1}},
+      {"Scale", new TProperties({{"Width", 3}, {"Length", 3}, {"Height", 3}},
                                 false, "Scale")});
   textures.push_back(
       {{"screen_Plane.015"}, {"monitorON.png"}, {"monitorON.png"}});
