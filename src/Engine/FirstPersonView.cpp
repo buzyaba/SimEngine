@@ -2,6 +2,7 @@
 #include <iostream>
 
 static bool keys[1024];
+bool FirstPersonView::noclip;
 static GLfloat lastX;
 static GLfloat lastY;
 static GLfloat yaw;	
@@ -20,6 +21,7 @@ FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::ui
 	setCursor(false);
     glfwSetKeyCallback(window, updateKeyboard); // keyboard events
     glfwSetCursorPosCallback(window, updateMouse); // mouse events
+	noclip = false;
 }
 
 void FirstPersonView::cameraMovement(float dt) {
@@ -42,13 +44,17 @@ void FirstPersonView::cameraMovement(float dt) {
 	{
 		prevCamPos -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
 	}
-	prevCamPos[1] = 2.0f;
+	if (!noclip)
+		prevCamPos[1] = 2.0f;
 	Renderer::getCamera()->moveCamera(prevCamPos);
 }
 
 void FirstPersonView::updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
 		glfwSetWindowShouldClose(window,true);
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
+		noclip = !noclip;
 	}
 	if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS)

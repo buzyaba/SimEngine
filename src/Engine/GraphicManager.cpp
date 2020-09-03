@@ -14,7 +14,7 @@ WindowManager *TGraphicManager::createWindow(const int type, const int width,
 TGraphicManager::TGraphicManager(const int type, std::string windowName)
     : _shader(Renderer::getPath("/assets/shaders/VertexShader.vs").c_str(),
               Renderer::getPath("/assets/shaders/FragmentShader.fs").c_str()),
-      _window(createWindow(type, 800, 600, windowName)) {}
+      _window(createWindow(type, 1280, 720, windowName)) {}
 
 Model *TGraphicManager::createModel(const std::string name) {
   return new Model(Renderer::getPath("/assets/models/" + name));
@@ -43,8 +43,6 @@ void TGraphicManager::startDraw() {
         elem->draw();
     });
     prevTime = curTime;
-
-    std::cout << "ELAPSED TIME RENDER: " << deltaTime << std::endl;
   } // Check if the ESC key was pressed or the window was closed
   while (glfwWindowShouldClose(_window->getWindow()) == 0);
 

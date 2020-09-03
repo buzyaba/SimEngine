@@ -65,8 +65,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-  if (_enableVisualisation == 0)
-    std::this_thread::sleep_for(delta);
+  std::this_thread::sleep_for(delta);
 }
 
 void TWorkManager::Start(const unsigned short& _enableVisualisation)

@@ -24,6 +24,8 @@ public:
   virtual std::string ClassName() = 0;
   /// Создание клона объекта
   virtual IObject* Clone() = 0;
+
+  virtual std::vector<std::vector<std::string>>& getTextures() = 0;
 };
 
 /// Реализация базового объекта имеющего набор свойств и имя.
@@ -34,6 +36,8 @@ class TObject: public IObject {
     std::string name;
     /// Набор свойств объекта
     std::map<std::string, IProperties*> properties;
+
+    std::vector<std::vector<std::string>> textures;
   public:
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
@@ -56,4 +60,6 @@ class TObject: public IObject {
     virtual std::string ClassName() = 0;
     // /// Создание клона объекта
     virtual IObject* Clone() = 0;
+
+    virtual std::vector<std::vector<std::string>>& getTextures() { return textures; }
 };

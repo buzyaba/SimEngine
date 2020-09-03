@@ -11,7 +11,7 @@ std::vector<TRoad*> TRoad::allRoads = {};
 TRoad::TRoad(std::string _name) : TObjectOfObservation(_name) {
 	properties.insert({ "IsBblockieren", new TProperties(std::map<std::string, double>{ {"IsBblockieren", 0}}, false, "IsBblockieren") });
 	properties.insert({ "Coordinate", new TProperties(std::map<std::string, double>{ {"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate") });
-	properties.insert({ "Dimensions", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Dimensions"} });
+	properties.insert({ "Scale", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Scale"} });
 	properties.insert({ "IsBusy", new TProperties(std::map<std::string, double>{ {"IsBusy", 0}}, false, "IsBusy") });
 	properties.insert({ "Blocking", new TProperties(std::map<std::string, double>{ {"Blocking", 0}}, false, "Blocking") });
 	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStandingCar") });

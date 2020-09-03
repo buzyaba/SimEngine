@@ -12,4 +12,6 @@ private:
     virtual void cameraMovement(float dt) override;
     static void updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void updateMouse(GLFWwindow* window, double xpos, double ypos);
+private: 
+    static bool noclip;
 };

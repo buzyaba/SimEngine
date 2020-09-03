@@ -8,11 +8,11 @@ TTestRoom::TTestRoom(std::string _name
 #endif
 )
     : TStaticObject(_name) {
-  properties.insert({std::string("Dimensions"),
+  properties.insert({std::string("Scale"),
                      new TProperties(
                          std::map<std::string, double>{
                              {"Width", 20}, {"Length", 20}, {"Height", 20}},
-                         false, "Dimensions")});
+                         false, "Scale")});
   // GL
 #ifdef USE_OPENGL
   otherTextures.insert({"wall", Renderer::getTextures()[WALL]});

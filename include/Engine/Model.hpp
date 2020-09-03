@@ -39,6 +39,12 @@ public:
       cur_mesh.second.Draw(shader);
   }
 
+  void changeMeshTextures(std::vector<std::vector<std::string>>& textures) {
+    for (auto& text : textures) {
+      _meshes.at(text[0])._textures[text[1]] =  _textures_loaded[text[2]];
+    }
+  }
+
 private:
   void loadModel() {
     Assimp::Importer importer;

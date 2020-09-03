@@ -11,6 +11,7 @@ TObject::TObject(const std::string& _name):name(_name)
 TObject::TObject(const TObject& obj) {
   properties = obj.properties;
   name = obj.name;
+  textures=obj.textures;
 }
 
 void TObject::SetProperty(IProperties& property) {

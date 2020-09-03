@@ -5,7 +5,7 @@
 TCar::TCar(std::string _name) : TObjectOfObservation(_name) {
 	properties.insert({ "WayIndex", new TProperties(std::map<std::string, double>{ {"WayIndex", -1}}, true, "WayIndex") });
 	properties.insert({ "Coordinate", new TProperties(std::map<std::string, double>{ {"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate") });
-	properties.insert({ "Dimensions", new TProperties{{{"Width", 8}, {"Length", 15}, {"Height", 4}}, false, "Dimensions"} });
+	properties.insert({ "Scale", new TProperties{{{"Width", 8}, {"Length", 15}, {"Height", 4}}, false, "Scale"} });
 	properties.insert({ "WayIndexCount", new TProperties(std::map<std::string, double>{ {"WayIndexCount", 0}}, false, "WayIndexCount") });
 }
 

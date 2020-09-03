@@ -4,7 +4,7 @@
 	<Name>Room1</Name>
   <Coordinate>0 0 0</Coordinate>
   </TRoom>
-  <!-- <TTerminal>
+  <TTerminal>
 	<Name>Terminal1</Name>
   <Coordinate>-23 3.1 0</Coordinate>
   <Rotate>0 0 0.247</Rotate>
@@ -14,7 +14,7 @@
   <Coordinate>-23 3.1 -8</Coordinate>
   <Rotate>0 0 0.247</Rotate>
   </TTerminal>
-  <TSmartSocket>
+  <!-- <TSmartSocket>
 	<Name>SmartSocket1</Name>
 	<Object>Terminal1</Object>
   <Object>Terminal2</Object>
