@@ -1,8 +1,9 @@
 ﻿#include "Core/MainSet.h"
 #include "Core/Parameters.h"
+#include "Core/common.h"
 
 #include "BasicExamples/SmartHouse/Desktop.hpp"
-#include "BasicExamples/SmartHouse/Room.h"
+// #include "Dll/Room/Room.h"
 #include "BasicExamples/SmartHouse/SmartSocket.h"
 #include "BasicExamples/SmartHouse/Table.h"
 #include "BasicExamples/SmartHouse/Terminal.h"
@@ -61,34 +62,34 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   std::vector<TStaticObject *> StaticObjects;
   std::vector<TSmartThing *> LocalThing;
 
-  StaticObjects.push_back(new TRoom("Room"));
+  // StaticObjects.push_back(new TRoom("Room"));
   StaticObjects.push_back(new TTable("Table"));
   StaticObjects.push_back(new TStreet("Street"));
-  std::vector<TStaticObject *> *sos =
-      GlobalParameters.problemManager.GetStaticObject();
-  if (sos != NULL) {
-    for (auto &obj : *sos)
-      StaticObjects.push_back(obj);
-  }
+  // std::vector<TStaticObject *> *sos =
+  //     GlobalParameters.problemManager.GetStaticObject();
+  // if (sos != NULL) {
+  //   for (auto &obj : *sos)
+  //     StaticObjects.push_back(obj);
+  // }
 
   LocalObjects.push_back(new TTerminal("Terminal"));
   LocalObjects.push_back(new TDesktop("Desktop"));
   LocalObjects.push_back(new TRoad("Road"));
   LocalObjects.push_back(new TCarCreator("CarCreator"));
   LocalObjects.push_back(new TCarDestroyer("CarDestroyer"));
-  std::vector<TObjectOfObservation *> oos =
-      GlobalParameters.problemManager.GetObjectOfObservations();
-  for (auto &obj : oos)
-    LocalObjects.push_back(obj);
+  // std::vector<TObjectOfObservation *> oos =
+  //     GlobalParameters.problemManager.GetObjectOfObservations();
+  // for (auto &obj : oos)
+  //   LocalObjects.push_back(obj);
 
   LocalThing.push_back(new TSmartSocket("SmartSocket"));
   LocalThing.push_back(new TTrafficLight("TrafficLight"));
-  std::vector<TSmartThing *> *sts =
-      GlobalParameters.problemManager.GetSmartThing();
-  if (sos != NULL) {
-    for (auto &obj : *sts)
-      LocalThing.push_back(obj);
-  }
+  // std::vector<TSmartThing *> *sts =
+  //     GlobalParameters.problemManager.GetSmartThing();
+  // if (sos != NULL) {
+  //   for (auto &obj : *sts)
+  //     LocalThing.push_back(obj);
+  // }
 
   pugi::xml_document doc;
   pugi::xml_parse_result result =
@@ -104,21 +105,24 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
     std::string name = iter.name();
     std::string value = iter.child_value();
 
-    /// Создаем новые статические объекты
-    for (int i = 0; i < StaticObjects.size(); i++) {
-      if (StaticObjects[i]->ClassName() == name) {
-        TStaticObject *newStaticObject = StaticObjects[i]->Clone();
-        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0;
-             iter2 = iter2.next_sibling()) {
-          std::string nameProperty = iter2.name();
-          std::string valueProperty = iter2.child_value();
-          SetProperty(newStaticObject, nameProperty, valueProperty);
-        }
-        staticObjects.push_back(newStaticObject);
-        // ATTENTION
-        allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
-      }
+    auto result = std::find_if(StaticObjects.begin(), StaticObjects.end(), [&] (auto& t) {return t->ClassName() == name;});
+
+    if (result == std::end(StaticObjects)) {
+        StaticObjects.push_back(LoadDLLObject<STATIC_OBJECT>(findDLLPath(getPath("/assets/models/" + name))));
+        result = std::prev(StaticObjects.end());
     }
+
+    /// Создаем новые статические объекты
+    TStaticObject *newStaticObject = (*result)->Clone();
+    for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0;
+            iter2 = iter2.next_sibling()) {
+        std::string nameProperty = iter2.name();
+        std::string valueProperty = iter2.child_value();
+        SetProperty(newStaticObject, nameProperty, valueProperty);
+    }
+    staticObjects.push_back(newStaticObject);
+    // ATTENTION
+    allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
 
     /// Создаем новые объекты
     for (int i = 0; i < LocalObjects.size(); i++) {
@@ -173,7 +177,7 @@ TRoomSet::TRoomSet() : TMainSet() {
   objects.resize(1, new TTerminal("Terminal"));
   allGObjects.insert(
       std::make_pair("Terminal", std::vector<TObject *>(1, objects.back())));
-  staticObjects.resize(1, new TRoom("Room"));
+  // staticObjects.resize(1, new TRoom("Room"));
   allGObjects.insert(
       std::make_pair("Room", std::vector<TObject *>(1, staticObjects.back())));
   things.resize(1, new TSmartSocket("SmartSocket"));

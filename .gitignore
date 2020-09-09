@@ -5,3 +5,7 @@ build
 A.csv
 EmptyProgram.csv
 DataStore.csv
+*.so
+*.dll
+*.ilk
+*.pdb

@@ -1,5 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Engine/GraphicManager.hpp"
+#include "Core/common.h"
 
 WindowManager *TGraphicManager::createWindow(const int type, const int width,
                                              const int height,
@@ -12,12 +13,12 @@ WindowManager *TGraphicManager::createWindow(const int type, const int width,
 }
 
 TGraphicManager::TGraphicManager(const int type, std::string windowName)
-    : _shader(Renderer::getPath("/assets/shaders/VertexShader.vs").c_str(),
-              Renderer::getPath("/assets/shaders/FragmentShader.fs").c_str()),
+    : _shader(getPath("/assets/shaders/VertexShader.vs").c_str(),
+              getPath("/assets/shaders/FragmentShader.fs").c_str()),
       _window(createWindow(type, 1280, 720, windowName)) {}
 
 Model *TGraphicManager::createModel(const std::string name) {
-  return new Model(Renderer::getPath("/assets/models/" + name));
+  return new Model(getPath("/assets/models/" + name));
 }
 
 void TGraphicManager::addNewObject(TObject *obj) {

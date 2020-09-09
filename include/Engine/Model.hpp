@@ -57,7 +57,7 @@ private:
         const std::string file_name = file_data.cFileName;
         const std::string full_file_name = _directory + "/" + file_name;
         if (full_file_name.find(".obj") != std::string::npos) {
-          path = full_file_name;
+          objPath = full_file_name;
         }
         for (auto string_type : _texture_formats) {
           if (full_file_name.find(string_type) != std::string::npos) {

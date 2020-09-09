@@ -111,45 +111,7 @@ void TParameters::LoadXML()
           xmlMainSetConfigurationFile = dirConfigFile + "/" + value;
       }
     }
-    else if (name == "objectOfObservationDllsFile")
-    {
-      if (value != "")
-      {
-        ParseString(value, objectOfObservationDllsFile);
-      }
-      for (auto& v : objectOfObservationDllsFile)
-      {
-        if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "/" + v;
-        problemManager.LoadProblemLibrary(v, TProblemManager::OBJECT_OF_OBSERVATION);
-      }
-    }
-    else if (name == "smartThingDllsFile")
-    {
-      if (value != "")
-      {
-        ParseString(value, smartThingDllsFile);
-      }
-      for (auto& v : smartThingDllsFile)
-      {
-        if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "/" + v;
-        problemManager.LoadProblemLibrary(v, TProblemManager::SMART_THING);
-      }
-    }
-    else if (name == "staticObjectDllsFile")
-    {
-      if (value != "")
-      {
-        ParseString(value, staticObjectDllsFile);
-      }
-      for (auto& v : staticObjectDllsFile)
-      {
-        if (v.find(":") == std::string::npos)
-          v = dirConfigFile + "/" + v;
-        problemManager.LoadProblemLibrary(v, TProblemManager::STATIC_OBJECT);
-      }
-    }
+    
     else if (name == "managementProgramDllFile")
     {
       if (value != "")
@@ -157,7 +119,7 @@ void TParameters::LoadXML()
         managementProgramDllFile = value;
         if (managementProgramDllFile.find(":") == std::string::npos)
           managementProgramDllFile = dirConfigFile + "/" + managementProgramDllFile;
-        problemManager.LoadProblemLibrary(managementProgramDllFile, TProblemManager::MANAGEMENT_PROGRAM);
+        managementProgram = LoadDLLObject<MANAGEMENT_PROGRAM>(managementProgramDllFile);
       }
     }
     else if (name == "type")
@@ -247,7 +209,7 @@ std::string TParameters::Print()
   result += "\n";
   /// Имена dll с умными вещами
   result += "std::vector<std::string> smartThingDllsFile = \t";
-  for (auto& name : smartThingDllsFile)
+  for (auto& name : smartThingDllsFile) 
   {
     result += name + "\t";
   }
@@ -270,12 +232,6 @@ std::string TParameters::Print()
   result += "double timeAcceleration = \t" + std::to_string(timeAcceleration) + "\n";
   /// Максимальное число итераций
   result += "unsigned long maxStep = \t" + std::to_string(maxStep) + "\n";
-
-#ifdef USE_DLL_OBJ
-  result += "USE DLL";
-#else
-  result += "  NOT USE DLL !!!";
-#endif
 
   return result;
 }

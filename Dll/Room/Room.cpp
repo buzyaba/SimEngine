@@ -1,4 +1,4 @@
-#include "BasicExamples/SmartHouse/Room.h"
+#include "Room.h"
 
 TRoom::TRoom(std::string _name) : TStaticObject(_name) {
   properties.insert(
@@ -11,4 +11,9 @@ TRoom::TRoom(std::string _name) : TStaticObject(_name) {
       {"Rotate",
        new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                        false, "Rotate")});
+}
+
+LIB_EXPORT_API TStaticObject* create()
+{
+    return new TRoom("TRoom");
 }

@@ -9,7 +9,7 @@ IManagementProgram* TProgramFactory::Create(int a, std::vector<TSmartThing*>& _t
   if (GlobalParameters.managementProgramDllFile != "")
   {
     isLoadInDLL = true;
-    IManagementProgram* mp = GlobalParameters.problemManager.GetManagementProgram();
+    IManagementProgram* mp = GlobalParameters.managementProgram;
     mp->SetSmartThing(_things);
     return mp;
   }

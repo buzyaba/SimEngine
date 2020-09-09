@@ -7,3 +7,5 @@ public:
     virtual TStaticObject* Clone() { return new TRoom(); };
     virtual std::string ClassName() override { return std::string("TRoom"); }
 };
+
+extern "C" LIB_EXPORT_API TStaticObject* create();

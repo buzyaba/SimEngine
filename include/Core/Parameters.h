@@ -55,7 +55,7 @@ public:
   /// Максимальное число итераций
   unsigned long maxStep;
 
-  TProblemManager problemManager;
+  IManagementProgram* managementProgram;
 
   TParameters(int argc = -1, char** argv = 0);
 

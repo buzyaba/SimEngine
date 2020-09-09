@@ -1,33 +1,32 @@
-
-file(GLOB hdrs "*.h*")
-file(GLOB_RECURSE source_files "*.cpp")
-
-
-add_library(TestObjectOfObservation SHARED ${source_files} ${hdrs})
+# file(GLOB hdrs "*.h*")
+# file(GLOB_RECURSE source_files "*.cpp")
 
 
-add_definitions(-DGLEW_NO_GLU)
+# add_library(TestObjectOfObservation SHARED ${source_files} ${hdrs})
 
-target_link_libraries(TestObjectOfObservation
-						Core
-						)
+
+# add_definitions(-DGLEW_NO_GLU)
+
+# target_link_libraries(TestObjectOfObservation
+# 						Core
+# 						)
 						
-if (${USE_OPENGL})
-	target_link_libraries(TestObjectOfObservation
-							# Engine
-							glfw 
-							libglewmx_static
-							# LinearMath 
-							${OPENGL_LIBRARIES}
-	)
-endif()
+# if (${USE_OPENGL})
+# 	target_link_libraries(TestObjectOfObservation
+# 							# Engine
+# 							glfw 
+# 							libglewmx_static
+# 							# LinearMath 
+# 							${OPENGL_LIBRARIES}
+# 	)
+# endif()
 						
 						
-if (${BUILD_PLOTTER})
-	target_link_libraries(TestObjectOfObservation
-							MatplotlibC++
-							Python3::Python
-							)
-endif()
+# if (${BUILD_PLOTTER})
+# 	target_link_libraries(TestObjectOfObservation
+# 							MatplotlibC++
+# 							Python3::Python
+# 							)
+# endif()
 
-set_property(TARGET TestObjectOfObservation PROPERTY FOLDER "DLLs") 		
+# set_property(TARGET TestObjectOfObservation PROPERTY FOLDER "DLLs") 		

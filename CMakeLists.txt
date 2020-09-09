@@ -20,7 +20,6 @@ set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 option(BUILD_TESTS "Set ON to build tests" ON)
 option(BUILD_PLOTTER "Set ON to build plotter" OFF)
 option(USE_OPENGL "Set ON to use OpenGL" ON)
-option(BUILD_DLL "Set ON to build Dll" OFF)
 
 # Определяем компилятор
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
@@ -31,6 +30,10 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(IS_MICROSOFT_COMPILER True)
 else()
 	message("Unsupported compiler")
+endif()
+
+if (UNIX)
+	set(CMAKE_CXX_FLAGS "-fPIC")
 endif()
 
 if (${CMAKE_SIZEOF_VOID_P} EQUAL 8)
@@ -191,17 +194,11 @@ if (${BUILD_TESTS})
 	add_subdirectory(${PROJECT_SOURCE_DIR}/Tests)
 endif()
 
-if (${BUILD_DLL})
-	add_definitions(-DUSE_DLL_OBJ)
-endif()	
 
 #подключение основного кода, ВСЕ КОНСТАНТЫ И ПЕРЕМЕННЫЕ ДОЛЖНЫ БЫТЬ ОПРЕДЕЛЕНЫ ДО ЭТОГО
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-# Создавать ли dll c дополнительными объектами
-if (${BUILD_DLL})
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Dll")
-endif()
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Dll")
 
 #Создаем папки
 if (IS_MICROSOFT_COMPILER)

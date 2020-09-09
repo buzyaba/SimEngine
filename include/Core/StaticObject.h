@@ -14,7 +14,7 @@ public:
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой со статичными объектами
-typedef std::vector <TStaticObject*>* CreateStaticObject();
+typedef TStaticObject* CreateStaticObject();
 ///Тип функции-деструктора, которая экспортируется подключаемой библиотекой со статичными объектами
 typedef void DestroyStaticObject(std::vector <TStaticObject*>);
 

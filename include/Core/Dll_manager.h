@@ -34,6 +34,7 @@
 #include "Core/StaticObject.h"
 
 #include <string>
+#include <iostream>
 
 #ifdef WIN32
   #include <direct.h>
@@ -48,52 +49,8 @@
 
 В классе #TProblemManager реализованы основные функции, для загрузки\выгрузки библиотек с задачами
 */
-class TProblemManager
-{
-protected:
-  ///Указатель на дескриптор загруженной библиотеки
-  #ifdef WIN32
-    HINSTANCE mLibHandle;
-  #else
-    void *mLibHandle;
-  #endif
 
-  ///Указатель на созданный объект, описывающий упровляющую программу
-  IManagementProgram* managementProgram;
-  ///Указатель на функцию-фабрику упровляющих программ
-  CreateManagementProgram* createManagementProgram;
-  ///Указатель на функцию-деструктор упровляющих программ
-  DestroyManagementProgram* destroyDestroyManagementProgram;
-
-  ///Указатель на созданный объект, описывающий объекты
-  std::vector <TObjectOfObservation*> objectOfObservations;
-  ///Указатель на функцию-фабрику объектов
-  CreateObjectOfObservation* createObjectOfObservation;
-  ///Указатель на функцию-деструктор объектов
-  DestroyObjectOfObservation* destroyObjectOfObservation;
-
-  ///Указатель на созданный объект, описывающий умные вещи
-  std::vector <TSmartThing*>* smartThings;
-  ///Указатель на функцию-фабрику умных вещей
-  CreateSmartThing* createSmartThing;
-  ///Указатель на функцию-деструктор умных вещей
-  DestroySmartThing* destroySmartThing;
-
-  ///Указатель на созданный объект, описывающий статичные объекты
-  std::vector <TStaticObject*>* staticObjects;
-  ///Указатель на функцию-фабрику статических объектов
-  CreateStaticObject* createStaticObject;
-  ///Указатель на функцию-деструктор статических объектов
-  DestroyStaticObject* destroyStaticObject;
-
-  /// Метод, освобождающий загруженную библиотеку. Будет вызван в деструкторе
-  int FreeProblemLibrary();
-
-  ///Служебный метод, освобождающий #mLibHandle
-  void FreeLibHandler();
-
-public:
-  enum DLL_TYPE
+enum DLL_TYPE
   {
     MANAGEMENT_PROGRAM = 0,
     OBJECT_OF_OBSERVATION = 1,
@@ -101,48 +58,98 @@ public:
     STATIC_OBJECT = 3
   };
 
-  /**
-  Код ошибки, возвращаемый методами #LoadProblemLibrary и #FreeProblemLibrary
-  при успешном выполнении операций
-  */
-  static const int OK_ = 0;
-  /**
-  Код ошибки, возвращаемый методами #LoadProblemLibrary и #FreeProblemLibrary
-  при ошибке во время выполнении операций
-  */
-  static const int ERROR_ = -2;
+    template<DLL_TYPE T>
+    struct creator_type {};
 
-  ///Конструктор
-  TProblemManager();
-  ///Деструктор, в нём вызывается #FreeProblemLibrary
-  ~TProblemManager();
+    template<>
+    struct creator_type<MANAGEMENT_PROGRAM> {
+        using type = CreateManagementProgram;
+        using obj_type = IManagementProgram*;
+    };
 
-  /** Метод, загружающий библиотеку, находящуюся по указанному пути
+    template<>
+    struct creator_type<OBJECT_OF_OBSERVATION> {
+        using type = CreateObjectOfObservation;
+        using obj_type = TObjectOfObservation*;
+    };
 
-  Метод загружает библиотеку, пытается импортировать из неё функции,
-  создающие и уничтожающие задачу, а затем создаёт задачу
+    template<>
+    struct creator_type<SMART_THING> {
+        using type = CreateSmartThing;
+        using obj_type = TSmartThing*;
+    };
 
-  \param[in] libPath Путь к загружаемой библиотеке
-  \return Код ошибки
-  */
-  int LoadProblemLibrary(const std::string& libPath, DLL_TYPE type);
+    template<>
+    struct creator_type<STATIC_OBJECT> {
+        using type = CreateStaticObject;
+        using obj_type = TStaticObject*;
+    };
 
-  /** Метод возвращает указатель IManagementProgram
-  */
-  IManagementProgram* GetManagementProgram() const;
+    std::string findDLLPath(const std::string& path);
 
-  /** Метод возвращает множество объектов
-  */
-  std::vector <TObjectOfObservation*> GetObjectOfObservations() const;
+    ///Служебный метод, освобождающий #mLibHandle
+    void FreeLibHandler(void* mLibHandle);
 
-  /** Метод возвращает множество умных вещей
-  */
-  std::vector <TSmartThing*>* GetSmartThing() const;
+    /** Метод, загружающий библиотеку, находящуюся по указанному пути
 
-  /** Метод возвращает множество статических объектов
-  */
-  std::vector <TStaticObject*>* GetStaticObject() const;
-};
+    Метод загружает библиотеку, импортирует из неё функции,
+    создающие задачу, а затем создаёт задачу
+
+    \param[in] libPath Путь к загружаемой библиотеке 
+    \return Код ошибки
+    */
+    template<DLL_TYPE T>
+    typename creator_type<T>::obj_type LoadDLLObject(const std::string& libPath) {
+        #ifdef WIN32
+  void *mLibHandle = LoadLibrary(TEXT(libPath.c_str()));
+  if (!mLibHandle)
+  {
+    std::cerr << "Cannot load library: " << TEXT(libPath.c_str()) << std::endl;
+  }
+#else
+  void *mLibHandle = dlopen(libPath.c_str(), RTLD_LAZY);
+  if (!mLibHandle)
+  {
+    std::cerr << dlerror() << std::endl;
+  }
+#endif
+    using type = typename creator_type<T>::type;
+#ifdef WIN32
+    auto createObject = (type*)GetProcAddress(mLibHandle, "create");
+    if (!createObject)
+    {
+      std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
+      FreeLibHandler(mLibHandle);
+    }
+#else
+    dlerror();
+    auto createObject = (type*)dlsym(mLibHandle, "create");
+    char* dlsym_error = dlerror();
+    if (dlsym_error)
+    {
+      createObject = NULL;
+      std::cerr << dlsym_error << std::endl;
+      FreeLibHandler(mLibHandle);
+    }
+    dlsym_error = dlerror();
+    if (dlsym_error)
+    {
+      createObject = NULL;
+      std::cerr << dlsym_error << std::endl;
+      FreeLibHandler(mLibHandle);
+    }
+#endif
+    auto object = createObject();
+    if (!object)
+    {
+      FreeLibHandler(mLibHandle);
+      createObject = NULL;
+      object = nullptr;
+      std::cerr << "Cannot create management program instance" << std::endl;
+    }
+    FreeLibHandler(mLibHandle);
+    return object;
+    }
 
 #endif
 // - end of file ----------------------------------------------------------------------------------

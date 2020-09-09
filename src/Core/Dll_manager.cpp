@@ -16,299 +16,110 @@
 
 #include "Core/Dll_manager.h"
 #include <iostream>
+#ifdef WIN32
+    #include <Windows.h>
+#else
+    #include <dirent.h>
+#endif
 
-// ------------------------------------------------------------------------------------------------
-TProblemManager::TProblemManager() : mLibHandle(NULL), managementProgram(NULL),
-createManagementProgram(NULL), destroyDestroyManagementProgram(NULL), 
-createObjectOfObservation(NULL), destroyObjectOfObservation(NULL), 
-createSmartThing(NULL), destroySmartThing(NULL), smartThings(NULL),
-createStaticObject(NULL), destroyStaticObject(NULL), staticObjects(NULL)
-{
+
+std::string findDLLPath(const std::string& path) {
+    std::string objPath;
+#ifdef WIN32
+    WIN32_FIND_DATA file_data;
+    HANDLE h = FindFirstFile((path + "/*").c_str(), &file_data);
+    if (h != INVALID_HANDLE_VALUE) {
+      do {
+        const std::string file_name = file_data.cFileName;
+        const std::string full_file_name = path + "/" + file_name;
+        if (full_file_name.find(".dll") != std::string::npos) {
+          objPath = full_file_name;
+        }
+      } while (FindNextFile(h, &file_data));
+    }
+#else
+    DIR *dir;
+    dirent *ent;
+    const char *dirPath = path.c_str();
+    dir = opendir(dirPath);
+    while ((ent = readdir(dir)) != NULL) {
+      const std::string file_name = ent->d_name;
+      const std::string full_file_name = path + "/" + file_name;
+      if (full_file_name.find(".so") != std::string::npos) {
+        objPath = full_file_name;
+      }
+    }
+    closedir(dir);
+#endif
+    return objPath;
 }
 
 // ------------------------------------------------------------------------------------------------
-TProblemManager::~TProblemManager()
-{
-  FreeProblemLibrary();
-}
+// template<DLL_TYPE T>
+// typename creator_type<T>::obj_type LoadDLLObject(const std::string& libPath)
+// {
+//   //if (mLibHandle)
+//   //  FreeProblemLibrary();
+// #ifdef WIN32
+//   void *mLibHandle = LoadLibrary(TEXT(libPath.c_str()));
+//   if (!mLibHandle)
+//   {
+//     std::cerr << "Cannot load library: " << TEXT(libPath.c_str()) << std::endl;
+//   }
+// #else
+//   void *mLibHandle = dlopen(libPath.c_str(), RTLD_LAZY);
+//   if (!mLibHandle)
+//   {
+//     std::cerr << dlerror() << std::endl;
+//   }
+// #endif
+//     using type = typename creator_type<T>::type;
+// #ifdef WIN32
+//     auto createObject = (type*)GetProcAddress(mLibHandle, "create");
+//     if (!createObject)
+//     {
+//       std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
+//       FreeLibHandler(mLibHandle);
+//     }
+// #else
+//     dlerror();
+//     auto createObject = (type*)dlsym(mLibHandle, "create");
+//     char* dlsym_error = dlerror();
+//     if (dlsym_error)
+//     {
+//       createObject = NULL;
+//       std::cerr << dlsym_error << std::endl;
+//       FreeLibHandler(mLibHandle);
+//     }
+//     dlsym_error = dlerror();
+//     if (dlsym_error)
+//     {
+//       createObject = NULL;
+//       std::cerr << dlsym_error << std::endl;
+//       FreeLibHandler(mLibHandle);
+//     }
+// #endif
+//     auto object = createObject();
+//     if (!object)
+//     {
+//       FreeLibHandler(mLibHandle);
+//       createObject = NULL;
+//       object = nullptr;
+//       std::cerr << "Cannot create management program instance" << std::endl;
+//     }
+//     FreeLibHandler(mLibHandle);
+//     return object;
+// }
 
 // ------------------------------------------------------------------------------------------------
-int TProblemManager::LoadProblemLibrary(const std::string& libPath, DLL_TYPE type)
+void FreeLibHandler(void* mLibHandle)
 {
-#ifdef USE_DLL_OBJ
-
-  //if (mLibHandle)
-  //  FreeProblemLibrary();
-#ifdef WIN32
-  mLibHandle = LoadLibrary(TEXT(libPath.c_str()));
-  if (!mLibHandle)
-  {
-    std::cerr << "Cannot load library: " << TEXT(libPath.c_str()) << std::endl;
-    return TProblemManager::ERROR_;
-  }
-#else
-  mLibHandle = dlopen(libPath.c_str(), RTLD_LAZY);
-  if (!mLibHandle)
-  {
-    std::cerr << dlerror() << std::endl;
-    return TProblemManager::ERROR_;
-  }
-#endif
-
-  if (type == TProblemManager::MANAGEMENT_PROGRAM)
-  {
-#ifdef WIN32
-    createManagementProgram = (CreateManagementProgram*)GetProcAddress(mLibHandle, "create");
-    destroyDestroyManagementProgram = (DestroyManagementProgram*)GetProcAddress(mLibHandle, "destroy");
-    if (!createManagementProgram || !destroyDestroyManagementProgram)
-    {
-      std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#else
-    dlerror();
-    createManagementProgram = (CreateManagementProgram*)dlsym(mLibHandle, "create");
-    char* dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createManagementProgram = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-    destroyDestroyManagementProgram = (DestroyManagementProgram*)dlsym(mLibHandle, "destroy");
-    dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createManagementProgram = NULL;
-      destroyDestroyManagementProgram = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#endif
-  }
-  else if (type == TProblemManager::OBJECT_OF_OBSERVATION)
-  {
-#ifdef WIN32
-    createObjectOfObservation = (CreateObjectOfObservation*)GetProcAddress(mLibHandle, "create");
-    destroyObjectOfObservation = (DestroyObjectOfObservation*)GetProcAddress(mLibHandle, "destroy");
-    if (!createObjectOfObservation || !destroyObjectOfObservation)
-    {
-      std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#else
-    dlerror();
-    createObjectOfObservation = (CreateObjectOfObservation*)dlsym(mLibHandle, "create");
-    char* dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createObjectOfObservation = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-    destroyObjectOfObservation = (DestroyObjectOfObservation*)dlsym(mLibHandle, "destroy");
-    dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createObjectOfObservation = NULL;
-      destroyObjectOfObservation = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#endif
-  }
-  else if (type == TProblemManager::SMART_THING)
-  {
-#ifdef WIN32
-    createSmartThing = (CreateSmartThing*)GetProcAddress(mLibHandle, "create");
-    destroySmartThing = (DestroySmartThing*)GetProcAddress(mLibHandle, "destroy");
-    if (!createSmartThing || !destroySmartThing)
-    {
-      std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#else
-    dlerror();
-    createSmartThing = (CreateSmartThing*)dlsym(mLibHandle, "create");
-    char* dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createSmartThing = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-    destroySmartThing = (DestroySmartThing*)dlsym(mLibHandle, "destroy");
-    dlsym_error = dlerror();
-    if (dlsym_error)
-    {
-      createSmartThing = NULL;
-      destroySmartThing = NULL;
-      std::cerr << dlsym_error << std::endl;
-      FreeLibHandler();
-      return TProblemManager::ERROR_;
-    }
-#endif
-  }
-  else if (type == TProblemManager::STATIC_OBJECT)
-  {
-#ifdef WIN32
-  createStaticObject = (CreateStaticObject*)GetProcAddress(mLibHandle, "create");
-  destroyStaticObject = (DestroyStaticObject*)GetProcAddress(mLibHandle, "destroy");
-  if (!createStaticObject || !destroyStaticObject)
-  {
-    std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
-    FreeLibHandler();
-    return TProblemManager::ERROR_;
-  }
-#else
-  dlerror();
-  createStaticObject = (CreateStaticObject*)dlsym(mLibHandle, "create");
-  char* dlsym_error = dlerror();
-  if (dlsym_error)
-  {
-    createStaticObject = NULL;
-    std::cerr << dlsym_error << std::endl;
-    FreeLibHandler();
-    return TProblemManager::ERROR_;
-  }
-  destroyStaticObject = (DestroyStaticObject*)dlsym(mLibHandle, "destroy");
-  dlsym_error = dlerror();
-  if (dlsym_error)
-  {
-    createStaticObject = NULL;
-    destroyStaticObject = NULL;
-    std::cerr << dlsym_error << std::endl;
-    FreeLibHandler();
-    return TProblemManager::ERROR_;
-  }
-#endif
-  }
-
-  if (type == TProblemManager::MANAGEMENT_PROGRAM)
-  {
-    managementProgram = createManagementProgram();
-    if (!managementProgram)
-    {
-      FreeLibHandler();
-      createManagementProgram = NULL;
-      destroyDestroyManagementProgram = NULL;
-      std::cerr << "Cannot create management program instance" << std::endl;
-    }
-  }
-  else if (type == TProblemManager::OBJECT_OF_OBSERVATION)
-  {
-    std::vector <TObjectOfObservation*> cr = createObjectOfObservation();
-    for (auto& c : cr)
-      objectOfObservations.push_back(c);
-
-    if (objectOfObservations.size() == 0)
-    {
-      FreeLibHandler();
-      createObjectOfObservation = NULL;
-      destroyObjectOfObservation = NULL;
-      std::cerr << "Cannot create object of observation instance" << std::endl;
-    }
-  }
-  else if (type == TProblemManager::SMART_THING)
-  {
-    if (smartThings == NULL)
-      smartThings = new std::vector <TSmartThing*>();
-
-    std::vector <TSmartThing*>* cr = createSmartThing();
-    for (auto& c : *cr)
-      smartThings->push_back(c);
-    
-    if (smartThings->size() == 0)
-    {
-      FreeLibHandler();
-      createSmartThing = NULL;
-      destroySmartThing = NULL;
-      std::cerr << "Cannot create object of observation instance" << std::endl;
-    }
-  }
-  else if (type == TProblemManager::STATIC_OBJECT)
-  {
-    if (staticObjects == NULL)
-      staticObjects = new std::vector <TStaticObject*>();
-    std::vector <TStaticObject*>* cr = createStaticObject();
-    for (auto& c : *cr)
-      staticObjects->push_back(c);
-
-    if (staticObjects->size() == 0)
-    {
-      FreeLibHandler();
-      createStaticObject = NULL;
-      destroyStaticObject = NULL;
-      std::cerr << "Cannot create object of observation instance" << std::endl;
-    }
-  }
-#endif
-  return TProblemManager::OK_;
-}
-
-// ------------------------------------------------------------------------------------------------
-void TProblemManager::FreeLibHandler()
-{
-#ifdef USE_DLL_OBJ
 #ifdef WIN32
   FreeLibrary(mLibHandle);
 #else
   dlclose(mLibHandle);
 #endif
   mLibHandle = NULL;
-#endif
 }
 
 // ------------------------------------------------------------------------------------------------
-int TProblemManager::FreeProblemLibrary()
-{
-  if (managementProgram)
-    destroyDestroyManagementProgram(managementProgram);
-  if (mLibHandle)
-    FreeLibHandler();
-  mLibHandle = NULL;
-  managementProgram = NULL;
-  createManagementProgram = NULL;
-  destroyDestroyManagementProgram = NULL;
-  return TProblemManager::OK_;
-}
-
-// ------------------------------------------------------------------------------------------------
-IManagementProgram* TProblemManager::GetManagementProgram() const
-{
-  if (managementProgram)
-    return managementProgram;
-  else
-    return NULL;
-}
-std::vector<TObjectOfObservation*> TProblemManager::GetObjectOfObservations() const
-{
-
-  if (objectOfObservations.size() != 0)
-    return objectOfObservations;
-  else
-    return std::vector<TObjectOfObservation*>();
-}
-std::vector<TSmartThing*>* TProblemManager::GetSmartThing() const
-{
-  if (smartThings != NULL)
-    return smartThings;
-  else
-    return NULL;
-}
-std::vector<TStaticObject*>* TProblemManager::GetStaticObject() const
-{
-  if (staticObjects != NULL)
-    return staticObjects;
-  else
-  return NULL;
-}
-// - end of file ----------------------------------------------------------------------------------
