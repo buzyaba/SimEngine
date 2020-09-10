@@ -1,24 +1,20 @@
-#file(GLOB_RECURSE engine_source "../Engine/*.cpp")
-file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/BasicExamples/SmartHouse/*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
 file(GLOB TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/BasicExamples/TrafficSim/*.cpp)
 list(REMOVE_ITEM TRAFFIC_SIM ${CMAKE_SOURCE_DIR}/src/BasicExamples/TrafficSim/main.cpp)
 
-add_executable(SmartHouse ${source_files} ${hdrs} ${TRAFFIC_SIM})
-
-#target_link_libraries(SmartHouse glfw ${OPENGL_LIBRARIES})
+add_executable(SimEngine ${source_files} ${TRAFFIC_SIM})
 
 add_definitions(-DGLEW_NO_GLU)
 
-target_link_libraries(SmartHouse						
+target_link_libraries(SimEngine						
 						Core
 						pugixml 
 						output_system
 						)
 						
 if (${USE_OPENGL})
-	target_link_libraries(SmartHouse
+	target_link_libraries(SimEngine
 							Engine
 							glfw 
 							libglewmx_static
@@ -30,7 +26,7 @@ endif()
 						
 						
 if (${BUILD_PLOTTER})
-	target_link_libraries(SmartHouse
+	target_link_libraries(SimEngine
 							#MatplotlibC++
 							Python3::Python
 							)

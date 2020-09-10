@@ -1,4 +1,4 @@
-#include "BasicExamples/SmartHouse/Terminal.h"
+#include "Terminal.h"
 
 TTerminal::TTerminal(std::string _name) : TObjectOfObservation(_name) {
   properties.insert(
@@ -52,4 +52,9 @@ void TTerminal::Update() {
     textures[0][2] = "monitorON.png";
   else
     textures[0][2] = "monitorOFF.png";
+}
+
+LIB_EXPORT_API TObjectOfObservation* create()
+{
+    return new TTerminal("TTerminal");
 }

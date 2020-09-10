@@ -1,4 +1,4 @@
-#include "BasicExamples/SmartHouse/Desktop.hpp"
+#include "Desktop.hpp"
 
 TDesktop::TDesktop(std::string _name) : TObjectOfObservation(_name) {
   properties.insert(
@@ -46,4 +46,9 @@ void TDesktop::Update() {
 
   isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
   /// ���������� ��������
+}
+
+LIB_EXPORT_API TObjectOfObservation* create()
+{
+    return new TDesktop("TDesktop");
 }

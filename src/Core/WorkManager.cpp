@@ -92,8 +92,6 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   "Simulation time = \t" << static_cast<double>(parameters.maxStep * parameters.millisecondsInTimeStep) / 60000 <<" minutes\n" << std::endl;
 
   // storage->PrintToFile();
-
-
   program->End();
   Dll_Manager::FreeDllManager();
 }

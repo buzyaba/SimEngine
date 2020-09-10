@@ -12,3 +12,5 @@ public:
     virtual TObjectOfObservation* Clone() { return new TDesktop(); };
     virtual std::string ClassName() override { return std::string("TDesktop"); }
 };
+
+extern "C" LIB_EXPORT_API TObjectOfObservation* create();

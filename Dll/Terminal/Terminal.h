@@ -12,3 +12,5 @@ public:
     virtual TObjectOfObservation* Clone() { return new TTerminal(); };
     virtual std::string ClassName() override { return std::string("TTerminal"); }
 };
+
+extern "C" LIB_EXPORT_API TObjectOfObservation* create();

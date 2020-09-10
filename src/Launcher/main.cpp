@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
   int _enableVisualisation = 0;
 #ifdef USE_OPENGL
   TGraphicManager *graphicManager =
-      new TGraphicManager(GlobalParameters.type, "Smart House");
+      new TGraphicManager(GlobalParameters.type, "SimEngine");
   presenter->setGraphicManager(graphicManager);
   // ????
   workManager->sendObjects();

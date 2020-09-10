@@ -1,4 +1,4 @@
-#include "BasicExamples/SmartHouse/Table.h"
+#include "Table.h"
 
 TTable::TTable(std::string _name) : TStaticObject(_name) {
   properties.insert(
@@ -12,4 +12,9 @@ TTable::TTable(std::string _name) : TStaticObject(_name) {
       {"Scale", new TProperties({{"Width", 3}, {"Length", 3}, {"Height", 3}},
                                 false, "Scale")});
   //   textures.push_back({{"Стол_Куб.004"}, {"table.jpg"}, {"table.jpg"}});
+}
+
+LIB_EXPORT_API TStaticObject* create()
+{
+    return new TTable("TTable");
 }

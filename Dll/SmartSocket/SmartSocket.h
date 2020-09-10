@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/SmartThing.h"
-#include "BasicExamples/SmartHouse/Switch.h"
-#include "BasicExamples/SmartHouse/ElectricitySensor.h"
+#include "Switch.h"
+#include "ElectricitySensor.h"
 
 class TSmartSocket : public TSmartThing
 {
@@ -12,3 +12,5 @@ public:
     virtual TSmartThing* Clone() { return new TSmartSocket(); };
   virtual std::string ClassName() override { return std::string("TSmartSocket"); }
 };
+
+extern "C" LIB_EXPORT_API TSmartThing* create();
