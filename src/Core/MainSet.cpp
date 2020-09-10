@@ -12,7 +12,6 @@
 #include "BasicExamples/TrafficSim/Street.hpp"
 #include "BasicExamples/TrafficSim/TrafficLight.hpp"
 
-
 #include "../lib/pugixml/include/pugixml.hpp"
 
 #include <string.h>
@@ -35,7 +34,7 @@ void ParseString(std::string str, std::vector<double> &tt) {
   delete[] s;
 }
 // Тут надо подумать над парсингом строки, потому что сейчас любая ошибка (не
-// соответствие имени проперти и значения) все уронит 
+// соответствие имени проперти и значения) все уронит
 void SetProperty(IObject *object, std::string nameProperty,
                  std::string valueProperty) {
   if (nameProperty == "Name")
@@ -58,9 +57,9 @@ void SetProperty(IObject *object, std::string nameProperty,
 }
 
 TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
-  std::vector<TObjectOfObservation *> LocalObjects;
+  std::vector<TObjectOfObservation *> ObjectOfObservations;
   std::vector<TStaticObject *> StaticObjects;
-  std::vector<TSmartThing *> LocalThing;
+  std::vector<TSmartThing *> SmartThings;
 
   // StaticObjects.push_back(new TRoom("Room"));
   StaticObjects.push_back(new TTable("Table"));
@@ -72,23 +71,23 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   //     StaticObjects.push_back(obj);
   // }
 
-  LocalObjects.push_back(new TTerminal("Terminal"));
-  LocalObjects.push_back(new TDesktop("Desktop"));
-  LocalObjects.push_back(new TRoad("Road"));
-  LocalObjects.push_back(new TCarCreator("CarCreator"));
-  LocalObjects.push_back(new TCarDestroyer("CarDestroyer"));
+  ObjectOfObservations.push_back(new TTerminal("Terminal"));
+  ObjectOfObservations.push_back(new TDesktop("Desktop"));
+  ObjectOfObservations.push_back(new TRoad("Road"));
+  ObjectOfObservations.push_back(new TCarCreator("CarCreator"));
+  ObjectOfObservations.push_back(new TCarDestroyer("CarDestroyer"));
   // std::vector<TObjectOfObservation *> oos =
   //     GlobalParameters.problemManager.GetObjectOfObservations();
   // for (auto &obj : oos)
-  //   LocalObjects.push_back(obj);
+  //   ObjectOfObservations.push_back(obj);
 
-  LocalThing.push_back(new TSmartSocket("SmartSocket"));
-  LocalThing.push_back(new TTrafficLight("TrafficLight"));
+  SmartThings.push_back(new TSmartSocket("SmartSocket"));
+  SmartThings.push_back(new TTrafficLight("TrafficLight"));
   // std::vector<TSmartThing *> *sts =
   //     GlobalParameters.problemManager.GetSmartThing();
   // if (sos != NULL) {
   //   for (auto &obj : *sts)
-  //     LocalThing.push_back(obj);
+  //     SmartThings.push_back(obj);
   // }
 
   pugi::xml_document doc;
@@ -102,53 +101,89 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
 
   for (pugi::xml_node iter = config.first_child(); iter != 0;
        iter = iter.next_sibling()) {
-    std::string name = iter.name();
-    std::string value = iter.child_value();
+    std::string obj_type = iter.name();
+    if (obj_type == "StaticObject") {
+      for (pugi::xml_node static_objects_iter = iter.first_child();
+           static_objects_iter != 0;
+           static_objects_iter = static_objects_iter.next_sibling()) {
+        std::string name = static_objects_iter.name();
+        auto result =
+            std::find_if(StaticObjects.begin(), StaticObjects.end(),
+                         [&](auto &t) { return t->ClassName() == name; });
 
-    auto result = std::find_if(StaticObjects.begin(), StaticObjects.end(), [&] (auto& t) {return t->ClassName() == name;});
-
-    if (result == std::end(StaticObjects)) {
-        StaticObjects.push_back(LoadDLLObject<STATIC_OBJECT>(findDLLPath(getPath("/assets/models/" + name))));
-        result = std::prev(StaticObjects.end());
-    }
-
-    /// Создаем новые статические объекты
-    TStaticObject *newStaticObject = (*result)->Clone();
-    for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0;
-            iter2 = iter2.next_sibling()) {
-        std::string nameProperty = iter2.name();
-        std::string valueProperty = iter2.child_value();
-        SetProperty(newStaticObject, nameProperty, valueProperty);
-    }
-    staticObjects.push_back(newStaticObject);
-    // ATTENTION
-    allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
-
-    /// Создаем новые объекты
-    for (int i = 0; i < LocalObjects.size(); i++) {
-      if (LocalObjects[i]->ClassName() == name) {
-        TObjectOfObservation *newObject = LocalObjects[i]->Clone();
-        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0;
-             iter2 = iter2.next_sibling()) {
-          std::string nameProperty = iter2.name();
-          std::string valueProperty = iter2.child_value();
-          SetProperty(newObject, nameProperty, valueProperty);
+        if (result == std::end(StaticObjects)) {
+          StaticObjects.push_back(Dll_Manager::LoadDLLObject<STATIC_OBJECT>(
+              Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
+          result = std::prev(StaticObjects.end());
         }
 
+        /// Создаем новые статические объекты
+        TStaticObject *newStaticObject = (*result)->Clone();
+        for (pugi::xml_node iter_obj_property =
+                 static_objects_iter.first_child();
+             iter_obj_property != 0;
+             iter_obj_property = iter_obj_property.next_sibling()) {
+          std::string nameProperty = iter_obj_property.name();
+          std::string valueProperty = iter_obj_property.child_value();
+          SetProperty(newStaticObject, nameProperty, valueProperty);
+        }
+        staticObjects.push_back(newStaticObject);
+        // ATTENTION
+        allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
+      }
+
+    } else if (obj_type == "ObjectOfObservation") {
+      for (pugi::xml_node obj_of_observe_iter = iter.first_child();
+           obj_of_observe_iter != 0;
+           obj_of_observe_iter = obj_of_observe_iter.next_sibling()) {
+        std::string name = obj_of_observe_iter.name();
+        auto result = std::find_if(
+            ObjectOfObservations.begin(), ObjectOfObservations.end(),
+            [&](auto &t) { return t->ClassName() == name; });
+
+        if (result == std::end(ObjectOfObservations)) {
+          ObjectOfObservations.push_back(
+              Dll_Manager::LoadDLLObject<OBJECT_OF_OBSERVATION>(
+                  Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
+          result = std::prev(ObjectOfObservations.end());
+        }
+
+        /// Создаем новые объекты
+        TObjectOfObservation *newObject = (*result)->Clone();
+        for (pugi::xml_node iter_obj_property =
+                 obj_of_observe_iter.first_child();
+             iter_obj_property != 0;
+             iter_obj_property = iter_obj_property.next_sibling()) {
+          std::string nameProperty = iter_obj_property.name();
+          std::string valueProperty = iter_obj_property.child_value();
+          SetProperty(newObject, nameProperty, valueProperty);
+        }
         objects.push_back(newObject);
         // ATTENTION
         allGObjects[newObject->ClassName()].push_back(newObject);
       }
-    }
+    } else if (obj_type == "SmartThing") {
+      for (pugi::xml_node smart_thing_iter = iter.first_child();
+           smart_thing_iter != 0;
+           smart_thing_iter = smart_thing_iter.next_sibling()) {
+        std::string name = smart_thing_iter.name();
+        auto result =
+            std::find_if(SmartThings.begin(), SmartThings.end(),
+                         [&](auto &t) { return t->ClassName() == name; });
 
-    /// Создаем новые умные вещи
-    for (int i = 0; i < LocalThing.size(); i++) {
-      if (LocalThing[i]->ClassName() == name) {
-        TSmartThing *newThing = LocalThing[i]->Clone();
-        for (pugi::xml_node iter2 = iter.first_child(); iter2 != 0;
-             iter2 = iter2.next_sibling()) {
-          std::string nameProperty = iter2.name();
-          std::string valueProperty = iter2.child_value();
+        if (result == std::end(SmartThings)) {
+          SmartThings.push_back(Dll_Manager::LoadDLLObject<SMART_THING>(
+              Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
+          result = std::prev(SmartThings.end());
+        }
+
+        /// Создаем новые умные вещи
+        TSmartThing *newThing = (*result)->Clone();
+        for (pugi::xml_node iter_obj_property = smart_thing_iter.first_child();
+             iter_obj_property != 0;
+             iter_obj_property = iter_obj_property.next_sibling()) {
+          std::string nameProperty = iter_obj_property.name();
+          std::string valueProperty = iter_obj_property.child_value();
           if (nameProperty == "Object") {
             for (int j = 0; j < objects.size(); j++) {
               if (objects[j]->GetName() == valueProperty)
@@ -157,7 +192,6 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
           } else
             SetProperty(newThing, nameProperty, valueProperty);
         }
-
         things.push_back(newThing);
       }
     }

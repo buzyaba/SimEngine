@@ -1,84 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
+  <StaticObject>
   <TRoom>
 	<Name>Room1</Name>
   <Scale>1.5 1.5 1.5</Scale>
   </TRoom>
-  <TTerminal>
-	<Name>Terminal1</Name>
-  <Coordinate>-30 -5.5 2</Coordinate>
-  <Rotate>0.0 90.0 0.0</Rotate>
-  </TTerminal>
-  <TTerminal>
-	<Name>Terminal2</Name>
-  <Coordinate>-30 -5.5 -10</Coordinate>
-  <Rotate>0.0 90.0 0.0</Rotate>
-  </TTerminal>
-  <TSmartSocket>
-	<Name>SmartSocket1</Name>
-	<Object>Terminal1</Object>
-  <Object>Terminal2</Object>
-  </TSmartSocket>
-  <TDesktop>
-  <Name>Desktop1</Name>
-  <Coordinate>-16.5 -5.5 -18.5</Coordinate>
-  </TDesktop>
-  <TTerminal>
-  <Name>Terminal3</Name>
-  <Coordinate>-6 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TDesktop>
-  <Name>Desktop2</Name>
-  <Coordinate>7.5 -5.5 -18.5</Coordinate>
-  </TDesktop>
-  <TTerminal>
-  <Name>Terminal4</Name>
-  <Coordinate>18 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TDesktop>
-  <Name>Desktop3</Name>
-  <Coordinate>31.5 -5.5 -18.5</Coordinate>
-  </TDesktop>
-  <TTerminal>
-  <Name>Terminal5</Name>
-  <Coordinate>42.5 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TSmartSocket>
-	<Name>SmartSocket2</Name>
-	<Object>Desktop1</Object>
-  <Object>Terminal3</Object>
-  <Object>Desktop2</Object>
-  <Object>Terminal4</Object>
-  <Object>Desktop3</Object>
-  <Object>Terminal5</Object>
-  </TSmartSocket>
-  <TDesktop>
-  <Name>Desktop4</Name>
-  <Coordinate>46 -5.5 -1</Coordinate>
-  <Rotate>0.0 -90.0 0.0</Rotate>
-  </TDesktop>
-  <TTerminal>
-	<Name>Terminal6</Name>
-  <Coordinate>46 -5.5 10</Coordinate>
-  <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
-  <TDesktop>
-  <Name>Desktop5</Name>
-  <Coordinate>46 -5.5 23</Coordinate>
-  <Rotate>0.0 -90.0 0.0</Rotate>
-  </TDesktop>
-  <TTerminal>
-	<Name>Terminal7</Name>
-  <Coordinate>46 -5.5 34</Coordinate>
-  <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
-  <TSmartSocket>
-	<Name>SmartSocket3</Name>
-	<Object>Desktop4</Object>
-  <Object>Terminal6</Object>
-  <Object>Desktop5</Object>
-  <Object>Terminal7</Object>
-  </TSmartSocket>
   <TTable>
 	<Name>Table1</Name>
   <Coordinate>-32 -13.5 0</Coordinate>
@@ -144,4 +70,92 @@
   <Coordinate>10 -13.5 6</Coordinate>
   <Scale>5 3 5</Scale>
   </TTable>
+  </StaticObject>
+  <ObjectOfObservation>
+  <TTerminal>
+	<Name>Terminal1</Name>
+  <Coordinate>-30 -5.5 2</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTerminal>
+  <TTerminal>
+	<Name>Terminal2</Name>
+  <Coordinate>-30 -5.5 -10</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTerminal>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket1</Name>
+	<Object>Terminal1</Object>
+  <Object>Terminal2</Object>
+  </TSmartSocket>
+  </SmartThing>
+  <ObjectOfObservation>
+  <TDesktop>
+  <Name>Desktop1</Name>
+  <Coordinate>-16.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal3</Name>
+  <Coordinate>-6 -5.5 -18.5</Coordinate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop2</Name>
+  <Coordinate>7.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal4</Name>
+  <Coordinate>18 -5.5 -18.5</Coordinate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop3</Name>
+  <Coordinate>31.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TTerminal>
+  <Name>Terminal5</Name>
+  <Coordinate>42.5 -5.5 -18.5</Coordinate>
+  </TTerminal>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket2</Name>
+	<Object>Desktop1</Object>
+  <Object>Terminal3</Object>
+  <Object>Desktop2</Object>
+  <Object>Terminal4</Object>
+  <Object>Desktop3</Object>
+  <Object>Terminal5</Object>
+  </TSmartSocket>
+  </SmartThing>
+  <ObjectOfObservation>
+  <TDesktop>
+  <Name>Desktop4</Name>
+  <Coordinate>46 -5.5 -1</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TDesktop>
+  <TTerminal>
+	<Name>Terminal6</Name>
+  <Coordinate>46 -5.5 10</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TTerminal>
+  <TDesktop>
+  <Name>Desktop5</Name>
+  <Coordinate>46 -5.5 23</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TDesktop>
+  <TTerminal>
+	<Name>Terminal7</Name>
+  <Coordinate>46 -5.5 34</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TTerminal>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket3</Name>
+	<Object>Desktop4</Object>
+  <Object>Terminal6</Object>
+  <Object>Desktop5</Object>
+  <Object>Terminal7</Object>
+  </TSmartSocket>
+  </SmartThing>
 </config>

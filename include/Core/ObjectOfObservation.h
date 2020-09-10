@@ -41,9 +41,7 @@ public:
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с объектами
-typedef std::vector <TObjectOfObservation*> CreateObjectOfObservation();
-///Тип функции-деструктора, которая экспортируется подключаемой библиотекой с объектами
-typedef void DestroyObjectOfObservation(std::vector <TObjectOfObservation*>);
+typedef TObjectOfObservation* CreateObjectOfObservation();
 
 ///Префикс для фуккций, экспортируемых подключаемой библиотекой
 #ifdef WIN32

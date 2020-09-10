@@ -22,8 +22,9 @@
     #include <dirent.h>
 #endif
 
+std::vector<void *> Dll_Manager::mLibHandles{};
 
-std::string findDLLPath(const std::string& path) {
+std::string Dll_Manager::findDLLPath(const std::string& path) {
     std::string objPath;
 #ifdef WIN32
     WIN32_FIND_DATA file_data;
@@ -55,71 +56,16 @@ std::string findDLLPath(const std::string& path) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// template<DLL_TYPE T>
-// typename creator_type<T>::obj_type LoadDLLObject(const std::string& libPath)
-// {
-//   //if (mLibHandle)
-//   //  FreeProblemLibrary();
-// #ifdef WIN32
-//   void *mLibHandle = LoadLibrary(TEXT(libPath.c_str()));
-//   if (!mLibHandle)
-//   {
-//     std::cerr << "Cannot load library: " << TEXT(libPath.c_str()) << std::endl;
-//   }
-// #else
-//   void *mLibHandle = dlopen(libPath.c_str(), RTLD_LAZY);
-//   if (!mLibHandle)
-//   {
-//     std::cerr << dlerror() << std::endl;
-//   }
-// #endif
-//     using type = typename creator_type<T>::type;
-// #ifdef WIN32
-//     auto createObject = (type*)GetProcAddress(mLibHandle, "create");
-//     if (!createObject)
-//     {
-//       std::cerr << "Error load ManagementProgram. Cannot load symbols: " << GetLastError() << std::endl;
-//       FreeLibHandler(mLibHandle);
-//     }
-// #else
-//     dlerror();
-//     auto createObject = (type*)dlsym(mLibHandle, "create");
-//     char* dlsym_error = dlerror();
-//     if (dlsym_error)
-//     {
-//       createObject = NULL;
-//       std::cerr << dlsym_error << std::endl;
-//       FreeLibHandler(mLibHandle);
-//     }
-//     dlsym_error = dlerror();
-//     if (dlsym_error)
-//     {
-//       createObject = NULL;
-//       std::cerr << dlsym_error << std::endl;
-//       FreeLibHandler(mLibHandle);
-//     }
-// #endif
-//     auto object = createObject();
-//     if (!object)
-//     {
-//       FreeLibHandler(mLibHandle);
-//       createObject = NULL;
-//       object = nullptr;
-//       std::cerr << "Cannot create management program instance" << std::endl;
-//     }
-//     FreeLibHandler(mLibHandle);
-//     return object;
-// }
-
-// ------------------------------------------------------------------------------------------------
-void FreeLibHandler(void* mLibHandle)
+void Dll_Manager::FreeDllManager()
 {
+  for (auto& handle : mLibHandles) {
 #ifdef WIN32
-  FreeLibrary(mLibHandle);
+  FreeLibrary(handle);
 #else
-  dlclose(mLibHandle);
+  dlclose(handle);
 #endif
-  mLibHandle = NULL;
+  handle = NULL;
+  }
 }
 
 // ------------------------------------------------------------------------------------------------

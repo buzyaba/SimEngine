@@ -32,9 +32,7 @@ public:
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с умными вещами
-typedef std::vector <TSmartThing*>* CreateSmartThing();
-///Тип функции-деструктора, которая экспортируется подключаемой библиотекой с умными вещами
-typedef void DestroySmartThing(std::vector <TSmartThing*>);
+typedef TSmartThing* CreateSmartThing();
 
 ///Префикс для фуккций, экспортируемых подключаемой библиотекой
 #ifdef WIN32

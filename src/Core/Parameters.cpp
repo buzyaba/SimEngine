@@ -119,7 +119,7 @@ void TParameters::LoadXML()
         managementProgramDllFile = value;
         if (managementProgramDllFile.find(":") == std::string::npos)
           managementProgramDllFile = dirConfigFile + "/" + managementProgramDllFile;
-        managementProgram = LoadDLLObject<MANAGEMENT_PROGRAM>(managementProgramDllFile);
+        managementProgram = Dll_Manager::LoadDLLObject<MANAGEMENT_PROGRAM>(managementProgramDllFile);
       }
     }
     else if (name == "type")

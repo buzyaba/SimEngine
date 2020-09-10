@@ -95,6 +95,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
 
   program->End();
+  Dll_Manager::FreeDllManager();
 }
 
 void TWorkManager::Stop()
