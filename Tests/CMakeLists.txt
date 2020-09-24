@@ -31,7 +31,7 @@ target_link_libraries(${PROJECT_NAME_STR}
 if (${USE_OPENGL})
 	target_link_libraries(${PROJECT_NAME_STR}
 							# Engine
-							libglewmx_static
+							libglew_shared
 							# LinearMath 
 							glfw  ${OPENGL_LIBRARIES}
 	)

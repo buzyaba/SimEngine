@@ -22,7 +22,12 @@
     #include <dirent.h>
 #endif
 
-std::vector<void *> Dll_Manager::mLibHandles{};
+#ifdef WIN32
+  std::vector<HINSTANCE> Dll_Manager::mLibHandles{};
+  #else
+    std::vector<void *> Dll_Manager::mLibHandles{};
+  #endif
+
 
 std::string Dll_Manager::findDLLPath(const std::string& path) {
     std::string objPath;

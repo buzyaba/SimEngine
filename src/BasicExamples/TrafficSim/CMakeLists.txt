@@ -19,7 +19,7 @@
 # 	target_link_libraries(TrafficSim
 # 							Engine
 # 							glfw 
-# 							libglewmx_static
+# 							libglew_shared
 # 							assimp
 # 							# LinearMath 
 # 							${OPENGL_LIBRARIES}

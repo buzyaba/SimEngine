@@ -15,7 +15,7 @@
 # 	target_link_libraries(TestObjectOfObservation
 # 							# Engine
 # 							glfw 
-# 							libglewmx_static
+# 							libglew_shared
 # 							# LinearMath 
 # 							${OPENGL_LIBRARIES}
 # 	)

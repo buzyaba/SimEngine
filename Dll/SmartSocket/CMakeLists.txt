@@ -20,7 +20,7 @@ if (${USE_OPENGL})
 	target_link_libraries(SmartSocket
 							# Engine
 							glfw 
-							libglewmx_static
+							libglew_shared
 							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)

@@ -15,9 +15,9 @@ target_link_libraries(SimEngine
 						
 if (${USE_OPENGL})
 	target_link_libraries(SimEngine
+							libglew_shared
 							Engine
 							glfw 
-							libglewmx_static
 							assimp
 							# LinearMath 
 							${OPENGL_LIBRARIES}
