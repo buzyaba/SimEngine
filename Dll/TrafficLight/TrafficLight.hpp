@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Core/SmartThing.h"
-#include "BasicExamples/TrafficSim/Road.hpp"
-#include "BasicExamples/TrafficSim/Barrage.hpp"
-#include "BasicExamples/TrafficSim/CarNumberSensor.hpp"
+#include "Barrage.hpp"
+#include "CarNumberSensor.hpp"
 
 class TTrafficLight : public TSmartThing
 {
@@ -22,3 +21,5 @@ public:
     virtual TSmartThing* Clone() { return new TTrafficLight(); };
     virtual std::string ClassName() override { return std::string("TTrafficLight"); }
 };
+
+extern "C" LIB_EXPORT_API TSmartThing* create();

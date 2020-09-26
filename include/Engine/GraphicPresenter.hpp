@@ -3,8 +3,11 @@
 #include "Core/Object.h"
 
 #ifdef USE_OPENGL
-#include "GraphicManager.hpp"
+    #include "GraphicManager.hpp"
+#else
+    class TGraphicManager;
 #endif
+
 
 class IGraphicPresenter {
   public:

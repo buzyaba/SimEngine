@@ -1,5 +1,5 @@
-#include <BasicExamples/TrafficSim/Road.hpp>
-#include <BasicExamples/TrafficSim/Car.hpp>
+#include "Road.hpp"
+#include "Car.hpp"
 #include <random>
 #include <chrono>
 #include <iostream>
@@ -10,11 +10,19 @@ std::vector<TRoad*> TRoad::allRoads = {};
 
 TRoad::TRoad(std::string _name) : TObjectOfObservation(_name) {
 	properties.insert({ "IsBblockieren", new TProperties(std::map<std::string, double>{ {"IsBblockieren", 0}}, false, "IsBblockieren") });
-	properties.insert({ "Coordinate", new TProperties(std::map<std::string, double>{ {"X", 0}, {"Y", 1}, {"Z", 0}}, false, "Coordinate") });
-	properties.insert({ "Scale", new TProperties{{{"Width", 20}, {"Length", 10}, {"Height", 1}}, false, "Scale"} });
 	properties.insert({ "IsBusy", new TProperties(std::map<std::string, double>{ {"IsBusy", 0}}, false, "IsBusy") });
 	properties.insert({ "Blocking", new TProperties(std::map<std::string, double>{ {"Blocking", 0}}, false, "Blocking") });
 	properties.insert({ "IsHaveStandingCar", new TProperties(std::map<std::string, double>{ {"IsHaveStandingCar", 0}}, true, "IsHaveStandingCar") });
+	properties.insert(
+      {"Coordinate",
+       new TProperties({{"X", 0}, {"Y", 0}, {"Z", 0}}, false, "Coordinate")});
+  properties.insert(
+      {"Rotate",
+       new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
+                       false, "Rotate")});
+  properties.insert(
+      {"Scale", new TProperties({{"Width", 3}, {"Length", 3}, {"Height", 3}},
+                                false, "Scale")});
 
 	isCanGo = true;
 	oldGoTime = currentStep;
@@ -61,7 +69,6 @@ void TRoad::Update()
 
 bool TRoad::IsCanGo()
 {
-	/// ���� ���� �������, ��� ����� ���� ������ ������, �� ��������� ����� �� �����
 	if (this->childObjects.size() == 0)
 		return true;
 	if (this->childObjects[0] == nullptr)
@@ -73,7 +80,6 @@ bool TRoad::IsCanGo()
 		int roadIndex = this->childObjects[0]->GetProperties()["WayIndex"]->GetValues()["WayIndex"];
 		if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
 		{
-			/// ���� ������ �������������, �� ����� ������
 			if (this->roadNeighboring[roadIndex]->GetProperties()["IsBblockieren"]->GetValues()["IsBblockieren"] == 1)
 				return false;
 			return this->roadNeighboring[roadIndex]->IsCanGo();
@@ -105,7 +111,6 @@ void TRoad::Go()
 		isCanGo = IsCanGo();
 
 
-		/// ����� �� ������ ������
 		if (isCanGo)
 		{
 			//isBblockieren[0] = 0;
@@ -115,9 +120,9 @@ void TRoad::Go()
 				int roadIndex = child->GetProperties()["WayIndex"]->GetValues()["WayIndex"];
 				if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
 				{
-					this->ExcludeChildObject(*child); //�������� ������
-					this->roadNeighboring[roadIndex]->Go(); // ������� �������
-					this->roadNeighboring[roadIndex]->AddChildObject(*child); // �������� ������ ������
+					this->ExcludeChildObject(*child);
+					this->roadNeighboring[roadIndex]->Go();
+					this->roadNeighboring[roadIndex]->AddChildObject(*child);
 					child->GetProperties()["Coordinate"]->SetValues(
 						this->roadNeighboring[roadIndex]->GetProperties()["Coordinate"]->GetValues());
 				}
@@ -139,7 +144,6 @@ void TRoad::AddNeighboringObject(TObjectOfObservation& obect)
 }
 
 
-/// �������� �������� ������
 int TRoad::AddChildObject(TObjectOfObservation& obect)
 {
 	auto&& isBusy = this->properties["IsBusy"]->GetValues();
@@ -149,7 +153,6 @@ int TRoad::AddChildObject(TObjectOfObservation& obect)
 	return TObjectOfObservation::AddChildObject(obect);
 }
 
-/// ��������� �������� ������
 void TRoad::ExcludeChildObject(TObjectOfObservation& obect)
 {
 	auto&& isBusy = this->properties["IsBusy"]->GetValues();
@@ -159,47 +162,7 @@ void TRoad::ExcludeChildObject(TObjectOfObservation& obect)
 	TObjectOfObservation::ExcludeChildObject(obect);
 }
 
-TCarDestroyer::TCarDestroyer(std::string _name) : TRoad(_name)
+LIB_EXPORT_API TObjectOfObservation* create()
 {
-
-}
-
-TCarCreator::TCarCreator(std::string _name) : TRoad(_name) {
-	properties.insert({ "IsCreat", new TProperties(std::map<std::string, double>{ {"IsCreat", 1}}, true, "IsCreat") });
-}
-
-void TCarCreator::Update()
-{
-	TRoad::Update();
-	TObjectOfObservation* child = nullptr;
-	std::default_random_engine generator;
-	generator.seed(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-	std::poisson_distribution<int> poisson(100);
-	if (this->childObjects.size() > 0)
-		child = this->childObjects[0];
-	if ((child == nullptr) && (properties["IsCreat"]->GetValues()["IsCreat"] == 1))
-	{	
-		if (poisson(generator)%100 == 0) {
-			TCar* car = new TCar("Car");
-			car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
-			this->AddChildObject(*car);
-		}
-	}
-}
-
-void TCarDestroyer::Update()
-{
-	auto&& isBblockieren = this->properties["IsBblockieren"]->GetValues();
-	isBblockieren["IsBblockieren"] = 0;
-	this->properties["IsBblockieren"]->SetValues(isBblockieren);
-
-	for (int i = 0; i < this->childObjects.size(); i++)
-	{
-		TObjectOfObservation* child = this->childObjects[i];
-		if (child != nullptr)
-		{
-			this->ExcludeChildObject(*child);
-			delete child;
-		}
-	}
+    return new TRoad("TRoad");
 }

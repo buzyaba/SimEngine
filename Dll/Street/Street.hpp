@@ -8,3 +8,5 @@ class TStreet: public TStaticObject {
     virtual std::string ClassName() noexcept override {return "TStreet";}
     virtual TStaticObject* Clone() {return new TStreet;}
 };
+
+extern "C" LIB_EXPORT_API TStaticObject* create();

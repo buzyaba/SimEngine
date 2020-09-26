@@ -34,6 +34,7 @@ endif()
 
 if (UNIX)
 	set(CMAKE_CXX_FLAGS "-fPIC")
+	set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-as-needed -ldl")
 endif()
 
 if (${CMAKE_SIZEOF_VOID_P} EQUAL 8)
