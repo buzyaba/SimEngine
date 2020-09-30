@@ -3,9 +3,6 @@
 	<type>3</type>
 	<xmlEnvironmentScriptName>SmartTraffic_3/conf.xml</xmlEnvironmentScriptName> 
 	<xmlMainSetConfigurationFile>SmartTraffic_3/Street.xml</xmlMainSetConfigurationFile>
-	<objectOfObservationDllsFile></objectOfObservationDllsFile>
-	<smartThingDllsFile></smartThingDllsFile> 
-	<staticObjectDllsFile></staticObjectDllsFile>
 	<managementProgramDllFile></managementProgramDllFile>
 	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>

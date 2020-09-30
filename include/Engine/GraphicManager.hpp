@@ -32,4 +32,5 @@ public:
     TGraphicManager(const int type, std::string windowName);
     void addNewObject(TObject *obj);
     void startDraw();
+    void stopDraw();
 };

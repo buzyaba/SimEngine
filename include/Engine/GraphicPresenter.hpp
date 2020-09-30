@@ -14,6 +14,7 @@ class IGraphicPresenter {
     virtual void addTObject(TObject *obj) {}
     virtual void deleteTObject(const TObject *obj) {}
     virtual void setGraphicManager(TGraphicManager *manager) {}
+    virtual void stopGraphicManager() {};
 };
 
 #ifdef USE_OPENGL
@@ -30,5 +31,9 @@ class TGraphicPresenter : public IGraphicPresenter {
         _manager->addNewObject(obj);
     }
     virtual void deleteTObject(const TObject *obj) override {}
+    
+    void stopGraphicManager() override {
+        _manager->stopDraw();
+    };
 };
 #endif
