@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/ObjectOfObservation.h"
+#include "SimEngine/ObjectOfObservation.h"
 
 class TDesktop : public TObjectOfObservation
 {

@@ -1,4 +1,4 @@
-﻿#include "Core/ObjectOfObservation.h"
+﻿#include "SimEngine/ObjectOfObservation.h"
 
 TObjectOfObservation::TObjectOfObservation(std::string _name, 
   std::vector<TObjectOfObservation*> _neighboringObject,

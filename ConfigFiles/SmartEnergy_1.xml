@@ -3,7 +3,7 @@
 	<type>-1</type>
 	<xmlEnvironmentScriptName>SmartEnergy_1/conf.xml</xmlEnvironmentScriptName> 
 	<xmlMainSetConfigurationFile>SmartEnergy_1/Room.xml</xmlMainSetConfigurationFile>
-	<managementProgramDllFile></managementProgramDllFile>
+	<managementProgramDllFile>TSmartEnergyProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
 	<maxStep>43200</maxStep>

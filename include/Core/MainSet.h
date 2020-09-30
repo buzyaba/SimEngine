@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <map>
-#include "Core/ObjectOfObservation.h"
-#include "Core/SmartThing.h"
-#include "Core/StaticObject.h"
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/SmartThing.h"
+#include "SimEngine/StaticObject.h"
 #ifdef USE_OPENGL
 #include <Engine/WindowManager.hpp>
 #endif
@@ -24,28 +24,12 @@ public:
   const std::map<std::string, std::vector<TObject*>>& GetAllGObjects() {return allGObjects;}
 };
 
-class TRoomSet : public TMainSet
-{
-public:
-  TRoomSet();
-};
-
-class TStreetSet : public TMainSet
-{
-public:
-  TStreetSet();
-};
-
 class TSetFactory
 {
 public:
-  static TMainSet* Create(int a = 0, std::string xmlMainSetConfigurationFile = "")
+  static TMainSet* Create(std::string xmlMainSetConfigurationFile = "")
   {
     if (xmlMainSetConfigurationFile != "")
       return new TMainSet(xmlMainSetConfigurationFile);
-    if (a <= 0)
-      return new TRoomSet();
-    else
-      return new TStreetSet();
   }
 };

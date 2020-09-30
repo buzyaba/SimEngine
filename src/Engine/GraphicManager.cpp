@@ -1,6 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Engine/GraphicManager.hpp"
-#include "Core/common.h"
+#include "SimEngine/common.h"
 
 WindowManager *TGraphicManager::createWindow(const int type, const int width,
                                              const int height,

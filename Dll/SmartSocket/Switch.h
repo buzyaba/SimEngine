@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Actuator.h"
+#include "SimEngine/Actuator.h"
 
 class TSwitch : public TActuator
 {

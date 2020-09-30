@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/SmartThing.h"
+#include "SimEngine/SmartThing.h"
 #include "Switch.h"
 #include "ElectricitySensor.h"
 

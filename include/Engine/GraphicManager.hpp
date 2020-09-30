@@ -16,7 +16,7 @@
 #include <Engine/Model.hpp>
 #include <Engine/Shader.hpp>
 
-#include "Core/Object.h"
+#include "SimEngine/Object.h"
 #include "Engine/GObject.hpp"
 #include "Engine/GObjectProperties.hpp"
 

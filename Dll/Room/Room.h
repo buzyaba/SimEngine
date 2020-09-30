@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/StaticObject.h"
+#include "SimEngine/StaticObject.h"
 
 class TRoom : public TStaticObject {
 public:

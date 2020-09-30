@@ -13,7 +13,7 @@ set_target_properties(Desktop PROPERTIES
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(Desktop
-						Core
+						SimEngine
 						)
 						
 if (${USE_OPENGL})

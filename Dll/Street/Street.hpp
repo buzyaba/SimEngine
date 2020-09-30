@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/StaticObject.h"
+#include "SimEngine/StaticObject.h"
 
 class TStreet: public TStaticObject {
  public:

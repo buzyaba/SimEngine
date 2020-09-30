@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Sensor.h"
+#include "SimEngine/Sensor.h"
 
 class TElectricitySensor : public TSensor
 {

@@ -5,13 +5,13 @@
 #include "Core/WorkManager.h"
 #include "Core/ProgramFactory.h"
 
-#include "Core/common.h"
+#include "SimEngine/common.h"
 
 TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_) : parameters(parameters_), presenter(presenter_)
 {
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(parameters.type, parameters.xmlMainSetConfigurationFile);
+  mainSet = TSetFactory::Create(parameters.xmlMainSetConfigurationFile);
 
   objects = mainSet->GetObjects();
   things = mainSet->GetThings();
@@ -33,8 +33,8 @@ TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presente
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep, parameters.type);
-  program = TProgramFactory::Create(parameters.type, things);
+  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep);
+  program = TProgramFactory::Create(things);
   storage = new TDataStore(allObject, "../../A");
 
   startWork = std::chrono::steady_clock::now();

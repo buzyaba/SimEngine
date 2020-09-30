@@ -3,18 +3,18 @@
 #include <string>
 #include <vector>
 
-#include "Core/Sensor.h"
-#include "Core/Actuator.h"
-#include "Core/SmartThing.h"
-#include "Core/ObjectOfObservation.h"
-#include "Core/Properties.h"
-#include "Core/StaticObject.h"
-#include "Core/ManagementProgram.h"
+#include "SimEngine/Sensor.h"
+#include "SimEngine/Actuator.h"
+#include "SimEngine/SmartThing.h"
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/Properties.h"
+#include "SimEngine/StaticObject.h"
+#include "SimEngine/ManagementProgram.h"
 #include "Core/DataStore.h"
-#include "Core/DataPacket.h"
+#include "SimEngine/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
-#include "Core/common.h"
+#include "SimEngine/common.h"
 #include "Core/Parameters.h"
 
 #include "Engine/GraphicPresenter.hpp"

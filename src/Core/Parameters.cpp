@@ -25,38 +25,6 @@
 
 TParameters GlobalParameters;
 
-void TParameters::DefaultParameters()
-{
-
-  xmlEnvironmentScriptName = "";
-  xmlMainSetConfigurationFile = "";
-
-  xmlCurrentConfiguration = "";
-  //objectOfObservationDllsFile;
-  //
-  //smartThingDllsFile;
-  //
-  //staticObjectDllsFile;
-
-  std::string managementProgramDllFile = "";
-
-  type = -1;
-  millisecondsInTimeStep = 1000;
-  timeAcceleration = 0.0;
-  maxStep = 1000; ////60*60*24*30;//~месяц
-}
-
-void TParameters::GenerateParameters()
-{
-	// ATTENTION
-//#ifdef USE_OpenGL
-//    if (type <= 0)
-//        _window = new FirstPersonView(800, 600, "Smart House");
-//    else
-//        _window = new IsometricView(800, 600, "Traffic Simulator");
-//#endif
-}
-
 void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)
 {
   char* s = new char[str.length() + 1];
@@ -116,10 +84,8 @@ void TParameters::LoadXML()
     {
       if (value != "")
       {
-        managementProgramDllFile = value;
-        if (managementProgramDllFile.find(":") == std::string::npos)
-          managementProgramDllFile = dirConfigFile + "/" + managementProgramDllFile;
-        managementProgram = Dll_Manager::LoadDLLObject<MANAGEMENT_PROGRAM>(managementProgramDllFile);
+        managementProgramDllFile = getPath("/assets/management_programs/" + value);
+        managementProgram = Dll_Manager::LoadDLLObject<MANAGEMENT_PROGRAM>(Dll_Manager::findDLLPath(managementProgramDllFile));
       }
     }
     else if (name == "type")
@@ -146,46 +112,37 @@ TParameters::TParameters(int argc, char** argv)
   char buff[FILENAME_MAX]; //create string buffer to hold path
   GetCurrentDir(buff, FILENAME_MAX);
   cwd = buff;
-  LoadConsoleParameters(argc, argv);
 }
 
 void TParameters::LoadConsoleParameters(int argc, char** argv)
 {
-  if (argc == -1)
+  std::cout << "Start program " << cwd << std::endl;
+
+  if (argc == 1)
   {
-    //DefaultParameters();
+    auto c_cwd = cwd;
+    std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
+    size_t i = c_cwd.find("SIMENGINE");
+    dirConfigFile = cwd.substr(0, i + 9) + "/ConfigFiles";
+    ConsoleInterface();
   }
-  else if (argc >= 1)
+  else
   {
-    std::cout << "Start program " << cwd << std::endl;
+    xmlCurrentConfiguration = argv[1];
 
-    if (argc == 1)
+    dirConfigFile = "";
+    for (size_t i = xmlCurrentConfiguration.length() - 1; i > 0; i--)
     {
-      auto c_cwd = cwd;
-      std::transform(c_cwd.begin(), c_cwd.end(), c_cwd.begin(), toupper);
-      size_t i = c_cwd.find("SIMENGINE");
-      dirConfigFile = cwd.substr(0, i + 9) + "/ConfigFiles";
-      ConsoleInterface();
-    }
-    else
-    {
-      xmlCurrentConfiguration = argv[1];
-
-      dirConfigFile = "";
-      for (size_t i = xmlCurrentConfiguration.length() - 1; i > 0; i--)
+      if (xmlCurrentConfiguration[i] == '\\')
       {
-        if (xmlCurrentConfiguration[i] == '\\')
-        {
-          for (unsigned int j = 0; j < i; j++)
-            dirConfigFile += xmlCurrentConfiguration[j];
-          break;
-        }
+        for (unsigned int j = 0; j < i; j++)
+          dirConfigFile += xmlCurrentConfiguration[j];
+        break;
       }
-
-      LoadXML();
-      GenerateParameters();
-      std::cout << "\n\n" << Print() << "\n" << std::endl;
     }
+
+    LoadXML();
+    std::cout << "\n\n" << Print() << "\n" << std::endl;
   }
 }
 
@@ -200,27 +157,6 @@ std::string TParameters::Print()
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   result += "std::string xmlMainSetConfigurationFile = \t" + xmlMainSetConfigurationFile + "\n";
 
-  /// Имена dll с наблюдаемыми объектами
-  result += "std::vector<std::string> objectOfObservationDllsFile = \t";
-  for (auto& name : objectOfObservationDllsFile)
-  {
-    result += name + "\t";
-  }
-  result += "\n";
-  /// Имена dll с умными вещами
-  result += "std::vector<std::string> smartThingDllsFile = \t";
-  for (auto& name : smartThingDllsFile) 
-  {
-    result += name + "\t";
-  }
-  result += "\n";
-  /// Имена dll со статичными объектами
-  result += "std::vector<std::string> staticObjectDllsFile = \t";
-  for (auto& name : staticObjectDllsFile)
-  {
-    result += name + "\t";
-  }
-  result += "\n";
   /// Имя dll с упровляемой программой
   result += "std::string managementProgramDllFile = \t" + managementProgramDllFile + "\n";
 
@@ -267,11 +203,9 @@ void TParameters::ConsoleInterface()
   closedir(dir);
 #endif
 
+  std::sort(configs.begin(), configs.end());
 
-  std::cout << "1. Start default task 1" << std::endl;
-
-
-  int j = 2;
+  int j = 1;
   for (auto& configFileName : configs)
   {
     std::cout << std::to_string(j) << ". Load Task:\t" << configFileName << std::endl;
@@ -283,14 +217,11 @@ void TParameters::ConsoleInterface()
 
   if (t < 1 || t >= j)
     throw "Error task numder";
-  else if (t == 1)
-    DefaultParameters();
   else
   {
-    std::cout<<"CONFIGS "<<configs[t - 2];
-    this->xmlCurrentConfiguration = configs[t - 2];
+    std::cout<<"CONFIGS "<<configs[t - 1];
+    this->xmlCurrentConfiguration = configs[t - 1];
     LoadXML();
-    GenerateParameters();
   }
 
   std::cout << "\n\n" << Print() << "\n" << std::endl;

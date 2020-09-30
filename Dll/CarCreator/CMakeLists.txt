@@ -13,7 +13,7 @@ set_target_properties(CarCreator PROPERTIES
 add_definitions(-DGLEW_NO_GLU)
 
 target_link_libraries(CarCreator
-						Core
+						SimEngine
 						)
 						
 if (${USE_OPENGL})

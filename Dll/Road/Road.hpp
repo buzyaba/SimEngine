@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/ObjectOfObservation.h"
-#include "Core/common.h"
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/common.h"
 
 class TRoad: public TObjectOfObservation {
 protected:

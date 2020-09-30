@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "Core/DataPacket.h"
-#include "Core/Properties.h"
-#include "Core/ObjectOfObservation.h"
+#include "SimEngine/DataPacket.h"
+#include "SimEngine/Properties.h"
+#include "SimEngine/ObjectOfObservation.h"
 
 /// Базовый интерфейс актуатора
 class IActuator

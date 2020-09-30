@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-#include "Core/Sensor.h"
-#include "Core/Actuator.h"
-#include "Core/Object.h"
-#include "Core/ObjectOfObservation.h"
+#include "SimEngine/Sensor.h"
+#include "SimEngine/Actuator.h"
+#include "SimEngine/Object.h"
+#include "SimEngine/ObjectOfObservation.h"
 
 /// Класс описывающий умную вещь
 class TSmartThing : public TObject

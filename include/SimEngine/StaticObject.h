@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include "Core/Object.h"
-
-// #include "Core/ObjectOfObservation.h"
-// #include "Core/SmartThing.h"
+#include "SimEngine/Object.h"
 
 class TStaticObject : public TObject {
 public:

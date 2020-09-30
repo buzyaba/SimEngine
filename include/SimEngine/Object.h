@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Core/Properties.h"
+#include "SimEngine/Properties.h"
 #include <map>
 
 /// Базовый класс реализующий объект имеющий набор свойств и имя.

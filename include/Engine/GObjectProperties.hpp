@@ -5,8 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 using namespace glm;
 
-#include "Core/Object.h"
-#include "Core/Properties.h"
+#include "SimEngine/Object.h"
+#include "SimEngine/Properties.h"
 
 class TGObjectProperties {
   private:

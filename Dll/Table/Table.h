@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/StaticObject.h"
+#include "SimEngine/StaticObject.h"
 
 class TTable : public TStaticObject {
 public:

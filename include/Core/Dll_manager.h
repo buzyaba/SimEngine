@@ -28,10 +28,10 @@
 #ifndef __PROBLEMMANAGER_H__
 #define __PROBLEMMANAGER_H__
 
-#include "Core/ManagementProgram.h"
-#include "Core/ObjectOfObservation.h"
-#include "Core/SmartThing.h"
-#include "Core/StaticObject.h"
+#include "SimEngine/ManagementProgram.h"
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/SmartThing.h"
+#include "SimEngine/StaticObject.h"
 
 #include <iostream>
 #include <memory>

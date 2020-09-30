@@ -6,16 +6,12 @@
 #include <algorithm>
 #include <vector>
 #include <string>
-#include "Core/common.h"
+#include "SimEngine/common.h"
 #include "Core/Dll_manager.h"
 
 class TParameters
 {
 protected:
-  /// Установка значений по умолчанию
-  void DefaultParameters();
-  /// Генерация
-  void GenerateParameters();
   /// Загрузка параметров из XML
   void LoadXML();
   /// Строка с адресом файла запустившего окно
@@ -25,9 +21,9 @@ protected:
   /// Разбиение строки на подстроки по пробелу
   void ParseString(std::string& str, std::vector<std::string>& tt);
 public:
-  /* тип задачи
-  <= 0 - дефолтная задача
-  > 0 - загрузка из xml файлов
+  /* тип камеры в графике
+  <= 0 - FirstPerson view
+  > 0 - Isometric view
   **/
   int type;
   /// Имя файла с текущей конфигурацией программы
@@ -37,12 +33,6 @@ public:
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   std::string xmlMainSetConfigurationFile;
 
-  /// Имена dll с наблюдаемыми объектами
-  std::vector<std::string> objectOfObservationDllsFile;
-  /// Имена dll с умными вещами
-  std::vector<std::string> smartThingDllsFile;
-  /// Имена dll со статичными объектами
-  std::vector<std::string> staticObjectDllsFile;
   /// Имя dll с упровляемой программой
   std::string managementProgramDllFile;
   

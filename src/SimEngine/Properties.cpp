@@ -1,5 +1,5 @@
 ﻿#include <stdexcept>
-#include "Core/Properties.h"
+#include "SimEngine/Properties.h"
 
 TProperties::TProperties(std::string _name) : name(_name),
     isString(false), stringValue(""), isObserved(false) {}
