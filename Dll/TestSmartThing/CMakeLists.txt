@@ -21,14 +21,6 @@
 # 							${OPENGL_LIBRARIES}
 # 	)
 # endif()
-						
-						
-# if (${BUILD_PLOTTER})
-# 	target_link_libraries(TestSmartThing
-# 							MatplotlibC++
-# 							Python3::Python
-# 							)
-# endif()
 
 # set_property(TARGET TestSmartThing PROPERTY FOLDER "DLLs") 						
 	

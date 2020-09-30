@@ -23,12 +23,3 @@ if (${USE_OPENGL})
 							${OPENGL_LIBRARIES}
 	)
 endif()
-						
-						
-if (${BUILD_PLOTTER})
-	target_link_libraries(SimEngine
-							#MatplotlibC++
-							Python3::Python
-							)
-endif()
-						

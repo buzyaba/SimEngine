@@ -36,14 +36,6 @@ if (${USE_OPENGL})
 							glfw  ${OPENGL_LIBRARIES}
 	)
 endif()
-						
-						
-#if (${BUILD_PLOTTER})
-#	target_link_libraries(${PROJECT_NAME_STR}
-#							MatplotlibC++
-#							Python3::Python
-#							)
-#endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set_target_properties(${PROJECT_NAME_STR} PROPERTIES LINK_FLAGS "-lm -Wl,--no-as-needed -ldl -lpthread")

@@ -11,12 +11,7 @@
 #include <fstream>
 #include <iostream>
 
- #ifdef USE_PLOTTER
-#include "matplotlibcpp.h"
-namespace plt=matplotlibcpp;
- #endif
-
-class TEmptyProgram : public IManagementProgram
+class TManagementProgram : public IManagementProgram
 {
 protected:
   std::vector<TSmartThing*> things;
@@ -31,81 +26,11 @@ protected:
   /// Набор наблюдаемых сенсоров
   std::vector <ISensor*> sensors;
 
-  std::vector <double> xArray;
-  std::vector < std::vector <double>> yArray;
-
   std::string title1;
-  std::vector <std::string> title2;
-  double minx, miny, maxx, maxy;
-
-  void CreatePlotData()
-  {
-    if (yArray.size() < (tableHeader.size() - 1))
-    {
-     yArray.resize(tableHeader.size() - 1);
-    }
-    for (int j = 0; j < yArray.size(); j++)
-    {
-     yArray[j].clear();
-     yArray[j].resize(0);
-    }
-
-    xArray.clear();
-    xArray.resize(currentStep + 1);
-    int i = 0;
-    unsigned long int timeStep = currentTime / currentStep;
-    for (unsigned long int t = 0; t < currentTime; t+=timeStep)
-    {
-     xArray[i++] = double(t);
-    }
-
-    maxx = double(currentTime) + 1.0;
-
-    double value;
-    for (size_t u = 0; u < table.size(); u++)
-    {
-     for (size_t i = 0; i < table[u].size() - 1; i++)
-     {
-       value = atof(table[u][i + 1ull].c_str());
-
-       if (maxy < value)
-         maxy = value;
-       if (miny > value)
-         miny = value;
-
-       yArray[i].push_back(value);
-     }
-    }
-
-    title2.resize(tableHeader.size() - 1);
-    for (size_t u = tableHeader.size() - 1, j = 0; u >= 1; u--, j++)
-    {
-     title2[j] = tableHeader[u] + " = " + table[table.size() - 1][u] + "\n";
-    }
-  }
-
-  void Plot()
-  {
-#ifdef USE_PLOTTER
-    if (table.size() < 3)
-     return;
-
-    CreatePlotData();
-
-    int count = yArray.size();
-
-    for (int k = 0; k < count; k++)
-      plt::plot(xArray, yArray[k]);
-    plt::xlabel("Time");
-    plt::ylabel("Values");
-    plt::show();
-    //g.sendbf();
-#endif
-  }
   
 public:
-  TEmptyProgram() {};
-  TEmptyProgram(std::vector<TSmartThing*>& _things)
+  TManagementProgram() {};
+  TManagementProgram(std::vector<TSmartThing*>& _things)
   {
     SetSmartThing(_things);
   }
@@ -113,7 +38,7 @@ public:
   virtual void SetSmartThing(std::vector<TSmartThing*> _things)
   {
     things = _things;
-    fileName = "EmptyProgram";
+    fileName = "ManagementProgram";
     tableHeader.resize(1);
     tableHeader[0] = "Time";
     sensors.clear();
@@ -147,7 +72,6 @@ public:
       fprintf(file, "\n");
     }
     fclose(file);
-    Plot();
   }
 
   virtual void Run()
@@ -168,31 +92,14 @@ public:
   }
 };
 
-class TRoomProgram : public TEmptyProgram
+class TRoomProgram : public TManagementProgram
 {
 public:
-  TRoomProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
-  {
-
-  }
-
-  void CreatePlot()
-  {
- #ifdef USE_PLOTTER
-
-  int count = yArray.size();
-
-  for (int k = 0; k < count; k++)
-    plt::plot(xArray, yArray[k]);
-  plt::xlabel("Time (min)");
-  plt::ylabel("kWh");
-  plt::show();
- #endif
-  }
+  TRoomProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things){}
 
   virtual void Run()
   {
-    TEmptyProgram::Run();
+    TManagementProgram::Run();
   }
 
   virtual void End()
@@ -200,9 +107,6 @@ public:
     double value = 0;
     double sum = 0;
 
-    xArray.resize(table.size() - 1);
-    yArray.resize(1);
-    yArray[0].resize(table.size() - 1);
     for (size_t u = 0; u < table.size() - 1; u++)
     {
       for (size_t i = 0; i < table[u].size() - 1; i++)
@@ -210,8 +114,6 @@ public:
         value = atof(table[u][i + 1ull].c_str());
         sum += value;
       }
-      xArray[u] = u;
-      yArray[0][u] = sum;
     }
 
     std::cout << "Power consumption = " << sum << std::endl;
@@ -235,33 +137,18 @@ public:
     }
     fclose(file);
     //ENDS HERE
-    // TEmptyProgram::End();
-    CreatePlot();
+    // TManagementProgram::End();
   }
 };
 
-class TRoomAutoProgram : public TEmptyProgram
+class TRoomAutoProgram : public TManagementProgram
 {
 public:
-  TRoomAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+  TRoomAutoProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things)
   {
     P = 100;
     dailyLimit = P / 30;
     dailyPowerConsumption = 0;
-  }
-
-  void CreatePlot()
-  {
- #ifdef USE_PLOTTER
-
-  int count = yArray.size();
-
-  for (int k = 0; k < count; k++)
-    plt::plot(xArray, yArray[k]);
-  plt::xlabel("Time (min)");
-  plt::ylabel("kWh");
-  plt::show();
- #endif
   }
 
   virtual void Run()
@@ -292,9 +179,6 @@ public:
     double value = 0;
     double sum = 0;
 
-    xArray.resize(table.size() - 1);
-    yArray.resize(1);
-    yArray[0].resize(table.size() - 1);
     for (size_t u = 0; u < table.size() - 1; u++)
     {
       for (size_t i = 0; i < table[u].size() - 1; i++)
@@ -302,8 +186,6 @@ public:
         value = atof(table[u][i + 1ull].c_str());
         sum += value;
       }
-      xArray[u] = u;
-      yArray[0][u] = sum;
     }
 
     std::cout << "Power consumption = " << sum << std::endl;
@@ -327,8 +209,7 @@ public:
     }
     fclose(file);
     //ENDS HERE
-    // TEmptyProgram::End();
-    CreatePlot();
+    // TManagementProgram::End();
   }
   private: 
     double P;
@@ -336,14 +217,14 @@ public:
     double dailyLimit;
 };
 
-class TStreetProgram : public TEmptyProgram
+class TStreetProgram : public TManagementProgram
 {
   TDataPacket sendPacket;
   int timeGreen;
   int timeRed;
   int waitingTime;
 public:
-  TStreetProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+  TStreetProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things)
   {
     tableHeader.push_back("carCount");
     double* packetVal = sendPacket.GetDoubles();
@@ -355,7 +236,7 @@ public:
 
   virtual void Run()
   {
-    TEmptyProgram::Run();
+    TManagementProgram::Run();
 
     double carCount = 0;
     if (sensors.size() > 0)
@@ -419,18 +300,18 @@ public:
 
     std::cout << "Car count = " << sum << std::endl;
 
-    TEmptyProgram::End();
+    TManagementProgram::End();
   }
 };
 
-class TStreetPeakProgram : public TEmptyProgram {
+class TStreetPeakProgram : public TManagementProgram {
     TDataPacket sendPacket;
     int peakTime;
     int timeGreen;
     int timeRed;
     int waitingTime;
 public:
-    TStreetPeakProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+    TStreetPeakProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things)
     {
         tableHeader.push_back("carCount");
         double* packetVal = sendPacket.GetDoubles();
@@ -443,7 +324,7 @@ public:
 
     virtual void Run()
     {
-        TEmptyProgram::Run();
+        TManagementProgram::Run();
 
         double carCount = 0;
         if (sensors.size() > 0)
@@ -512,18 +393,18 @@ public:
 
         std::cout << "Car count = " << sum << std::endl;
 
-        TEmptyProgram::End();
+        TManagementProgram::End();
     }
 };
 
-class TStreetAutoProgram : public TEmptyProgram {
+class TStreetAutoProgram : public TManagementProgram {
     TDataPacket sendPacket;
     int carThreshold;
     int timeGreen;
     int timeRed;
     int waitingTime;
 public:
-    TStreetAutoProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+    TStreetAutoProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things)
     {
         tableHeader.push_back("carCount");
         double* packetVal = sendPacket.GetDoubles();
@@ -536,7 +417,7 @@ public:
 
     virtual void Run()
     {
-        TEmptyProgram::Run();
+        TManagementProgram::Run();
 
         double carCount = 0;
         if (sensors.size() > 0)
@@ -601,6 +482,6 @@ public:
 
         std::cout << "Car count = " << sum << std::endl;
 
-        TEmptyProgram::End();
+        TManagementProgram::End();
     }
 };

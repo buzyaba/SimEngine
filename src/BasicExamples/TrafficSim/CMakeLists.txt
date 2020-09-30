@@ -25,11 +25,3 @@
 # 							${OPENGL_LIBRARIES}
 # 	)
 # endif()
-						
-						
-# if (${BUILD_PLOTTER})
-# 	target_link_libraries(TrafficSim
-# 							#MatplotlibC++
-# 							Python3::Python
-# 							)
-# endif()

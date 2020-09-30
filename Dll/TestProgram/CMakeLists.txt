@@ -21,14 +21,6 @@
 # 							${OPENGL_LIBRARIES}
 # 	)
 # endif()
-						
-						
-# if (${BUILD_PLOTTER})
-# 	target_link_libraries(TestProgram
-# 							MatplotlibC++
-# 							Python3::Python
-# 							)
-# endif()
 
 # set_property(TARGET TestProgram PROPERTY FOLDER "DLLs") 						
 						

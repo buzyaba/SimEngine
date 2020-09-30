@@ -1,13 +1,13 @@
 ﻿#include "TestProgram.h"
 
-TTestProgram::TTestProgram(std::vector<TSmartThing*>& _things) : TEmptyProgram(_things)
+TTestProgram::TTestProgram(std::vector<TSmartThing*>& _things) : TManagementProgram(_things)
 {
 
 }
 
 void TTestProgram::Run()
 {
-  TEmptyProgram::Run();
+  TManagementProgram::Run();
 
   double value = 0;
   double sum = 0;
@@ -41,7 +41,7 @@ void TTestProgram::End()
 
   std::cout << "Power consumption = " << sum << std::endl;
 
-  TEmptyProgram::End();
+  TManagementProgram::End();
 }
 
 // ------------------------------------------------------------------------------------------------

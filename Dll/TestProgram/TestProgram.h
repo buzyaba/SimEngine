@@ -9,7 +9,7 @@
 namespace plt = matplotlibcpp;
 #endif
 
-class TTestProgram : public TEmptyProgram
+class TTestProgram : public TManagementProgram
 {
 public:
   TTestProgram() {};

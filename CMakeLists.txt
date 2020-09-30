@@ -18,7 +18,6 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/DEB
 set(SIMENGINE_OUTPUT_LEVEL "L0" CACHE STRING "Set level of output (L0, L1, L2)")
 
 option(BUILD_TESTS "Set ON to build tests" ON)
-option(BUILD_PLOTTER "Set ON to build plotter" OFF)
 option(USE_OPENGL "Set ON to use OpenGL" ON)
 
 # Определяем компилятор
@@ -151,10 +150,6 @@ if (${USE_OPENGL})
 	add_definitions(-DUSE_OPENGL)
 endif()
 
-if (${BUILD_PLOTTER})
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/lib/matplotlib-cpp")
-endif()
-
 #add xml parser lib
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
 
@@ -162,14 +157,6 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/pugixml)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/output_system)
 
 # Поиск пакетов
-
-if (${BUILD_PLOTTER})
-	find_package(Python3 COMPONENTS Development)
-	add_definitions(-DUSE_PLOTTER)
-	include_directories(${Python3_INCLUDE_DIRS})	
-	include_directories("${CMAKE_SOURCE_DIR}/lib/matplotlib-cpp")
-endif()
-
 if (${USE_OPENGL})
 	include_directories(${OPENGL_INCLUDE_DIRS})
 	find_package(OpenGL REQUIRED)
@@ -219,10 +206,6 @@ if (IS_MICROSOFT_COMPILER)
 		#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
 		set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
 		# set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
-	endif()
-
-	if (${BUILD_PLOTTER})
-		set_property(TARGET MatplotlibC++ PROPERTY FOLDER "3rd-party")  
 	endif()
 endif()
 

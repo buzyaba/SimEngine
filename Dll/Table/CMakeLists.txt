@@ -25,13 +25,5 @@ if (${USE_OPENGL})
 							${OPENGL_LIBRARIES}
 	)
 endif()
-						
-						
-if (${BUILD_PLOTTER})
-	target_link_libraries(Table
-							MatplotlibC++
-							Python3::Python
-							)
-endif()
 
 set_property(TARGET Table PROPERTY FOLDER "DLLs")
