@@ -1,6 +1,7 @@
 #define WITHOUT_NUMPY
 
 #include "Core/WorkManager.h"
+#include "Core/Dll_manager.h"
 #include "Engine/GraphicPresenter.hpp"
 #ifdef USE_OPENGL
 #include "Engine/GraphicManager.hpp"
@@ -46,7 +47,6 @@ int main(int argc, char **argv) {
     std::cout << "Error Start WorkManager!!!" << std::endl;
   }
 #endif
-
   delete workManager;
   delete presenter;
   return 0;

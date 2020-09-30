@@ -45,7 +45,11 @@ void TGraphicManager::startDraw() {
     });
     prevTime = curTime;
   } // Check if the ESC key was pressed or the window was closed
-  while (glfwWindowShouldClose(_window->getWindow()) == 0);
+  while (!glfwWindowShouldClose(_window->getWindow()));
 
   glfwTerminate();
+}
+
+void TGraphicManager::stopDraw() {
+    glfwSetWindowShouldClose(_window->getWindow(), true);
 }
