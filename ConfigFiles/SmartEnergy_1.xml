@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName>default_task_2/conf.xml</xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile>default_task_2/Room.xml</xmlMainSetConfigurationFile>
-	<objectOfObservationDllsFile></objectOfObservationDllsFile>
-	<smartThingDllsFile></smartThingDllsFile> 
-	<staticObjectDllsFile></staticObjectDllsFile>
+	<xmlEnvironmentScriptName>SmartEnergy_1/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>SmartEnergy_1/Room.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile></managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>

@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>2</type>
-	<xmlEnvironmentScriptName>default_task_7/conf.xml</xmlEnvironmentScriptName> 
-	<xmlMainSetConfigurationFile>default_task_7/Street.xml</xmlMainSetConfigurationFile>
-	<objectOfObservationDllsFile></objectOfObservationDllsFile>
-	<smartThingDllsFile></smartThingDllsFile> 
-	<staticObjectDllsFile></staticObjectDllsFile>
+	<xmlEnvironmentScriptName>SmartTraffic_2/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>SmartTraffic_2/Street.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile></managementProgramDllFile>
 	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>

@@ -1,4 +1,5 @@
 #include "Engine/GObjectProperties.hpp"
+#include <iostream>
 
 TGObjectProperties::TGObjectProperties(TObject *obj)
     : pos(obj->GetProperty("Coordinate")),

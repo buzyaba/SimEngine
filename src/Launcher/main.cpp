@@ -33,7 +33,6 @@ int main(int argc, char **argv) {
   TGraphicManager *graphicManager =
       new TGraphicManager(GlobalParameters.type, "SimEngine");
   presenter->setGraphicManager(graphicManager);
-  // ????
   workManager->sendObjects();
   _enableVisualisation = 1;
   // what with error handling?
@@ -42,11 +41,11 @@ int main(int argc, char **argv) {
   workManager->Stop();
   delete graphicManager;
 #else
-  // try {
+  try {
     workManager->Start(_enableVisualisation);
-  // } catch (...) {
-    // std::cout << "Error Start WorkManager!!!" << std::endl;
-  // }
+  } catch (...) {
+    std::cout << "Error Start WorkManager!!!" << std::endl;
+  }
 #endif
 
   delete workManager;
