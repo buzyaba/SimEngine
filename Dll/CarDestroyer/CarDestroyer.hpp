@@ -10,5 +10,3 @@ public:
     virtual TObjectOfObservation* Clone() { return new TCarDestroyer(); }
     virtual void Update() override;
 };
-
-extern "C" LIB_EXPORT_API TObjectOfObservation* create();

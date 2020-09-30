@@ -1,12 +1,10 @@
 #include "Road.hpp"
-#include "Car.hpp"
 #include <random>
 #include <chrono>
 #include <iostream>
 #include <algorithm>
 #include <numeric>
 
-std::vector<TRoad*> TRoad::allRoads = {};
 
 TRoad::TRoad(std::string _name) : TObjectOfObservation(_name) {
 	properties.insert({ "IsBblockieren", new TProperties(std::map<std::string, double>{ {"IsBblockieren", 0}}, false, "IsBblockieren") });
@@ -27,12 +25,12 @@ TRoad::TRoad(std::string _name) : TObjectOfObservation(_name) {
 	isCanGo = true;
 	oldGoTime = currentStep;
 
-	if (allRoads.size() == 0) {
-		allRoads.push_back(this);
+	if (getAllRoads().size() == 0) {
+		getAllRoads().push_back(this);
 	}
 	else {
-		AddNeighboringObject(*allRoads.back());
-		allRoads.push_back(this);
+		AddNeighboringObject(*getAllRoads().back());
+		getAllRoads().push_back(this);
 	}
 }
 
@@ -53,11 +51,11 @@ void TRoad::Update()
 
 	auto blocked = properties["IsBblockieren"]->GetValue("IsBblockieren");
 	int sum = 0;
-	auto&& it = allRoads.rbegin();
+	auto&& it = getAllRoads().rbegin();
 	if (blocked) {
 		for (; (*it) != this; ++it);
 		auto res = 
-			std::accumulate(allRoads.rbegin(), it, 0,
+			std::accumulate(getAllRoads().rbegin(), it, 0,
 				[&](auto a, auto b) {
 					return a + b->GetProperty("IsHaveStandingCar").GetValue("IsHaveStandingCar");
 				});
@@ -160,9 +158,4 @@ void TRoad::ExcludeChildObject(TObjectOfObservation& obect)
 	this->properties["IsBusy"]->SetValues(isBusy);
 
 	TObjectOfObservation::ExcludeChildObject(obect);
-}
-
-LIB_EXPORT_API TObjectOfObservation* create()
-{
-    return new TRoad("TRoad");
 }

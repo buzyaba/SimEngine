@@ -8,5 +8,3 @@ public:
     virtual std::string ClassName() override { return "TCarCreator"; }
     virtual void Update() override;
 };
-
-extern "C" LIB_EXPORT_API TObjectOfObservation* create();

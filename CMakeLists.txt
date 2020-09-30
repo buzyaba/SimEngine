@@ -220,7 +220,7 @@ if (IS_MICROSOFT_COMPILER)
 		set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglew_static PROPERTY FOLDER "3rd-party")
 		#set_property(TARGET libglewmx_shared PROPERTY FOLDER "3rd-party")
-		# set_property(TARGET libglewmx_static PROPERTY FOLDER "3rd-party")  
+		# set_property(TARGET libglew_shared PROPERTY FOLDER "3rd-party")  
 		# set_property(TARGET LinearMath PROPERTY FOLDER "3rd-party")  
 	endif()
 

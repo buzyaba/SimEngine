@@ -7,7 +7,7 @@
 	<smartThingDllsFile></smartThingDllsFile> 
 	<staticObjectDllsFile></staticObjectDllsFile>
 	<managementProgramDllFile></managementProgramDllFile>
-	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
+	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
-	<maxStep>1440</maxStep>
+	<maxStep>43200</maxStep>
 </config>

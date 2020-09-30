@@ -2,7 +2,7 @@ file(GLOB hdrs "*.h*")
 file(GLOB_RECURSE source_files "*.cpp")
 
 
-add_library(CarDestroyer SHARED ${source_files} ${hdrs})
+add_library(CarDestroyer SHARED ${source_files} ${hdrs} ${CMAKE_SOURCE_DIR}/Dll/Road/Road.hpp ${CMAKE_SOURCE_DIR}/Dll/Road/Road.cpp ${CMAKE_SOURCE_DIR}/Dll/Road/Car.hpp ${CMAKE_SOURCE_DIR}/Dll/Road/Car.cpp)
 
 set_target_properties(CarDestroyer PROPERTIES
 						LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/assets/models/TCarDestroyer"
@@ -20,7 +20,7 @@ if (${USE_OPENGL})
 	target_link_libraries(CarDestroyer
 							# Engine
 							glfw 
-							libglewmx_static
+							libglew_shared
 							# LinearMath 
 							${OPENGL_LIBRARIES}
 	)

@@ -110,7 +110,7 @@
     <SmartThing>
         <TTrafficLight>
             <Name>TrafficLight1</Name>
-            <Object>Road13</Object>
+            <Object>Road1</Object>
         </TTrafficLight>
     </SmartThing>
 </config>

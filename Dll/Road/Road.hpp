@@ -6,7 +6,6 @@ class TRoad: public TObjectOfObservation {
 protected:
     unsigned long int oldGoTime;
     std::vector <TRoad*> roadNeighboring;
-    static std::vector<TRoad*> allRoads;
     bool isCanGo;
 public:
     explicit TRoad(std::string _name="");
@@ -19,7 +18,11 @@ public:
    virtual void Go();
    virtual bool IsCanGo();
    virtual void Update() override;
-   std::vector<TRoad*> getAllRoads() const { return allRoads; }
 };
+
+inline std::vector<TRoad*>& getAllRoads() {
+    static std::vector<TRoad*> allRoads;
+    return allRoads;
+}
 
 extern "C" LIB_EXPORT_API TObjectOfObservation* create();
