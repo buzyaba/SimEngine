@@ -99,7 +99,7 @@ public:
   LoadDLLObject(const std::string &libPath) {
 #ifdef WIN32
     mLibHandles.push_back(LoadLibrary(TEXT(libPath.c_str())));
-    HINSTANCE mLibHandle = mLibHandles.back();
+    void *mLibHandle = mLibHandles.back();
     if (!mLibHandle) {
       std::cerr << "Cannot load library: " << TEXT(libPath.c_str())
                 << std::endl;
@@ -117,7 +117,7 @@ public:
     if (!createObject) {
       std::cerr << "Error load ManagementProgram. Cannot load symbols: "
                 << GetLastError() << std::endl;
-      FreeDllManager();
+      FreeDllManager(mLibHandle);
     }
 #else
     dlerror();
@@ -149,11 +149,7 @@ public:
   static void FreeDllManager();
 
 private:
-  #ifdef WIN32
-  static std::vector<HINSTANCE> mLibHandles;
-  #else
-    static std::vector<void *> mLibHandles;
-  #endif
+  static std::vector<void *> mLibHandles;
 };
 #endif
 // - end of file

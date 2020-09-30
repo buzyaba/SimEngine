@@ -25,13 +25,5 @@ if (${USE_OPENGL})
 							${OPENGL_LIBRARIES}
 	)
 endif()
-						
-						
-if (${BUILD_PLOTTER})
-	target_link_libraries(CarCreator
-							MatplotlibC++
-							Python3::Python
-							)
-endif()
 
 set_property(TARGET CarCreator PROPERTY FOLDER "DLLs")

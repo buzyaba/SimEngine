@@ -25,13 +25,4 @@ if (${USE_OPENGL})
 							${OPENGL_LIBRARIES}
 	)
 endif()
-						
-						
-if (${BUILD_PLOTTER})
-	target_link_libraries(TrafficLight
-							MatplotlibC++
-							Python3::Python
-							)
-endif()
-
 set_property(TARGET TrafficLight PROPERTY FOLDER "DLLs")
