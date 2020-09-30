@@ -42,11 +42,11 @@ int main(int argc, char **argv) {
   workManager->Stop();
   delete graphicManager;
 #else
-  try {
+  // try {
     workManager->Start(_enableVisualisation);
-  } catch (...) {
-    std::cout << "Error Start WorkManager!!!" << std::endl;
-  }
+  // } catch (...) {
+    // std::cout << "Error Start WorkManager!!!" << std::endl;
+  // }
 #endif
 
   delete workManager;

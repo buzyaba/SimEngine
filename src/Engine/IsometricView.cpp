@@ -100,7 +100,7 @@ void IsometricView::updateScroll(GLFWwindow* window, double xoffset, double yoff
 
 void IsometricView::cameraMovement(float dt)
 {
-	GLfloat cameraSpeed = 15.0f * dt;
+	GLfloat cameraSpeed = 50.0f * dt;
 	glm::vec3 prevCamPos = Renderer::getCamera()->getCameraPosition();	
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();	
 	glm::vec3 offsetCam = prevCamPos + prevCamFront; 

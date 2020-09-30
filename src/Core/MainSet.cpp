@@ -2,11 +2,6 @@
 #include "Core/Parameters.h"
 #include "Core/common.h"
 
-#include "BasicExamples/TrafficSim/Car.hpp"
-#include "BasicExamples/TrafficSim/Road.hpp"
-#include "BasicExamples/TrafficSim/Street.hpp"
-#include "BasicExamples/TrafficSim/TrafficLight.hpp"
-
 #include "../lib/pugixml/include/pugixml.hpp"
 
 #include <string.h>
@@ -55,12 +50,6 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   std::vector<TObjectOfObservation *> ObjectOfObservations;
   std::vector<TStaticObject *> StaticObjects;
   std::vector<TSmartThing *> SmartThings;
-
-  StaticObjects.push_back(new TStreet("Street"));
-  ObjectOfObservations.push_back(new TRoad("Road"));
-  ObjectOfObservations.push_back(new TCarCreator("CarCreator"));
-  ObjectOfObservations.push_back(new TCarDestroyer("CarDestroyer"));
-  SmartThings.push_back(new TTrafficLight("TrafficLight"));
 
   pugi::xml_document doc;
   pugi::xml_parse_result result =
