@@ -1,6 +1,4 @@
-_build
-_buildMP
-build
+*build*
 .vscode
 A.csv
 EmptyProgram.csv
