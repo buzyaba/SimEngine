@@ -70,8 +70,6 @@ void TEnvironmentScript::RandomGen(unsigned long int maxTime)
   }
 }
 
-
-
 void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 {
   if (xmlEnvironmentScriptName == "")
@@ -167,13 +165,13 @@ void TEnvironmentScript::ParseString(std::string str, std::vector<double>& tt)
 }
 
 TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::string xmlEnvironmentScriptName,
-  unsigned long int& maxTime, int type)
+  unsigned long int& maxTime)
 {
 
   this->objects = _objects;
   this->xmlEnvironmentScriptName = xmlEnvironmentScriptName;
 
-  if (xmlEnvironmentScriptName != "")//(type > 0)
+  if (xmlEnvironmentScriptName != "")
   {
     LoadXML(maxTime);
   }

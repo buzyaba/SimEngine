@@ -5,21 +5,13 @@
 #include "Core/WorkManager.h"
 #include "Core/ProgramFactory.h"
 
-#include "BasicExamples/common.h"
-#ifdef USE_OpenGL
-#include <Engine/FirstPersonView.hpp>
-#include <Engine/IsometricView.hpp>
-#endif
+#include "SimEngine/common.h"
 
-TWorkManager::TWorkManager(TParameters& param) : parameters(param)
+TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_) : parameters(parameters_), presenter(presenter_)
 {
-#ifdef USE_OpenGL
-  window = parameters._window;
-#endif
-
   currentTime = 0;
   currentStep = 0;
-  mainSet = TSetFactory::Create(parameters.type, parameters.xmlMainSetConfigurationFile);
+  mainSet = TSetFactory::Create(parameters.xmlMainSetConfigurationFile);
 
   objects = mainSet->GetObjects();
   things = mainSet->GetThings();
@@ -41,8 +33,8 @@ TWorkManager::TWorkManager(TParameters& param) : parameters(param)
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep, parameters.type);
-  program = TProgramFactory::Create(parameters.type, things);
+  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep);
+  program = TProgramFactory::Create(things);
   storage = new TDataStore(allObject, "../../A");
 
   startWork = std::chrono::steady_clock::now();
@@ -51,9 +43,7 @@ TWorkManager::TWorkManager(TParameters& param) : parameters(param)
 
 TWorkManager::~TWorkManager()
 {
-#ifdef USE_OpenGL
-  delete window;
-#endif
+    Dll_Manager::FreeDllManager();
 }
 
 void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
@@ -62,7 +52,6 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   time = (t * parameters.millisecondsInTimeStep) / 1000;
   currentTime = time;
   currentStep = t;
-  // TODO: FIX COMMENTED STUFF
   script->UpdateObjectsProperties(time);
   for (int i = 0; i < objects.size(); i++)
   {
@@ -76,40 +65,22 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
   std::chrono::milliseconds delta =
     std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-  float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
-
-#ifdef USE_OpenGL
-  window->runWindow(dt, [&]() {glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.2f, 1.f, 0.f, 1.f);
-  this->DrawElements(); });
-#endif
-  if (_enableVisualisation == 0)
-    std::this_thread::sleep_for(delta);
+  std::this_thread::sleep_for(delta);
 }
 
 void TWorkManager::Start(const unsigned short& _enableVisualisation)
 {
   std::cout << "Start\n Max Iter = " << parameters.maxStep<< std::endl;
-  std::cout << "Max Time = " << double(parameters.maxStep * parameters.millisecondsInTimeStep) / 1000.0 << " seconds" << std::endl;
+  std::cout << "Max Time = " << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep / 1000.0 << " seconds" << std::endl;
   std::cout << "time acceleration = " << parameters.timeAcceleration << " X" << std::endl;
 
   startWork = std::chrono::steady_clock::now();
 
-#ifdef USE_OpenGL
-  if (_enableVisualisation) {
-    window->setVisibility(true);
-  } else {
-    window->setVisibility(false);
-  }
-#endif
 
   time = 0;
-  std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep * parameters.timeAcceleration));
-#ifdef USE_OpenGL
-  for (unsigned long int t = 0; t < parameters.maxStep && !window->isWindowShouldClose(); t++)
-#else
+   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
+
   for (unsigned long int t = 0; t < parameters.maxStep; t++)
-#endif
   {
     Iteration(t, delayTime, _enableVisualisation);
   }
@@ -117,20 +88,17 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
-  std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms." << std::endl;
+  std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms.\n "<< 
+  "Simulation time = \t" << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep / 60000 <<" minutes\n" << std::endl;
 
-  storage->PrintToFile();
-
-#ifdef USE_OpenGL
-  glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); // enable cursor
-#endif
-
+  // storage->PrintToFile();
+  presenter->stopGraphicManager();
   program->End();
 }
 
 void TWorkManager::Stop()
 {
-  parameters.maxStep = -1;
+    parameters.maxStep = -1;
 }
 
 void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds)
@@ -141,14 +109,10 @@ void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds)
     parameters.millisecondsInTimeStep = 0;
 }
 
-void TWorkManager::InitDraw() {
-    for(const auto& elem : mainSet->GetAllGObjects()){
-        elem.second[0]->initDraw(elem.second);
-    }
-}
-
-void TWorkManager::DrawElements() {
-    for(const auto& elem : mainSet->GetAllGObjects()) {
-        elem.second[0]->drawElements(elem.second);
+void TWorkManager::sendObjects() {
+    for (auto& vec : mainSet->GetAllGObjects()) {
+        for (auto elem : vec.second) {
+            presenter->addTObject(elem);
+        }
     }
 }

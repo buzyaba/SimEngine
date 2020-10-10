@@ -3,34 +3,30 @@
 #include <string>
 #include <vector>
 
-#include "BasicExamples/Sensor.h"
-#include "BasicExamples/Actuator.h"
-#include "BasicExamples/SmartThing.h"
-#include "BasicExamples/ObjectOfObservation.h"
-#include "BasicExamples/Properties.h"
-#include "BasicExamples/StaticObject.h"
-#include "BasicExamples/ManagementProgram.h"
+#include "SimEngine/Sensor.h"
+#include "SimEngine/Actuator.h"
+#include "SimEngine/SmartThing.h"
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/Properties.h"
+#include "SimEngine/StaticObject.h"
+#include "SimEngine/ManagementProgram.h"
 #include "Core/DataStore.h"
-#include "BasicExamples/DataPacket.h"
+#include "SimEngine/DataPacket.h"
 #include "Core/EnvironmentScript.h"
 #include "Core/MainSet.h"
-
-#include "BasicExamples/common.h"
+#include "SimEngine/common.h"
 #include "Core/Parameters.h"
-#ifdef USE_OpenGL
-#include <Engine/WindowManager.hpp>
-#endif
+
+#include "Engine/GraphicPresenter.hpp"
 
 /// Класс 
 class TWorkManager
 {
 protected:
-#ifdef USE_OpenGL
-  /// Окно для отрисовки 
-  WindowManager* window;
-#endif
   /// Параметры работы программы
   TParameters& parameters;
+
+  IGraphicPresenter* presenter;
 
   /// множество всех наблюдаемых объектов
   std::vector<TObjectOfObservation*> objects;
@@ -56,11 +52,8 @@ protected:
 
   /// Итерация работы программы
   void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
-  /// Отрисовка всех элементов
-  void DrawElements();
 public:
-
-  TWorkManager(TParameters& param = GlobalParameters);
+  TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_);
   ~TWorkManager();
   /// Начало работы программы
   void Start(const unsigned short& _enableVisualisation = 1);
@@ -68,7 +61,5 @@ public:
   void Stop();
   /// Изменить текущую задержку
   void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
-  /// Инициализация отрисовки
-  void InitDraw();
-
+  void sendObjects();
 };

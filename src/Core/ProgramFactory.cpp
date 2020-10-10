@@ -1,24 +1,13 @@
 #include "Core/ProgramFactory.h"
 #include "Core/Parameters.h"
-#include "BasicExamples/EmptyProgram.h"
+#include "SimEngine/ManagementProgram.h"
 
-bool TProgramFactory::isLoadInDLL = false;
-
-IManagementProgram* TProgramFactory::Create(int a, std::vector<TSmartThing*>& _things)
+IManagementProgram* TProgramFactory::Create(std::vector<TSmartThing*>& _things)
 {
   if (GlobalParameters.managementProgramDllFile != "")
   {
-    isLoadInDLL = true;
-    IManagementProgram* mp = GlobalParameters.problemManager.GetManagementProgram();
+    IManagementProgram* mp = GlobalParameters.managementProgram;
     mp->SetSmartThing(_things);
     return mp;
-  }
-  else
-  {
-    isLoadInDLL = false;
-    if (a <= 0)
-      return new TRoomProgram(_things);
-    else
-      return new TStreetProgram(_things);
   }
 }

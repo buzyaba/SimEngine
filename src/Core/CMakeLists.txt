@@ -1,4 +1,5 @@
 file(GLOB hdrs "${CMAKE_SOURCE_DIR}/include/Core/*.h*")
+
 file(GLOB srcs "*.cpp")
 
 add_definitions(-DGLEW_NO_GLU)

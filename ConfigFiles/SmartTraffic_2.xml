@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<type>2</type>
+	<xmlEnvironmentScriptName>SmartTraffic_2/conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>SmartTraffic_2/Street.xml</xmlMainSetConfigurationFile>
+	<managementProgramDllFile>TStreetPeakProgram</managementProgramDllFile>
+	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
+	<timeAcceleration>0</timeAcceleration>
+	<maxStep>1440</maxStep>
+</config>

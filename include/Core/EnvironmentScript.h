@@ -5,8 +5,8 @@
 #include <map>
 
 
-#include "BasicExamples/Object.h"
-#include "BasicExamples/Properties.h"
+#include "SimEngine/Object.h"
+#include "SimEngine/Properties.h"
 
 
 /**
@@ -77,7 +77,7 @@ protected:
 
 public:
   TEnvironmentScript(std::vector<IObject*> _objects, std::string xmlEnvironmentScriptName, 
-    unsigned long int& maxTime, int type = 0);
+    unsigned long int& maxTime);
 
   virtual std::map<std::string, IProperties*>& GetObjectProperties(std::string name, unsigned long int time);
   virtual std::map<std::string, IProperties*>& GetObjectProperties(IObject& object, unsigned long int time);

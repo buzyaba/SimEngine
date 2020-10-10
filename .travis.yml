@@ -4,12 +4,13 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      services: xvfb
       addons:
         apt:
           sources: ubuntu-toolchain-r-test
           packages: g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-
+           
     - os: linux
       dist: bionic
       addons:
@@ -42,6 +43,8 @@ script:
 - git submodule update --init --recursive
 - mkdir _build
 - cd _build
-- cmake -DBUILD_TESTS=ON -DBUILD_PLOTTER=OFF -DUSE_OpenGL=OFF ..
-- cmake --build .
+- cmake -DBUILD_TESTS=ON -DUSE_OPENGL=OFF ..
+- cmake --build . --config RELEASE
 - bin/RELEASE/tests
+- echo 4 > run.txt
+- bin/RELEASE/SimEngineLauncher < run.txt

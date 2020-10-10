@@ -1,7 +1,9 @@
-_build
-_buildMP
-build
+*build*
 .vscode
 A.csv
 EmptyProgram.csv
 DataStore.csv
+*.so
+*.dll
+*.ilk
+*.pdb

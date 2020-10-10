@@ -1,24 +1,27 @@
 #include "Engine/FirstPersonView.hpp"
+#include <iostream>
 
-bool keys[1024];
-GLfloat lastX;
-GLfloat lastY;
-GLfloat yaw;	
-GLfloat pitch;
+static bool keys[1024];
+bool FirstPersonView::noclip;
+static GLfloat lastX;
+static GLfloat lastY;
+static GLfloat yaw;	
+static GLfloat pitch;
 
 FirstPersonView::FirstPersonView(const std::uint32_t& screenWidth, const std::uint32_t& screenHeight, 
-                                 const std::string winName): WindowManager(screenWidth, screenHeight, winName) {
-    Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(0.0f, 5.0f, 8.0f), 
-                        glm::vec3(.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                                 const std::string winName, bool _visible): WindowManager(screenWidth, screenHeight, winName, _visible) {
+    Renderer::initCamera(45.0f, screenWidth, screenHeight, 0.1f, 10000.0f, glm::vec3(-15.0f, 5.0f, 11.0f), 
+                        glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     
     lastX = screenWidth/2;
     lastY = screenHeight/2;
     yaw   = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
     pitch =   0.0f;
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
+	setCursor(false);
     glfwSetKeyCallback(window, updateKeyboard); // keyboard events
     glfwSetCursorPosCallback(window, updateMouse); // mouse events
+	noclip = false;
 }
 
 void FirstPersonView::cameraMovement(float dt) {
@@ -27,11 +30,11 @@ void FirstPersonView::cameraMovement(float dt) {
 	glm::vec3 prevCamFront = Renderer::getCamera()->getCameraFront();
 	if (keys[GLFW_KEY_W])
 	{
-		prevCamPos += cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+		prevCamPos += Renderer::getCamera()->getCameraFront() * cameraSpeed;
 	}
 	if (keys[GLFW_KEY_S])
 	{
-		prevCamPos -= cameraSpeed * glm::normalize(glm::vec3(prevCamFront[0]/abs(prevCamFront[0]+prevCamFront[2]), 0.0f, prevCamFront[2]/abs(prevCamFront[0]+prevCamFront[2])));
+		prevCamPos -= Renderer::getCamera()->getCameraFront() * cameraSpeed;
 	}
 	if (keys[GLFW_KEY_D])
 	{
@@ -41,13 +44,17 @@ void FirstPersonView::cameraMovement(float dt) {
 	{
 		prevCamPos -= glm::normalize(glm::cross(Renderer::getCamera()->getCameraFront(), Renderer::getCamera()->getCameraUp())) *cameraSpeed;
 	}
-	prevCamPos[1] = 5.0f;
+	if (!noclip)
+		prevCamPos[1] = 2.0f;
 	Renderer::getCamera()->moveCamera(prevCamPos);
 }
 
 void FirstPersonView::updateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
 		glfwSetWindowShouldClose(window,true);
+	}
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
+		noclip = !noclip;
 	}
 	if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS)

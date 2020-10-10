@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <map>
-#include "BasicExamples/ObjectOfObservation.h"
-#include "BasicExamples/SmartThing.h"
-#include "BasicExamples/StaticObject.h"
-#ifdef USE_OpenGL
+#include "SimEngine/ObjectOfObservation.h"
+#include "SimEngine/SmartThing.h"
+#include "SimEngine/StaticObject.h"
+#ifdef USE_OPENGL
 #include <Engine/WindowManager.hpp>
 #endif
 
@@ -22,31 +22,14 @@ public:
   std::vector<TStaticObject*> GetStaticObjects();
   std::vector<TSmartThing*> GetThings();
   const std::map<std::string, std::vector<TObject*>>& GetAllGObjects() {return allGObjects;}
-
-};
-
-class TRoomSet : public TMainSet
-{
-public:
-  TRoomSet();
-};
-
-class TStreetSet : public TMainSet
-{
-public:
-  TStreetSet();
 };
 
 class TSetFactory
 {
 public:
-  static TMainSet* Create(int a = 0, std::string xmlMainSetConfigurationFile = "")
+  static TMainSet* Create(std::string xmlMainSetConfigurationFile = "")
   {
     if (xmlMainSetConfigurationFile != "")
       return new TMainSet(xmlMainSetConfigurationFile);
-    if (a <= 0)
-      return new TRoomSet();
-    else
-      return new TStreetSet();
   }
 };
