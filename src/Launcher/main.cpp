@@ -1,5 +1,3 @@
-#define WITHOUT_NUMPY
-
 #include "Core/WorkManager.h"
 #include "Core/Dll_manager.h"
 #include "Engine/GraphicPresenter.hpp"
