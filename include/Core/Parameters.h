@@ -37,7 +37,7 @@ public:
   std::string managementProgramDllFile;
   
   /// Кол-во миллисекунд в одном шаге
-  unsigned int millisecondsInTimeStep;
+  unsigned long millisecondsInTimeStep;
   /* Ускорение времени программы, 
   при = 0 программа работает с максимально возможной соростью, 
   при = 1 за одну итерацию проходит millisecondsInTimeStep времени **/

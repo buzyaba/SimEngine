@@ -71,7 +71,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
 void TWorkManager::Start(const unsigned short& _enableVisualisation)
 {
   std::cout << "Start\n Max Iter = " << parameters.maxStep<< std::endl;
-  std::cout << "Max Time = " << double(parameters.maxStep * parameters.millisecondsInTimeStep) / 1000.0 << " seconds" << std::endl;
+  std::cout << "Max Time = " << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep / 1000.0 << " seconds" << std::endl;
   std::cout << "time acceleration = " << parameters.timeAcceleration << " X" << std::endl;
 
   startWork = std::chrono::steady_clock::now();
@@ -89,7 +89,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   std::chrono::milliseconds deltaWork =
     std::chrono::duration_cast<std::chrono::milliseconds>(endWork - startWork);
   std::cout << "End Work\n Time Work = \t" << deltaWork.count() << " ms.\n "<< 
-  "Simulation time = \t" << static_cast<double>(parameters.maxStep * parameters.millisecondsInTimeStep) / 60000 <<" minutes\n" << std::endl;
+  "Simulation time = \t" << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep / 60000 <<" minutes\n" << std::endl;
 
   // storage->PrintToFile();
   presenter->stopGraphicManager();
