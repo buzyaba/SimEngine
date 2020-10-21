@@ -14,7 +14,8 @@
 class IManagementProgram
 {
 public:
-  virtual void Run() = 0;
+  virtual void Run() {};
+  virtual void Run(unsigned long time, unsigned long step) = 0;
   virtual void End() = 0;
   virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
 };
@@ -65,6 +66,23 @@ public:
     title1 = fileName;
   }
 
+virtual void Run()
+{
+    std::vector<std::string> str(1);
+    str[0] = std::to_string(currentTime);
+
+    for (int i = 0; i < sensors.size(); i++)
+    {
+      double* val = sensors[i]->GetDataPacket().GetDoubles();
+      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+      for (int j = 0; j < dataCount; j++)
+      {
+        str.push_back(std::to_string(val[j]));
+      }
+    }
+    table.push_back(str);
+  }
+
   virtual void End()
   {
     file = fopen((fileName + ".csv").c_str(), "w");
@@ -82,7 +100,7 @@ public:
     fclose(file);
   }
 
-  virtual void Run()
+  virtual void Run(unsigned long time, unsigned long step)
   {
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);

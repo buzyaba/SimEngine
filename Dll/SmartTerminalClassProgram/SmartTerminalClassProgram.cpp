@@ -1,6 +1,6 @@
 #include "SmartTerminalClassProgram.hpp"
 
-void TSmartTerminalClassProgram::Run() {
+void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
   size_t terminal_count = 0;
   bool sheduleIsWork = true;
   bool sheduleActive = false;
@@ -14,7 +14,7 @@ void TSmartTerminalClassProgram::Run() {
         double* data = dataPacket.GetDoubles();
         double* packetVal = sendPacket.GetDoubles();
         for (int i = 0; i < thingSensors[iterSensors]->getObjectsCount(); ++i) {
-          if ((currentTime >= 32400) && ((currentTime-32400) / 43200) == timePeriod) {
+          if ((time >= 32400) && ((time-32400) / 43200) == timePeriod) {
             packetVal[i] = static_cast<double>(sheduleIsWork);
             sheduleActive = true;
           } else {

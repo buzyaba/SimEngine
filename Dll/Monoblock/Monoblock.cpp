@@ -2,7 +2,7 @@
 
 TMonoblock::TMonoblock(std::string _name) : TObjectOfObservation(_name) {
   properties.insert(
-      {"IsWork", new TProperties({{"IsWork", 0}}, false, "IsWork")});
+      {"IsWork", new TProperties({{"IsWork", 0}}, true, "IsWork")});
   properties.insert(
       {"PowerConsumption",
        new TProperties({{"PowerConsumption", 0}}, true, "PowerConsumption")});
