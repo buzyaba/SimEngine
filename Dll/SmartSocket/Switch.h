@@ -9,15 +9,15 @@ public:
 
   virtual void SetDataPacket(TDataPacket& packet)
   {
-    // for (int i = 0; i < objects.size(); i++)
-    // {
-    //   if (objects[i] != nullptr)
-    //   {
-    //     if (packet.GetDoubles()[0] == 0)
-    //       objects[i]->SetProperty({ 0 }, "IsWork");
-    //     else
-    //       objects[i]->SetProperty({ 1 }, "IsWork");
-    //   }
-    // }
+    for (int i = 0; i < objects.size(); i++)
+    {
+      if (objects[i] != nullptr)
+      {
+        if (packet.GetDoubles()[i] == 0)
+          objects[i]->SetProperty({{"IsWork", 0}}, "IsWork");
+        else
+          objects[i]->SetProperty({{"IsWork", 1}}, "IsWork");
+      }
+    }
   }
 };

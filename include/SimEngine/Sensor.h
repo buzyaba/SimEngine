@@ -14,7 +14,7 @@ public:
   virtual void AddObject(TObjectOfObservation& object) = 0;
   virtual void ExcludeObject(TObjectOfObservation& object) = 0;
   virtual void ExcludeObject(std::string objectName) = 0;
-
+  virtual size_t getObjectsCount() = 0;
   virtual std::string GetName() = 0;
   virtual void SetName(std::string _name) = 0;
 };
@@ -46,6 +46,6 @@ public:
   virtual void ExcludeObject(std::string objectName);
   virtual std::string GetName();
   virtual void SetName(std::string _name);
-
+  virtual size_t getObjectsCount() { return oldObjectCount; }
 };
 

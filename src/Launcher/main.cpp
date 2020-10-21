@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
     std::cout << "Error Start WorkManager!!!" << std::endl;
   }
 #endif
-  delete workManager;
   delete presenter;
+  delete workManager;
   return 0;
 }

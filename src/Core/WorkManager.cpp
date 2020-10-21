@@ -43,7 +43,7 @@ TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presente
 
 TWorkManager::~TWorkManager()
 {
-    Dll_Manager::FreeDllManager();
+  Dll_Manager::FreeDllManager();
 }
 
 void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)

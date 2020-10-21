@@ -19,22 +19,7 @@ void TSmartEnergyProgram::End() {
     else 
       std::cout << "Electricity bill = " << sum * 3.71 <<" rub\n";
 
-    //DELETE THIS AFTER ALL PLS
-    file = fopen((fileName + ".csv").c_str(), "w");
-
-    for (int j = 0; j < tableHeader.size(); j++)
-      fprintf(file, "%s;\t", tableHeader[j].c_str());
-    fprintf(file, "\n");
-
-    for (int i = 0; i < table.size(); i++)
-    {
-      for (int j = 0; j < table[i].size(); j++)
-        fprintf(file, "%s;", table[i][j].c_str());
-      fprintf(file, "\n");
-    }
-    fclose(file);
-    //ENDS HERE
-    // TManagementProgram::End();
+    TManagementProgram::End();
 }
 
 LIB_EXPORT_API IManagementProgram* create()

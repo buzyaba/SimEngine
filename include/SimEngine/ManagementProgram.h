@@ -56,7 +56,7 @@ public:
       for (int j = 0; j < sensor.size(); j++)
       {
         sensors.push_back(sensor[j]);
-        int dataCount = int(things[i]->GetSensors()[0]->GetDataPacket().GetSize() / sizeof(double));
+        int dataCount = int(sensor[j]->GetDataPacket().GetSize() / sizeof(double));
         for (int k = 0; k < dataCount; k++)
           tableHeader.push_back(things[i]->GetName() + "_" + sensor[j]->GetName() + "_" + std::to_string(k));
       }
