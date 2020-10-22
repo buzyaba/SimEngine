@@ -13,10 +13,17 @@ public:
     {
       if (objects[i] != nullptr)
       {
-        if (packet.GetDoubles()[i] == 0)
-          objects[i]->SetProperty({{"IsWork", 0}}, "IsWork");
-        else
-          objects[i]->SetProperty({{"IsWork", 1}}, "IsWork");
+        switch (static_cast<int>(packet.GetDoubles()[i])) {
+          case 0:
+            objects[i]->SetProperty({{"IsWork", 0}}, "IsWork");
+            break;
+          case 1:
+            objects[i]->SetProperty({{"IsWork", 1}}, "IsWork");
+            break;
+          case 2:
+            objects[i]->SetProperty({{"IsWork", 2}}, "IsWork");
+            break;
+        }
       }
     }
   }

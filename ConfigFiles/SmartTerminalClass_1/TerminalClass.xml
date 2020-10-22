@@ -72,90 +72,90 @@
   </TTable>
   </StaticObject>
   <ObjectOfObservation>
-  <TTerminal>
-	<Name>Terminal1</Name>
+  <TMonoblock>
+	<Name>Monoblock1</Name>
   <Coordinate>-30 -5.5 2</Coordinate>
   <Rotate>0.0 90.0 0.0</Rotate>
-  </TTerminal>
-  <TTerminal>
-	<Name>Terminal2</Name>
+  </TMonoblock>
+  <TMonoblock>
+	<Name>Monoblock2</Name>
   <Coordinate>-30 -5.5 -10</Coordinate>
   <Rotate>0.0 90.0 0.0</Rotate>
-  </TTerminal>
+  </TMonoblock>
   </ObjectOfObservation>
   <SmartThing>
   <TSmartSocket>
 	<Name>SmartSocket1</Name>
-	<Object>Terminal1</Object>
-  <Object>Terminal2</Object>
+	<Object>Monoblock1</Object>
+  <Object>Monoblock2</Object>
   </TSmartSocket>
   </SmartThing>
   <ObjectOfObservation>
-  <TTerminal>
-  <Name>Terminal3</Name>
+  <TMonoblock>
+  <Name>Monoblock3</Name>
   <Coordinate>-16.5 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal4</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock4</Name>
   <Coordinate>-6 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal5</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock5</Name>
   <Coordinate>7.5 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal6</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock6</Name>
   <Coordinate>18 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal7</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock7</Name>
   <Coordinate>31.5 -5.5 -18.5</Coordinate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal8</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock8</Name>
   <Coordinate>42.5 -5.5 -18.5</Coordinate>
-  </TTerminal>
+  </TMonoblock>
   </ObjectOfObservation>
   <SmartThing>
   <TSmartSocket>
 	<Name>SmartSocket2</Name>
-	<Object>Terminal3</Object>
-  <Object>Terminal4</Object>
-  <Object>Terminal5</Object>
-  <Object>Terminal6</Object>
-  <Object>Terminal7</Object>
-  <Object>Terminal8</Object>
+	<Object>Monoblock3</Object>
+  <Object>Monoblock4</Object>
+  <Object>Monoblock5</Object>
+  <Object>Monoblock6</Object>
+  <Object>Monoblock7</Object>
+  <Object>Monoblock8</Object>
   </TSmartSocket>
   </SmartThing>
   <ObjectOfObservation>
-  <TTerminal>
-  <Name>Terminal9</Name>
+  <TMonoblock>
+  <Name>Monoblock9</Name>
   <Coordinate>46 -5.5 -1</Coordinate>
   <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
-  <TTerminal>
-	<Name>Terminal10</Name>
+  </TMonoblock>
+  <TMonoblock>
+	<Name>Monoblock10</Name>
   <Coordinate>46 -5.5 10</Coordinate>
   <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
-  <TTerminal>
-  <Name>Terminal11</Name>
+  </TMonoblock>
+  <TMonoblock>
+  <Name>Monoblock11</Name>
   <Coordinate>46 -5.5 23</Coordinate>
   <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
-  <TTerminal>
-	<Name>Terminal12</Name>
+  </TMonoblock>
+  <TMonoblock>
+	<Name>Monoblock12</Name>
   <Coordinate>46 -5.5 34</Coordinate>
   <Rotate>0.0 -90.0 0.0</Rotate>
-  </TTerminal>
+  </TMonoblock>
   </ObjectOfObservation>
   <SmartThing>
   <TSmartSocket>
 	<Name>SmartSocket3</Name>
-	<Object>Terminal9</Object>
-  <Object>Terminal10</Object>
-  <Object>Terminal11</Object>
-  <Object>Terminal12</Object>
+	<Object>Monoblock9</Object>
+  <Object>Monoblock10</Object>
+  <Object>Monoblock11</Object>
+  <Object>Monoblock12</Object>
   </TSmartSocket>
   </SmartThing>
 </config>

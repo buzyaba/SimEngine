@@ -2,15 +2,13 @@
 
 void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
   size_t terminal_count = 0;
-  bool sheduleIsWork = true;
   bool sheduleActive = false;
-  double timePeriod = 0;
   for (size_t iter = 0; iter < things.size(); ++iter) {
       auto thingSensors = things[iter]->GetSensors();
       auto thingActuators = things[iter]->GetActuators();
       for (size_t iterSensors = 0; iterSensors < thingSensors.size(); ++iterSensors) {
         TDataPacket& dataPacket = thingSensors[iterSensors]->GetDataPacket();
-        size_t packetSize = dataPacket.GetSize();
+        size_t propCount = thingSensors[iterSensors]->getPropertyCount();
         double* data = dataPacket.GetDoubles();
         double* packetVal = sendPacket.GetDoubles();
         for (int i = 0; i < thingSensors[iterSensors]->getObjectsCount(); ++i) {
@@ -18,9 +16,9 @@ void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
             packetVal[i] = static_cast<double>(sheduleIsWork);
             sheduleActive = true;
           } else {
-            double isWork = data[i * (packetSize / thingSensors[iterSensors]->getObjectsCount())];
+            double isWork = data[i * (propCount / thingSensors[iterSensors]->getObjectsCount())];
             if (isWork == 0)
-              waitTime[terminal_count]++;
+              waitTime[terminal_count]+=60;
             else
               waitTime[terminal_count] = 0;
             if (waitTime[terminal_count] >= deltaT) {

@@ -5,9 +5,9 @@ file(GLOB_RECURSE source_files "*.cpp")
 add_library(Monoblock SHARED ${source_files} ${hdrs})
 
 set_target_properties(Monoblock PROPERTIES
-						LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/assets/models/TTerminal"
-						RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/assets/models/TTerminal"
-						RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/assets/models/TTerminal")
+						LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/assets/models/TMonoblock"
+						RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/assets/models/TMonoblock"
+						RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/assets/models/TMonoblock")
 
 
 add_definitions(-DGLEW_NO_GLU)

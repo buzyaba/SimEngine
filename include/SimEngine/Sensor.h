@@ -17,6 +17,7 @@ public:
   virtual size_t getObjectsCount() = 0;
   virtual std::string GetName() = 0;
   virtual void SetName(std::string _name) = 0;
+  virtual int getPropertyCount() = 0;
 };
 
 class TSensor : public ISensor
@@ -47,5 +48,6 @@ public:
   virtual std::string GetName();
   virtual void SetName(std::string _name);
   virtual size_t getObjectsCount() { return oldObjectCount; }
+  virtual int getPropertyCount() { return propertyCount; }
 };
 
