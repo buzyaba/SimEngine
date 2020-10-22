@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<type>-1</type>
+	<xmlEnvironmentScriptName>SmartTerminalClass_1/Conf.xml</xmlEnvironmentScriptName> 
+	<xmlMainSetConfigurationFile>SmartTerminalClass_1/TerminalClass.xml</xmlMainSetConfigurationFile>
+	<managementProgramDllFile>TSmartTerminalClassDummyProgram</managementProgramDllFile>
+	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
+	<timeAcceleration>0</timeAcceleration>
+	<maxStep>43200</maxStep>
+</config>

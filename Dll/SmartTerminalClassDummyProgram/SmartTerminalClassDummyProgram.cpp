@@ -1,6 +1,6 @@
-#include "SmartTerminalClassProgram.hpp"
+#include "SmartTerminalClassDummyProgram.hpp"
 
-void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
+void TSmartTerminalClassDummyProgram::Run(unsigned long time, unsigned long step) {
   size_t terminal_count = 0;
   bool sheduleActive = false;
   for (size_t iter = 0; iter < things.size(); ++iter) {
@@ -17,18 +17,9 @@ void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
             sheduleActive = true;
           } else {
             double isWork = data[i * (propCount / thingSensors[iterSensors]->getObjectsCount())];
-            if (isWork == 0)
-              waitTime[terminal_count]+=60;
-            else
-              waitTime[terminal_count] = 0;
-            if (waitTime[terminal_count] >= deltaT) {
-              packetVal[i] = 2;
-              waitTime[terminal_count] = 0;
-            } else {
-              packetVal[i] = isWork;
-            }
-            terminal_count++;
+            packetVal[i] = isWork;
           }
+          terminal_count++;
         }
         thingActuators[iterSensors]->SetDataPacket(sendPacket);
       }
@@ -40,7 +31,7 @@ void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
     TManagementProgram::Run();
   }
 
-void TSmartTerminalClassProgram::End() {
+void TSmartTerminalClassDummyProgram::End() {
     double value = 0;
     double sum = 0;
 
@@ -64,15 +55,7 @@ void TSmartTerminalClassProgram::End() {
     TManagementProgram::End();
 }
 
-void TSmartTerminalClassProgram::SetSmartThing(std::vector<TSmartThing*> _things) {
-  TManagementProgram::SetSmartThing(_things);
-  size_t objectsCount = 0;
-  for (auto sens : sensors)
-    objectsCount += sens->getObjectsCount();
-  waitTime.resize(objectsCount);
-}
-
 LIB_EXPORT_API IManagementProgram* create()
 {
-    return new TSmartTerminalClassProgram();
+    return new TSmartTerminalClassDummyProgram();
 }
