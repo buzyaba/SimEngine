@@ -14,7 +14,8 @@
 class IManagementProgram
 {
 public:
-  virtual void Run() = 0;
+  virtual void Run() {};
+  virtual void Run(unsigned long time, unsigned long step) = 0;
   virtual void End() = 0;
   virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
 };
@@ -56,13 +57,30 @@ public:
       for (int j = 0; j < sensor.size(); j++)
       {
         sensors.push_back(sensor[j]);
-        int dataCount = int(things[i]->GetSensors()[0]->GetDataPacket().GetSize() / sizeof(double));
+        int dataCount = int(sensor[j]->GetDataPacket().GetSize() / sizeof(double));
         for (int k = 0; k < dataCount; k++)
           tableHeader.push_back(things[i]->GetName() + "_" + sensor[j]->GetName() + "_" + std::to_string(k));
       }
     }
 
     title1 = fileName;
+  }
+
+virtual void Run()
+{
+    std::vector<std::string> str(1);
+    str[0] = std::to_string(currentTime);
+
+    for (int i = 0; i < sensors.size(); i++)
+    {
+      double* val = sensors[i]->GetDataPacket().GetDoubles();
+      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+      for (int j = 0; j < dataCount; j++)
+      {
+        str.push_back(std::to_string(val[j]));
+      }
+    }
+    table.push_back(str);
   }
 
   virtual void End()
@@ -82,7 +100,7 @@ public:
     fclose(file);
   }
 
-  virtual void Run()
+  virtual void Run(unsigned long time, unsigned long step)
   {
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);

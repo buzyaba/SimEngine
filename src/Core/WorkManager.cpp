@@ -43,7 +43,7 @@ TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presente
 
 TWorkManager::~TWorkManager()
 {
-    Dll_Manager::FreeDllManager();
+  Dll_Manager::FreeDllManager();
 }
 
 void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
@@ -59,7 +59,7 @@ void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& de
   }
   storage->AddAllProperties(time);
 
-  program->Run();
+  program->Run(currentTime, currentStep);
 
   //storage->PrintToConsole();
   std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
@@ -92,7 +92,7 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
   "Simulation time = \t" << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep / 60000 <<" minutes\n" << std::endl;
 
   // storage->PrintToFile();
-  presenter->stopGraphicManager();
+  // presenter->stopGraphicManager();
   program->End();
 }
 
