@@ -6,24 +6,24 @@
         </TStreet>
     </StaticObject>
     <ObjectOfObservation>
+        <TCarManager>
+            <Name>CarManager1</Name>
+            <Coordinate>150 0 0</Coordinate>
+        </TCarManager>
         <TCrossRoad>
             <Name>CrossRoad1</Name>
             <Coordinate>0 0 0</Coordinate>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad2</Name>
-            <Coordinate>150 0 0</Coordinate>
-        </TCrossRoad>
-        <TCrossRoad>
-            <Name>CrossRoad3</Name>
             <Coordinate>-150 0 0</Coordinate>
         </TCrossRoad>
         <TCrossRoad>
-            <Name>CrossRoad4</Name>
+            <Name>CrossRoad3</Name>
             <Coordinate>0 0 150</Coordinate>
         </TCrossRoad>
         <TCrossRoad>
-            <Name>CrossRoad5</Name>
+            <Name>CrossRoad4</Name>
             <Coordinate>0 1 -150</Coordinate>
         </TCrossRoad>
     </ObjectOfObservation>

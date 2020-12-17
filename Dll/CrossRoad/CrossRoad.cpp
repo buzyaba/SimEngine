@@ -23,8 +23,3 @@ void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
     auto& second = obect.GetProperty("Coordinate");
     childObjects.emplace_back(new TRoad("blyar", first, second));
 }
-
-LIB_EXPORT_API TObjectOfObservation* create()
-{
-    return new TCrossRoad("TCrossRoad");
-}

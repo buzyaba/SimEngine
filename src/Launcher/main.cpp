@@ -20,11 +20,11 @@ int main(int argc, char **argv) {
 #else
   presenter = new IGraphicPresenter();
 #endif
-  try {
+  // try {
     workManager = new TWorkManager(GlobalParameters, presenter);
-  } catch (...) {
-    std::cout << "Error Create WorkManager!!!" << std::endl;
-  }
+  // } catch (...) {
+  //   std::cout << "Error Create WorkManager!!!" << std::endl;
+  // }
 
   int _enableVisualisation = 0;
 #ifdef USE_OPENGL
