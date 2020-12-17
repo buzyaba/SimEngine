@@ -9,22 +9,29 @@
         <TCrossRoad>
             <Name>CrossRoad1</Name>
             <Coordinate>0 0 0</Coordinate>
+            <Neighbour>CrossRoad2</Neighbour>
+            <Neighbour>CrossRoad3</Neighbour>
+            <Neighbour>CrossRoad5</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad2</Name>
             <Coordinate>150 0 0</Coordinate>
+            <Neighbour>CrossRoad3</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad3</Name>
             <Coordinate>-150 0 0</Coordinate>
+            <Neighbour>CrossRoad2</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad4</Name>
             <Coordinate>0 0 150</Coordinate>
+            <Neighbour>CrossRoad2</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad5</Name>
             <Coordinate>0 1 -150</Coordinate>
+            <Neighbour>CrossRoad2</Neighbour>
         </TCrossRoad>
     </ObjectOfObservation>
     <!-- <SmartThing>
