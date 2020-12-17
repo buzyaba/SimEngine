@@ -18,10 +18,10 @@ void TCrossRoad::Update() {
 }
 
 void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
-    // neighboringObject.push_back(&obect);
-    // auto& first = GetProperty("Coordinate");
-    // auto& second = obect.GetProperty("Coordinate");
-    // childObjects.emplace_back(new TRoad("blyar", first, second));
+    neighboringObject.push_back(&obect);
+    auto& first = GetProperty("Coordinate");
+    auto& second = obect.GetProperty("Coordinate");
+    childObjects.emplace_back(new TRoad("blyar", first, second));
 }
 
 LIB_EXPORT_API TObjectOfObservation* create()

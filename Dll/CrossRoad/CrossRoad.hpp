@@ -1,6 +1,6 @@
 #pragma once
 #include "SimEngine/ObjectOfObservation.h"
-// #include "Road.hpp"
+#include "Road.hpp"
 
 class TCrossRoad: public TObjectOfObservation {
 public:
