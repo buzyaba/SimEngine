@@ -9,8 +9,8 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
     auto first_crossr_x = first_crossr.GetValue("X");
     auto first_crossr_y = first_crossr.GetValue("Y");
 
-    auto second_crossr_x = first_crossr.GetValue("X");
-    auto second_crossr_y = first_crossr.GetValue("Y");
+    auto second_crossr_x = second_crossr.GetValue("X");
+    auto second_crossr_y = second_crossr.GetValue("Y");
 
     auto x_diff = second_crossr_x-first_crossr_x;
     auto y_diff = second_crossr_y-first_crossr_y;

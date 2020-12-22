@@ -8,6 +8,7 @@ public:
     TStaticObject(std::string _name);
     /// Создание клона объекта
   virtual TStaticObject* Clone() = 0;
+  virtual bool isDrawable() { return true; }
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой со статичными объектами

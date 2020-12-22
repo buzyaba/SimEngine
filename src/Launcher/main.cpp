@@ -39,11 +39,8 @@ int main(int argc, char **argv) {
   workManager->Stop();
   delete graphicManager;
 #else
-  try {
     workManager->Start(_enableVisualisation);
-  } catch (...) {
-    std::cout << "Error Start WorkManager!!!" << std::endl;
-  }
+
 #endif
   delete presenter;
   delete workManager;

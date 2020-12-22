@@ -1,133 +1,116 @@
 ﻿#include "SimEngine/ObjectOfObservation.h"
 
-TObjectOfObservation::TObjectOfObservation(std::string _name, 
-  std::vector<TObjectOfObservation*> _neighboringObject,
-  TObjectOfObservation* _parentObject, TObjectOfObservation* _childObject) : TObject(_name)
-{
-  if (_neighboringObject.size() == 1)
-  {
-    if (_neighboringObject[0] != nullptr)
-      neighboringObject = _neighboringObject;
-  }
-  else
-    neighboringObject = _neighboringObject;
-
-  parentObject = _parentObject;
-  
-  if (_childObject != nullptr)
-  {
-    childObjects.push_back(_childObject);
-  }
-}
-
-TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TObject(obj)
-{
-  this->neighboringObject = obj.neighboringObject;
-  this->childObjects = obj.childObjects;
-  this->parentObject = obj.parentObject;
-}
-
-void TObjectOfObservation::AddParentObject(TObjectOfObservation& obect)
-{
-  parentObject = &obect;
-}
-
-int TObjectOfObservation::AddChildObject(TObjectOfObservation& obect)
-{
-  if (childObjects.size() == 0)
-    childObjects.push_back(&obect);
-  else
-  {
-    if (childObjects[0] == nullptr)
-      childObjects[0] = &obect;
+TObjectOfObservation::TObjectOfObservation(std::string _name,
+                                           std::vector<TObjectOfObservation*> _neighboringObject,
+                                           TObjectOfObservation* _parentObject,
+                                           TObjectOfObservation* _childObject)
+        : TObject(_name) {
+    if (_neighboringObject.size() == 1) {
+        if (_neighboringObject[0] != nullptr)
+            neighboringObject = _neighboringObject;
+    }
     else
-    {
-      childObjects.push_back(&obect);
+        neighboringObject = _neighboringObject;
+
+    parentObject = _parentObject;
+
+    if (_childObject != nullptr) {
+        childObjects.push_back(_childObject);
     }
-  }
-  return childObjects.size();  
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObject()
-{
-  return childObjects;
+TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TObject(obj) {
+    this->neighboringObject = obj.neighboringObject;
+    this->childObjects = obj.childObjects;
+    this->parentObject = obj.parentObject;
 }
 
-void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect)
-{
-  neighboringObject.push_back(&obect);
+void TObjectOfObservation::AddParentObject(TObjectOfObservation& obect) {
+    parentObject = &obect;
 }
 
-void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect)
-{
-  if (childObjects.size() == 1)
-  {
-    if (childObjects[0]->GetName() == obect.GetName())
-      childObjects[0] = nullptr;
-  }
-  else
-  {
-    for (int i = 0; i < childObjects.size(); i++)
-    {
-      if (childObjects[i]->GetName() == obect.GetName())
-      {
-        std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
-        for (int j = 0, t = 0; j < childObjects.size(); j++)
-        {
-          if (j != i)
-          {
-            newChildObjects[t] = childObjects[j];
-            t++;
-          }
+int TObjectOfObservation::AddChildObject(TObjectOfObservation& obect) {
+    if (childObjects.size() == 0)
+        childObjects.push_back(&obect);
+    else {
+        if (childObjects[0] == nullptr)
+            childObjects[0] = &obect;
+        else {
+            childObjects.push_back(&obect);
         }
-        childObjects = newChildObjects;
-        break;
-      }
     }
-  }
+    return childObjects.size();
 }
 
-void TObjectOfObservation::Update()
-{
-  if (childObjects.size() > 1)
-    throw - 1;
+std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObject() {
+    return childObjects;
 }
 
-std::vector<IProperties*>& TObjectOfObservation::GetAllProperties()
-{
-//   if (childObjects.size() > 0)
-//   {
-//     if (childObjects[0] != nullptr)
-//     {
-//       std::vector<IProperties*> cp = childObjects[0]->GetProperties();
-//       int sizeAllProp = properties.size() + cp.size();
-//       if (allProperties.size() != sizeAllProp)
-//         allProperties.resize(sizeAllProp, nullptr);
-//       int j = 0;
-//       for (const auto& elem : properties)
-//       {
-//         if (elem.second != nullptr)
-//         {
-//           allProperties[j] = elem.second;
-//           j++;
-//         }
-//       }
-//       for (int i = 0; i < cp.size(); i++)
-//       {
-//         if (cp[i] != nullptr)
-//         {
-//           allProperties[j] = cp[i];
-//           j++;
-//         }
-//       }
-//     }
-//   }
-//   else
-//   {
-//     if (allProperties.size() != properties.size())
-//       allProperties = properties;
-//   }
-  return allProperties;
+void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect) {
+    neighboringObject.push_back(&obect);
+}
+
+void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect) {
+    if (childObjects.size() == 1) {
+        if (childObjects[0]->GetName() == obect.GetName())
+            childObjects[0] = nullptr;
+    }
+    else {
+        for (int i = 0; i < childObjects.size(); i++) {
+            if (childObjects[i]->GetName() == obect.GetName()) {
+                std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
+                for (int j = 0, t = 0; j < childObjects.size(); j++) {
+                    if (j != i) {
+                        newChildObjects[t] = childObjects[j];
+                        t++;
+                    }
+                }
+                childObjects = newChildObjects;
+                break;
+            }
+        }
+    }
+}
+
+void TObjectOfObservation::Update() {
+    for (auto& elem : childObjects)
+        elem->Update();
+}
+
+std::vector<IProperties*>& TObjectOfObservation::GetAllProperties() {
+    //   if (childObjects.size() > 0)
+    //   {
+    //     if (childObjects[0] != nullptr)
+    //     {
+    //       std::vector<IProperties*> cp = childObjects[0]->GetProperties();
+    //       int sizeAllProp = properties.size() + cp.size();
+    //       if (allProperties.size() != sizeAllProp)
+    //         allProperties.resize(sizeAllProp, nullptr);
+    //       int j = 0;
+    //       for (const auto& elem : properties)
+    //       {
+    //         if (elem.second != nullptr)
+    //         {
+    //           allProperties[j] = elem.second;
+    //           j++;
+    //         }
+    //       }
+    //       for (int i = 0; i < cp.size(); i++)
+    //       {
+    //         if (cp[i] != nullptr)
+    //         {
+    //           allProperties[j] = cp[i];
+    //           j++;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   else
+    //   {
+    //     if (allProperties.size() != properties.size())
+    //       allProperties = properties;
+    //   }
+    return allProperties;
 }
 
 // TObjectOfObservation* TObjectOfObservation::Clone()
