@@ -61,8 +61,7 @@ std::string getName(const pugi::xml_node &xml_node) {
 template <class ObjType, DLL_TYPE DllType>
 void createNewObject(std::vector<ObjType *> &objectsTempVector,
                      std::vector<ObjType *> &objectsVector,
-                     const pugi::xml_node &xml_node,
-                     std::map<std::string, std::vector<TObject *>> &allGObjects) {
+                     const pugi::xml_node &xml_node) {
     for (pugi::xml_node xml_obj_iter = xml_node.first_child(); xml_obj_iter != 0;
          xml_obj_iter = xml_obj_iter.next_sibling()) {
         std::string name = xml_obj_iter.name();
@@ -86,8 +85,6 @@ void createNewObject(std::vector<ObjType *> &objectsTempVector,
             SetProperty(newObject, nameProperty, valueProperty);
         }
         objectsVector.push_back(newObject);
-        // TODO: Remove allGObjects
-        allGObjects[newObject->ClassName()].push_back(newObject);
     }
 }
 
@@ -114,17 +111,15 @@ void TMainSet::createObjects(const pugi::xml_node &config) {
         if (obj_type == "StaticObject") {
             createNewObject<TStaticObject, STATIC_OBJECT>(StaticObjects,
                                                           staticObjects,
-                                                          iter,
-                                                          allGObjects);
+                                                          iter);
         }
         else if (obj_type == "ObjectOfObservation") {
             createNewObject<TObjectOfObservation, OBJECT_OF_OBSERVATION>(ObjectOfObservations,
                                                                          objects,
-                                                                         iter,
-                                                                         allGObjects);
+                                                                         iter);
         }
         else if (obj_type == "SmartThing") {
-            createNewObject<TSmartThing, SMART_THING>(SmartThings, things, iter, allGObjects);
+            createNewObject<TSmartThing, SMART_THING>(SmartThings, things, iter);
         }
     }
 }

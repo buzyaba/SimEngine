@@ -25,6 +25,8 @@ public:
   /// Создание клона объекта
   virtual IObject* Clone() = 0;
 
+  virtual bool isDrawable() = 0;
+
   virtual std::vector<std::vector<std::string>>& getTextures() = 0;
 };
 
@@ -60,6 +62,8 @@ class TObject: public IObject {
     virtual std::string ClassName() = 0;
     // /// Создание клона объекта
     virtual IObject* Clone() = 0;
+
+    virtual bool isDrawable() = 0;
 
     virtual std::vector<std::vector<std::string>>& getTextures() { return textures; }
 };

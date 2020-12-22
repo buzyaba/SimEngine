@@ -18,4 +18,5 @@ public:
     void Update() override;
     TObjectOfObservation* Clone() { return new TRoad(); }
     std::string ClassName() { return "TRoad"; }
+    bool isDrawable() { return false; }
 };

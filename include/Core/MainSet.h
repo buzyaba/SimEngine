@@ -16,8 +16,6 @@ protected:
     std::vector<TObjectOfObservation *> objects;
     std::vector<TStaticObject *> staticObjects;
     std::vector<TSmartThing *> things;
-    // TODO: Remove allGObjects
-    std::map<std::string, std::vector<TObject *>> allGObjects;
 
 public:
     TMainSet() = default;
@@ -27,9 +25,6 @@ public:
     std::vector<TObjectOfObservation *> GetObjects();
     std::vector<TStaticObject *> GetStaticObjects();
     std::vector<TSmartThing *> GetThings();
-    const std::map<std::string, std::vector<TObject *>> &GetAllGObjects() {
-        return allGObjects;
-    }
 };
 
 class TSetFactory {

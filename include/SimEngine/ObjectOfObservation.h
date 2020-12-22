@@ -38,6 +38,8 @@ public:
   virtual std::vector<IProperties*>& GetAllProperties(); //maybe something wrong??? 
   /// Создание клона объекта
   virtual TObjectOfObservation* Clone() = 0;
+
+  virtual bool isDrawable() { return true; }
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с объектами

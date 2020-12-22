@@ -29,6 +29,8 @@ public:
 
   /// Создание клона объекта
   virtual TSmartThing* Clone() = 0;
+
+  virtual bool isDrawable() { return false; }
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с умными вещами
