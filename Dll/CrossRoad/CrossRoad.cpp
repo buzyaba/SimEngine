@@ -21,5 +21,5 @@ void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
     neighboringObject.push_back(&obect);
     auto& first = GetProperty("Coordinate");
     auto& second = obect.GetProperty("Coordinate");
-    childObjects.emplace_back(new TRoad("blyar", first, second));
+    childObjects.emplace_back(new TRoad("Road", first, second));
 }
