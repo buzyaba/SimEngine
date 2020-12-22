@@ -44,10 +44,10 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
 }
 
 void TRoad::Update() {
-
+    TObjectOfObservation::Update();
 }
 
 
 void TRoad::TRoadElem::Update() {
-
+    TObjectOfObservation::Update();
 }

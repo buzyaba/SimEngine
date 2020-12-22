@@ -1,5 +1,6 @@
 #pragma once
 #include "SimEngine/ObjectOfObservation.h"
+#include "Car.hpp"
 
 class TRoad: public TObjectOfObservation {
 private:
