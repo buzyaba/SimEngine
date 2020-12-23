@@ -1,7 +1,7 @@
 #include "Road.hpp"
 #include <cmath>
 
-double TRoad::TRoadElem::roadElemLength = 45;
+double TRoad::TRoadElem::roadElemLength = 55;
 
 TRoad::TRoad(std::string _name): TObjectOfObservation(_name) {}
 
@@ -21,11 +21,11 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
     auto y_dir = y_diff / length;
 
     capacity = length / TRoadElem::roadElemLength;
-    double delimeter = 3.59;
+    double delimeter = 4.37;
 
     childObjects.reserve(capacity);
-    double pos_x = first_crossr_x + 1.325*x_dir*TRoadElem::roadElemLength;
-    double pos_y = first_crossr_y + 1.325*y_dir*TRoadElem::roadElemLength;
+    double pos_x = first_crossr_x + 1.09*x_dir*TRoadElem::roadElemLength;
+    double pos_y = first_crossr_y + 1.09*y_dir*TRoadElem::roadElemLength;
     for (int i = 0; i < capacity; ++i) {
         childObjects.push_back(new TRoadElem("RoadElem" + std::to_string(i)));
         double offset_x{0};
@@ -52,8 +52,8 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
         childObjects.back()->SetProperty({{"X", pos_x + offset_x}, {"Y", 0}, {"Z", pos_y + offset_y}}, "Coordinate");
         childObjects.back()->SetProperty({{"X", 0.0}, {"Y", angle}, {"Z", 0.0}}, "Rotate");
 
-        pos_x += x_dir * 1.38*TRoadElem::roadElemLength/2;
-        pos_y += y_dir * 1.38*TRoadElem::roadElemLength/2;
+        pos_x += x_dir * 1.4*TRoadElem::roadElemLength/2;
+        pos_y += y_dir * 1.4*TRoadElem::roadElemLength/2;
     }
 }
 
