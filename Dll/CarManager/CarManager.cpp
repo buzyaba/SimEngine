@@ -1,5 +1,9 @@
 #include "CarManager.hpp"
 #include <algorithm>
+#include <random>
+
+static std::random_device rd;
+static std::mt19937 gen(rd());
 
 TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     properties.insert(
@@ -13,6 +17,15 @@ TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
 
 void TCarManager::Update() {
     TObjectOfObservation::Update();
+    std::uniform_int_distribution<> d(1, 100);
+
+    if (!car_pool.empty()) {
+        if (d(gen) <= 25) {
+            std::size_t target_idx = d(gen) % neighboringObject.size();
+            auto crossroad = neighboringObject[target_idx];
+            // crossroad->sendCar(car_pool.back());
+        }
+    }
 }
 
 LIB_EXPORT_API TObjectOfObservation* create()

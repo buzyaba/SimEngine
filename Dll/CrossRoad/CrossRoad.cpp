@@ -2,7 +2,7 @@
 
 TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
     properties.insert(
-      {"Scale", new TProperties({{"Width", 1}, {"Length", 1}, {"Height", 1}},
+      {"Scale", new TProperties({{"Width", 1.1}, {"Length", 1}, {"Height", 1.1}},
                                 false, "Scale")});
     properties.insert(
         {"Coordinate",
@@ -15,6 +15,10 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
 
 void TCrossRoad::Update() {
     TObjectOfObservation::Update();
+}
+
+void TCrossRoad::sendCar(TCar* car) {
+
 }
 
 void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {

@@ -6,7 +6,7 @@ class TRoad: public TObjectOfObservation {
 private:
     class TRoadElem: public TObjectOfObservation {
     public:
-        static int roadElemLength;
+        static double roadElemLength;
         TRoadElem(std::string _name = "");
         void Update() override;
         TObjectOfObservation* Clone() { return new TRoadElem(); }

@@ -8,12 +8,12 @@
     <ObjectOfObservation>
         <TCarManager>
             <Name>CarManager1</Name>
-            <Coordinate>75 -20 -75</Coordinate>
+            <Coordinate>275 0 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
         </TCarManager>
         <TCrossRoad>
             <Name>CrossRoad1</Name>
-            <Coordinate>-75 -20 -75</Coordinate>
+            <Coordinate>0 0 0</Coordinate>
             <Neighbour>CarManager1</Neighbour>
             <Neighbour>CrossRoad2</Neighbour>
             <Neighbour>CrossRoad3</Neighbour>
@@ -21,17 +21,17 @@
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad2</Name>
-            <Coordinate>-75 -20 75</Coordinate>
+            <Coordinate>-275 0 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad3</Name>
-            <Coordinate>-225 -20 -75</Coordinate>
+            <Coordinate>0 0 275</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad4</Name>
-            <Coordinate>-75 -20 -225</Coordinate>
+            <Coordinate>0 0 -275</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
         </TCrossRoad>
     </ObjectOfObservation>
