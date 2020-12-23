@@ -22,10 +22,12 @@ void TCarManager::Update() {
     if (!car_pool.empty()) {
         if (d(gen) <= 25) {
             std::size_t target_idx = d(gen) % neighboringObject.size();
-            auto crossroad = neighboringObject[target_idx];
-            // crossroad->sendCar(car_pool.back());
+            auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
+            crossroad->sendCar(car_pool.back());
+            car_pool.pop_back();
         }
     }
+
 }
 
 LIB_EXPORT_API TObjectOfObservation* create()

@@ -1,7 +1,7 @@
 #include "Road.hpp"
 #include <cmath>
 
-double TRoad::TRoadElem::roadElemLength = 45;
+double TRoad::TRoadElem::roadElemLength = 65;
 
 TRoad::TRoad(std::string _name): TObjectOfObservation(_name) {}
 
@@ -24,8 +24,8 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
     double delimeter = 3.59;
 
     childObjects.reserve(capacity);
-    double pos_x = first_crossr_x + 1.325*x_dir*TRoadElem::roadElemLength;
-    double pos_y = first_crossr_y + 1.325*y_dir*TRoadElem::roadElemLength;
+    double pos_x = first_crossr_x + x_dir*TRoadElem::roadElemLength;
+    double pos_y = first_crossr_y + y_dir*TRoadElem::roadElemLength;
     for (int i = 0; i < capacity; ++i) {
         childObjects.push_back(new TRoadElem("RoadElem" + std::to_string(i)));
         double offset_x{0};
@@ -68,10 +68,14 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                         false, "Rotate")});
+    properties.insert({"RoadState", new TProperties({{"Busy", 0}, {"Blocked", 0}}, true, "RoadState")});
 }
 
 void TRoad::Update() {
     TObjectOfObservation::Update();
+    for (std::size_t i = 0; i < childObjects.size(); ++i) {
+        
+    }
 }
 
 
