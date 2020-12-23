@@ -14,6 +14,7 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
 }
 
 void TCrossRoad::Update() {
+    
     TObjectOfObservation::Update();
 }
 
@@ -26,4 +27,5 @@ void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
     auto& first = GetProperty("Coordinate");
     auto& second = obect.GetProperty("Coordinate");
     childObjects.emplace_back(new TRoad("Road", first, second));
+    childObjects.back()->AddParentObject(*this);
 }

@@ -68,10 +68,14 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                         false, "Rotate")});
+    properties.insert({"RoadState", new TProperties({{"Busy", 0}, {"Blocked", 0}}, true, "RoadState")});
 }
 
 void TRoad::Update() {
     TObjectOfObservation::Update();
+    for (std::size_t i = 0; i < childObjects.size(); ++i) {
+        
+    }
 }
 
 
