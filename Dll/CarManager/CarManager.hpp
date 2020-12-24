@@ -7,6 +7,7 @@ private:
 public:
     TCarManager(std::string _name = "");
     void Update() override;
+    std::vector<TObjectOfObservation*> GetChildObject() override;
     TObjectOfObservation* Clone() { return new TCarManager(); }
     std::string ClassName() { return "TCarManager"; }
 };

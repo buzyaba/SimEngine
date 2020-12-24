@@ -6,7 +6,7 @@ TCar::TCar(std::string _name): TObjectOfObservation(_name) {
                                 false, "Scale")});
     properties.insert(
         {"Coordinate",
-        new TProperties({{"X", 0}, {"Y", 0}, {"Z", 0}}, false, "Coordinate")});
+        new TProperties({{"X", -10000}, {"Y", 3}, {"Z", -10000}}, false, "Coordinate")});
     properties.insert(
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
