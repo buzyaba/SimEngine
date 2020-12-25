@@ -7,7 +7,7 @@ static std::mt19937 gen(rd());
 
 TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     properties.insert(
-      {"PoolSize", new TProperties({{"PoolSize", 1}}, false, "PoolSize")});
+      {"PoolSize", new TProperties({{"PoolSize", 25}}, false, "PoolSize")});
     car_pool.resize(static_cast<std::size_t>(this->GetProperty("PoolSize").GetValue("PoolSize")));
     std::generate(car_pool.begin(), car_pool.end(), [] { 
         static std::size_t i = 0; 
@@ -27,10 +27,12 @@ void TCarManager::Update() {
     std::uniform_int_distribution<> d(1, 100);
 
     if (!car_pool.empty()) {
-        if (d(gen) <= 25) {
+        if (d(gen) == 2) {
             std::size_t target_idx = d(gen) % neighboringObject.size();
             auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
             auto car = car_pool.back();
+            car->GetProperty("Coordinate").SetValue("X", GetProperty("Coordinate").GetValue("X"));
+            car->GetProperty("Coordinate").SetValue("Z", GetProperty("Coordinate").GetValue("Z"));
             crossroad->sendCar(this, car);
             car_pool.pop_back();
         }
