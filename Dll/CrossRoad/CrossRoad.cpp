@@ -32,7 +32,8 @@ void TCrossRoad::Update() {
                     target_idx = d(gen) % neighboringObject.size();
                 } while (target_idx == i);
                 auto car = childs.front();
-                childs.pop_back();
+                roadElem->ExcludeChildObject(*car);
+                roadElem->GetProperty("RoadState").SetValue("Busy", 0);
                 auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
                 crossroad->sendCar(this, static_cast<TCar*>(car));
             }

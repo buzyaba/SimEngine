@@ -74,20 +74,20 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
 
 void TRoad::Update() {
     TObjectOfObservation::Update();
-    // for (std::size_t i = 0; i < childObjects.size(); ++i) {
-    //     if (!childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
-    //         std::size_t k = i;
-    //         for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
-    //         if (k < childObjects.size()) {
-    //             auto car = childObjects[k]->GetChildObject().front();
-    //             childObjects[k]->GetChildObject().pop_back();
-    //             childObjects[k]->GetProperty("RoadState").SetValue("Busy", 0);
-    //             childObjects[i]->AddChildObject(*car);
-    //             car->AddParentObject(*childObjects[i]);
-    //             childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
-    //         }
-    //     }
-    // }
+     for (std::size_t i = 0; i < childObjects.size(); ++i) {
+         if (!childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
+             std::size_t k = i;
+             for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
+             if (k < childObjects.size()) {
+                 auto car = childObjects[k]->GetChildObject().front();
+                 childObjects[k]->ExcludeChildObject(*car);
+                 childObjects[k]->GetProperty("RoadState").SetValue("Busy", 0);
+                 childObjects[i]->AddChildObject(*car);
+                 car->AddParentObject(*childObjects[i]);
+                 childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
+             }
+         }
+     }
 }
 
 

@@ -1,4 +1,5 @@
 ﻿#include "SimEngine/ObjectOfObservation.h"
+#include <algorithm>
 
 TObjectOfObservation::TObjectOfObservation(std::string _name,
                                            std::vector<TObjectOfObservation*> _neighboringObject,
@@ -51,25 +52,8 @@ void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect) {
 }
 
 void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect) {
-    if (childObjects.size() == 1) {
-        if (childObjects[0]->GetName() == obect.GetName())
-            childObjects[0] = nullptr;
-    }
-    else {
-        for (int i = 0; i < childObjects.size(); i++) {
-            if (childObjects[i]->GetName() == obect.GetName()) {
-                std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
-                for (int j = 0, t = 0; j < childObjects.size(); j++) {
-                    if (j != i) {
-                        newChildObjects[t] = childObjects[j];
-                        t++;
-                    }
-                }
-                childObjects = newChildObjects;
-                break;
-            }
-        }
-    }
+    auto item = std::find(childObjects.begin(), childObjects.end(), &obect);
+    childObjects.erase(item);
 }
 
 void TObjectOfObservation::Update() {

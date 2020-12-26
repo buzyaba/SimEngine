@@ -2,12 +2,13 @@
 #include <cmath>
 #include <iostream>
 #include <thread>
+#include <algorithm>
 
-double TCar::dt = 0.00005;
+double TCar::dt = 0.0005;
 
 template<typename T>
 bool compare_fp(T a, T b) { 
-    return abs(a - b) <= static_cast<T>(0.005)*std::max(abs(a), abs(b));
+    return abs(a - b) <= static_cast<T>(0.005) * std::max(abs(a), abs(b));
 }
 
 TCar::TCar(std::string _name): TObjectOfObservation(_name) {
