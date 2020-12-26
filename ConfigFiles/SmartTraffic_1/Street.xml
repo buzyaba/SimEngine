@@ -51,6 +51,10 @@
             <Neighbour>CrossRoad3</Neighbour>
         </TCarManager>
     </ObjectOfObservation>
-    <!-- <SmartThing>
-    </SmartThing> -->
+    <SmartThing>
+        <TTrafficLight>
+            <Name>TrafficLight1</Name>
+            <Coordinate>0 0 0</Coordinate>
+        </TTrafficLight>
+    </SmartThing>
 </config>
