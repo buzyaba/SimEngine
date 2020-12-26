@@ -3,7 +3,7 @@
 
 class TCarManager: public TCrossRoad {
 private:
-    std::vector<TCar*> car_pool;
+   static std::vector<TCar*> car_pool;
 public:
     TCarManager(std::string _name = "");
     void Update() override;

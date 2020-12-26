@@ -6,5 +6,5 @@
 	<managementProgramDllFile>TStreetProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
-	<maxStep>1440</maxStep>
+	<maxStep>10000</maxStep>
 </config>

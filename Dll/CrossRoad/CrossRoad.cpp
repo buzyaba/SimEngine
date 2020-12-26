@@ -17,6 +17,8 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                         false, "Rotate")});
+    properties.insert(
+        { "HasJam", new TProperties({{"HasJam", 0}}, false, "HasJam") });
 }
 
 void TCrossRoad::Update() {
@@ -32,15 +34,17 @@ void TCrossRoad::Update() {
                     target_idx = d(gen) % neighboringObject.size();
                 } while (target_idx == i);
                 auto car = childs.front();
-                roadElem->ExcludeChildObject(*car);
-                roadElem->GetProperty("RoadState").SetValue("Busy", 0);
                 auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
-                crossroad->sendCar(this, static_cast<TCar*>(car));
+                int res = crossroad->sendCar(this, static_cast<TCar*>(car));
+                if (!res) {
+                    roadElem->ExcludeChildObject(*car);
+                    roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+                }
             }
         }
 }
 
-void TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
+int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
     auto neighbour_it = std::find(neighboringObject.begin(), neighboringObject.end(), origin);
     std::size_t index = neighbour_it - neighboringObject.begin();
 
@@ -53,9 +57,10 @@ void TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
             elem->AddChildObject(*car);
             car->AddParentObject(*elem);
             road_property.SetValue("Busy", 1);
-            break;
+            return 0;
         }
     }
+    return 1;
 }
 
 void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
