@@ -29,7 +29,9 @@ void TCarManager::Update() {
     std::uniform_int_distribution<> d(1, 100);
 
     if (!car_pool.empty()) {
-        if (d(gen) == 2) {
+        //if (d(gen) == 2) {
+        size_t count = d(gen) % 3;
+        for (size_t i = 0; i < count; ++i) {
             std::size_t target_idx = d(gen) % neighboringObject.size();
             auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
             auto car = car_pool.back();
@@ -42,7 +44,7 @@ void TCarManager::Update() {
         }
     }
 
-  /*  for (std::size_t i = 0; i < childObjects.size(); ++i) {
+    for (std::size_t i = 0; i < childObjects.size(); ++i) {
         auto roadElem = childObjects[i]->GetChildObject().front();
         auto childs = roadElem->GetChildObject();
         if (childs.size() > 0) {
@@ -51,8 +53,9 @@ void TCarManager::Update() {
             car->GetProperty("Coordinate").SetValue("Z", -10000);
             roadElem->ExcludeChildObject(*car);
             roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+            car_pool.push_back(static_cast<TCar*>(car));
         }
-    }*/
+    }
 
 }
 

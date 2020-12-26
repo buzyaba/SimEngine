@@ -74,7 +74,7 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
 
 void TRoad::Update() {
     TObjectOfObservation::Update();
-     /*for (std::size_t i = 0; i < childObjects.size(); ++i) {
+     for (std::size_t i = 0; i < childObjects.size(); ++i) {
          if (!childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
              std::size_t k = i;
              for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
@@ -87,7 +87,7 @@ void TRoad::Update() {
                  childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
              }
          }
-     }*/
+     }
 }
 
 

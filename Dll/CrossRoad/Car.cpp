@@ -4,7 +4,7 @@
 #include <thread>
 #include <algorithm>
 
-double TCar::dt = 0.0005;
+double TCar::dt = 0.005;
 
 template<typename T>
 bool compare_fp(T a, T b) { 
