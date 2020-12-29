@@ -4,7 +4,7 @@
 	<xmlEnvironmentScriptName>SmartTraffic_1/conf.xml</xmlEnvironmentScriptName> 
 	<xmlMainSetConfigurationFile>SmartTraffic_1/Street.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TStreetProgram</managementProgramDllFile>
-	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
+	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
-	<maxStep>10000</maxStep>
+	<maxStep>10000000</maxStep>
 </config>

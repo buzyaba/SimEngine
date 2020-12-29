@@ -4,7 +4,7 @@
 #include <thread>
 #include <algorithm>
 
-double TCar::dt = 0.005;
+double TCar::dt = 0.5;
 
 template<typename T>
 bool compare_fp(T a, T b) { 
@@ -22,6 +22,7 @@ TCar::TCar(std::string _name): TObjectOfObservation(_name) {
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                         false, "Rotate")});
+    properties.insert({ "Moving", new TProperties({{ "Moving", 0 }}, false, "Moving") });
 }
 
 void TCar::Update() {
@@ -32,37 +33,45 @@ void TCar::Update() {
     auto& road_coord = parentObject->GetProperty("Coordinate");
     auto& road_rotate = parentObject->GetProperty("Rotate");
 
-    auto car_rotate_y = car_rotate.GetValue("Y");
-    auto road_rotate_y = road_rotate.GetValue("Y");
-    auto rotate_diff = road_rotate_y - car_rotate_y;
+    if (oldRoad != parentObject) {
+        car_rotate_y = car_rotate.GetValue("Y");
+        road_rotate_y = road_rotate.GetValue("Y");
+        rotate_diff = road_rotate_y - car_rotate_y;
 
-    auto car_coord_x = car_coord.GetValue("X");
-    auto car_coord_y = car_coord.GetValue("Z");
+        car_coord_x = car_coord.GetValue("X");
+        car_coord_y = car_coord.GetValue("Z");
 
-    auto road_coord_x = road_coord.GetValue("X");
-    auto road_coord_y = road_coord.GetValue("Z");
+        road_coord_x = road_coord.GetValue("X");
+        road_coord_y = road_coord.GetValue("Z");
 
 
-    auto x_diff = road_coord_x - car_coord_x;
-    auto y_diff = road_coord_y - car_coord_y;
+        x_diff = road_coord_x - car_coord_x;
+        y_diff = road_coord_y - car_coord_y;
 
-    auto length = std::sqrt(x_diff*x_diff+y_diff*y_diff);
+        length = std::sqrt(x_diff * x_diff + y_diff * y_diff);
 
-    auto x_dir = x_diff / length;
-    auto y_dir = y_diff / length;
+        x_dir = x_diff / length;
+        y_dir = y_diff / length;
+        oldRoad = parentObject;
+    }
 
-    while (!compare_fp(car_coord_x, road_coord_x) || !compare_fp(car_coord_y, road_coord_y) || !compare_fp(car_rotate_y, road_rotate_y)) {
-        if (!compare_fp(car_rotate_y, road_rotate_y))
-            car_rotate_y += 100*dt*rotate_diff;
-        if (!compare_fp(car_coord_x, road_coord_x))
+    if ( abs(car_coord_x-road_coord_x) > dt || abs(car_coord_y - road_coord_y) > dt || abs(car_rotate_y - road_rotate_y) > dt) {
+        if (abs(car_rotate_y - road_rotate_y) > dt)
+            car_rotate_y += dt*rotate_diff;
+        if (abs(car_coord_x - road_coord_x) > dt)
             car_coord_x += dt*x_dir;
-        if (!compare_fp(car_coord_y, road_coord_y))  
+        if (abs(car_coord_y - road_coord_y) > dt)
             car_coord_y += dt*y_dir;
-
+        GetProperty("Moving").SetValue("Moving", 1);
         car_coord.SetValue("X", car_coord_x);
         car_coord.SetValue("Z", car_coord_y);
         car_rotate.SetValue("Y", car_rotate_y);
-
-   }
+    }
+    else {
+        car_coord.SetValue("X", road_coord_x);
+        car_coord.SetValue("Z", road_coord_y);
+        car_rotate.SetValue("Y", road_rotate_y);
+        GetProperty("Moving").SetValue("Moving", 0);
+    }
 
 }

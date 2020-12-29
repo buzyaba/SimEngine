@@ -34,11 +34,13 @@ void TCrossRoad::Update() {
                     target_idx = d(gen) % neighboringObject.size();
                 } while (target_idx == i);
                 auto car = childs.front();
-                auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
-                int res = crossroad->sendCar(this, static_cast<TCar*>(car));
-                if (!res) {
-                    roadElem->ExcludeChildObject(*car);
-                    roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+                if (!car->GetProperty("Moving").GetValue("Moving")) {
+                    auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
+                    int res = crossroad->sendCar(this, static_cast<TCar*>(car));
+                    if (!res) {
+                        roadElem->ExcludeChildObject(*car);
+                        roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+                    }
                 }
             }
         }
@@ -49,16 +51,19 @@ int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
     std::size_t index = neighbour_it - neighboringObject.begin();
 
     auto&& roadElems = childObjects[index]->GetChildObject();
-    for (auto elem : roadElems) {
-        auto& road_property = elem->GetProperty("RoadState");
-        auto& coord_prop = elem->GetProperty("Coordinate");
-        auto& rotate_prop = elem->GetProperty("Rotate");
+    auto elem = roadElems.rbegin();
+    for (; elem != roadElems.rend(); ++elem) {
+        auto& road_property = (*elem)->GetProperty("RoadState");
+        auto& coord_prop = (*elem)->GetProperty("Coordinate");
+        auto& rotate_prop = (*elem)->GetProperty("Rotate");
         if (!road_property.GetValue("Busy")) {
-            elem->AddChildObject(*car);
-            car->AddParentObject(*elem);
+            (*elem)->AddChildObject(*car);
+            car->AddParentObject(**elem);
+            car->GetProperty("Moving").SetValue("Moving", 1);
             road_property.SetValue("Busy", 1);
             return 0;
         }
+        else break;
     }
     return 1;
 }

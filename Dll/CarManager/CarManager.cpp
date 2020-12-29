@@ -29,18 +29,19 @@ void TCarManager::Update() {
     std::uniform_int_distribution<> d(1, 100);
 
     if (!car_pool.empty()) {
-        //if (d(gen) == 2) {
-        size_t count = d(gen) % 3;
-        for (size_t i = 0; i < count; ++i) {
-            std::size_t target_idx = d(gen) % neighboringObject.size();
-            auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
-            auto car = car_pool.back();
-            int res = crossroad->sendCar(this, car);
-            if (!res) {
-                car->GetProperty("Coordinate").SetValue("X", GetProperty("Coordinate").GetValue("X"));
-                car->GetProperty("Coordinate").SetValue("Z", GetProperty("Coordinate").GetValue("Z"));
+        if (d(gen)) {
+            size_t count = 1;
+            for (size_t i = 0; i < count; ++i) {
+                std::size_t target_idx = d(gen) % neighboringObject.size();
+                auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
+                auto car = car_pool.back();
+                int res = crossroad->sendCar(this, car);
+                if (!res) {
+                    car->GetProperty("Coordinate").SetValue("X", GetProperty("Coordinate").GetValue("X"));
+                    car->GetProperty("Coordinate").SetValue("Z", GetProperty("Coordinate").GetValue("Z"));
+                    car_pool.pop_back();
+                }
             }
-            car_pool.pop_back();
         }
     }
 
@@ -49,11 +50,13 @@ void TCarManager::Update() {
         auto childs = roadElem->GetChildObject();
         if (childs.size() > 0) {
             auto car = childs.front();
-            car->GetProperty("Coordinate").SetValue("X", -10000);
-            car->GetProperty("Coordinate").SetValue("Z", -10000);
-            roadElem->ExcludeChildObject(*car);
-            roadElem->GetProperty("RoadState").SetValue("Busy", 0);
-            car_pool.push_back(static_cast<TCar*>(car));
+            if (!car->GetProperty("Moving").GetValue("Moving")) {
+                car->GetProperty("Coordinate").SetValue("X", -10000);
+                car->GetProperty("Coordinate").SetValue("Z", -10000);
+                roadElem->ExcludeChildObject(*car);
+                roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+                car_pool.push_back(static_cast<TCar*>(car));
+            }
         }
     }
 

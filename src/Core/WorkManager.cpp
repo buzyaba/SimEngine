@@ -47,6 +47,7 @@ TWorkManager::~TWorkManager() {
 void TWorkManager::Iteration(unsigned long int& t,
                              std::chrono::milliseconds& delayTime,
                              const unsigned short& _enableVisualisation) {
+    using namespace std::chrono_literals;
     std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
     time = (t * parameters.millisecondsInTimeStep) / 1000;
     currentTime = time;
