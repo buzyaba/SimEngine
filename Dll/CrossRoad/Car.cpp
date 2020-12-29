@@ -1,10 +1,11 @@
 #include "Car.hpp"
+#include "SimEngine/common.h"
 #include <cmath>
 #include <iostream>
 #include <thread>
 #include <algorithm>
 
-double TCar::dt = 0.5;
+double TCar::dt = 0.05;
 
 template<typename T>
 bool compare_fp(T a, T b) { 
