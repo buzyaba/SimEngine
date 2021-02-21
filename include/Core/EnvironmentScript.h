@@ -20,18 +20,15 @@ public:
   // Что это?
   bool isSet;
 
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
+  std::vector<unsigned long int> timePoint;
   std::vector <std::map<std::string, double>> value;
 
-  void SetProperty(IProperties& prop, int intervalCount, std::vector<unsigned long int>& _startTime,
-  std::vector<unsigned long int>& _endTime)
+  void SetProperty(IProperties& prop, int intervalCount, std::vector<unsigned long int>& _timePoint)
   {
     nameProperty = prop.GetName();
     isSet = false;
     value.resize(intervalCount);
-    startTime = _startTime;
-    endTime = _endTime;
+    timePoint = _timePoint;
     for (int i = 0; i < intervalCount; i++)
     {
       value[i] = prop.GetValues();
@@ -40,9 +37,9 @@ public:
 
   std::map<std::string, double>& GetValue(unsigned long int time)
   {
-    for (int i = 0; i < startTime.size(); i++)
+    for (int i = 0; i < timePoint.size(); i++)
     {
-      if ((time >= startTime[i]) && (time < endTime[i]))
+      if (time == timePoint[i])
         return value[i];
     }
     throw - 1;
@@ -66,9 +63,6 @@ protected:
   /// Меняем свойство найденного объекта в соответствии со скриптом
   std::map<std::string, IProperties*>& ChangeProperties(int objectIndex, 
         std::map<std::string, IProperties*>& properties, unsigned long int time);
-
-  /// Случайное заполнение расписания
-  void RandomGen(unsigned long int maxTime);
   
   /// Случайное заполнение расписания
   void LoadXML(unsigned long int& maxTime);

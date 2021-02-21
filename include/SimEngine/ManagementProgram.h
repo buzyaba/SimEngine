@@ -68,20 +68,20 @@ public:
 
 virtual void Run()
 {
-    std::vector<std::string> str(1);
-    str[0] = std::to_string(currentTime);
+  std::vector<std::string> str(1);
+  str[0] = std::to_string(currentTime);
 
-    for (int i = 0; i < sensors.size(); i++)
+  for (int i = 0; i < sensors.size(); i++)
+  {
+    double* val = sensors[i]->GetDataPacket().GetDoubles();
+    int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+    for (int j = 0; j < dataCount; j++)
     {
-      double* val = sensors[i]->GetDataPacket().GetDoubles();
-      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
-      for (int j = 0; j < dataCount; j++)
-      {
-        str.push_back(std::to_string(val[j]));
-      }
+      str.push_back(std::to_string(val[j]));
     }
-    table.push_back(str);
   }
+  table.push_back(str);
+}
 
   virtual void End()
   {

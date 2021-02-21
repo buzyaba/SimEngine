@@ -16,60 +16,6 @@ std::map<std::string, IProperties*>& TEnvironmentScript::ChangeProperties(int ob
   return properties;
 }
 
-void TEnvironmentScript::RandomGen(unsigned long int maxTime)
-{
-  int intervalCount = 200;
-  if (maxTime < 200)
-    intervalCount = maxTime / 10 + 1;
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
-  unsigned long int interval = maxTime / (intervalCount - 1);
-  startTime.resize(intervalCount);
-  endTime.resize(intervalCount);
-
-  startTime[0] = 0;
-  endTime[0] = startTime[0] + interval;
-
-  for (int i = 1; i < intervalCount; i++)
-  {
-    startTime[i] = endTime[i - 1];
-    endTime[i] = startTime[i] + interval;
-  }
-
-  int isWorkIndex = -1;
-  objectPropertyIntervals.resize(objects.size());
-  for (int i = 0; i < objects.size(); i++)
-  {
-    bool isHaveIsWork = false;
-    for (auto& aa : objects[i]->GetProperties())
-    {
-      if (aa.second->GetName() == "IsWork")
-      {
-        isHaveIsWork = true;
-        isWorkIndex = i;
-      }
-    }
-    if (isHaveIsWork)
-    {
-      // А где инициализация objectPropertyIntervals? Нужен скрипт
-      objectPropertyIntervals[i].insert({ {"IsWork", TPropertyInterval()} });
-
-      for (auto& elem : objectPropertyIntervals[i])
-      {
-        elem.second.SetProperty(objects[i]->GetProperty("IsWork"), intervalCount, startTime, endTime);
-      }
-    }
-  }
-  if (isWorkIndex != -1)
-  {
-    objectPropertyIntervals[isWorkIndex]["IsWork"].isSet = true;
-    for (int i = 0; i < intervalCount; i++)
-    {
-      objectPropertyIntervals[isWorkIndex]["IsWork"].value[i]["IsWork"] = rand() % 2;
-    }
-  }
-}
-
 void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
 {
   if (xmlEnvironmentScriptName == "")
@@ -83,8 +29,7 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
+  std::vector<unsigned long int> timePoint;
 
   for (pugi::xml_node iter = config.first_child(); iter != 0; iter = iter.next_sibling())
   {
@@ -97,22 +42,20 @@ void TEnvironmentScript::LoadXML(unsigned long int& maxTime)
       maxTime = atoi(value.c_str());
     else if (name == "time")
     {
-      startTime.resize(intervalCount);
-      endTime.resize(intervalCount);
+      timePoint.resize(intervalCount);
       std::vector<double> tt(intervalCount + 1);
       ParseString(value, tt);
 
       for (int i = 0; i < intervalCount; i++)
       {
-        startTime[i] = tt[i];
-        endTime[i] = tt[i + 1];
+        timePoint[i] = tt[i];
       }
 
       for (int i = 0; i < objects.size(); i++)
       {
         for (auto& elem : objects[i]->GetProperties())
           if(elem.first != "Name" && elem.first != "Object")
-              objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, startTime, endTime);
+              objectPropertyIntervals[i][elem.first].SetProperty(*elem.second, intervalCount, timePoint);
       }
     }
 
@@ -175,12 +118,6 @@ TEnvironmentScript::TEnvironmentScript(std::vector<IObject*> _objects, std::stri
   {
     LoadXML(maxTime);
   }
-  else
-  {
-    RandomGen(maxTime);
-  }
-
-  //Добавить построение objectPropertyIntervals по скрипту.
 }
 
 std::map<std::string, IProperties*>& TEnvironmentScript::GetObjectProperties(std::string name, unsigned long int time)
@@ -227,8 +164,10 @@ void TEnvironmentScript::UpdateObjectsProperties(unsigned long int time)
         {
           if (elem.second.isSet)
           {
-            std::map<std::string, double>& tmp = elem.second.GetValue(time);
-            properties[elem.first]->SetValues(tmp);
+            try {
+              std::map<std::string, double>& tmp = elem.second.GetValue(time);
+              properties[elem.first]->SetValues(tmp);
+            } catch (...) {}
           }
         }
       }
