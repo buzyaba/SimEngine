@@ -28,8 +28,10 @@ public:
   int type;
   /// Имя файла с текущей конфигурацией программы
   std::string xmlCurrentConfiguration;
-  /// Имя файла с расписанием для EnvironmentScript
-  std::string xmlEnvironmentScriptName;
+  /// Имя файла с расписанием для ExternalActionSchedule
+  std::string xmlExternalActionScheduleName;
+  /// Имя файла с расписанием для SmartThingSchedule
+  std::string xmlSmartThingScheduleName;
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   std::string xmlMainSetConfigurationFile;
 

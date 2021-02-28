@@ -4,7 +4,7 @@
 
 class TRoad: public TObjectOfObservation {
 protected:
-    unsigned long int oldGoTime;
+    std::size_t oldGoTime;
     std::vector <TRoad*> roadNeighboring;
     bool isCanGo;
 public:

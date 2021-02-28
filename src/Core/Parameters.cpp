@@ -51,22 +51,32 @@ void TParameters::LoadXML()
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
+  std::vector<std::size_t> startTime;
+  std::vector<std::size_t> endTime;
 
   for (pugi::xml_node iter = config.first_child(); iter != 0; iter = iter.next_sibling())
   {
     std::string name = iter.name();
     std::string value = iter.child_value();
 
-    if (name == "xmlEnvironmentScriptName")
+    if (name == "xmlExternalActionScheduleName")
     {
       if (value != "")
       {
         if (value.find(":") != std::string::npos)
-          xmlEnvironmentScriptName = value; //
+          xmlExternalActionScheduleName = value; //
         else
-          xmlEnvironmentScriptName = dirConfigFile + "/" + value;
+          xmlExternalActionScheduleName = dirConfigFile + "/" + value;
+      }
+    }
+    else if (name == "xmlSmartThingScheduleName")
+    {
+      if (value != "")
+      {
+        if (value.find(":") != std::string::npos)
+          xmlSmartThingScheduleName = value; //
+        else
+          xmlSmartThingScheduleName = dirConfigFile + "/" + value;
       }
     }
     else if (name == "xmlMainSetConfigurationFile")
@@ -152,8 +162,10 @@ std::string TParameters::Print()
   result += "int type =\t" + std::to_string(type) + "\n";
   /// Имя файла с текущей конфигурацией программы
   result += "std::string xmlCurrentConfiguration = \t" + xmlCurrentConfiguration + "\n";
-  /// Имя файла с расписанием для EnvironmentScript
-  result += "std::string xmlEnvironmentScriptName = \t" + xmlEnvironmentScriptName + "\n";
+  /// Имя файла с расписанием для ExternalActionSchedule
+  result += "std::string xmlExternalActionScheduleName = \t" + xmlExternalActionScheduleName + "\n";
+  /// Имя файла с расписанием для SmartThingSchedule
+  result += "std::string xmlSmartThingScheduleName = \t" + xmlSmartThingScheduleName + "\n";
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   result += "std::string xmlMainSetConfigurationFile = \t" + xmlMainSetConfigurationFile + "\n";
 

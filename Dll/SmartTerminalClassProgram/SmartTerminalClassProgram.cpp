@@ -11,12 +11,12 @@ void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
         size_t propCount = thingSensors[iterSensors]->getPropertyCount();
         double* data = dataPacket.GetDoubles();
         double* packetVal = sendPacket.GetDoubles();
-        for (int i = 0; i < thingSensors[iterSensors]->getObjectsCount(); ++i) {
+        for (int i = 0; i < thingSensors[iterSensors]->GetObjectsCount(); ++i) {
           if ((time >= 32400) && ((time-32400) / 43200) == timePeriod) {
             packetVal[i] = static_cast<double>(sheduleIsWork);
             sheduleActive = true;
           } else {
-            double isWork = data[i * (propCount / thingSensors[iterSensors]->getObjectsCount())];
+            double isWork = data[i * (propCount / thingSensors[iterSensors]->GetObjectsCount())];
             if (isWork == 0)
               waitTime[terminal_count]+=60;
             else
@@ -68,7 +68,7 @@ void TSmartTerminalClassProgram::SetSmartThing(std::vector<TSmartThing*> _things
   TManagementProgram::SetSmartThing(_things);
   size_t objectsCount = 0;
   for (auto sens : sensors)
-    objectsCount += sens->getObjectsCount();
+    objectsCount += sens->GetObjectsCount();
   waitTime.resize(objectsCount);
 }
 

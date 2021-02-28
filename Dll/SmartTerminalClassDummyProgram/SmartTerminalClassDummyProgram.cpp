@@ -11,12 +11,12 @@ void TSmartTerminalClassDummyProgram::Run(unsigned long time, unsigned long step
         size_t propCount = thingSensors[iterSensors]->getPropertyCount();
         double* data = dataPacket.GetDoubles();
         double* packetVal = sendPacket.GetDoubles();
-        for (int i = 0; i < thingSensors[iterSensors]->getObjectsCount(); ++i) {
+        for (int i = 0; i < thingSensors[iterSensors]->GetObjectsCount(); ++i) {
           if ((time >= 32400) && ((time-32400) / 43200) == timePeriod) {
             packetVal[i] = static_cast<double>(sheduleIsWork);
             sheduleActive = true;
           } else {
-            double isWork = data[i * (propCount / thingSensors[iterSensors]->getObjectsCount())];
+            double isWork = data[i * (propCount / thingSensors[iterSensors]->GetObjectsCount())];
             packetVal[i] = isWork;
           }
           terminal_count++;

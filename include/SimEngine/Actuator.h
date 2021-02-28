@@ -20,6 +20,7 @@ public:
   virtual void ChangeProperty(IProperties& property, TObjectOfObservation& object) = 0;
   virtual void ChangeProperty(IProperties& property, std::string _objectName) = 0;
   virtual void SetDataPacket(TDataPacket& packet) = 0;
+  virtual size_t GetObjectsCount() = 0;
 
   virtual std::string GetName() = 0;
   virtual void SetName(std::string _name) = 0;
@@ -49,6 +50,7 @@ public:
   virtual void ChangeProperty(IProperties& property, TObjectOfObservation& object);
   virtual void ChangeProperty(IProperties& property, std::string _objectName);
   virtual void SetDataPacket(TDataPacket& packet);
+  virtual size_t GetObjectsCount() { return objects.size(); }
   
   virtual std::string GetName();
   virtual void SetName(std::string _name);

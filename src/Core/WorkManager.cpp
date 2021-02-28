@@ -33,7 +33,7 @@ TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presente
     j++;
   }
 
-  script = new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep);
+  script = new TExternalActionSchedule(allObject, parameters.xmlExternalActionScheduleName);
   program = TProgramFactory::Create(things);
   storage = new TDataStore(allObject, "../../A");
 
@@ -46,7 +46,7 @@ TWorkManager::~TWorkManager()
   Dll_Manager::FreeDllManager();
 }
 
-void TWorkManager::Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
+void TWorkManager::Iteration(std::size_t& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation)
 {
   std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
   time = (t * parameters.millisecondsInTimeStep) / 1000;
@@ -78,9 +78,9 @@ void TWorkManager::Start(const unsigned short& _enableVisualisation)
 
 
   time = 0;
-   std::chrono::milliseconds delayTime(static_cast<unsigned long int>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
+   std::chrono::milliseconds delayTime(static_cast<std::size_t>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
 
-  for (unsigned long int t = 0; t < parameters.maxStep; t++)
+  for (std::size_t t = 0; t < parameters.maxStep; t++)
   {
     Iteration(t, delayTime, _enableVisualisation);
   }

@@ -12,7 +12,7 @@
 #include "SimEngine/ManagementProgram.h"
 #include "Core/DataStore.h"
 #include "SimEngine/DataPacket.h"
-#include "Core/EnvironmentScript.h"
+#include "Core/ExternalActionSchedule.h"
 #include "Core/MainSet.h"
 #include "SimEngine/common.h"
 #include "Core/Parameters.h"
@@ -36,7 +36,7 @@ protected:
   std::vector<TStaticObject*> staticObjects;
 
   /// расписание работы программы
-  TEnvironmentScript* script;
+  TExternalActionSchedule* script;
   /// Управляющая программа
   IManagementProgram* program;
   /// Хранилище информации получаемой на каждой итерации
@@ -45,13 +45,13 @@ protected:
   TMainSet* mainSet;
 
   /// текущее время работы программы 
-  unsigned long int time;
+  std::size_t time;
   /// Время начала работы
   std::chrono::time_point<std::chrono::steady_clock> startWork;
 
 
   /// Итерация работы программы
-  void Iteration(unsigned long int& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
+  void Iteration(std::size_t& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
 public:
   TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_);
   ~TWorkManager();

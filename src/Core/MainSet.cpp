@@ -57,8 +57,8 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
+  std::vector<std::size_t> startTime;
+  std::vector<std::size_t> endTime;
 
   for (pugi::xml_node iter = config.first_child(); iter != 0;
        iter = iter.next_sibling()) {
