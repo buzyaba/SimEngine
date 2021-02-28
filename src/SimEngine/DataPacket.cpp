@@ -1,4 +1,4 @@
-﻿#include "SimEngine/DataPacket.h"
+#include "SimEngine/DataPacket.h"
 #include <algorithm>
 
 TDataPacket::TDataPacket(int _size) : data(nullptr), size(0)

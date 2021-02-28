@@ -22,27 +22,7 @@
 #include <dirent.h>
 #endif
 
-
 TParameters GlobalParameters;
-
-void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)
-{
-  char* s = new char[str.length() + 1];
-  int l = 0;
-  strcpy(s, str.c_str());
-
-  char* pp = strtok(s, " ");
-
-  double t = 0;
-  while (pp != 0)
-  {
-    tt.push_back(pp);
-    pp = strtok(NULL, " ");
-    l++;
-  }
-
-  delete[] s;
-}
 
 void TParameters::LoadXML()
 {

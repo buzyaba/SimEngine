@@ -18,8 +18,6 @@ protected:
   std::string cwd;
   /// директория с файлами конфигурации
   std::string dirConfigFile;
-  /// Разбиение строки на подстроки по пробелу
-  void ParseString(std::string& str, std::vector<std::string>& tt);
 public:
   /* тип камеры в графике
   <= 0 - FirstPerson view
