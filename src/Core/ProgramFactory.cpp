@@ -8,6 +8,7 @@ IManagementProgram* TProgramFactory::Create(std::vector<TSmartThing*>& _things)
   {
     IManagementProgram* mp = GlobalParameters.managementProgram;
     mp->SetSmartThing(_things);
+    mp->SetSchedule(_things, GlobalParameters.xmlSmartThingScheduleName);
     return mp;
   }
 }

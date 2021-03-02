@@ -6,23 +6,6 @@
 
 #include <string.h>
 
-void ParseString(std::string str, std::vector<double> &tt) {
-  char *s = new char[str.length() + 1];
-  int l = 0;
-  strcpy(s, str.c_str());
-
-  char *pp = strtok(s, " ");
-
-  double t = 0;
-  while (pp != 0) {
-    sscanf(pp, "%lf", &t);
-    tt.push_back(t);
-    pp = strtok(NULL, " ");
-    l++;
-  }
-
-  delete[] s;
-}
 // Тут надо подумать над парсингом строки, потому что сейчас любая ошибка (не
 // соответствие имени проперти и значения) все уронит
 void SetProperty(IObject *object, std::string nameProperty,
@@ -32,8 +15,7 @@ void SetProperty(IObject *object, std::string nameProperty,
   else {
     IProperties *tempProp = object->GetProperties()[nameProperty];
     if (tempProp) {
-      std::vector<double> tempVal;
-      ParseString(valueProperty, tempVal);
+      std::vector<double> tempVal = ParseString<double>(valueProperty, " ");
       std::map<std::string, double> &tmpPropMap = tempProp->GetValues();
       size_t iter = 0;
       for (auto &elem : tmpPropMap) {

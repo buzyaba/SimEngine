@@ -2,6 +2,7 @@
 
 #include "Core/ExternalActionSchedule.h"
 #include "../lib/pugixml/include/pugixml.hpp"
+#include <SimEngine/common.h>
 
 #include <string.h>
 
@@ -41,8 +42,7 @@ void TExternalActionSchedule::LoadXML()
     else if (name == "time")
     {
       timePoint.resize(intervalCount);
-      std::vector<double> tt(intervalCount + 1);
-      ParseString(value, tt);
+      std::vector<std::size_t> tt = ParseString<std::size_t>(value, "_");
 
       for (int i = 0; i < intervalCount; i++)
       {
@@ -69,8 +69,7 @@ void TExternalActionSchedule::LoadXML()
           for (auto & elem : objectPropertyIntervals[i]) {
             if (elem.first == nameProperty) {
               elem.second.isSet = true;
-              std::vector<double> tt(intervalCount);
-              ParseString(valueProperty, tt);
+              std::vector<double> tt = ParseString<double>(valueProperty, "_");
 
               for (int k = 0; k < intervalCount; k++)
               {
@@ -82,27 +81,6 @@ void TExternalActionSchedule::LoadXML()
       }
     }
   }
-}
-
-void TExternalActionSchedule::ParseString(std::string str, std::vector<double>& tt)
-{
-  size_t intervalCount = tt.size();
-  char* s = new char[str.length() + 1];
-  int l = 0;
-  strcpy(s, str.c_str());
-
-  char* pp = strtok(s, "_");
-
-  double t = 0;
-  while ((pp != 0) && (l < intervalCount))
-  {
-    sscanf(pp, "%lf", &t);
-    tt[l] = t;
-    pp = strtok(NULL, "_");
-    l++;
-  }
-
-  delete[] s;
 }
 
 TExternalActionSchedule::TExternalActionSchedule(std::vector<IObject*> _objects, std::string xmlName)

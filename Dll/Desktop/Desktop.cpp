@@ -16,6 +16,8 @@ TDesktop::TDesktop(std::string _name) : TObjectOfObservation(_name) {
       {"Rotate",
        new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                        false, "Rotate")});
+  textures.push_back(
+      {{"screen"}, {"monitorON.png"}, {"monitorON.png"}});
   isWork = false;
 }
 

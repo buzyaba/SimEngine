@@ -1,13 +1,10 @@
 #include "SimEngine/SmartThingSchedule.hpp"
-#include "../lib/pugixml/include/pugixml.hpp"
-#include "SimEngine/common.h"
-#include <stdexcept>
 
 TSmartThingSchedule::TSmartThingSchedule(std::vector<TSmartThing*>& _things, std::string xmlName) : things(_things){
   LoadXML(xmlName);
 }
 
-void TExternalActionSchedule::LoadXML(std::string xmlName)
+void TSmartThingSchedule::LoadXML(std::string xmlName)
 {
   if (xmlName == "")
     throw std::invalid_argument("Empty xmlName");
@@ -31,28 +28,39 @@ void TExternalActionSchedule::LoadXML(std::string xmlName)
       timePointCount = std::stoi(value);
     else if (name == "time")
     {
-      time_points = ParseString<double>(value, "_");
+      time_points = ParseString<std::size_t>(value, "_");
     } else {
-      for (size_t i = 0; i < thing.size(); i++)
-        if (thing[i]->GetName() == name)
-          actuatorsValues[i] = ParseString<std::vector<double>>(iter2.child_value(), "_");
+      for (size_t i = 0; i < things.size(); i++)
+        if (things[i]->GetName() == name)
+          actuatorsValues[i] = ParseComplexString<double>(value, "_");
     }
   }
 }
 
 void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
 {
+  size_t time_index = GetTimePointIndex(time);
+  if (time_index == -1)
+    return;
   for (size_t i = 0; i < things.size(); i++)
     if (actuatorsValues[i].size() > 0 && things[i] != nullptr)
     {
       auto& thingActuators = things[i]->GetActuators();
-      for (for size_t j = 0; j < thingActuators.size(); j++)
+      for (size_t j = 0; j < thingActuators.size(); j++)
       {
         size_t objectsCount = thingActuators[j]->GetObjectsCount();
         TDataPacket sendPacket;
         double* packetVal = sendPacket.GetDoubles();
-        std::memset(packetVal, actuatorsValues[i][j], objectsCount);
+        std::memset(packetVal, actuatorsValues[i][time_index][j], objectsCount);
         thingActuators[j]->SetDataPacket(sendPacket);
       }
     }
+}
+
+size_t TSmartThingSchedule::GetTimePointIndex(size_t time) {
+  auto time_iter = std::find(time_points.begin(), time_points.end(), time);
+  if (time_iter == time_points.end())
+    return -1;
+  else
+    return std::distance(time_points.begin(), time_iter);
 }

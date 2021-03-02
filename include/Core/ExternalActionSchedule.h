@@ -67,8 +67,6 @@ protected:
   /// Случайное заполнение расписания
   void LoadXML();
 
-  void ParseString(std::string str, std::vector<double>& tt);
-
 public:
   TExternalActionSchedule(std::vector<IObject*> _objects, std::string xmlName);
 

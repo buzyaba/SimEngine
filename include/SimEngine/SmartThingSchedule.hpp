@@ -4,16 +4,20 @@
 #include <vector>
 
 #include "SimEngine/SmartThing.h"
-
+#include "../lib/pugixml/include/pugixml.hpp"
+#include "SimEngine/common.h"
+#include <stdexcept>
 
 class TSmartThingSchedule {
 public:
+  TSmartThingSchedule() = default;
   TSmartThingSchedule(std::vector<TSmartThing*>& _things, std::string xmlName);
-  void UpdateThingProperties(std::size_t time);
+  void UpdateThingsProperties(std::size_t time);
 private:
   void LoadXML(std::string xmlName);
+  size_t GetTimePointIndex(size_t time);
 private:
   std::vector<TSmartThing*> things;
   std::vector<size_t> time_points;
-  std::vector<std::vector<double>> actuatorsValues;
+  std::vector<std::vector<std::vector<double>>> actuatorsValues;
 };

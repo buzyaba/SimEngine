@@ -2,6 +2,7 @@
 #include "SimEngine/DataPacket.h"
 #include "SimEngine/common.h"
 #include "SimEngine/SmartThing.h"
+#include "SimEngine/SmartThingSchedule.hpp"
 #include <string>
 #include <stdio.h>
 #include <chrono>
@@ -18,6 +19,7 @@ public:
   virtual void Run(unsigned long time, unsigned long step) = 0;
   virtual void End() = 0;
   virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
+  virtual void SetSchedule(std::vector<TSmartThing*> _things, std::string scheduleName) = 0;
 };
 
 class TManagementProgram : public IManagementProgram
@@ -34,6 +36,8 @@ protected:
   std::vector < std::vector<std::string>> table;
   /// Набор наблюдаемых сенсоров
   std::vector <ISensor*> sensors;
+
+  TSmartThingSchedule smartThingShedule; 
 
   std::string title1;
   
@@ -66,8 +70,13 @@ public:
     title1 = fileName;
   }
 
+  virtual void SetSchedule(std::vector<TSmartThing*> _things, std::string scheduleName) {
+    smartThingShedule = TSmartThingSchedule(_things, scheduleName);
+  }
+
 virtual void Run()
 {
+  smartThingShedule.UpdateThingsProperties(currentTime);
   std::vector<std::string> str(1);
   str[0] = std::to_string(currentTime);
 
