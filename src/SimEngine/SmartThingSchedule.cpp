@@ -56,7 +56,6 @@ void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
         TDataPacket sendPacket(objectsCount*sizeof(double));
         double* packetVal = sendPacket.GetData<double>();
         std::fill(packetVal, packetVal + objectsCount, actuatorsValues[i][time_index][j]);
-        // std::memset(packetVal, actuatorsValues[i][time_index][j], sizeof(double)*objectsCount);
         thingActuators[j]->SetDataPacket(sendPacket);
       }
     }

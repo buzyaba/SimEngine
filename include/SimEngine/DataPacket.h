@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-/// Класс описывающий передоваемое сообщение
+/// Класс описывающий передаваемое сообщение
 class TDataPacket
 {
 protected:
@@ -11,15 +11,20 @@ protected:
   /// размер массива данных в байтах
   std::size_t size;
 public:
+
   template<typename T>
   TDataPacket(T* _data, std::size_t _size) {
     size = _size * sizeof(T);
+    data = new char[size];
     std::memcpy(data, _data, size);
   }
 
-  TDataPacket(std::size_t _size): data(nullptr), size(_size) {}
+  TDataPacket(std::size_t _size): size(_size) {
+    data = new char[size];
+  }
 
   TDataPacket(const TDataPacket& packet): size(packet.size) {
+    data = new char[size];
     std::memcpy(data, packet.data, size);
   }
 
@@ -37,7 +42,7 @@ public:
 
   void SetSize(const std::size_t _size) {
     if (size != _size) {
-      char* tmp;
+      char* tmp = new char[std::min(size, _size)];
       std::memcpy(tmp, data, std::min(size, _size));
       if (data != nullptr)
         delete[] data;

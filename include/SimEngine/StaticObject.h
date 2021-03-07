@@ -4,10 +4,9 @@
 
 class TStaticObject : public TObject {
 public:
-    // What should we do here? Idk...
-    TStaticObject(std::string _name);
-    /// Создание клона объекта
-  virtual TStaticObject* Clone() = 0;
+
+    TStaticObject(std::string _name): TObject(_name) {}
+    virtual TStaticObject* Clone() = 0;
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой со статичными объектами

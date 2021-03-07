@@ -11,7 +11,7 @@ set(TESTS_OUTPUT_DIRECTORY ${SIMENGINE_OUTPUT_DIRECTORY})
 
 
 file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
-# file(GLOB ENG_FILES ${CMAKE_SOURCE_DIR}/src/Engine/*.cpp)
+
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 add_executable(${PROJECT_NAME_STR} ${SRC_FILES})
