@@ -15,7 +15,7 @@ public:
     virtual void SetDataPacket(TDataPacket& packet)
     {
         if (objects.size()) {
-            if (packet.GetDoubles()[0] == 0)
+            if (packet.GetData<double>()[0] == 0)
                 objects[0]->SetProperty({{"IsBblockieren", 0}}, "IsBblockieren");
             else
                 objects[0]->SetProperty({{"IsBblockieren", 1}}, "IsBblockieren");

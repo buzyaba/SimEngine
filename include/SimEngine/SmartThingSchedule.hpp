@@ -16,8 +16,9 @@ public:
 private:
   void LoadXML(std::string xmlName);
   size_t GetTimePointIndex(size_t time);
-private:
+
   std::vector<TSmartThing*> things;
   std::vector<size_t> time_points;
   std::vector<std::vector<std::vector<double>>> actuatorsValues;
+  bool created;
 };

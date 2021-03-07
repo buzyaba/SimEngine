@@ -1,25 +1,49 @@
 ﻿#pragma once
 #include <vector>
+#include <algorithm>
+
 /// Класс описывающий передоваемое сообщение
 class TDataPacket
 {
 protected:
-  /// массив данные
+  /// массив данных
   char* data;
   /// размер массива данных в байтах
-  int size;
+  std::size_t size;
 public:
-  TDataPacket(int _size = sizeof(double));
-  TDataPacket(int* _data, int _size = 1);
-  TDataPacket(double* _data, int _size = 1);
-  TDataPacket(char* _data, int _size = 1);
-  TDataPacket(const TDataPacket& packet);
-  ~TDataPacket();
+  template<typename T>
+  TDataPacket(T* _data, std::size_t _size) {
+    size = _size * sizeof(T);
+    std::memcpy(data, _data, size);
+  }
 
-  virtual char* GetData();
-  virtual int GetSize();
-  virtual void Setdata(char* _data);
-  virtual void SetSize(int _size);
-  virtual int* GetInts();
-  virtual double* GetDoubles();
+  TDataPacket(std::size_t _size): data(nullptr), size(_size) {}
+
+  TDataPacket(const TDataPacket& packet): size(packet.size) {
+    std::memcpy(data, packet.data, size);
+  }
+
+  ~TDataPacket() {
+    if (data)
+      delete[] data;
+  }
+
+  template<typename T>
+  T* GetData() {
+    return reinterpret_cast<T*>(data);
+  }
+
+  std::size_t GetSize() { return size; }
+
+  void SetSize(const std::size_t _size) {
+    if (size != _size) {
+      char* tmp;
+      std::memcpy(tmp, data, std::min(size, _size));
+      if (data != nullptr)
+        delete[] data;
+      data = tmp;
+      size = _size;
+    }
+  }
+
 };

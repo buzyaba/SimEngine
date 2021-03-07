@@ -14,7 +14,7 @@ std::string getPath(const std::string path);
 template<typename T>
 std::vector<T> ParseString(std::string s, std::string delimiter) {
     std::vector<T> res;
-    const std::regex re("[0-9\\.]+");
+    const std::regex re("[0-9\\.-]+");
     std::sregex_iterator iter(s.begin(), s.end(), re);
     std::sregex_iterator end;
     for(; iter != end; ++iter) {

@@ -6,8 +6,10 @@ TSmartThingSchedule::TSmartThingSchedule(std::vector<TSmartThing*>& _things, std
 
 void TSmartThingSchedule::LoadXML(std::string xmlName)
 {
-  if (xmlName == "")
-    throw std::invalid_argument("Empty xmlName");
+    if (xmlName == "") {
+        created = false;
+        return;
+    }
   
   int timePointCount = 0;
 
@@ -39,6 +41,8 @@ void TSmartThingSchedule::LoadXML(std::string xmlName)
 
 void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
 {
+  if (!created)
+    return;
   size_t time_index = GetTimePointIndex(time);
   if (time_index == -1)
     return;
@@ -49,9 +53,10 @@ void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
       for (size_t j = 0; j < thingActuators.size(); j++)
       {
         size_t objectsCount = thingActuators[j]->GetObjectsCount();
-        TDataPacket sendPacket;
-        double* packetVal = sendPacket.GetDoubles();
-        std::memset(packetVal, actuatorsValues[i][time_index][j], objectsCount);
+        TDataPacket sendPacket(objectsCount*sizeof(double));
+        double* packetVal = sendPacket.GetData<double>();
+        std::fill(packetVal, packetVal + objectsCount, actuatorsValues[i][time_index][j]);
+        // std::memset(packetVal, actuatorsValues[i][time_index][j], sizeof(double)*objectsCount);
         thingActuators[j]->SetDataPacket(sendPacket);
       }
     }

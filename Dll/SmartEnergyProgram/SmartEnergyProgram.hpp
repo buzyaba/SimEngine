@@ -12,6 +12,11 @@ public:
     TManagementProgram::Run();
   }
 
+  virtual void Run(unsigned long time, unsigned long step) override
+  {
+      TManagementProgram::Run(time, step);
+  }
+
   virtual void End();
 };
 

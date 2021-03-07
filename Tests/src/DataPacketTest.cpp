@@ -73,5 +73,5 @@
 
 //     auto data = pack.GetData();
 
-//     ASSERT_DOUBLE_EQ(*(double*)data, *pack.GetDoubles());
+//     ASSERT_DOUBLE_EQ(*(double*)data, *pack.GetData<double>());
 // }

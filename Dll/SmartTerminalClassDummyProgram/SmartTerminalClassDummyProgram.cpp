@@ -9,8 +9,8 @@ void TSmartTerminalClassDummyProgram::Run(unsigned long time, unsigned long step
       for (size_t iterSensors = 0; iterSensors < thingSensors.size(); ++iterSensors) {
         TDataPacket& dataPacket = thingSensors[iterSensors]->GetDataPacket();
         size_t propCount = thingSensors[iterSensors]->getPropertyCount();
-        double* data = dataPacket.GetDoubles();
-        double* packetVal = sendPacket.GetDoubles();
+        double* data = dataPacket.GetData<double>();
+        double* packetVal = sendPacket.GetData<double>();
         for (int i = 0; i < thingSensors[iterSensors]->GetObjectsCount(); ++i) {
           if ((time >= 32400) && ((time-32400) / 43200) == timePeriod) {
             packetVal[i] = static_cast<double>(sheduleIsWork);

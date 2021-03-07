@@ -76,13 +76,13 @@ public:
 
 virtual void Run()
 {
-  smartThingShedule.UpdateThingsProperties(currentTime);
+  
   std::vector<std::string> str(1);
   str[0] = std::to_string(currentTime);
 
   for (int i = 0; i < sensors.size(); i++)
   {
-    double* val = sensors[i]->GetDataPacket().GetDoubles();
+    double* val = sensors[i]->GetDataPacket().GetData<double>();
     int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
     for (int j = 0; j < dataCount; j++)
     {
@@ -111,12 +111,13 @@ virtual void Run()
 
   virtual void Run(unsigned long time, unsigned long step)
   {
+    smartThingShedule.UpdateThingsProperties(time);
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);
 
     for (int i = 0; i < sensors.size(); i++)
     {
-      double* val = sensors[i]->GetDataPacket().GetDoubles();
+      double* val = sensors[i]->GetDataPacket().GetData<double>();
       int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
       for (int j = 0; j < dataCount; j++)
       {
