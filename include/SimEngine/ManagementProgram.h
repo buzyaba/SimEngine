@@ -16,7 +16,7 @@ class IManagementProgram
 {
 public:
   virtual void Run() {};
-  virtual void Run(unsigned long time, unsigned long step) = 0;
+  virtual void Run(std::size_t time, std::size_t step) = 0;
   virtual void End() = 0;
   virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
   virtual void SetSchedule(std::vector<TSmartThing*> _things, std::string scheduleName) = 0;
@@ -109,7 +109,7 @@ virtual void Run()
     fclose(file);
   }
 
-  virtual void Run(unsigned long time, unsigned long step)
+  virtual void Run(std::size_t time, std::size_t step)
   {
     smartThingShedule.UpdateThingsProperties(time);
     std::vector<std::string> str(1);

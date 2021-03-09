@@ -15,7 +15,7 @@ public:
   void UpdateThingsProperties(std::size_t time);
 private:
   void LoadXML(std::string xmlName);
-  size_t GetTimePointIndex(size_t time);
+  std::int64_t GetTimePointIndex(size_t time);
 
   std::vector<TSmartThing*> things;
   std::vector<size_t> time_points;

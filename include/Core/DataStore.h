@@ -40,19 +40,23 @@ public:
     }
   };
 
-  virtual void AddAllProperties(unsigned long time)
+  virtual void AddAllProperties(std::size_t time)
   {
     std::vector<std::string> str(allObjectsProperties.size() + 1);
-    str[0] = std::to_string(time);
+    char str_tmp[256];
+    sprintf_s(str_tmp, "%llu", time);
+    str[0] = str_tmp;
     size_t iter = 1;
     for (auto& elem : allObjectsProperties)
     {      
       std::map<std::string, double>& tmp = elem->GetValues();
       auto it = tmp.begin();
-      str[iter] = std::to_string(it->second);
+      sprintf_s(str_tmp, "%f", it->second);
+      str[iter] = str_tmp;
       it++;
       while (it != tmp.end()) {
-        str[iter] = str[iter] + "_" + std::to_string(it->second);
+        sprintf_s(str_tmp, "%f", it->second);
+        str[iter] = str[iter] + "_" + str_tmp;
         it++;
       }
       iter++;
@@ -61,12 +65,12 @@ public:
   }
 
 
-  virtual void AddPropertyForObject(const IProperties& property, unsigned long time)
+  virtual void AddPropertyForObject(const IProperties& property, std::size_t time)
   {
     ///
   }
 
-  virtual std::vector<IProperties*> AddPropertyForObject(unsigned long time)
+  virtual std::vector<IProperties*> AddPropertyForObject(std::size_t time)
   {
     return allObjectsProperties;
   }

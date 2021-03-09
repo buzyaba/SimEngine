@@ -6,6 +6,6 @@
 	<xmlMainSetConfigurationFile>SmartEnergy_2/Room.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TSmartEnergyProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
-	<timeAcceleration>10000</timeAcceleration>
+	<timeAcceleration>0</timeAcceleration>
 	<maxStep>43200</maxStep>
 </config>

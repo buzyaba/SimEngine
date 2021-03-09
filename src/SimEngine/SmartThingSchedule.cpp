@@ -43,7 +43,7 @@ void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
 {
   if (!created)
     return;
-  size_t time_index = GetTimePointIndex(time);
+  std::int64_t time_index = GetTimePointIndex(time);
   if (time_index == -1)
     return;
   for (size_t i = 0; i < things.size(); i++)
@@ -61,7 +61,7 @@ void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
     }
 }
 
-size_t TSmartThingSchedule::GetTimePointIndex(size_t time) {
+std::int64_t TSmartThingSchedule::GetTimePointIndex(size_t time) {
   auto time_iter = std::find(time_points.begin(), time_points.end(), time);
   if (time_iter == time_points.end())
     return -1;

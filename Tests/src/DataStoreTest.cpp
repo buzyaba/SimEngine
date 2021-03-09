@@ -16,7 +16,7 @@
 // {
 //   //TDataStore()
 //   //{};
-//   //virtual void AddPropertyForObject(const IProperties& property, unsigned long time) = 0;
-//   //virtual std::vector<IProperties*> GddPropertyForObject(unsigned long time) = 0;
+//   //virtual void AddPropertyForObject(const IProperties& property, std::size_t time) = 0;
+//   //virtual std::vector<IProperties*> GddPropertyForObject(std::size_t time) = 0;
 //   // EXPECT_EQ(4, 2 + 2);
 // };

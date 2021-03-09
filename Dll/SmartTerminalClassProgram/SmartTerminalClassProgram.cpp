@@ -1,6 +1,6 @@
 #include "SmartTerminalClassProgram.hpp"
 
-void TSmartTerminalClassProgram::Run(unsigned long time, unsigned long step) {
+void TSmartTerminalClassProgram::Run(std::size_t time, std::size_t step) {
   size_t terminal_count = 0;
   bool sheduleActive = false;
   for (size_t iter = 0; iter < things.size(); ++iter) {

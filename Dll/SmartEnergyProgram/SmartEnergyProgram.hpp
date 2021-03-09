@@ -12,7 +12,7 @@ public:
     TManagementProgram::Run();
   }
 
-  virtual void Run(unsigned long time, unsigned long step) override
+  virtual void Run(std::size_t time, std::size_t step) override
   {
       TManagementProgram::Run(time, step);
   }

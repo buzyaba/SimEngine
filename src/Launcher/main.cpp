@@ -22,21 +22,19 @@ int main(int argc, char **argv) {
 #endif
   workManager = new TWorkManager(GlobalParameters, presenter);
 
-  int _enableVisualisation = 0;
 #ifdef USE_OPENGL
   TGraphicManager *graphicManager =
       new TGraphicManager(GlobalParameters.type, "SimEngine");
   presenter->setGraphicManager(graphicManager);
   workManager->sendObjects();
-  _enableVisualisation = 1;
   // what with error handling?
-  std::thread(&TWorkManager::Start, workManager, _enableVisualisation).detach();
+  std::thread(&TWorkManager::Start, workManager).detach();
   graphicManager->startDraw();
   workManager->Stop();
   delete graphicManager;
 #else
   try {
-    workManager->Start(_enableVisualisation);
+    workManager->Start();
   } catch (...) {
     std::cout << "Error Start WorkManager!!!" << std::endl;
   }

@@ -37,13 +37,13 @@ public:
   std::string managementProgramDllFile;
   
   /// Кол-во миллисекунд в одном шаге
-  unsigned long millisecondsInTimeStep;
+  std::size_t millisecondsInTimeStep;
   /* Ускорение времени программы, 
   при = 0 программа работает с максимально возможной соростью, 
   при = 1 за одну итерацию проходит millisecondsInTimeStep времени **/
   double timeAcceleration;
   /// Максимальное число итераций
-  unsigned long maxStep;
+  std::size_t maxStep;
 
   IManagementProgram* managementProgram;
 

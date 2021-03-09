@@ -51,12 +51,12 @@ protected:
 
 
   /// Итерация работы программы
-  void Iteration(std::size_t& t, std::chrono::milliseconds& delayTime, const unsigned short& _enableVisualisation);
+  void Iteration(const std::size_t step, const std::chrono::milliseconds& iterTime);
 public:
   TWorkManager(TParameters& parameters_, IGraphicPresenter* presenter_);
   ~TWorkManager();
   /// Начало работы программы
-  void Start(const unsigned short& _enableVisualisation = 1);
+  void Start();
   /// Исскуственная остановка работы (для многопоточной версии)
   void Stop();
   /// Изменить текущую задержку

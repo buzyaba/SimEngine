@@ -159,7 +159,7 @@ std::string TParameters::Print()
   при = 1 за одну итерацию проходит millisecondsInTimeStep времени **/
   result += "double timeAcceleration = \t" + std::to_string(timeAcceleration) + "\n";
   /// Максимальное число итераций
-  result += "unsigned long maxStep = \t" + std::to_string(maxStep) + "\n";
+  result += "std::size_t maxStep = \t" + std::to_string(maxStep) + "\n";
 
   return result;
 }
