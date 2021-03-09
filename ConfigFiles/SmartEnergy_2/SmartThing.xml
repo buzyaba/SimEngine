@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
   <intervalCount>5</intervalCount>
-  <time>0_120_3000_150000_240000</time>
+  <time>0_120000_3000000_150000000_240000000</time>
   <SmartSocket1>(0)_(1)_(0)_(0)_(1)</SmartSocket1>
   <SmartSocket2>(0)_(1)_(0)_(1)_(0)</SmartSocket2>
   <SmartSocket3>(0)_(1)_(0)_(0)_(1)</SmartSocket3>

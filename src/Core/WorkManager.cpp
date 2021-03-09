@@ -81,7 +81,6 @@ void TWorkManager::Start() {
 
     for (std::size_t step = 0; step < parameters.maxStep; step++) {
         Iteration(step, iterTime);
-        //std::cout << "ITER: " << step << std::endl;
     }
 
     std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();
@@ -95,7 +94,6 @@ void TWorkManager::Start() {
 
     storage->PrintToFile();
     // presenter->stopGraphicManager();
-    system("pause");
     program->End();
 }
 
