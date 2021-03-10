@@ -49,13 +49,16 @@ void TWorkManager::Iteration(const std::size_t step, const std::chrono::millisec
     currentStep = step;
     auto start = std::chrono::steady_clock::now();
     script->UpdateObjectsProperties(time);
+
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->Update();
     }
-    storage->AddAllProperties(time);
 
+    storage->AddAllProperties(time);
     program->Run(currentTime, currentStep);
 
+    presenter->transformsUpdateSignal();
+    
     auto end = std::chrono::steady_clock::now();
     auto delta = end - start;
     if (iterTime > delta) {

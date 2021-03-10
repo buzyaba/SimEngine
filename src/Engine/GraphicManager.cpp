@@ -1,4 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "Engine/GraphicManager.hpp"
 #include "SimEngine/common.h"
 
@@ -32,6 +33,12 @@ void TGraphicManager::addNewObject(TObject *obj) {
   graphicObjects.push_back(object);
 }
 
+void TGraphicManager::updateLRU() {
+  for (auto& elem : graphicObjects) {
+    elem->updateLRU();
+  }
+}
+
 void TGraphicManager::startDraw() {
   double curTime = glfwGetTime(), prevTime = glfwGetTime(), deltaTime = prevTime - curTime;
   do {
@@ -40,8 +47,13 @@ void TGraphicManager::startDraw() {
     _window->runWindow(deltaTime, [&]() {
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      for (auto *elem : graphicObjects)
+      if (needUpdateFlag.load(std::memory_order::memory_order_acquire)) {
+        updateLRU();
+        needUpdateFlag.store(false, std::memory_order::memory_order_release);
+      }
+      for (auto& elem : graphicObjects) {
         elem->draw();
+      }
     });
     prevTime = curTime;
   } // Check if the ESC key was pressed or the window was closed
