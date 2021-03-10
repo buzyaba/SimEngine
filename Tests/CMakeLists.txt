@@ -19,19 +19,11 @@ set_target_properties(${PROJECT_NAME_STR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${
 target_link_libraries(${PROJECT_NAME_STR}
 						gtest
 						Core
+						SimEngine
 						pugixml
 						output_system						
-						Core
                         )
 						
-if (${USE_OPENGL})
-	target_link_libraries(${PROJECT_NAME_STR}
-							# Engine
-							libglew_shared
-							# LinearMath 
-							glfw  ${OPENGL_LIBRARIES}
-	)
-endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set_target_properties(${PROJECT_NAME_STR} PROPERTIES LINK_FLAGS "-lm -Wl,--no-as-needed -ldl -lpthread")
