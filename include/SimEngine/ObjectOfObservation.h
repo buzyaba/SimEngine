@@ -37,7 +37,7 @@ public:
   /// Возвращает все свойства объекта
   virtual std::vector<IProperties*>& GetAllProperties(); //maybe something wrong??? 
   /// Создание клона объекта
-  virtual TObjectOfObservation* Clone() = 0;
+  virtual TObjectOfObservation* Clone() {return new TObjectOfObservation("ObjectOfObservation")};
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с объектами
