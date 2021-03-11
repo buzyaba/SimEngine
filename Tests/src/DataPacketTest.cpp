@@ -24,17 +24,6 @@ TEST(DataPacketTest, Copying_Constructor) {
     ASSERT_EQ(*packet.GetData<int>(), *cp.GetData<int>());
 }
 
-TEST(DataPacketTest, Destructor) {
-    std::unique_ptr<int> ptr(new int{5});
-    TDataPacket* packet = new TDataPacket(ptr.get(), 1);
-
-    int data1 = *packet->GetData<int>();
-    int* data2 = packet->GetData<int>();
-    delete packet;
-
-    ASSERT_NE(data1, *data2);
-}
-
 TEST(DataPacketTest, Get_Size) {
     TDataPacket pack("data", 5);
 

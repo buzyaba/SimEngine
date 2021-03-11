@@ -17,7 +17,7 @@ TEST(ActuatorTest, Add_Object_And_Change_Property) {
     auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
 
     actuator.AddObject(*object);
-    actuator.ChangeProperty(new_property, "Property");
+    actuator.ChangeProperty(new_property, "Object");
 
     double real = object->GetProperty("Property").GetValue("Property");
 

@@ -10,7 +10,6 @@
 #include "SimEngine/ObjectOfObservation.h"
 
 /// Класс реализующий базовое хранение данных об объектах в базе данных
-/// Пока заглушка
 class TDataStore
 {
 protected:
