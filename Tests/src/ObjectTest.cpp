@@ -5,6 +5,12 @@ TEST(ObjectTest, Can_Create_Instance) {
     ASSERT_NO_THROW(TObject("ourBestObject"));
 };
 
+TEST(ObjectTest, Can_Copy_Instance) {
+    TObject obj("ourBestObject");
+    TObject copyObj(obj);
+    ASSERT_NO_THROW(copyObj.GetName(), "ourBestObject");
+};
+
 TEST(ObjectTest, Get_Object_Name) {
     TObject obj("ourBestObject");
     ASSERT_EQ(obj.GetName(), "ourBestObject");
@@ -54,7 +60,7 @@ TEST(ObjectTest, Set_Property_By_Name) {
     auto new_property =
         TProperties(std::map<std::string, double>{ { "Property", 100 } }, true, "Property");
 
-    obj.SetProperty(std::map<std::string, double>{ { "Property", 100 }}, "Property");
+    obj.SetProperty(std::map<std::string, double>{ { "Property", 100 } }, "Property");
 
     double val = obj.GetProperty("Property").GetValue("Property");
     ASSERT_DOUBLE_EQ(100, val);
