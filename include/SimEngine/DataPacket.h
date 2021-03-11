@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 /// Класс описывающий передаваемое сообщение
 class TDataPacket
