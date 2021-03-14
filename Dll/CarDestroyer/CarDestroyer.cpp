@@ -11,7 +11,7 @@ void TCarDestroyer::Update()
 		TObjectOfObservation* child = this->childObjects[i];
 		if (child != nullptr)
 		{
-			this->ExcludeChildObject(*child);
+			this->ExcludeChildObject(child);
 			delete child;
 		}
 	}

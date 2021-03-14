@@ -29,7 +29,7 @@ TRoad::TRoad(std::string _name) : TObjectOfObservation(_name) {
 		getAllRoads().push_back(this);
 	}
 	else {
-		AddNeighboringObject(*getAllRoads().back());
+		AddNeighboringObject(getAllRoads().back());
 		getAllRoads().push_back(this);
 	}
 }
@@ -75,7 +75,7 @@ bool TRoad::IsCanGo()
 	}
 	else
 	{
-		int roadIndex = this->childObjects[0]->GetProperties()["WayIndex"]->GetValues()["WayIndex"];
+		int roadIndex = static_cast<double>(this->childObjects[0]->GetProperties()["WayIndex"]->GetValues()["WayIndex"]);
 		if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
 		{
 			if (this->roadNeighboring[roadIndex]->GetProperties()["IsBblockieren"]->GetValues()["IsBblockieren"] == 1)
@@ -115,12 +115,12 @@ void TRoad::Go()
 			//this->properties[TRoadIsBblockierenIndex]->SetValues(isBblockieren);
 			if (child != nullptr)
 			{
-				int roadIndex = child->GetProperties()["WayIndex"]->GetValues()["WayIndex"];
+				int roadIndex = static_cast<double>(child->GetProperties()["WayIndex"]->GetValues()["WayIndex"]);
 				if (roadIndex >= 0 && roadIndex < this->roadNeighboring.size())
 				{
-					this->ExcludeChildObject(*child);
+					this->ExcludeChildObject(child);
 					this->roadNeighboring[roadIndex]->Go();
-					this->roadNeighboring[roadIndex]->AddChildObject(*child);
+					this->roadNeighboring[roadIndex]->AddChildObject(child);
 					child->GetProperties()["Coordinate"]->SetValues(
 						this->roadNeighboring[roadIndex]->GetProperties()["Coordinate"]->GetValues());
 				}
@@ -132,30 +132,30 @@ void TRoad::Go()
 	}
 }
 
-void TRoad::AddNeighboringObject(TObjectOfObservation& obect)
+void TRoad::AddNeighboringObject(TObjectOfObservation* object)
 {
-	TObjectOfObservation::AddNeighboringObject(obect);
+	TObjectOfObservation::AddNeighboringObject(object);
 
-	TRoad* road = dynamic_cast<TRoad*>(&obect);
+	TRoad* road = dynamic_cast<TRoad*>(object);
 	if (road != NULL)
 		roadNeighboring.push_back(road);
 }
 
 
-int TRoad::AddChildObject(TObjectOfObservation& obect)
+int TRoad::AddChildObject(TObjectOfObservation* object)
 {
 	auto&& isBusy = this->properties["IsBusy"]->GetValues();
 	isBusy["IsBusy"] = 1;
 	this->properties["IsBusy"]->SetValues(isBusy);
 
-	return TObjectOfObservation::AddChildObject(obect);
+	return TObjectOfObservation::AddChildObject(object);
 }
 
-void TRoad::ExcludeChildObject(TObjectOfObservation& obect)
+void TRoad::ExcludeChildObject(TObjectOfObservation* object)
 {
 	auto&& isBusy = this->properties["IsBusy"]->GetValues();
 	isBusy["IsBusy"] = 0;
 	this->properties["IsBusy"]->SetValues(isBusy);
 
-	TObjectOfObservation::ExcludeChildObject(obect);
+	TObjectOfObservation::ExcludeChildObject(object);
 }

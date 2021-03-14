@@ -52,22 +52,22 @@ TDataPacket& TSensor::GetDataPacket()
   return *packet;
 }
 
-void TSensor::AddObject(TObjectOfObservation& object)
+void TSensor::AddObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == &object)
+    if (objects[i] == object)
       return;
   }
-  objects.push_back(&object);
+  objects.push_back(object);
   objectsProperties.resize(objects.size());
 }
 
-void TSensor::ExcludeObject(TObjectOfObservation& object)
+void TSensor::ExcludeObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == &object)
+    if (objects[i] == object)
     {
       objects[i] = nullptr;
       ///Дописать перепаковку

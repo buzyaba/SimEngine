@@ -27,22 +27,22 @@ TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TO
   this->parentObject = obj.parentObject;
 }
 
-void TObjectOfObservation::AddParentObject(TObjectOfObservation& obect)
+void TObjectOfObservation::AddParentObject(TObjectOfObservation* object)
 {
-  parentObject = &obect;
+  parentObject = object;
 }
 
-int TObjectOfObservation::AddChildObject(TObjectOfObservation& obect)
+int TObjectOfObservation::AddChildObject(TObjectOfObservation* object)
 {
   if (childObjects.size() == 0)
-    childObjects.push_back(&obect);
+    childObjects.push_back(object);
   else
   {
     if (childObjects[0] == nullptr)
-      childObjects[0] = &obect;
+      childObjects[0] = object;
     else
     {
-      childObjects.push_back(&obect);
+      childObjects.push_back(object);
     }
   }
   return childObjects.size();  
@@ -53,23 +53,23 @@ std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObject()
   return childObjects;
 }
 
-void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect)
+void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation* object)
 {
-  neighboringObject.push_back(&obect);
+  neighboringObject.push_back(object);
 }
 
-void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect)
+void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation* object)
 {
   if (childObjects.size() == 1)
   {
-    if (childObjects[0]->GetName() == obect.GetName())
+    if (childObjects[0]->GetName() == object->GetName())
       childObjects[0] = nullptr;
   }
   else
   {
     for (int i = 0; i < childObjects.size(); i++)
     {
-      if (childObjects[i]->GetName() == obect.GetName())
+      if (childObjects[i]->GetName() == object->GetName())
       {
         std::vector<TObjectOfObservation*> newChildObjects(childObjects.size() - 1);
         for (int j = 0, t = 0; j < childObjects.size(); j++)

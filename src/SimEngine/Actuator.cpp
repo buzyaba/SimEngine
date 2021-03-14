@@ -13,22 +13,22 @@ TActuator::TActuator(const TActuator &actuator)
   this->property = actuator.property;
 }
 
-void TActuator::AddObject(TObjectOfObservation &object)
+void TActuator::AddObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == &object)
+    if (objects[i] == object)
       return;
   }
-  objects.push_back(&object);
+  objects.push_back(object);
   //objectsProperties.resize(objects.size());
 }
 
-void TActuator::ExcludeObject(TObjectOfObservation &object)
+void TActuator::ExcludeObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == &object)
+    if (objects[i] == object)
     {
       objects[i] = nullptr;
       auto &&it = std::remove(objects.begin(), objects.end(), nullptr);
@@ -58,11 +58,11 @@ void TActuator::ChangeActuatorProperty(IProperties &_property)
   this->property = &_property;
 }
 
-void TActuator::ChangeProperty(IProperties &property, TObjectOfObservation &object)
+void TActuator::ChangeProperty(IProperties &property, TObjectOfObservation* object)
 {
   for (int i = 0; i < objects.size(); i++)
   {
-    if (objects[i] == &object)
+    if (objects[i] == object)
     {
       objects[i]->SetProperty(property);
     }

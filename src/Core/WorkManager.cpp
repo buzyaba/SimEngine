@@ -75,7 +75,7 @@ void TWorkManager::Start() {
 
     if (parameters.timeAcceleration <= 0 ||
         parameters.timeAcceleration > parameters.millisecondsInTimeStep)
-        parameters.timeAcceleration = parameters.millisecondsInTimeStep;
+        parameters.timeAcceleration = static_cast<double>(parameters.millisecondsInTimeStep);
 
     startWork = std::chrono::steady_clock::now();
     time = 0;

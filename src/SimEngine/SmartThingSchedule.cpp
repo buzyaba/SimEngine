@@ -49,7 +49,7 @@ void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
   for (size_t i = 0; i < things.size(); i++)
     if (actuatorsValues[i].size() > 0 && things[i] != nullptr)
     {
-      auto& thingActuators = things[i]->GetActuators();
+      auto thingActuators = things[i]->GetActuators();
       for (size_t j = 0; j < thingActuators.size(); j++)
       {
         size_t objectsCount = thingActuators[j]->GetObjectsCount();

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <stdio.h>
+#include <fstream>
 
 #include "SimEngine/Sensor.h"
 #include "SimEngine/Actuator.h"
@@ -43,18 +43,18 @@ public:
   {
     std::vector<std::string> str(allObjectsProperties.size() + 1);
     char str_tmp[256];
-    sprintf_s(str_tmp, "%llu", time);
+    sprintf(str_tmp, "%zu", time);
     str[0] = str_tmp;
     size_t iter = 1;
     for (auto& elem : allObjectsProperties)
     {      
       std::map<std::string, double>& tmp = elem->GetValues();
       auto it = tmp.begin();
-      sprintf_s(str_tmp, "%f", it->second);
+      sprintf(str_tmp, "%f", it->second);
       str[iter] = str_tmp;
       it++;
       while (it != tmp.end()) {
-        sprintf_s(str_tmp, "%f", it->second);
+        sprintf(str_tmp, "%f", it->second);
         str[iter] = str[iter] + "_" + str_tmp;
         it++;
       }
@@ -76,19 +76,20 @@ public:
 
   virtual void PrintToFile()
   {
-    FILE* file = fopen((name + ".csv").c_str(), "w");
+    std::ofstream file;
+    file.open(name + ".csv");
     for (int j = 0; j < tableHeader.size(); j++)
-      fprintf(file, "%s;\t", tableHeader[j].c_str());
-    fprintf(file, "\n");
+      file << tableHeader[j].c_str() << ";\t";
+    file << "\n";
 
     for (int i = 0; i < table.size(); i++)
     {
       for (int j = 0; j < table[i].size(); j++)
-        fprintf(file, "%s;", table[i][j].c_str());
-      fprintf(file, "\n");
+        file << table[i][j].c_str() << ";";
+      file << "\n";
     }
 
-    fclose(file);
+    file.close();
   }
 
   virtual void PrintToConsole()

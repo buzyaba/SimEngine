@@ -130,7 +130,7 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
           if (nameProperty == "Object") {
             for (int j = 0; j < objects.size(); j++) {
               if (objects[j]->GetName() == valueProperty)
-                newThing->AddObject(*objects[j]);
+                newThing->AddObject(objects[j]);
             }
           } else
             SetProperty(newThing, nameProperty, valueProperty);

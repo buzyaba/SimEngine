@@ -16,7 +16,7 @@ TEST(ActuatorTest, Add_Object_And_Change_Property) {
 
     auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
 
-    actuator.AddObject(*object);
+    actuator.AddObject(object);
     actuator.ChangeProperty(new_property, "Object");
 
     double real = object->GetProperty("Property").GetValue("Property");
@@ -33,8 +33,8 @@ TEST(ActuatorTest, Change_Property_By_Reference) {
 
     auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
 
-    actuator.AddObject(*object);
-    actuator.ChangeProperty(new_property, *object);
+    actuator.AddObject(object);
+    actuator.ChangeProperty(new_property, object);
 
     double real = object->GetProperty("Property").GetValue("Property");
 
@@ -48,11 +48,11 @@ TEST(ActuatorTest, Exclude_Object_By_Reference) {
     auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
     object->AddProperty(property);
 
-    actuator.AddObject(*object);
-    actuator.ExcludeObject(*object);
+    actuator.AddObject(object);
+    actuator.ExcludeObject(object);
 
     auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
-    actuator.ChangeProperty(new_property, *object);
+    actuator.ChangeProperty(new_property, object);
 
     auto real = object->GetProperty("Property").GetValue("Property");
 
@@ -67,7 +67,7 @@ TEST(ActuatorTest, Exclude_Object_By_Name) {
     object->AddProperty(property);
 
 
-    actuator.AddObject(*object);
+    actuator.AddObject(object);
     actuator.ExcludeObject("Object");
 
     auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
@@ -86,7 +86,7 @@ TEST(ActuatorTest, Copying_Constructor) {
     auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
     object->AddProperty(property);
 
-    actuator1.AddObject(*object);
+    actuator1.AddObject(object);
 
     TActuator actuator2(actuator1);
 

@@ -19,6 +19,5 @@ TEST(ObjectOfObservationTest, Can_Create_With_All_Objects) {
 TEST(ObjectOfObservationTest, Can_Copy_Instance) {
     TObjectOfObservation objOfObservation("ourBestObjectOfObservation");
     TObjectOfObservation copyObjOfObservation(objOfObservation);
-    ASSERT_NO_THROW(copyObjOfObservation.GetName(), "ourBestObjectOfObservation");
+    ASSERT_EQ(copyObjOfObservation.GetName(), "ourBestObjectOfObservation");
 };
-

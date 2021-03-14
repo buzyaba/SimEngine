@@ -12,12 +12,12 @@ class IActuator
 {
 public:
 
-  virtual void AddObject(TObjectOfObservation& object) = 0;
-  virtual void ExcludeObject(TObjectOfObservation& object) = 0;
+  virtual void AddObject(TObjectOfObservation* object) = 0;
+  virtual void ExcludeObject(TObjectOfObservation* object) = 0;
   virtual void ExcludeObject(std::string objectName) = 0;
 
   virtual void ChangeActuatorProperty(IProperties& _property) = 0;
-  virtual void ChangeProperty(IProperties& property, TObjectOfObservation& object) = 0;
+  virtual void ChangeProperty(IProperties& property, TObjectOfObservation* object) = 0;
   virtual void ChangeProperty(IProperties& property, std::string _objectName) = 0;
   virtual void SetDataPacket(TDataPacket& packet) = 0;
   virtual size_t GetObjectsCount() = 0;
@@ -42,12 +42,12 @@ public:
   TActuator(std::string _name);
   TActuator(const TActuator& actuator);
 
-  virtual void AddObject(TObjectOfObservation& object);
-  virtual void ExcludeObject(TObjectOfObservation& object);
+  virtual void AddObject(TObjectOfObservation* object);
+  virtual void ExcludeObject(TObjectOfObservation* object);
   virtual void ExcludeObject(std::string objectName);
 
   virtual void ChangeActuatorProperty(IProperties& _property);
-  virtual void ChangeProperty(IProperties& property, TObjectOfObservation& object);
+  virtual void ChangeProperty(IProperties& property, TObjectOfObservation* object);
   virtual void ChangeProperty(IProperties& property, std::string _objectName);
   virtual void SetDataPacket(TDataPacket& packet);
   virtual size_t GetObjectsCount() { return objects.size(); }

@@ -84,7 +84,7 @@ void TParameters::LoadXML()
     }
     else if (name == "millisecondsInTimeStep")
     {
-      sscanf(value.c_str(), "%d", &millisecondsInTimeStep);
+      sscanf(value.c_str(), "%zu", &millisecondsInTimeStep);
     }
     else if (name == "timeAcceleration")
     {
@@ -92,7 +92,7 @@ void TParameters::LoadXML()
     }
     else if (name == "maxStep")
     {
-      sscanf(value.c_str(), "%ld", &maxStep);
+      sscanf(value.c_str(), "%zu", &maxStep);
     }
   }
 }

@@ -94,19 +94,20 @@ virtual void Run()
 
   virtual void End()
   {
-    file = fopen((fileName + ".csv").c_str(), "w");
-
+    std::ofstream file;
+    file.open(fileName + ".csv");
     for (int j = 0; j < tableHeader.size(); j++)
-      fprintf(file, "%s;\t", tableHeader[j].c_str());
-    fprintf(file, "\n");
+      file << tableHeader[j].c_str() << ";\t";
+    file << "\n";
 
     for (int i = 0; i < table.size(); i++)
     {
       for (int j = 0; j < table[i].size(); j++)
-        fprintf(file, "%s;", table[i][j].c_str());
-      fprintf(file, "\n");
+        file << table[i][j].c_str() << ";";
+      file << "\n";
     }
-    fclose(file);
+
+    file.close();
   }
 
   virtual void Run(std::size_t time, std::size_t step)

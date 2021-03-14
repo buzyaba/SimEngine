@@ -23,15 +23,15 @@ public:
   TObjectOfObservation(const TObjectOfObservation& obj);
 
   /// Добавить объект который является хранилищем текущего объекта
-  virtual void AddParentObject(TObjectOfObservation& obect);
+  virtual void AddParentObject(TObjectOfObservation* object);
   /// Добавить дочерний объект
-  virtual int AddChildObject(TObjectOfObservation& obect);
+  virtual int AddChildObject(TObjectOfObservation* object);
   /// Возвращает вектор дочерних объектов, должен остаться только один потомок
   virtual std::vector<TObjectOfObservation*> GetChildObject();
   /// Добавить соседний объект, между ними может происходить объмен дочерними объектами
-  virtual void AddNeighboringObject(TObjectOfObservation& obect);
+  virtual void AddNeighboringObject(TObjectOfObservation* object);
   /// Исключить дочерний объект
-  virtual void ExcludeChildObject(TObjectOfObservation& obect);
+  virtual void ExcludeChildObject(TObjectOfObservation* object);
   /// Обновляет свойства данного объекта 
   virtual void Update();
   /// Возвращает все свойства объекта

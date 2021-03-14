@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include "SimEngine/ObjectOfObservation.h"
 #include "SimEngine/Properties.h"
