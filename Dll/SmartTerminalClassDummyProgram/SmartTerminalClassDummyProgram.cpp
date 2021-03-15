@@ -1,6 +1,6 @@
 #include "SmartTerminalClassDummyProgram.hpp"
 
-void TSmartTerminalClassDummyProgram::Run(unsigned long time, unsigned long step) {
+void TSmartTerminalClassDummyProgram::Run(std::size_t time, std::size_t step) {
   size_t terminal_count = 0;
   bool sheduleActive = false;
   for (size_t iter = 0; iter < things.size(); ++iter) {
@@ -9,14 +9,14 @@ void TSmartTerminalClassDummyProgram::Run(unsigned long time, unsigned long step
       for (size_t iterSensors = 0; iterSensors < thingSensors.size(); ++iterSensors) {
         TDataPacket& dataPacket = thingSensors[iterSensors]->GetDataPacket();
         size_t propCount = thingSensors[iterSensors]->getPropertyCount();
-        double* data = dataPacket.GetDoubles();
-        double* packetVal = sendPacket.GetDoubles();
-        for (int i = 0; i < thingSensors[iterSensors]->getObjectsCount(); ++i) {
+        double* data = dataPacket.GetData<double>();
+        double* packetVal = sendPacket.GetData<double>();
+        for (int i = 0; i < thingSensors[iterSensors]->GetObjectsCount(); ++i) {
           if ((time >= 32400) && ((time-32400) / 43200) == timePeriod) {
             packetVal[i] = static_cast<double>(sheduleIsWork);
             sheduleActive = true;
           } else {
-            double isWork = data[i * (propCount / thingSensors[iterSensors]->getObjectsCount())];
+            double isWork = data[i * (propCount / thingSensors[iterSensors]->GetObjectsCount())];
             packetVal[i] = isWork;
           }
           terminal_count++;

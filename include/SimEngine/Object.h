@@ -8,6 +8,8 @@ class IObject
 public:
   /// Задает значение своства с именем равным property.name берет значения из property
   virtual void SetProperty(IProperties& property) = 0;
+  /// Добавляет новое свойство
+  virtual void AddProperty(IProperties& property) = 0;
   /// Задает значение values своству с именем propertyName
   virtual void SetProperty(const std::map<std::string, double>& values, std::string propertyName) = 0;
   /// Возвращает все своства данного объекта
@@ -44,11 +46,12 @@ class TObject: public IObject {
     explicit TObject(const std::string& _name);
     TObject(const TObject& obj);
     virtual ~TObject() {}
-    // Logic
     /// Задает значение свойства с именем равным property.name берет значения из property
     virtual void SetProperty(IProperties& property) override;
     /// Задает значение values своству с именем propertyName
     virtual void SetProperty(const std::map<std::string, double>& values, std::string propertyName) override;
+    /// Добавляет новое свойство
+    virtual void AddProperty(IProperties& property) override;
     /// Возвращает все свойства данного объекта
     virtual std::map<std::string, IProperties*>& GetProperties() override;
     /// Возвращает свойство с именем _name
@@ -59,11 +62,11 @@ class TObject: public IObject {
     /// Задает имя объекта
     virtual void SetName(std::string name) override;
     /// Возвращает имя класса (используется для динамического создания модели)
-    virtual std::string ClassName() = 0;
+    virtual std::string ClassName() override { return "TObject"; }
     // /// Создание клона объекта
-    virtual IObject* Clone() = 0;
+    virtual TObject* Clone() override {return new TObject("Object");};
 
     virtual bool isDrawable() = 0;
 
-    virtual std::vector<std::vector<std::string>>& getTextures() { return textures; }
+    virtual std::vector<std::vector<std::string>>& getTextures() override { return textures; }
 };

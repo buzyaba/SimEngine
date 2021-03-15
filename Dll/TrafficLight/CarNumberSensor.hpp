@@ -29,17 +29,17 @@
 //     //    if (packet == nullptr)
 //     //        packet = new TDataPacket(propertyCount * sizeof(double));
 
-//     //    packet->SetSize(propertyCount * sizeof(double));
-//     //    double* data = packet->GetDoubles();
-//     //    size_t t = 0;
-//     //    for (size_t i = 0; i < objectsProperties.size(); ++i)
-//     //    {
-//     //        for (auto& elem : objectsProperties[i])
-//     //            if (elem.second != nullptr && elem.second->IsObserved())
-//     //                for (auto& iter : elem.second->GetValues()) {
-//     //                    data[t++] = iter.second;
-//     //                }
-//     //    }
+    //    packet->SetSize(propertyCount * sizeof(double));
+    //    double* data = packet->GetData<double>();
+    //    size_t t = 0;
+    //    for (size_t i = 0; i < objectsProperties.size(); ++i)
+    //    {
+    //        for (auto& elem : objectsProperties[i])
+    //            if (elem.second != nullptr && elem.second->IsObserved())
+    //                for (auto& iter : elem.second->GetValues()) {
+    //                    data[t++] = iter.second;
+    //                }
+    //    }
 
 //     //    return *packet;
 //     //}

@@ -26,6 +26,10 @@ std::map<std::string, IProperties*>& TObject::GetProperties() {
   return properties;
 }
 
+void TObject::AddProperty(IProperties& property) {
+  properties.insert({property.GetName(), &property});
+}
+
 IProperties& TObject::GetProperty(const std::string& _name) {
 //   if (_name == "")
 //     return *properties.begin()->second; // What is this?????

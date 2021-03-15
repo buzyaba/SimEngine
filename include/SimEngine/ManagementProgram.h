@@ -2,6 +2,7 @@
 #include "SimEngine/DataPacket.h"
 #include "SimEngine/common.h"
 #include "SimEngine/SmartThing.h"
+#include "SimEngine/SmartThingSchedule.hpp"
 #include <string>
 #include <stdio.h>
 #include <chrono>
@@ -15,9 +16,10 @@ class IManagementProgram
 {
 public:
   virtual void Run() {};
-  virtual void Run(unsigned long time, unsigned long step) = 0;
+  virtual void Run(std::size_t time, std::size_t step) = 0;
   virtual void End() = 0;
   virtual void SetSmartThing(std::vector<TSmartThing*> _things) = 0;
+  virtual void SetSchedule(std::vector<TSmartThing*> _things, std::string scheduleName) = 0;
 };
 
 class TManagementProgram : public IManagementProgram
@@ -34,6 +36,8 @@ protected:
   std::vector < std::vector<std::string>> table;
   /// Набор наблюдаемых сенсоров
   std::vector <ISensor*> sensors;
+
+  TSmartThingSchedule smartThingShedule; 
 
   std::string title1;
   
@@ -66,48 +70,55 @@ public:
     title1 = fileName;
   }
 
+  virtual void SetSchedule(std::vector<TSmartThing*> _things, std::string scheduleName) {
+    smartThingShedule = TSmartThingSchedule(_things, scheduleName);
+  }
+
 virtual void Run()
 {
-    std::vector<std::string> str(1);
-    str[0] = std::to_string(currentTime);
+  
+  std::vector<std::string> str(1);
+  str[0] = std::to_string(currentTime);
 
-    for (int i = 0; i < sensors.size(); i++)
+  for (int i = 0; i < sensors.size(); i++)
+  {
+    double* val = sensors[i]->GetDataPacket().GetData<double>();
+    int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+    for (int j = 0; j < dataCount; j++)
     {
-      double* val = sensors[i]->GetDataPacket().GetDoubles();
-      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
-      for (int j = 0; j < dataCount; j++)
-      {
-        str.push_back(std::to_string(val[j]));
-      }
+      str.push_back(std::to_string(val[j]));
     }
-    table.push_back(str);
   }
+  table.push_back(str);
+}
 
   virtual void End()
   {
-    file = fopen((fileName + ".csv").c_str(), "w");
-
+    std::ofstream file;
+    file.open(fileName + ".csv");
     for (int j = 0; j < tableHeader.size(); j++)
-      fprintf(file, "%s;\t", tableHeader[j].c_str());
-    fprintf(file, "\n");
+      file << tableHeader[j].c_str() << ";\t";
+    file << "\n";
 
     for (int i = 0; i < table.size(); i++)
     {
       for (int j = 0; j < table[i].size(); j++)
-        fprintf(file, "%s;", table[i][j].c_str());
-      fprintf(file, "\n");
+        file << table[i][j].c_str() << ";";
+      file << "\n";
     }
-    fclose(file);
+
+    file.close();
   }
 
-  virtual void Run(unsigned long time, unsigned long step)
+  virtual void Run(std::size_t time, std::size_t step)
   {
+    smartThingShedule.UpdateThingsProperties(time);
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);
 
     for (int i = 0; i < sensors.size(); i++)
     {
-      double* val = sensors[i]->GetDataPacket().GetDoubles();
+      double* val = sensors[i]->GetDataPacket().GetData<double>();
       int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
       for (int j = 0; j < dataCount; j++)
       {

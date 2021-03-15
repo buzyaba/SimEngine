@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.3)
 
 set(PROJECT_NAME_STR tests)
 project (${PROJECT_NAME_STR})
@@ -11,7 +11,7 @@ set(TESTS_OUTPUT_DIRECTORY ${SIMENGINE_OUTPUT_DIRECTORY})
 
 
 file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
-# file(GLOB ENG_FILES ${CMAKE_SOURCE_DIR}/src/Engine/*.cpp)
+
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 add_executable(${PROJECT_NAME_STR} ${SRC_FILES})
@@ -19,19 +19,11 @@ set_target_properties(${PROJECT_NAME_STR} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${
 target_link_libraries(${PROJECT_NAME_STR}
 						gtest
 						Core
+						SimEngine
 						pugixml
 						output_system						
-						Core
                         )
 						
-if (${USE_OPENGL})
-	target_link_libraries(${PROJECT_NAME_STR}
-							# Engine
-							libglew_shared
-							# LinearMath 
-							glfw  ${OPENGL_LIBRARIES}
-	)
-endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   set_target_properties(${PROJECT_NAME_STR} PROPERTIES LINK_FLAGS "-lm -Wl,--no-as-needed -ldl -lpthread")

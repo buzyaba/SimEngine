@@ -23,8 +23,8 @@ public:
   virtual std::vector<ISensor*> GetSensors();
   virtual std::vector<IActuator*> GetActuators();
 
-  virtual void AddObject(TObjectOfObservation& object);
-  virtual void ExcludeObject(TObjectOfObservation& object);
+  virtual void AddObject(TObjectOfObservation* object);
+  virtual void ExcludeObject(TObjectOfObservation* object);
   virtual void ExcludeObject(std::string _name);
 
   /// Создание клона объекта

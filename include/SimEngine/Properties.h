@@ -51,7 +51,7 @@ protected:
     std::string stringValue;
 public:
     TProperties(std::string _name = "");
-    TProperties(std::map<std::string, double> _map,
+    TProperties(const std::map<std::string, double>& _map,
         bool _isObserved = false, std::string _name = "");
     TProperties(const TProperties& properties);
 

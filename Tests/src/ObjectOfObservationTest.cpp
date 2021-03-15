@@ -1,23 +1,23 @@
-
 #include "gtest/gtest.h"
-// #include "Core/Object.h"
-// #include "Core/Scene.h"
-// #include "Core/ObjectOfObservation.h"
-// #include "Core/Sensor.h"
-// #include "Core/Properties.h"
-// #include "Core/Actuator.h"
-// #include "Core/SmartThing.h"
-// #include "Core/DataStore.h"
-// #include "Core/WorkManager.h"
-// #include "Core/DataPacket.h"
-// #include "Core/ManagementProgram.h"
-// #include "Core/EnvironmentScript.h"
+#include "SimEngine/ObjectOfObservation.h"
 
-// TEST(ObjectOfObservationTest, CanCreate)
-// {
-//   //virtual void AddParentObject(TObjectOfObservation& obect) = 0;
-//   //virtual void AddChildObject(TObjectOfObservation& obect) = 0;
-//   //virtual void AddNeighboringObject(TObjectOfObservation& obect) = 0;
-//   //virtual void ExcludeChildObject(TObjectOfObservation& obect) = 0;
-//   // EXPECT_EQ(4, 2 + 2);
-// };
+TEST(ObjectOfObservationTest, Can_Create_Default_Instance) {
+    ASSERT_NO_THROW(TObjectOfObservation("ourBestObjectOfObservation"));
+};
+
+TEST(ObjectOfObservationTest, Can_Create_With_All_Objects) {
+    TObjectOfObservation parent("parent");
+    TObjectOfObservation child("child");
+    TObjectOfObservation neighbour1("neighbour1");
+    TObjectOfObservation neighbour2("neighbour2");
+    ASSERT_NO_THROW(TObjectOfObservation("ourBestObjectOfObservation",
+                                         { &neighbour1, &neighbour2 },
+                                         &parent,
+                                         &child));
+};
+
+TEST(ObjectOfObservationTest, Can_Copy_Instance) {
+    TObjectOfObservation objOfObservation("ourBestObjectOfObservation");
+    TObjectOfObservation copyObjOfObservation(objOfObservation);
+    ASSERT_EQ(copyObjOfObservation.GetName(), "ourBestObjectOfObservation");
+};

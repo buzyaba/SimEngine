@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName>SmartEnergy_2/conf.xml</xmlEnvironmentScriptName> 
+	<xmlExternalActionScheduleName>SmartEnergy_2/ExternalAction.xml</xmlExternalActionScheduleName> 
+	<xmlSmartThingScheduleName>SmartEnergy_2/SmartThing.xml</xmlSmartThingScheduleName> 
 	<xmlMainSetConfigurationFile>SmartEnergy_2/Room.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TSmartEnergyProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
-	<timeAcceleration>10000</timeAcceleration>
+	<timeAcceleration>0</timeAcceleration>
 	<maxStep>43200</maxStep>
 </config>

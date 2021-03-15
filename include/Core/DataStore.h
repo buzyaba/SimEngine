@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <stdio.h>
+#include <fstream>
 
 #include "SimEngine/Sensor.h"
 #include "SimEngine/Actuator.h"
@@ -10,7 +10,6 @@
 #include "SimEngine/ObjectOfObservation.h"
 
 /// Класс реализующий базовое хранение данных об объектах в базе данных
-/// Пока заглушка
 class TDataStore
 {
 protected:
@@ -40,19 +39,23 @@ public:
     }
   };
 
-  virtual void AddAllProperties(unsigned long time)
+  virtual void AddAllProperties(std::size_t time)
   {
     std::vector<std::string> str(allObjectsProperties.size() + 1);
-    str[0] = std::to_string(time);
+    char str_tmp[256];
+    sprintf(str_tmp, "%zu", time);
+    str[0] = str_tmp;
     size_t iter = 1;
     for (auto& elem : allObjectsProperties)
     {      
       std::map<std::string, double>& tmp = elem->GetValues();
       auto it = tmp.begin();
-      str[iter] = std::to_string(it->second);
+      sprintf(str_tmp, "%f", it->second);
+      str[iter] = str_tmp;
       it++;
       while (it != tmp.end()) {
-        str[iter] = str[iter] + "_" + std::to_string(it->second);
+        sprintf(str_tmp, "%f", it->second);
+        str[iter] = str[iter] + "_" + str_tmp;
         it++;
       }
       iter++;
@@ -61,31 +64,32 @@ public:
   }
 
 
-  virtual void AddPropertyForObject(const IProperties& property, unsigned long time)
+  virtual void AddPropertyForObject(const IProperties& property, std::size_t time)
   {
     ///
   }
 
-  virtual std::vector<IProperties*> AddPropertyForObject(unsigned long time)
+  virtual std::vector<IProperties*> AddPropertyForObject(std::size_t time)
   {
     return allObjectsProperties;
   }
 
   virtual void PrintToFile()
   {
-    FILE* file = fopen((name + ".csv").c_str(), "w");
+    std::ofstream file;
+    file.open(name + ".csv");
     for (int j = 0; j < tableHeader.size(); j++)
-      fprintf(file, "%s;\t", tableHeader[j].c_str());
-    fprintf(file, "\n");
+      file << tableHeader[j].c_str() << ";\t";
+    file << "\n";
 
     for (int i = 0; i < table.size(); i++)
     {
       for (int j = 0; j < table[i].size(); j++)
-        fprintf(file, "%s;", table[i][j].c_str());
-      fprintf(file, "\n");
+        file << table[i][j].c_str() << ";";
+      file << "\n";
     }
 
-    fclose(file);
+    file.close();
   }
 
   virtual void PrintToConsole()

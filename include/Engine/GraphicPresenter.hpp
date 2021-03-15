@@ -11,26 +11,28 @@
 class IGraphicPresenter {
   public:
     virtual void addTObject(TObject *obj) {}
-    virtual void deleteTObject(const TObject *obj) {}
     virtual void setGraphicManager(TGraphicManager *manager) {}
+    virtual void transformsUpdateSignal() {};
     virtual void stopGraphicManager() {};
 };
 
 #ifdef USE_OPENGL
 class TGraphicPresenter : public IGraphicPresenter {
-  private:
     TGraphicManager *_manager;
-
   public:
     TGraphicPresenter() : _manager(nullptr) {}
-    virtual void setGraphicManager(TGraphicManager *manager) override {
+    void setGraphicManager(TGraphicManager *manager) override {
         _manager = manager;
     }
-    virtual void addTObject(TObject *obj) override {
+    void addTObject(TObject *obj) override {
         _manager->addNewObject(obj);
     }
-    virtual void deleteTObject(const TObject *obj) override {}
     
+    void transformsUpdateSignal() override {
+      _manager->needUpdateFlag.store(true, std::memory_order::memory_order_release);
+      while(_manager->needUpdateFlag.load(std::memory_order::memory_order_acquire));
+    }
+
     void stopGraphicManager() override {
         _manager->stopDraw();
     };

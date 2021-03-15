@@ -23,7 +23,7 @@ std::vector<IActuator*> TSmartThing::GetActuators()
   return actuators;
 }
 
-void TSmartThing::AddObject(TObjectOfObservation& object)
+void TSmartThing::AddObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < actuators.size(); i++)
     if (actuators[i] != nullptr)
@@ -33,7 +33,7 @@ void TSmartThing::AddObject(TObjectOfObservation& object)
       sensors[i]->AddObject(object);
 }
 
-void TSmartThing::ExcludeObject(TObjectOfObservation& object)
+void TSmartThing::ExcludeObject(TObjectOfObservation* object)
 {
   for (int i = 0; i < actuators.size(); i++)
     if (actuators[i] != nullptr)

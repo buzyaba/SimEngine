@@ -1,19 +1,3 @@
-/////////////////////////////////////////////////////////////////////////////
-//                                                                         //
-//             LOBACHEVSKY STATE UNIVERSITY OF NIZHNY NOVGOROD             //
-//                                                                         //
-//                       Copyright (c) 2016 by UNN.                        //
-//                          All Rights Reserved.                           //
-//                                                                         //
-//  File:      problem_manager.cpp                                         //
-//                                                                         //
-//  Purpose:   Source file for dynamic libraries manager class             //
-//                                                                         //
-//                                                                         //
-//  Author(s): Sovrasov V.                                                 //
-//                                                                         //
-/////////////////////////////////////////////////////////////////////////////
-
 #include "Core/Dll_manager.h"
 #include <iostream>
 #ifdef WIN32

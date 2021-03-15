@@ -4,7 +4,7 @@
 TProperties::TProperties(std::string _name) : name(_name),
     isString(false), stringValue(""), isObserved(false) {}
 
-TProperties::TProperties(std::map<std::string, double> _map,
+TProperties::TProperties(const std::map<std::string, double>& _map,
     bool _isObserved, std::string _name) :
     isObserved(_isObserved), name(_name), isString(false), stringValue(""), propMap(_map) {}
 

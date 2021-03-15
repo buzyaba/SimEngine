@@ -32,8 +32,7 @@ TWorkManager::TWorkManager(TParameters& parameters_, IGraphicPresenter* presente
         j++;
     }
 
-    script =
-        new TEnvironmentScript(allObject, parameters.xmlEnvironmentScriptName, parameters.maxStep);
+    script = new TExternalActionSchedule(objects, parameters.xmlExternalActionScheduleName);
     program = TProgramFactory::Create(things);
     storage = new TDataStore(allObject, "../../A");
 
@@ -44,45 +43,47 @@ TWorkManager::~TWorkManager() {
     Dll_Manager::FreeDllManager();
 }
 
-void TWorkManager::Iteration(unsigned long int& t,
-                             std::chrono::milliseconds& delayTime,
-                             const unsigned short& _enableVisualisation) {
-    using namespace std::chrono_literals;
-    std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::steady_clock::now();
-    time = (t * parameters.millisecondsInTimeStep) / 1000;
+void TWorkManager::Iteration(const std::size_t step, const std::chrono::milliseconds& iterTime) {
+    time = step * parameters.millisecondsInTimeStep;
     currentTime = time;
-    currentStep = t;
+    currentStep = step;
+    auto start = std::chrono::steady_clock::now();
     script->UpdateObjectsProperties(time);
+
     for (int i = 0; i < objects.size(); i++) {
         objects[i]->Update();
     }
-    storage->AddAllProperties(time);
 
+    storage->AddAllProperties(time);
     program->Run(currentTime, currentStep);
 
-    //storage->PrintToConsole();
-    std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
-    std::chrono::milliseconds delta =
-        std::chrono::duration_cast<std::chrono::milliseconds>(delayTime - (end - start));
-    std::this_thread::sleep_for(delta);
+    presenter->transformsUpdateSignal();
+    
+    auto end = std::chrono::steady_clock::now();
+    auto delta = end - start;
+    if (iterTime > delta) {
+        auto sleepTime = std::chrono::duration_cast<std::chrono::milliseconds>(iterTime - delta);
+        std::this_thread::sleep_for(sleepTime);
+    }
 }
 
-void TWorkManager::Start(const unsigned short& _enableVisualisation) {
+void TWorkManager::Start() {
     std::cout << "Start\n Max Iter = " << parameters.maxStep << std::endl;
-    std::cout << "Max Time = "
-              << static_cast<double>(parameters.maxStep) * parameters.millisecondsInTimeStep /
-                     1000.0
-              << " seconds" << std::endl;
+    std::cout << "Max Time = " << parameters.maxStep * parameters.millisecondsInTimeStep << " ms"
+              << std::endl;
     std::cout << "time acceleration = " << parameters.timeAcceleration << " X" << std::endl;
 
+    if (parameters.timeAcceleration <= 0 ||
+        parameters.timeAcceleration > parameters.millisecondsInTimeStep)
+        parameters.timeAcceleration = static_cast<double>(parameters.millisecondsInTimeStep);
+
     startWork = std::chrono::steady_clock::now();
-
     time = 0;
-    std::chrono::milliseconds delayTime(static_cast<unsigned long int>(
-        parameters.millisecondsInTimeStep / parameters.timeAcceleration));
+    std::chrono::milliseconds iterTime(
+        static_cast<std::size_t>(parameters.millisecondsInTimeStep / parameters.timeAcceleration));
 
-    for (unsigned long int t = 0; t < parameters.maxStep; t++) {
-        Iteration(t, delayTime, _enableVisualisation);
+    for (std::size_t step = 0; step < parameters.maxStep; step++) {
+        Iteration(step, iterTime);
     }
 
     std::chrono::time_point<std::chrono::steady_clock> endWork = std::chrono::steady_clock::now();

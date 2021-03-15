@@ -1,5 +1,6 @@
-﻿#include "SimEngine/ObjectOfObservation.h"
 #include <algorithm>
+#include <stdexcept>
+#include "SimEngine/ObjectOfObservation.h"
 
 TObjectOfObservation::TObjectOfObservation(std::string _name,
                                            std::vector<TObjectOfObservation*> _neighboringObject,
@@ -8,10 +9,10 @@ TObjectOfObservation::TObjectOfObservation(std::string _name,
         : TObject(_name) {
     if (_neighboringObject.size() == 1) {
         if (_neighboringObject[0] != nullptr)
-            neighboringObject = _neighboringObject;
+            neighboringObjects = _neighboringObject;
     }
     else
-        neighboringObject = _neighboringObject;
+        neighboringObjects = _neighboringObject;
 
     parentObject = _parentObject;
 
@@ -21,38 +22,76 @@ TObjectOfObservation::TObjectOfObservation(std::string _name,
 }
 
 TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TObject(obj) {
-    this->neighboringObject = obj.neighboringObject;
+    this->neighboringObjects = obj.neighboringObjects;
     this->childObjects = obj.childObjects;
     this->parentObject = obj.parentObject;
 }
 
-void TObjectOfObservation::AddParentObject(TObjectOfObservation& obect) {
-    parentObject = &obect;
+void TObjectOfObservation::AddParentObject(TObjectOfObservation* object) {
+    parentObject = object;
+    object->AddChildObject(this);
 }
 
-int TObjectOfObservation::AddChildObject(TObjectOfObservation& obect) {
+int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
     if (childObjects.size() == 0)
-        childObjects.push_back(&obect);
+        childObjects.push_back(object);
     else {
         if (childObjects[0] == nullptr)
-            childObjects[0] = &obect;
+            childObjects[0] = object;
         else {
-            childObjects.push_back(&obect);
+            if (std::end(childObjects) !=
+                std::find(childObjects.begin(), childObjects.end(), object))
+                childObjects.push_back(object);
         }
     }
+    object->AddParentObject(this);
     return childObjects.size();
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObject() {
+std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObjects() {
     return childObjects;
 }
 
-void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation& obect) {
-    neighboringObject.push_back(&obect);
+std::vector<TObjectOfObservation*> TObjectOfObservation::GetNeighboringObjects() {
+    return neighboringObjects;
 }
 
-void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation& obect) {
-    auto item = std::find(childObjects.begin(), childObjects.end(), &obect);
+TObjectOfObservation* TObjectOfObservation::GetParentObject() {
+    return parentObject;
+}
+
+TObjectOfObservation* TObjectOfObservation::GetChildObject(std::string name) {
+    auto res =
+        std::find_if(childObjects.begin(), childObjects.end(), [&name](TObjectOfObservation* obj) {
+            return name == obj->GetName();
+        });
+    if (res != std::end(childObjects))
+        return *res;
+    else
+        std::runtime_error("No child object with name: " + name);
+}
+
+TObjectOfObservation* TObjectOfObservation::GetNeighboringObject(std::string name) {
+    auto res =
+        std::find_if(neighboringObjects.begin(), neighboringObjects.end(), [&name](TObjectOfObservation* obj) {
+            return name == obj->GetName();
+        });
+    if (res != std::end(neighboringObjects))
+        return *res;
+    else
+        std::runtime_error("No neighboring object with name: " + name);
+}
+
+void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation* object) {
+    if (std::find(neighboringObjects.begin(), neighboringObjects.end(), object) !=
+        std::end(neighboringObjects)) {
+        neighboringObjects.push_back(object);
+        object->AddNeighboringObject(this);
+    }
+}
+
+void TObjectOfObservation::ExcludeChildObject(TObjectOfObservation* object) {
+    auto item = std::find(childObjects.begin(), childObjects.end(), object);
     childObjects.erase(item);
 }
 
@@ -96,8 +135,3 @@ std::vector<IProperties*>& TObjectOfObservation::GetAllProperties() {
     //   }
     return allProperties;
 }
-
-// TObjectOfObservation* TObjectOfObservation::Clone()
-// {
-//   return new TObjectOfObservation(*this);
-// }

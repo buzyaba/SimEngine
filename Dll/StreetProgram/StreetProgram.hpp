@@ -4,7 +4,7 @@
 
 class TStreetProgram : public TManagementProgram
 {
-  TDataPacket sendPacket;
+    TDataPacket sendPacket{1};
   int timeGreen;
   int timeRed;
   int waitingTime;
@@ -12,7 +12,7 @@ public:
   TStreetProgram() : TManagementProgram()
   {
     tableHeader.push_back("carCount");
-    double* packetVal = sendPacket.GetDoubles();
+    double* packetVal = sendPacket.GetData<double>();
     packetVal[0] = 0;
     timeGreen = 30;
     timeRed = 120;

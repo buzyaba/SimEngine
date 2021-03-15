@@ -47,7 +47,6 @@ void TTerminal::Update() {
   }
 
   isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
-  /// ���������� ��������
   if (isWork)
     textures[0][2] = "monitorON.png";
   else

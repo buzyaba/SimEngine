@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "Core/ProgramFactory.h"
 #include "Core/Parameters.h"
 #include "SimEngine/ManagementProgram.h"
@@ -8,6 +9,8 @@ IManagementProgram* TProgramFactory::Create(std::vector<TSmartThing*>& _things)
   {
     IManagementProgram* mp = GlobalParameters.managementProgram;
     mp->SetSmartThing(_things);
+    mp->SetSchedule(_things, GlobalParameters.xmlSmartThingScheduleName);
     return mp;
   }
+  else throw std::runtime_error("managementProgramDllFile is empty");
 }

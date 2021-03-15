@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>3</type>
-	<xmlEnvironmentScriptName>SmartTraffic_3/conf.xml</xmlEnvironmentScriptName> 
+	<xmlExternalActionScheduleName>SmartTraffic_3/conf.xml</xmlExternalActionScheduleName> 
 	<xmlMainSetConfigurationFile>SmartTraffic_3/Street.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TStreetAutoProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>

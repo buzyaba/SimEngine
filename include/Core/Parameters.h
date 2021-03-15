@@ -18,8 +18,6 @@ protected:
   std::string cwd;
   /// директория с файлами конфигурации
   std::string dirConfigFile;
-  /// Разбиение строки на подстроки по пробелу
-  void ParseString(std::string& str, std::vector<std::string>& tt);
 public:
   /* тип камеры в графике
   <= 0 - FirstPerson view
@@ -28,8 +26,10 @@ public:
   int type;
   /// Имя файла с текущей конфигурацией программы
   std::string xmlCurrentConfiguration;
-  /// Имя файла с расписанием для EnvironmentScript
-  std::string xmlEnvironmentScriptName;
+  /// Имя файла с расписанием для ExternalActionSchedule
+  std::string xmlExternalActionScheduleName;
+  /// Имя файла с расписанием для SmartThingSchedule
+  std::string xmlSmartThingScheduleName;
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   std::string xmlMainSetConfigurationFile;
 
@@ -37,13 +37,13 @@ public:
   std::string managementProgramDllFile;
   
   /// Кол-во миллисекунд в одном шаге
-  unsigned long millisecondsInTimeStep;
+  std::size_t millisecondsInTimeStep;
   /* Ускорение времени программы, 
   при = 0 программа работает с максимально возможной соростью, 
   при = 1 за одну итерацию проходит millisecondsInTimeStep времени **/
   double timeAcceleration;
   /// Максимальное число итераций
-  unsigned long maxStep;
+  std::size_t maxStep;
 
   IManagementProgram* managementProgram;
 
