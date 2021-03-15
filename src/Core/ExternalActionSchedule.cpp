@@ -106,11 +106,11 @@ std::map<std::string, IProperties*>& TExternalActionSchedule::GetObjectPropertie
 }
 
 std::map<std::string, IProperties*>& TExternalActionSchedule::GetObjectProperties(
-    TObjectOfObservation& object,
+    TObjectOfObservation* object,
     std::size_t time) {
     for (int i = 0; i < objects.size(); i++) {
         if (objects[i] != nullptr) {
-            if (objects[i]->GetName() == object.GetName()) {
+            if (objects[i]->GetName() == object->GetName()) {
                 return ChangeProperties(i, objects[i]->GetProperties(), time);
             }
         }

@@ -58,7 +58,7 @@ TEST(SmartThingScheduleTest, Can_Create) {
     std::generate(things.begin(), things.end(), [&] {
         static int a = 1;
         auto Thing = new DummyThing("DummyThing"+std::to_string(a));
-        Thing->AddObject(*objects[a-1]);
+        Thing->AddObject(objects[a-1]);
         a++;
         return Thing;
     } );
@@ -74,7 +74,7 @@ TEST(SmartThingScheduleTest, UpdateThingsProperties) {
     std::generate(things.begin(), things.end(), [&] {
         static int a = 1;
         auto Thing = new DummyThing("DummyThing"+std::to_string(a));
-        Thing->AddObject(*objects[a-1]);
+        Thing->AddObject(objects[a-1]);
         a++;
         return Thing;
     } );

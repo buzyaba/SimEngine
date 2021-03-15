@@ -73,7 +73,7 @@ public:
 
     virtual std::map<std::string, IProperties*>& GetObjectProperties(std::string name,
                                                                      std::size_t time);
-    virtual std::map<std::string, IProperties*>& GetObjectProperties(TObjectOfObservation& object,
+    virtual std::map<std::string, IProperties*>& GetObjectProperties(TObjectOfObservation* object,
                                                                      std::size_t time);
 
     virtual void UpdateObjectsProperties(std::size_t time);

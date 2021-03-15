@@ -36,10 +36,10 @@ TEST(ExternalActionTest, GetObjectProperties_reference) {
     allObjects[0] = new DummyObject("DummyObject1");
 
     TExternalActionSchedule schedule(allObjects, getPath("/Tests/common/actions.xml"));
-    auto property = schedule.GetObjectProperties(*allObjects[0], 0ull);
+    auto property = schedule.GetObjectProperties(allObjects[0], 0ull);
     ASSERT_DOUBLE_EQ(property["Property"]->GetValue("Property"), 0.0);
 
-    property = schedule.GetObjectProperties(*allObjects[0], 1000ull);
+    property = schedule.GetObjectProperties(allObjects[0], 1000ull);
     ASSERT_DOUBLE_EQ(property["Property"]->GetValue("Property"), 1.0);
 }
 
