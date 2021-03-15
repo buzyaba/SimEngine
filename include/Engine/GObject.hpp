@@ -13,5 +13,6 @@ private:
 public:
   TGObject(TGObjectProperties *transform, Model *model, Shader &shader)
       : _transform(transform), _model(model), _shader(shader) {}
+  void updateLRU() { _transform->updateLRUProp(); }
   void draw();
 };

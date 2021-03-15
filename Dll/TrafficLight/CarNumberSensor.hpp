@@ -30,7 +30,7 @@ public:
     //        packet = new TDataPacket(propertyCount * sizeof(double));
 
     //    packet->SetSize(propertyCount * sizeof(double));
-    //    double* data = packet->GetDoubles();
+    //    double* data = packet->GetData<double>();
     //    size_t t = 0;
     //    for (size_t i = 0; i < objectsProperties.size(); ++i)
     //    {

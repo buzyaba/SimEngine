@@ -22,27 +22,7 @@
 #include <dirent.h>
 #endif
 
-
 TParameters GlobalParameters;
-
-void TParameters::ParseString(std::string& str, std::vector<std::string>& tt)
-{
-  char* s = new char[str.length() + 1];
-  int l = 0;
-  strcpy(s, str.c_str());
-
-  char* pp = strtok(s, " ");
-
-  double t = 0;
-  while (pp != 0)
-  {
-    tt.push_back(pp);
-    pp = strtok(NULL, " ");
-    l++;
-  }
-
-  delete[] s;
-}
 
 void TParameters::LoadXML()
 {
@@ -51,22 +31,32 @@ void TParameters::LoadXML()
   if (result.status != pugi::status_ok)
     return;
   pugi::xml_node config = doc.child("config");
-  std::vector<unsigned long int> startTime;
-  std::vector<unsigned long int> endTime;
+  std::vector<std::size_t> startTime;
+  std::vector<std::size_t> endTime;
 
   for (pugi::xml_node iter = config.first_child(); iter != 0; iter = iter.next_sibling())
   {
     std::string name = iter.name();
     std::string value = iter.child_value();
 
-    if (name == "xmlEnvironmentScriptName")
+    if (name == "xmlExternalActionScheduleName")
     {
       if (value != "")
       {
         if (value.find(":") != std::string::npos)
-          xmlEnvironmentScriptName = value; //
+          xmlExternalActionScheduleName = value; //
         else
-          xmlEnvironmentScriptName = dirConfigFile + "/" + value;
+          xmlExternalActionScheduleName = dirConfigFile + "/" + value;
+      }
+    }
+    else if (name == "xmlSmartThingScheduleName")
+    {
+      if (value != "")
+      {
+        if (value.find(":") != std::string::npos)
+          xmlSmartThingScheduleName = value; //
+        else
+          xmlSmartThingScheduleName = dirConfigFile + "/" + value;
       }
     }
     else if (name == "xmlMainSetConfigurationFile")
@@ -94,7 +84,7 @@ void TParameters::LoadXML()
     }
     else if (name == "millisecondsInTimeStep")
     {
-      sscanf(value.c_str(), "%d", &millisecondsInTimeStep);
+      sscanf(value.c_str(), "%zu", &millisecondsInTimeStep);
     }
     else if (name == "timeAcceleration")
     {
@@ -102,7 +92,7 @@ void TParameters::LoadXML()
     }
     else if (name == "maxStep")
     {
-      sscanf(value.c_str(), "%ld", &maxStep);
+      sscanf(value.c_str(), "%zu", &maxStep);
     }
   }
 }
@@ -152,8 +142,10 @@ std::string TParameters::Print()
   result += "int type =\t" + std::to_string(type) + "\n";
   /// Имя файла с текущей конфигурацией программы
   result += "std::string xmlCurrentConfiguration = \t" + xmlCurrentConfiguration + "\n";
-  /// Имя файла с расписанием для EnvironmentScript
-  result += "std::string xmlEnvironmentScriptName = \t" + xmlEnvironmentScriptName + "\n";
+  /// Имя файла с расписанием для ExternalActionSchedule
+  result += "std::string xmlExternalActionScheduleName = \t" + xmlExternalActionScheduleName + "\n";
+  /// Имя файла с расписанием для SmartThingSchedule
+  result += "std::string xmlSmartThingScheduleName = \t" + xmlSmartThingScheduleName + "\n";
   /// Имя файла с конфигурацией сцены (описываются все объекты, умные вещи и прочее)
   result += "std::string xmlMainSetConfigurationFile = \t" + xmlMainSetConfigurationFile + "\n";
 
@@ -167,7 +159,7 @@ std::string TParameters::Print()
   при = 1 за одну итерацию проходит millisecondsInTimeStep времени **/
   result += "double timeAcceleration = \t" + std::to_string(timeAcceleration) + "\n";
   /// Максимальное число итераций
-  result += "unsigned long maxStep = \t" + std::to_string(maxStep) + "\n";
+  result += "std::size_t maxStep = \t" + std::to_string(maxStep) + "\n";
 
   return result;
 }

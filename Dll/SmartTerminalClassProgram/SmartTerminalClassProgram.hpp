@@ -7,7 +7,7 @@ class TSmartTerminalClassProgram : public TManagementProgram
 public:
   TSmartTerminalClassProgram() : deltaT(1800.0), sendPacket(10), timePeriod(0), sheduleIsWork(true) {}
   
-  virtual void Run(unsigned long time, unsigned long step);
+  virtual void Run(std::size_t time, std::size_t step);
   virtual void End();
   virtual void SetSmartThing(std::vector<TSmartThing*> _things);
   

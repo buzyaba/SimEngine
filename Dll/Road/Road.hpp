@@ -4,7 +4,7 @@
 
 class TRoad: public TObjectOfObservation {
 protected:
-    unsigned long int oldGoTime;
+    std::size_t oldGoTime;
     std::vector <TRoad*> roadNeighboring;
     bool isCanGo;
 public:
@@ -12,9 +12,9 @@ public:
    virtual TObjectOfObservation* Clone() { return new TRoad();}
    virtual std::string ClassName() override { return "TRoad";}
    // FIX THAT LATER
-   virtual void AddNeighboringObject(TObjectOfObservation& obect);
-   virtual int AddChildObject(TObjectOfObservation& obect);
-   virtual void ExcludeChildObject(TObjectOfObservation& obect);
+   virtual void AddNeighboringObject(TObjectOfObservation* object);
+   virtual int AddChildObject(TObjectOfObservation* object);
+   virtual void ExcludeChildObject(TObjectOfObservation* object);
    virtual void Go();
    virtual bool IsCanGo();
    virtual void Update() override;

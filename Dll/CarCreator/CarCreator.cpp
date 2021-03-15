@@ -12,7 +12,7 @@ void TCarCreator::Update()
 	TRoad::Update();
 	TObjectOfObservation* child = nullptr;
 	std::default_random_engine generator;
-	generator.seed(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+	generator.seed(static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
 	std::poisson_distribution<int> poisson(100);
 	if (this->childObjects.size() > 0)
 		child = this->childObjects[0];
@@ -21,7 +21,7 @@ void TCarCreator::Update()
 		if (poisson(generator)%100 == 0) {
 			TCar* car = new TCar("Car");
 			car->GetProperties()["Coordinate"]->SetValues(properties["Coordinate"]->GetValues());
-			this->AddChildObject(*car);
+			this->AddChildObject(car);
 		}
 	}
 }

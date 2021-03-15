@@ -16,36 +16,28 @@ TDesktop::TDesktop(std::string _name) : TObjectOfObservation(_name) {
       {"Rotate",
        new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                        false, "Rotate")});
+  textures.push_back(
+      {{"screen"}, {"monitorON.png"}, {"monitorON.png"}});
   isWork = false;
 }
 
 void TDesktop::Update() {
   TObjectOfObservation::Update();
 
-  if (!isWork && this->properties["IsWork"]->GetValues()["IsWork"] == 1)
-    this->properties["PowerConsumption"]->SetValues(
-        {{"PowerConsumption", 100}});
+  int newIsWork = static_cast<int>(properties["IsWork"]->GetValues()["IsWork"]);
 
-  if (this->properties["IsWork"]->GetValues()["IsWork"] != 0) {
-    std::map<std::string, double> &tmp =
-        this->properties["PowerConsumption"]->GetValues();
-    //   tmp["PowerConsumption"] += (double(rand()) / RAND_MAX) *
-    //   (tmp["PowerConsumption"] * 0.05) - tmp["PowerConsumption"] * 0.025;
-    tmp["PowerConsumption"] = 0.00217;
-    if (tmp["PowerConsumption"] <= 0)
-      this->properties["PowerConsumption"]->SetValues(
-          {{"PowerConsumption", 0}});
-  } else
-    this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0}});
-
-  if (this->properties["PowerConsumption"]->GetValues()["PowerConsumption"] <=
-      0) {
-    this->properties["IsWork"]->SetValues({{"IsWork", 0}});
-    this->properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0}});
+  switch(newIsWork) {
+    case 0:
+      isWork = newIsWork;
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.0}}); // sleep
+      textures[0][2] = "monitorOFF.png";
+      break;
+    case 1:
+      isWork = newIsWork;
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.00217}}); // full
+      textures[0][2] = "monitorON.png";
+      break;
   }
-
-  isWork = this->properties["IsWork"]->GetValues()["IsWork"] == 1;
-  /// ���������� ��������
 }
 
 LIB_EXPORT_API TObjectOfObservation* create()

@@ -1,101 +1,114 @@
-// #include "gtest/gtest.h"
-// #include "Core/Actuator.h"
-// #include "BasicExamples/SmartHouse/Terminal.h"
-// #include "Core/Properties.h"
+#include "gtest/gtest.h"
 
-// TEST(ActuatorTest, Can_Create_Cnstance) {
-//     ASSERT_NO_THROW(TActuator("name"));
-// }
+#include "SimEngine/Actuator.h"
+#include "SimEngine/Object.h"
+#include "SimEngine/Properties.h"
 
-// TEST(ActuatorTest, Add_Object_And_Change_Property) {
-//     TActuator actuator("name");
-//     TTerminal* terminal = new TTerminal("Terminal");
+TEST(ActuatorTest, Can_Create_Instance) {
+    ASSERT_NO_THROW(TActuator("name"));
+}
 
-//     auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+TEST(ActuatorTest, Add_Object_And_Change_Property) {
+    TActuator actuator("name");
+    TObjectOfObservation* object = new TObjectOfObservation("Object");
+    auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
+    object->AddProperty(property);
 
-//     actuator.AddObject(*terminal);
-//     actuator.ChangeProperty(property, "Terminal");
+    auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
 
-//     auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+    actuator.AddObject(object);
+    actuator.ChangeProperty(new_property, "Object");
 
-//     delete terminal;
-//     ASSERT_DOUBLE_EQ(100, real);
-// }
+    double real = object->GetProperty("Property").GetValue("Property");
 
-// TEST(ActuatorTest, Change_Property_By_Reference) {
-//     TActuator actuator("name");
-//     TTerminal* terminal = new TTerminal("Terminal");
+    delete object;
+    ASSERT_DOUBLE_EQ(100, real);
+}
 
-//     auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
+TEST(ActuatorTest, Change_Property_By_Reference) {
+    TActuator actuator("name");
+    TObjectOfObservation* object = new TObjectOfObservation("Object");
+    auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
+    object->AddProperty(property);
 
-//     actuator.AddObject(*terminal);
-//     actuator.ChangeProperty(property, *terminal);
+    auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
 
-//     auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+    actuator.AddObject(object);
+    actuator.ChangeProperty(new_property, object);
 
-//     delete terminal;
-//     ASSERT_DOUBLE_EQ(100, real);
-// }
+    double real = object->GetProperty("Property").GetValue("Property");
 
-// TEST(ActuatorTest, Exclude_Object_By_Reference) {
-//     TActuator actuator("name");
-//     TTerminal* terminal = new TTerminal("Terminal");
+    delete object;
+    ASSERT_DOUBLE_EQ(100, real);
+}
 
-//     actuator.AddObject(*terminal);
-//     actuator.ExcludeObject(*terminal);
+TEST(ActuatorTest, Exclude_Object_By_Reference) {
+    TActuator actuator("name");
+    TObjectOfObservation* object = new TObjectOfObservation("Object");
+    auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
+    object->AddProperty(property);
 
-//     auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
-//     actuator.ChangeProperty(property, *terminal);
+    actuator.AddObject(object);
+    actuator.ExcludeObject(object);
 
-//     auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+    auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
+    actuator.ChangeProperty(new_property, object);
 
-//     delete terminal;
-//     ASSERT_NE(100, real);
-// }
+    auto real = object->GetProperty("Property").GetValue("Property");
 
-// TEST(ActuatorTest, Exclude_Object_By_Name) {
-//     TActuator actuator("name");
-//     TTerminal* terminal = new TTerminal("Terminal");
+    delete object;
+    ASSERT_NE(100, real);
+}
 
-//     actuator.AddObject(*terminal);
-//     actuator.ExcludeObject("Terminal");
+TEST(ActuatorTest, Exclude_Object_By_Name) {
+    TActuator actuator("name");
+    TObjectOfObservation* object = new TObjectOfObservation("Object");
+    auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
+    object->AddProperty(property);
 
-//     auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
-//     actuator.ChangeProperty(property, "Terminal");
 
-//     auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+    actuator.AddObject(object);
+    actuator.ExcludeObject("Object");
 
-//     delete terminal;
-//     ASSERT_NE(100, real);
-// }
+    auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
+    actuator.ChangeProperty(new_property, "Object");
 
-// TEST(ActuatorTest, Copying_Constructor) {
-//     TActuator actuator1("a1");
+    auto real = object->GetProperty("Property").GetValue("Property");
+
+    delete object;
+    ASSERT_NE(100, real);
+}
+
+TEST(ActuatorTest, Copying_Constructor) {
+    TActuator actuator1("a1");
     
-//     TTerminal* terminal = new TTerminal("Terminal");
-//     actuator1.AddObject(*terminal);
+    TObjectOfObservation* object = new TObjectOfObservation("Object");
+    auto property = TProperties(std::map<std::string, double>{{"Property", 50}}, true, "Property");
+    object->AddProperty(property);
 
-//     TActuator actuator2(actuator1);
+    actuator1.AddObject(object);
 
-//     auto property = TProperties(std::map<std::string, double>{{"PowerConsumption", 100}}, true, "PowerConsumption");
-//     actuator2.ChangeProperty(property, "Terminal");
+    TActuator actuator2(actuator1);
 
-//     auto real = terminal->GetProperty("PowerConsumption").GetValue("PowerConsumption");
+    auto new_property = TProperties(std::map<std::string, double>{{"Property", 100}}, true, "Property");
+    actuator2.ChangeProperty(new_property, "Object");
 
-//     delete terminal;
-//     ASSERT_EQ(100, real);
-// }
+    auto real = object->GetProperty("Property").GetValue("Property");
 
-// TEST(ActuatorTest, Get_Actuator_Name) {
-//     TActuator actuator("sample text");
+    delete object;
+    ASSERT_EQ(100, real);
+}
 
-//     ASSERT_EQ("sample text", actuator.GetName());
-// }
+TEST(ActuatorTest, Get_Actuator_Name) {
+    TActuator actuator("sample text");
 
-// TEST(ActuatorTest, Set_Actuator_Name) {
-//     TActuator actuator("sample text");
+    ASSERT_EQ("sample text", actuator.GetName());
+}
 
-//     actuator.SetName("new text");
+TEST(ActuatorTest, Set_Actuator_Name) {
+    TActuator actuator("sample text");
 
-//     ASSERT_EQ("new text", actuator.GetName());
-// }
+    actuator.SetName("new text");
+
+    ASSERT_EQ("new text", actuator.GetName());
+}

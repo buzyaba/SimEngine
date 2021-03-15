@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <map>
+#include <stdexcept>
 #include "SimEngine/ObjectOfObservation.h"
 #include "SimEngine/SmartThing.h"
 #include "SimEngine/StaticObject.h"
@@ -31,5 +32,6 @@ public:
   {
     if (xmlMainSetConfigurationFile != "")
       return new TMainSet(xmlMainSetConfigurationFile);
+    else throw std::runtime_error("xmlMainSetConfigurationFile is empty");
   }
 };

@@ -8,8 +8,8 @@
 #define GetCurrentDir getcwd
 #endif
 
-unsigned long int currentTime;
-unsigned long int currentStep;
+std::size_t currentTime;
+std::size_t currentStep;
 
 std::string getCWD() {
     char buff[FILENAME_MAX]; //create string buffer to hold path

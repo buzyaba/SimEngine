@@ -9,4 +9,4 @@ if (OPENMP_FOUND)
 endif()
 
 add_library(SimEngine STATIC ${srcs} ${hdrs}) 
-
+target_link_libraries(SimEngine pugixml)

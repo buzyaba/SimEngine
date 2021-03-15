@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName>SmartTerminalClass_1/Conf.xml</xmlEnvironmentScriptName> 
+	<xmlExternalActionScheduleName>SmartTerminalClass_1/Conf.xml</xmlExternalActionScheduleName> 
 	<xmlMainSetConfigurationFile>SmartTerminalClass_1/TerminalClass.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TSmartTerminalClassProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>

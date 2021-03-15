@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<type>-1</type>
-	<xmlEnvironmentScriptName>SmartHouse_1/conf.xml</xmlEnvironmentScriptName> 
+	<xmlExternalActionScheduleName>SmartHouse_1/conf.xml</xmlExternalActionScheduleName> 
 	<xmlMainSetConfigurationFile>SmartHouse_1/Room.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TSmartHouseProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
