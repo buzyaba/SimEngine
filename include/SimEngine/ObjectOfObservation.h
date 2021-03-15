@@ -27,7 +27,7 @@ public:
     virtual int AddChildObject(TObjectOfObservation* object);
     /// Возвращает вектор дочерних объектов
     virtual std::vector<TObjectOfObservation*> GetChildObjects();
-    virtual TObjectOfObservation* GetChildObject(std::string name);
+    virtual TObjectOfObservation* GetChildObjects(std::string name);
     virtual std::vector<TObjectOfObservation*> GetNeighboringObjects();
     virtual TObjectOfObservation* GetNeighboringObject(std::string name);
     virtual TObjectOfObservation* GetParentObject();

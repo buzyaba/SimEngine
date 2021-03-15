@@ -129,21 +129,21 @@ void TMainSet::addDependentObjects(const pugi::xml_node &config) {
                                 std::find_if(objects.begin(), objects.end(), [&](auto &t) {
                                     return t->GetName() == valueProperty;
                                 });
-                            (*object)->AddNeighboringObject(**objNeighbour);
+                            (*object)->AddNeighboringObject(*objNeighbour);
                         }
                         else if (nameProperty == "Child") {
                             auto objChild =
                                 std::find_if(objects.begin(), objects.end(), [&](auto &t) {
                                     return t->GetName() == valueProperty;
                                 });
-                            (*object)->AddChildObject(**objChild);
+                            (*object)->AddChildObject(*objChild);
                         }
                         else if (nameProperty == "Parent") {
                             auto objParent =
                                 std::find_if(objects.begin(), objects.end(), [&](auto &t) {
                                     return t->GetName() == valueProperty;
                                 });
-                            (*object)->AddParentObject(**objParent);
+                            (*object)->AddParentObject(*objParent);
                         }
                     }
                 }
@@ -169,7 +169,7 @@ void TMainSet::addDependentObjects(const pugi::xml_node &config) {
                                 std::find_if(objects.begin(), objects.end(), [&](auto &t) {
                                     return t->GetName() == valueProperty;
                                 });
-                            (*thing)->AddObject(**observe_object);
+                            (*thing)->AddObject(*observe_object);
                             break;
                         }
                     }

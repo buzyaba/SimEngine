@@ -29,7 +29,6 @@ TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TO
 
 void TObjectOfObservation::AddParentObject(TObjectOfObservation* object) {
     parentObject = object;
-    object->AddChildObject(this);
 }
 
 int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
@@ -44,7 +43,6 @@ int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
                 childObjects.push_back(object);
         }
     }
-    object->AddParentObject(this);
     return childObjects.size();
 }
 
@@ -60,7 +58,7 @@ TObjectOfObservation* TObjectOfObservation::GetParentObject() {
     return parentObject;
 }
 
-TObjectOfObservation* TObjectOfObservation::GetChildObject(std::string name) {
+TObjectOfObservation* TObjectOfObservation::GetChildObjects(std::string name) {
     auto res =
         std::find_if(childObjects.begin(), childObjects.end(), [&name](TObjectOfObservation* obj) {
             return name == obj->GetName();

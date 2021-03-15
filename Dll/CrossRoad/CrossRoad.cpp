@@ -24,21 +24,21 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
 void TCrossRoad::Update() {
     TObjectOfObservation::Update();
     std::uniform_int_distribution<> d(1, 100);
-    if (!neighboringObject.empty() && neighboringObject.size() != 1)
+    if (!neighboringObjects.empty() && neighboringObjects.size() != 1)
         for (std::size_t i = 0; i < childObjects.size(); ++i) {
-            auto roadElem = childObjects[i]->GetChildObject().front();
-            auto childs = roadElem->GetChildObject();
+            auto roadElem = childObjects[i]->GetChildObjects().front();
+            auto childs = roadElem->GetChildObjects();
             if (childs.size() > 0) {
                 std::size_t target_idx;
                 do {
-                    target_idx = d(gen) % neighboringObject.size();
+                    target_idx = d(gen) % neighboringObjects.size();
                 } while (target_idx == i);
                 auto car = childs.front();
                 if (!car->GetProperty("Moving").GetValue("Moving")) {
-                    auto crossroad = static_cast<TCrossRoad*>(neighboringObject[target_idx]);
+                    auto crossroad = static_cast<TCrossRoad*>(neighboringObjects[target_idx]);
                     int res = crossroad->sendCar(this, static_cast<TCar*>(car));
                     if (!res) {
-                        roadElem->ExcludeChildObject(*car);
+                        roadElem->ExcludeChildObject(car);
                         roadElem->GetProperty("RoadState").SetValue("Busy", 0);
                     }
                 }
@@ -47,18 +47,18 @@ void TCrossRoad::Update() {
 }
 
 int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
-    auto neighbour_it = std::find(neighboringObject.begin(), neighboringObject.end(), origin);
-    std::size_t index = neighbour_it - neighboringObject.begin();
+    auto neighbour_it = std::find(neighboringObjects.begin(), neighboringObjects.end(), origin);
+    std::size_t index = neighbour_it - neighboringObjects.begin();
 
-    auto&& roadElems = childObjects[index]->GetChildObject();
+    auto&& roadElems = childObjects[index]->GetChildObjects();
     auto elem = roadElems.rbegin();
     for (; elem != roadElems.rend(); ++elem) {
         auto& road_property = (*elem)->GetProperty("RoadState");
         auto& coord_prop = (*elem)->GetProperty("Coordinate");
         auto& rotate_prop = (*elem)->GetProperty("Rotate");
         if (!road_property.GetValue("Busy")) {
-            (*elem)->AddChildObject(*car);
-            car->AddParentObject(**elem);
+            (*elem)->AddChildObject(car);
+            car->AddParentObject(*elem);
             car->GetProperty("Moving").SetValue("Moving", 1);
             road_property.SetValue("Busy", 1);
             return 0;
@@ -68,10 +68,10 @@ int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
     return 1;
 }
 
-void TCrossRoad::AddNeighboringObject(TObjectOfObservation& obect) {
-    neighboringObject.push_back(&obect);
+void TCrossRoad::AddNeighboringObject(TObjectOfObservation* obect) {
+    neighboringObjects.push_back(obect);
     auto& first = GetProperty("Coordinate");
-    auto& second = obect.GetProperty("Coordinate");
+    auto& second = obect->GetProperty("Coordinate");
     childObjects.emplace_back(new TRoad("Road", first, second));
-    childObjects.back()->AddParentObject(*this);
+    childObjects.back()->AddParentObject(this);
 }

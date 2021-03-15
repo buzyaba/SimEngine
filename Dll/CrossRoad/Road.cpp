@@ -78,12 +78,12 @@ void TRoad::Update() {
              std::size_t k = i;
              for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
              if (k < childObjects.size()) {
-                 auto car = childObjects[k]->GetChildObject().front();
+                 auto car = childObjects[k]->GetChildObjects().front();
                  if (!car->GetProperty("Moving").GetValue("Moving")) {
-                     childObjects[k]->ExcludeChildObject(*car);
+                     childObjects[k]->ExcludeChildObject(car);
                      childObjects[k]->GetProperty("RoadState").SetValue("Busy", 0);
-                     childObjects[i]->AddChildObject(*car);
-                     car->AddParentObject(*childObjects[i]);
+                     childObjects[i]->AddChildObject(car);
+                     car->AddParentObject(childObjects[i]);
                      childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
                  }
              }

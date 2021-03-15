@@ -5,7 +5,7 @@
 class TCrossRoad: public TObjectOfObservation {
 public:
     TCrossRoad(std::string _name = "");
-    void AddNeighboringObject(TObjectOfObservation& obect) override;
+    void AddNeighboringObject(TObjectOfObservation* obect) override;
     void Update() override;
     int sendCar(TCrossRoad* origin, TCar* car);
     TObjectOfObservation* Clone() { return new TCrossRoad(); }

@@ -66,7 +66,7 @@ class TObject: public IObject {
     // /// Создание клона объекта
     virtual TObject* Clone() override {return new TObject("Object");};
 
-    virtual bool isDrawable() = 0;
+    virtual bool isDrawable() { return false; }
 
     virtual std::vector<std::vector<std::string>>& getTextures() override { return textures; }
 };

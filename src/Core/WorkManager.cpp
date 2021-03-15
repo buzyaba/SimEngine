@@ -112,7 +112,7 @@ void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds) {
 }
 
 void sendObjectsImpl(TObjectOfObservation* elem, IGraphicPresenter* presenter) {
-    for (auto& child : elem -> GetChildObject())
+    for (auto& child : elem -> GetChildObjects())
         sendObjectsImpl(child, presenter);
     if (elem->isDrawable())
  	       presenter->addTObject(elem);
