@@ -8,7 +8,7 @@ void TSmartTerminalClassProgram::Run(std::size_t time, std::size_t step) {
       auto thingActuators = things[iter]->GetActuators();
       for (size_t iterSensors = 0; iterSensors < thingSensors.size(); ++iterSensors) {
         TDataPacket& dataPacket = thingSensors[iterSensors]->GetDataPacket();
-        size_t propCount = thingSensors[iterSensors]->getPropertyCount();
+        size_t propCount = thingSensors[iterSensors]->GetPropertyCount();
         double* data = dataPacket.GetData<double>();
         double* packetVal = sendPacket.GetData<double>();
         for (int i = 0; i < thingSensors[iterSensors]->GetObjectsCount(); ++i) {

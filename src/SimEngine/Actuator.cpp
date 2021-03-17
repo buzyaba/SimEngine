@@ -33,6 +33,7 @@ void TActuator::ExcludeObject(TObjectOfObservation* object)
       objects[i] = nullptr;
       auto &&it = std::remove(objects.begin(), objects.end(), nullptr);
       objects.resize(it - objects.begin());
+      return;
     }
   }
 }
@@ -48,6 +49,7 @@ void TActuator::ExcludeObject(std::string objectName)
         objects[i] = nullptr;
         auto it = std::remove(objects.begin(), objects.end(), nullptr);
         objects.resize(it - objects.begin());
+        return;
       }
     }
   }
