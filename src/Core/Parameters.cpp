@@ -97,14 +97,14 @@ void TParameters::LoadXML()
   }
 }
 
-TParameters::TParameters(int argc, char** argv)
+TParameters::TParameters(int argc, const char** argv)
 {
   char buff[FILENAME_MAX]; //create string buffer to hold path
   GetCurrentDir(buff, FILENAME_MAX);
   cwd = buff;
 }
 
-void TParameters::LoadConsoleParameters(int argc, char** argv)
+void TParameters::LoadConsoleParameters(int argc, const char** argv)
 {
   std::cout << "Start program " << cwd << std::endl;
 
@@ -123,7 +123,7 @@ void TParameters::LoadConsoleParameters(int argc, char** argv)
     dirConfigFile = "";
     for (size_t i = xmlCurrentConfiguration.length() - 1; i > 0; i--)
     {
-      if (xmlCurrentConfiguration[i] == '\\')
+      if (xmlCurrentConfiguration[i] == '/')
       {
         for (unsigned int j = 0; j < i; j++)
           dirConfigFile += xmlCurrentConfiguration[j];

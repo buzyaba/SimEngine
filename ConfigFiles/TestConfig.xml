@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<type>-1</type>
+	<xmlExternalActionScheduleName>TestConfig/actions.xml</xmlExternalActionScheduleName> 
+	<xmlSmartThingScheduleName>TestConfig/things.xml</xmlSmartThingScheduleName> 
+	<xmlMainSetConfigurationFile>TestConfig/MainSet.xml</xmlMainSetConfigurationFile>
+	<managementProgramDllFile></managementProgramDllFile>
+	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
+	<timeAcceleration>0</timeAcceleration>
+	<maxStep>2</maxStep>
+</config>

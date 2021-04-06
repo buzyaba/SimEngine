@@ -12,5 +12,10 @@ IManagementProgram* TProgramFactory::Create(std::vector<TSmartThing*>& _things)
     mp->SetSchedule(_things, GlobalParameters.xmlSmartThingScheduleName);
     return mp;
   }
-  else throw std::runtime_error("managementProgramDllFile is empty");
+  else {
+    IManagementProgram* mp = new TManagementProgram();
+    mp->SetSmartThing(_things);
+    mp->SetSchedule(_things, GlobalParameters.xmlSmartThingScheduleName);
+    return mp;
+  }
 }

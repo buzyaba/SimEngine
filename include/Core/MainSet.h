@@ -18,12 +18,11 @@ protected:
     std::vector<TObjectOfObservation *> objects;
     std::vector<TStaticObject *> staticObjects;
     std::vector<TSmartThing *> things;
-
+    void createObjects(const pugi::xml_node &config);
+    void addDependentObjects(const pugi::xml_node &config);
 public:
     TMainSet() = default;
     TMainSet(std::string xmlMainSetConfigurationFile);
-    void createObjects(const pugi::xml_node &config);
-    void addDependentObjects(const pugi::xml_node &config);
     std::vector<TObjectOfObservation *> GetObjects();
     std::vector<TStaticObject *> GetStaticObjects();
     std::vector<TSmartThing *> GetThings();

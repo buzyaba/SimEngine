@@ -48,6 +48,8 @@ public:
     SetSmartThing(_things);
   }
 
+  std::vector < std::vector<std::string>> GetTable() { return table; }
+
   virtual void SetSmartThing(std::vector<TSmartThing*> _things)
   {
     things = _things;
