@@ -25,40 +25,40 @@ std::vector<TObjectOfObservation*> TCarManager::GetChildObjects() {
 }
 
 void TCarManager::Update() {
-    TObjectOfObservation::Update();
-    std::uniform_int_distribution<> d(1, 100);
+    // TObjectOfObservation::Update();
+    // std::uniform_int_distribution<> d(1, 100);
 
-    if (!car_pool.empty()) {
-        if (d(gen)) {
-            size_t count = 1;
-            for (size_t i = 0; i < count; ++i) {
-                std::size_t target_idx = d(gen) % neighboringObjects.size();
-                auto crossroad = static_cast<TCrossRoad*>(neighboringObjects[target_idx]);
-                auto car = car_pool.back();
-                int res = crossroad->sendCar(this, car);
-                if (!res) {
-                    car->GetProperty("Coordinate").SetValue("X", GetProperty("Coordinate").GetValue("X"));
-                    car->GetProperty("Coordinate").SetValue("Z", GetProperty("Coordinate").GetValue("Z"));
-                    car_pool.pop_back();
-                }
-            }
-        }
-    }
+    // if (!car_pool.empty()) {
+    //     if (d(gen)) {
+    //         size_t count = 1;
+    //         for (size_t i = 0; i < count; ++i) {
+    //             std::size_t target_idx = d(gen) % neighboringObjects.size();
+    //             auto crossroad = static_cast<TCrossRoad*>(neighboringObjects[target_idx]);
+    //             auto car = car_pool.back();
+    //             int res = crossroad->sendCar(this, car);
+    //             if (!res) {
+    //                 car->GetProperty("Coordinate").SetValue("X", GetProperty("Coordinate").GetValue("X"));
+    //                 car->GetProperty("Coordinate").SetValue("Z", GetProperty("Coordinate").GetValue("Z"));
+    //                 car_pool.pop_back();
+    //             }
+    //         }
+    //     }
+    // }
 
-    for (std::size_t i = 0; i < childObjects.size(); ++i) {
-        auto roadElem = childObjects[i]->GetChildObjects().front();
-        auto childs = roadElem->GetChildObjects();
-        if (childs.size() > 0) {
-            auto car = childs.front();
-            if (!car->GetProperty("Moving").GetValue("Moving")) {
-                car->GetProperty("Coordinate").SetValue("X", -10000);
-                car->GetProperty("Coordinate").SetValue("Z", -10000);
-                roadElem->ExcludeChildObject(car);
-                roadElem->GetProperty("RoadState").SetValue("Busy", 0);
-                car_pool.push_back(static_cast<TCar*>(car));
-            }
-        }
-    }
+    // for (std::size_t i = 0; i < childObjects.size(); ++i) {
+    //     auto roadElem = childObjects[i]->GetChildObjects().front();
+    //     auto childs = roadElem->GetChildObjects();
+    //     if (childs.size() > 0) {
+    //         auto car = childs.front();
+    //         if (!car->GetProperty("Moving").GetValue("Moving")) {
+    //             car->GetProperty("Coordinate").SetValue("X", -10000);
+    //             car->GetProperty("Coordinate").SetValue("Z", -10000);
+    //             roadElem->ExcludeChildObject(car);
+    //             roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+    //             car_pool.push_back(static_cast<TCar*>(car));
+    //         }
+    //     }
+    // }
 
 }
 
