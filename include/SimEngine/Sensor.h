@@ -10,7 +10,7 @@
 class ISensor
 {
 public:
-  virtual TDataPacket& GetDataPacket() = 0;
+  virtual TDataPacket* GetDataPacket() = 0;
   virtual void AddObject(TObjectOfObservation* object) = 0;
   virtual void ExcludeObject(TObjectOfObservation* object) = 0;
   virtual void ExcludeObject(std::string objectName) = 0;
@@ -40,8 +40,9 @@ protected:
 public:
   TSensor(std::string _name);
   TSensor(const TSensor& sensor);
+  ~TSensor();
 
-  virtual TDataPacket& GetDataPacket();
+  virtual TDataPacket* GetDataPacket();
   virtual void AddObject(TObjectOfObservation* object);
   virtual void ExcludeObject(TObjectOfObservation* object);
   virtual void ExcludeObject(std::string objectName);

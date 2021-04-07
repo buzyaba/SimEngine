@@ -106,7 +106,7 @@ TEST(SensorTest, Get_Data_Packet) {
 
     sensor->AddObject(obj1);
     sensor->AddObject(obj2);
-    auto packet = sensor->GetDataPacket().GetData<double>();
+    auto packet = sensor->GetDataPacket()->GetData<double>();
 
     double ref[3] = { 50, 100, 150 };
 

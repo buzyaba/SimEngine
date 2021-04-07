@@ -22,6 +22,7 @@ protected:
     void addDependentObjects(const pugi::xml_node &config);
 public:
     TMainSet() = default;
+    ~TMainSet();
     TMainSet(std::string xmlMainSetConfigurationFile);
     std::vector<TObjectOfObservation *> GetObjects();
     std::vector<TStaticObject *> GetStaticObjects();

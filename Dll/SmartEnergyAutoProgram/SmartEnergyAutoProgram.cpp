@@ -8,8 +8,8 @@ void TSmartEnergyAutoProgram::Run() {
 
     for (int i = 0; i < sensors.size(); i++)
     {
-      double* val = sensors[i]->GetDataPacket().GetData<double>();
-      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+      double* val = sensors[i]->GetDataPacket()->GetData<double>();
+      int dataCount = int(sensors[i]->GetDataPacket()->GetSize() / sizeof(double));
       for (int j = 0; j < dataCount; j++)
       {
         if (dailyPowerConsumption > dailyLimit - 0.05)

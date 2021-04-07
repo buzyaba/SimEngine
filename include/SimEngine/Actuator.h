@@ -19,7 +19,7 @@ public:
   virtual void ChangeActuatorProperty(IProperties& _property) = 0;
   virtual void ChangeProperty(IProperties& property, TObjectOfObservation* object) = 0;
   virtual void ChangeProperty(IProperties& property, std::string _objectName) = 0;
-  virtual void SetDataPacket(TDataPacket& packet) = 0;
+  virtual void SetDataPacket(TDataPacket* packet) = 0;
   virtual size_t GetObjectsCount() = 0;
 
   virtual std::string GetName() = 0;
@@ -41,6 +41,7 @@ protected:
 public:
   TActuator(std::string _name);
   TActuator(const TActuator& actuator);
+  ~TActuator();
 
   virtual void AddObject(TObjectOfObservation* object);
   virtual void ExcludeObject(TObjectOfObservation* object);
@@ -49,7 +50,7 @@ public:
   virtual void ChangeActuatorProperty(IProperties& _property);
   virtual void ChangeProperty(IProperties& property, TObjectOfObservation* object);
   virtual void ChangeProperty(IProperties& property, std::string _objectName);
-  virtual void SetDataPacket(TDataPacket& packet);
+  virtual void SetDataPacket(TDataPacket* packet);
   virtual size_t GetObjectsCount() { return objects.size(); }
   
   virtual std::string GetName();

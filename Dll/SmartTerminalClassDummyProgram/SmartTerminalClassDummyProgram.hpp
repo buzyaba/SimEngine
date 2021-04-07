@@ -5,13 +5,14 @@
 class TSmartTerminalClassDummyProgram : public TManagementProgram
 {
 public:
-  TSmartTerminalClassDummyProgram() : sendPacket(10), timePeriod(0), sheduleIsWork(true) {}
+  TSmartTerminalClassDummyProgram() : sendPacket(new TDataPacket(10)), timePeriod(0), sheduleIsWork(true) {}
+  ~TSmartTerminalClassDummyProgram() { delete sendPacket; }
   
   virtual void Run(std::size_t time, std::size_t step);
   virtual void End();
   
   private: 
-    TDataPacket sendPacket;
+    TDataPacket* sendPacket;
     double timePeriod;
     bool sheduleIsWork;
 };

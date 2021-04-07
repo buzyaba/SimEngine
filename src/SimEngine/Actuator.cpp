@@ -4,6 +4,7 @@
 TActuator::TActuator(std::string _name)
 {
   SetName(_name);
+  packet = nullptr;
 }
 
 TActuator::TActuator(const TActuator &actuator)
@@ -11,6 +12,13 @@ TActuator::TActuator(const TActuator &actuator)
   this->name = actuator.name;
   this->objects = actuator.objects;
   this->property = actuator.property;
+  packet = nullptr;
+}
+
+TActuator::~TActuator()
+{
+  if (packet != nullptr)
+    delete packet;
 }
 
 void TActuator::AddObject(TObjectOfObservation* object)
@@ -85,9 +93,11 @@ void TActuator::ChangeProperty(IProperties &property, std::string _objectName)
   }
 }
 
-void TActuator::SetDataPacket(TDataPacket &packet)
+void TActuator::SetDataPacket(TDataPacket* packet)
 {
-  this->packet = &packet;
+  if (this->packet != nullptr) 
+    delete this->packet;
+  this->packet = packet;
 }
 
 std::string TActuator::GetName()

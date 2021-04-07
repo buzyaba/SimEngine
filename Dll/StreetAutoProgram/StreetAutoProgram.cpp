@@ -6,15 +6,15 @@ void TStreetAutoProgram::Run() {
     double carCount = 0;
     if (sensors.size() > 0)
     {
-        double* val = sensors[0]->GetDataPacket().GetData<double>();
-        int dataCount = int(sensors[0]->GetDataPacket().GetSize() / sizeof(double));
+        double* val = sensors[0]->GetDataPacket()->GetData<double>();
+        int dataCount = int(sensors[0]->GetDataPacket()->GetSize() / sizeof(double));
         for (int j = 0; j < dataCount; j++)
         {
             carCount += val[j];
         }
         table[table.size() - 1].push_back(std::to_string(carCount));
     }
-    double* packetVal = sendPacket.GetData<double>();
+    double* packetVal = sendPacket->GetData<double>();
 
     bool isUpdate = false;
 

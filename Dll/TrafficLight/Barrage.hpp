@@ -12,7 +12,7 @@
 //         //}
 //     }
 
-//     virtual void SetDataPacket(TDataPacket& packet)
+//     virtual void SetDataPacket(TDataPacket* packet)
 //     {
 //         if (objects.size()) {
 //             if (packet.GetDoubles()[0] == 0)

@@ -14,6 +14,11 @@ TSensor::TSensor(const TSensor& sensor) {
     this->propertyCount = sensor.propertyCount;
 }
 
+TSensor::~TSensor() {
+    if (packet != nullptr)
+        delete packet;
+}
+
 void TSensor::UpdateObjectsCount() {
     if (oldObjectCount != objects.size()) {
         oldObjectCount = objects.size();
@@ -31,7 +36,7 @@ void TSensor::UpdateObjectsCount() {
     }
 }
 
-TDataPacket& TSensor::GetDataPacket() {
+TDataPacket* TSensor::GetDataPacket() {
     if (packet == nullptr)
         packet = new TDataPacket(propertyCount * sizeof(double));
 
@@ -45,7 +50,7 @@ TDataPacket& TSensor::GetDataPacket() {
                     data[t++] = iter.second;
     }
 
-    return *packet;
+    return packet;
 }
 
 void TSensor::AddObject(TObjectOfObservation* object) {

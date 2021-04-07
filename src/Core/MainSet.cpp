@@ -86,6 +86,15 @@ TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   addDependentObjects(config);
 }
 
+TMainSet::~TMainSet() {
+  for (auto elem : objects)
+    delete elem;
+  for (auto elem : staticObjects)
+    delete elem;
+  for (auto elem : things)
+    delete elem;
+}
+
 void TMainSet::createObjects(const pugi::xml_node &config) {
   std::vector<TObjectOfObservation *> ObjectOfObservations;
   std::vector<TStaticObject *> StaticObjects;

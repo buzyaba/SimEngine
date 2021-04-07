@@ -7,7 +7,7 @@
 // public:
 //     TMachineNumberSensor(std::string _name) : TSensor(_name) {}
 
-//     //TDataPacket& GetDataPacket() override {
+//     //TDataPacket* GetDataPacket() override {
 //     //    if (oldObjectCount < objects.size())
 //     //    {
 //     //        oldObjectCount = objects.size();

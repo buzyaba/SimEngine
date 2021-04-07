@@ -5,7 +5,8 @@
 class TSmartTerminalClassProgram : public TManagementProgram
 {
 public:
-  TSmartTerminalClassProgram() : deltaT(1800.0), sendPacket(10), timePeriod(0), sheduleIsWork(true) {}
+  TSmartTerminalClassProgram() : deltaT(1800.0), sendPacket(new TDataPacket(10)), timePeriod(0), sheduleIsWork(true) {}
+  ~TSmartTerminalClassProgram() { delete sendPacket; }
   
   virtual void Run(std::size_t time, std::size_t step);
   virtual void End();
@@ -14,7 +15,7 @@ public:
   private: 
     double deltaT; // Time in power safe required for shutdown  
     std::vector<size_t> waitTime;
-    TDataPacket sendPacket;
+    TDataPacket* sendPacket;
     double timePeriod;
     bool sheduleIsWork;
 };
