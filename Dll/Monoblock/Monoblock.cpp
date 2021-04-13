@@ -1,9 +1,9 @@
 #include "Monoblock.h"
 #include <random>
 
-static std::random_device rd;
-static std::mt19937 gen(rd());
-static std::bernoulli_distribution d(0.02);
+// static std::random_device rd;
+// static std::mt19937 gen(rd());
+// static std::bernoulli_distribution d(0.02);
 
 TMonoblock::TMonoblock(std::string _name) : TObjectOfObservation(_name) {
   properties.insert(
@@ -31,20 +31,20 @@ void TMonoblock::Update() {
 
   int newIsWork = static_cast<int>(properties["IsWork"]->GetValues()["IsWork"]);
 
-  if (newIsWork < 2 && d(gen))
-    newIsWork = newIsWork ? 0 : 1;
+  // if (newIsWork < 2 && d(gen))
+  //   newIsWork = newIsWork ? 0 : 1;
 
   switch(newIsWork) {
     case 0:
       if (isWork != 2) {
         isWork = newIsWork;
-        properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.00028}}); // sleep
+        properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.1667}}); // sleep
         textures[0][2] = "monitorSleep.png";
       }
       break;
     case 1:
       isWork = newIsWork;
-      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.0278}}); // full
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 1.6667}}); // full
       textures[0][2] = "monitorON.png";
       break;
     case 2:

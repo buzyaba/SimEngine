@@ -2,6 +2,7 @@
 <config>
 	<type>-1</type>
 	<xmlExternalActionScheduleName>SmartEnergy_1/ExternalAction.xml</xmlExternalActionScheduleName> 
+	<xmlSmartThingScheduleName></xmlSmartThingScheduleName> 
 	<xmlMainSetConfigurationFile>SmartEnergy_1/Room.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TSmartEnergyProgram</managementProgramDllFile>
 	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
