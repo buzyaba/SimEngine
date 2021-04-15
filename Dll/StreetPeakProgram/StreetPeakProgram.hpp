@@ -12,6 +12,7 @@ public:
     TStreetPeakProgram() : TManagementProgram()
     {
         tableHeader.push_back("carCount");
+        sendPacket = new TDataPacket(sizeof(double));
         double* packetVal = sendPacket->GetData<double>();
         packetVal[0] = 0;
         peakTime = 10;
@@ -19,6 +20,8 @@ public:
         timeRed = 120;
         waitingTime = 1;
     }
+
+    ~TStreetPeakProgram() { delete sendPacket; }
 
     virtual void Run();
     virtual void End();
