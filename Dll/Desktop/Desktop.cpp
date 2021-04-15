@@ -28,11 +28,9 @@ void TDesktop::Update() {
 
     switch(newIsWork) {
     case 0:
-      if (isWork != 2) {
-        isWork = newIsWork;
-        properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.1667}}); // sleep
-        textures[0][2] = "monitorSleep.png";
-      }
+      isWork = newIsWork;
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.1667}}); // sleep
+      textures[0][2] = "monitorSleep.png";
       break;
     case 1:
       isWork = newIsWork;
