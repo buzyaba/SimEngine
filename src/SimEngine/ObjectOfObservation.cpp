@@ -46,11 +46,11 @@ int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
     return childObjects.size();
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObjects() {
+std::vector<TObjectOfObservation*>& TObjectOfObservation::GetChildObjects() {
     return childObjects;
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetNeighboringObjects() {
+std::vector<TObjectOfObservation*>& TObjectOfObservation::GetNeighboringObjects() {
     return neighboringObjects;
 }
 

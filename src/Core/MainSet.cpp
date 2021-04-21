@@ -190,10 +190,10 @@ void TMainSet::addDependentObjects(const pugi::xml_node &config) {
   }
 }
 
-std::vector<TObjectOfObservation *> TMainSet::GetObjects() { return objects; }
+std::vector<TObjectOfObservation *>& TMainSet::GetObjects() { return objects; }
 
-std::vector<TStaticObject *> TMainSet::GetStaticObjects() {
+std::vector<TStaticObject *>& TMainSet::GetStaticObjects() {
   return staticObjects;
 }
 
-std::vector<TSmartThing *> TMainSet::GetThings() { return things; }
+std::vector<TSmartThing *>& TMainSet::GetThings() { return things; }

@@ -24,9 +24,9 @@ public:
     TMainSet() = default;
     ~TMainSet();
     TMainSet(std::string xmlMainSetConfigurationFile);
-    std::vector<TObjectOfObservation *> GetObjects();
-    std::vector<TStaticObject *> GetStaticObjects();
-    std::vector<TSmartThing *> GetThings();
+    std::vector<TObjectOfObservation *>& GetObjects();
+    std::vector<TStaticObject *>& GetStaticObjects();
+    std::vector<TSmartThing *>& GetThings();
 };
 
 class TSetFactory {
