@@ -1,4 +1,4 @@
-﻿#include <algorithm>
+#include <algorithm>
 #include <stdexcept>
 #include "SimEngine/ObjectOfObservation.h"
 
@@ -29,7 +29,6 @@ TObjectOfObservation::TObjectOfObservation(const TObjectOfObservation& obj) : TO
 
 void TObjectOfObservation::AddParentObject(TObjectOfObservation* object) {
     parentObject = object;
-    object->AddChildObject(this);
 }
 
 int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
@@ -39,20 +38,19 @@ int TObjectOfObservation::AddChildObject(TObjectOfObservation* object) {
         if (childObjects[0] == nullptr)
             childObjects[0] = object;
         else {
-            if (std::end(childObjects) !=
+            if (std::end(childObjects) ==
                 std::find(childObjects.begin(), childObjects.end(), object))
                 childObjects.push_back(object);
         }
     }
-    object->AddParentObject(this);
     return childObjects.size();
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetChildObjects() {
+std::vector<TObjectOfObservation*>& TObjectOfObservation::GetChildObjects() {
     return childObjects;
 }
 
-std::vector<TObjectOfObservation*> TObjectOfObservation::GetNeighboringObjects() {
+std::vector<TObjectOfObservation*>& TObjectOfObservation::GetNeighboringObjects() {
     return neighboringObjects;
 }
 
@@ -68,7 +66,7 @@ TObjectOfObservation* TObjectOfObservation::GetChildObject(std::string name) {
     if (res != std::end(childObjects))
         return *res;
     else
-        std::runtime_error("No child object with name: " + name);
+        throw std::runtime_error("No child object with name: " + name);
 }
 
 TObjectOfObservation* TObjectOfObservation::GetNeighboringObject(std::string name) {
@@ -76,14 +74,15 @@ TObjectOfObservation* TObjectOfObservation::GetNeighboringObject(std::string nam
         std::find_if(neighboringObjects.begin(), neighboringObjects.end(), [&name](TObjectOfObservation* obj) {
             return name == obj->GetName();
         });
-    if (res != std::end(neighboringObjects))
+    if (res != std::end(neighboringObjects)) {
         return *res;
+    }
     else
-        std::runtime_error("No neighboring object with name: " + name);
+        throw std::runtime_error("No neighboring object with name: " + name);
 }
 
 void TObjectOfObservation::AddNeighboringObject(TObjectOfObservation* object) {
-    if (std::find(neighboringObjects.begin(), neighboringObjects.end(), object) !=
+    if (std::find(neighboringObjects.begin(), neighboringObjects.end(), object) ==
         std::end(neighboringObjects)) {
         neighboringObjects.push_back(object);
         object->AddNeighboringObject(this);

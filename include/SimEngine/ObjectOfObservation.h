@@ -26,9 +26,9 @@ public:
     /// Добавить дочерний объект
     virtual int AddChildObject(TObjectOfObservation* object);
     /// Возвращает вектор дочерних объектов
-    virtual std::vector<TObjectOfObservation*> GetChildObjects();
+    virtual std::vector<TObjectOfObservation*>& GetChildObjects();
     virtual TObjectOfObservation* GetChildObject(std::string name);
-    virtual std::vector<TObjectOfObservation*> GetNeighboringObjects();
+    virtual std::vector<TObjectOfObservation*>& GetNeighboringObjects();
     virtual TObjectOfObservation* GetNeighboringObject(std::string name);
     virtual TObjectOfObservation* GetParentObject();
     /// Добавить соседний объект, между ними может происходить объмен дочерними объектами
@@ -43,6 +43,8 @@ public:
     virtual TObjectOfObservation* Clone() {
         return new TObjectOfObservation("ObjectOfObservation");
     }
+
+    virtual bool isDrawable() { return true; }
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с объектами

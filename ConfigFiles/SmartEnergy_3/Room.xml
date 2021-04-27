@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <StaticObject>
+  <TRoom>
+	<Name>Room1</Name>
+  <Scale>1.5 1.5 1.5</Scale>
+  </TRoom>
+  <TTable>
+	<Name>Table1</Name>
+  <Coordinate>-32 -13.5 0</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+	<Name>Table2</Name>
+  <Coordinate>-32 -13.5 -12</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+	<Name>Table3</Name>
+  <Coordinate>-16 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table4</Name>
+  <Coordinate>-4 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table5</Name>
+  <Coordinate>8 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table6</Name>
+  <Coordinate>20 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table7</Name>
+  <Coordinate>32 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+	<Name>Table8</Name>
+  <Coordinate>44 -13.5 -21</Coordinate>
+  </TTable>
+  <TTable>
+  <Name>Table9</Name>
+  <Coordinate>44 -13.5 -4</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table10</Name>
+  <Coordinate>44 -13.5 8</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table11</Name>
+  <Coordinate>44 -13.5 20</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+	<Name>Table12</Name>
+  <Coordinate>44 -13.5 32</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+	<Name>Table13</Name>
+  <Coordinate>-6 -13.5 30</Coordinate>
+  <Scale>4 3 4</Scale>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TTable>
+  <TTable>
+  <Name>Table14</Name>
+  <Coordinate>10 -13.5 6</Coordinate>
+  <Scale>5 3 5</Scale>
+  </TTable>
+  </StaticObject>
+  <ObjectOfObservation>
+  <TMonoblock>
+	<Name>Monoblock1</Name>
+  <Coordinate>-30 -5.5 2</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TMonoblock>
+  <TMonoblock>
+	<Name>Monoblock2</Name>
+  <Coordinate>-30 -5.5 -10</Coordinate>
+  <Rotate>0.0 90.0 0.0</Rotate>
+  </TMonoblock>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket1</Name>
+	<Object>Monoblock1</Object>
+  <Object>Monoblock2</Object>
+  </TSmartSocket>
+  </SmartThing>
+  <ObjectOfObservation>
+  <TDesktop>
+  <Name>Desktop1</Name>
+  <Coordinate>-16.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TMonoblock>
+  <Name>Monoblock3</Name>
+  <Coordinate>-6 -5.5 -18.5</Coordinate>
+  </TMonoblock>
+  <TDesktop>
+  <Name>Desktop2</Name>
+  <Coordinate>7.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TMonoblock>
+  <Name>Monoblock4</Name>
+  <Coordinate>18 -5.5 -18.5</Coordinate>
+  </TMonoblock>
+  <TDesktop>
+  <Name>Desktop3</Name>
+  <Coordinate>31.5 -5.5 -18.5</Coordinate>
+  </TDesktop>
+  <TMonoblock>
+  <Name>Monoblock5</Name>
+  <Coordinate>42.5 -5.5 -18.5</Coordinate>
+  </TMonoblock>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket2</Name>
+	<Object>Desktop1</Object>
+  <Object>Monoblock3</Object>
+  <Object>Desktop2</Object>
+  <Object>Monoblock4</Object>
+  <Object>Desktop3</Object>
+  <Object>Monoblock5</Object>
+  </TSmartSocket>
+  </SmartThing>
+  <ObjectOfObservation>
+  <TDesktop>
+  <Name>Desktop4</Name>
+  <Coordinate>46 -5.5 -1</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TDesktop>
+  <TMonoblock>
+	<Name>Monoblock6</Name>
+  <Coordinate>46 -5.5 10</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TMonoblock>
+  <TDesktop>
+  <Name>Desktop5</Name>
+  <Coordinate>46 -5.5 23</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TDesktop>
+  <TMonoblock>
+	<Name>Monoblock7</Name>
+  <Coordinate>46 -5.5 34</Coordinate>
+  <Rotate>0.0 -90.0 0.0</Rotate>
+  </TMonoblock>
+  </ObjectOfObservation>
+  <SmartThing>
+  <TSmartSocket>
+	<Name>SmartSocket3</Name>
+	<Object>Desktop4</Object>
+  <Object>Monoblock6</Object>
+  <Object>Desktop5</Object>
+  <Object>Monoblock7</Object>
+  </TSmartSocket>
+  </SmartThing>
+</config>

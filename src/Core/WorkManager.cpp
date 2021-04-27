@@ -54,7 +54,7 @@ void TWorkManager::Iteration(const std::size_t step, const std::chrono::millisec
         objects[i]->Update();
     }
 
-    storage->AddAllProperties(time);
+    // storage->AddAllProperties(time);
     program->Run(currentTime, currentStep);
 
     presenter->transformsUpdateSignal();
@@ -95,7 +95,7 @@ void TWorkManager::Start() {
               << " minutes\n"
               << std::endl;
 
-    storage->PrintToFile();
+    // storage->PrintToFile();
     // presenter->stopGraphicManager();
     program->End();
 }
@@ -111,10 +111,23 @@ void TWorkManager::SetMillisecondsInTimeStep(unsigned int _milliseconds) {
         parameters.millisecondsInTimeStep = 0;
 }
 
+void sendObjectsImpl(TObjectOfObservation* elem, IGraphicPresenter* presenter) {
+    for (auto& child : elem -> GetChildObjects())
+        sendObjectsImpl(child, presenter);
+    if (elem->isDrawable())
+ 	       presenter->addTObject(elem);
+}
+
 void TWorkManager::sendObjects() {
-    for (auto& vec : mainSet->GetAllGObjects()) {
-        for (auto elem : vec.second) {
-            presenter->addTObject(elem);
-        }
+    for (auto& elem : mainSet->GetStaticObjects()) {
+		if (elem->isDrawable())
+ 	       presenter->addTObject(elem);
+    }
+	for (auto& elem : mainSet->GetThings()) {
+		if (elem->isDrawable())
+ 	       presenter->addTObject(elem);
+    }
+	for (auto& elem : mainSet->GetObjects()) {
+		sendObjectsImpl(elem, presenter);
     }
 }

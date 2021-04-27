@@ -4,7 +4,7 @@
 	<xmlExternalActionScheduleName>SmartTraffic_1/conf.xml</xmlExternalActionScheduleName> 
 	<xmlMainSetConfigurationFile>SmartTraffic_1/Street.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TStreetProgram</managementProgramDllFile>
-	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
+	<millisecondsInTimeStep>1</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
-	<maxStep>1440</maxStep>
+	<maxStep>86400000</maxStep>
 </config>

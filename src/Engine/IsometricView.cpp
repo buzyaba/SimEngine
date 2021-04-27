@@ -12,7 +12,7 @@ IsometricView::IsometricView(const std::uint32_t& screenWidth, const std::uint32
                                                                                     winName,
                                                                                     _visible)
 {
-    Renderer::initCamera(45.0f, 800, 600, 0.1f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    Renderer::initCamera(45.0f, 800, 600, 25.f, 10000.0f, glm::vec3(20.0f, 780.0f, 20.0f), glm::vec3(-20.0f, -780.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     sphereCam = cartesianToSpherical(Renderer::getCamera()->getCameraPosition() - (Renderer::getCamera()->getCameraPosition() + Renderer::getCamera()->getCameraFront()));
 
 initMousePosition(screenWidth/2, screenHeight/2); 

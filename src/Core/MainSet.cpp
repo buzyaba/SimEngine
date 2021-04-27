@@ -1,8 +1,7 @@
 ﻿#include "Core/MainSet.h"
 #include "Core/Parameters.h"
 #include "SimEngine/common.h"
-
-#include "../lib/pugixml/include/pugixml.hpp"
+#include <stdexcept>
 
 #include <string.h>
 
@@ -10,12 +9,18 @@
 // соответствие имени проперти и значения) все уронит
 void SetProperty(IObject *object, std::string nameProperty,
                  std::string valueProperty) {
+  std::vector<std::string> notProperty = {"Neighbour", "Child", "Parent",
+                                          "Object"};
   if (nameProperty == "Name")
     object->SetName(valueProperty);
-  else {
+  else if (!std::any_of(notProperty.begin(), notProperty.end(),
+                        [&nameProperty](std::string prop) {
+                          return nameProperty == prop;
+                        })) {
     IProperties *tempProp = object->GetProperties()[nameProperty];
     if (tempProp) {
       std::vector<double> tempVal = ParseString<double>(valueProperty, " ");
+
       std::map<std::string, double> &tmpPropMap = tempProp->GetValues();
       size_t iter = 0;
       for (auto &elem : tmpPropMap) {
@@ -28,123 +33,167 @@ void SetProperty(IObject *object, std::string nameProperty,
   }
 }
 
-TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
-  std::vector<TObjectOfObservation *> ObjectOfObservations;
-  std::vector<TStaticObject *> StaticObjects;
-  std::vector<TSmartThing *> SmartThings;
+std::string getName(const pugi::xml_node &xml_node) {
+  for (pugi::xml_node iter_obj_property = xml_node.first_child();
+       iter_obj_property != 0;
+       iter_obj_property = iter_obj_property.next_sibling()) {
+    std::string nameProperty = iter_obj_property.name();
+    if (nameProperty == "Name")
+      return iter_obj_property.child_value();
+  }
+}
 
+template <class ObjType, DLL_TYPE DllType>
+void createNewObject(std::vector<ObjType *> &objectsTempVector,
+                     std::vector<ObjType *> &objectsVector,
+                     const pugi::xml_node &xml_node) {
+  for (pugi::xml_node xml_obj_iter = xml_node.first_child(); xml_obj_iter != 0;
+       xml_obj_iter = xml_obj_iter.next_sibling()) {
+    std::string name = xml_obj_iter.name();
+    auto result =
+        std::find_if(objectsTempVector.begin(), objectsTempVector.end(),
+                     [&](auto &t) { return t->ClassName() == name; });
+
+    if (result == std::end(objectsTempVector)) {
+      objectsTempVector.push_back(Dll_Manager::LoadDLLObject<DllType>(
+          Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
+      result = std::prev(objectsTempVector.end());
+    }
+
+    /// Создаем новые статические объекты
+    ObjType *newObject = (*result)->Clone();
+    for (pugi::xml_node iter_obj_property = xml_obj_iter.first_child();
+         iter_obj_property != 0;
+         iter_obj_property = iter_obj_property.next_sibling()) {
+      std::string nameProperty = iter_obj_property.name();
+      std::string valueProperty = iter_obj_property.child_value();
+      SetProperty(newObject, nameProperty, valueProperty);
+    }
+    objectsVector.push_back(newObject);
+  }
+}
+
+TMainSet::TMainSet(std::string xmlMainSetConfigurationFile) {
   pugi::xml_document doc;
   pugi::xml_parse_result result =
       doc.load_file(xmlMainSetConfigurationFile.c_str());
   if (result.status != pugi::status_ok)
-    return;
+    throw std::runtime_error("can't load xmlMainSetConfigurationFile");
   pugi::xml_node config = doc.child("config");
-  std::vector<std::size_t> startTime;
-  std::vector<std::size_t> endTime;
+
+  createObjects(config);
+
+  addDependentObjects(config);
+}
+
+TMainSet::~TMainSet() {
+  for (auto elem : objects)
+    delete elem;
+  for (auto elem : staticObjects)
+    delete elem;
+  for (auto elem : things)
+    delete elem;
+}
+
+void TMainSet::createObjects(const pugi::xml_node &config) {
+  std::vector<TObjectOfObservation *> ObjectOfObservations;
+  std::vector<TStaticObject *> StaticObjects;
+  std::vector<TSmartThing *> SmartThings;
 
   for (pugi::xml_node iter = config.first_child(); iter != 0;
        iter = iter.next_sibling()) {
     std::string obj_type = iter.name();
+
     if (obj_type == "StaticObject") {
-      for (pugi::xml_node static_objects_iter = iter.first_child();
-           static_objects_iter != 0;
-           static_objects_iter = static_objects_iter.next_sibling()) {
-        std::string name = static_objects_iter.name();
-        auto result =
-            std::find_if(StaticObjects.begin(), StaticObjects.end(),
-                         [&](auto &t) { return t->ClassName() == name; });
-
-        if (result == std::end(StaticObjects)) {
-          StaticObjects.push_back(Dll_Manager::LoadDLLObject<STATIC_OBJECT>(
-              Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
-          result = std::prev(StaticObjects.end());
-        }
-
-        /// Создаем новые статические объекты
-        TStaticObject *newStaticObject = (*result)->Clone();
-        for (pugi::xml_node iter_obj_property =
-                 static_objects_iter.first_child();
-             iter_obj_property != 0;
-             iter_obj_property = iter_obj_property.next_sibling()) {
-          std::string nameProperty = iter_obj_property.name();
-          std::string valueProperty = iter_obj_property.child_value();
-          SetProperty(newStaticObject, nameProperty, valueProperty);
-        }
-        staticObjects.push_back(newStaticObject);
-        // ATTENTION
-        allGObjects[newStaticObject->ClassName()].push_back(newStaticObject);
-      }
-
+      createNewObject<TStaticObject, STATIC_OBJECT>(StaticObjects,
+                                                    staticObjects, iter);
     } else if (obj_type == "ObjectOfObservation") {
+      createNewObject<TObjectOfObservation, OBJECT_OF_OBSERVATION>(
+          ObjectOfObservations, objects, iter);
+    } else if (obj_type == "SmartThing") {
+      createNewObject<TSmartThing, SMART_THING>(SmartThings, things, iter);
+    }
+  }
+}
+
+void TMainSet::addDependentObjects(const pugi::xml_node &config) {
+  for (pugi::xml_node iter = config.first_child(); iter != 0;
+       iter = iter.next_sibling()) {
+    std::string obj_type = iter.name();
+    if (obj_type == "ObjectOfObservation") {
       for (pugi::xml_node obj_of_observe_iter = iter.first_child();
            obj_of_observe_iter != 0;
            obj_of_observe_iter = obj_of_observe_iter.next_sibling()) {
-        std::string name = obj_of_observe_iter.name();
-        auto result = std::find_if(
-            ObjectOfObservations.begin(), ObjectOfObservations.end(),
-            [&](auto &t) { return t->ClassName() == name; });
+        std::string name = getName(obj_of_observe_iter);
 
-        if (result == std::end(ObjectOfObservations)) {
-          ObjectOfObservations.push_back(
-              Dll_Manager::LoadDLLObject<OBJECT_OF_OBSERVATION>(
-                  Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
-          result = std::prev(ObjectOfObservations.end());
-        }
+        auto object =
+            std::find_if(objects.begin(), objects.end(),
+                         [&](auto &t) { return t->GetName() == name; });
 
-        /// Создаем новые объекты
-        TObjectOfObservation *newObject = (*result)->Clone();
-        for (pugi::xml_node iter_obj_property =
-                 obj_of_observe_iter.first_child();
-             iter_obj_property != 0;
-             iter_obj_property = iter_obj_property.next_sibling()) {
-          std::string nameProperty = iter_obj_property.name();
-          std::string valueProperty = iter_obj_property.child_value();
-          SetProperty(newObject, nameProperty, valueProperty);
+        if (object != std::end(objects)) {
+          for (pugi::xml_node iter_obj_property =
+                   obj_of_observe_iter.first_child();
+               iter_obj_property != 0;
+               iter_obj_property = iter_obj_property.next_sibling()) {
+            std::string nameProperty = iter_obj_property.name();
+            std::string valueProperty = iter_obj_property.child_value();
+            if (nameProperty == "Neighbour") {
+              auto objNeighbour =
+                  std::find_if(objects.begin(), objects.end(), [&](auto &t) {
+                    return t->GetName() == valueProperty;
+                  });
+              (*object)->AddNeighboringObject(*objNeighbour);
+            } else if (nameProperty == "Child") {
+              auto objChild =
+                  std::find_if(objects.begin(), objects.end(), [&](auto &t) {
+                    return t->GetName() == valueProperty;
+                  });
+              (*object)->AddChildObject(*objChild);
+            } else if (nameProperty == "Parent") {
+              auto objParent =
+                  std::find_if(objects.begin(), objects.end(), [&](auto &t) {
+                    return t->GetName() == valueProperty;
+                  });
+              (*object)->AddParentObject(*objParent);
+            }
+          }
         }
-        objects.push_back(newObject);
-        // ATTENTION
-        allGObjects[newObject->ClassName()].push_back(newObject);
       }
     } else if (obj_type == "SmartThing") {
       for (pugi::xml_node smart_thing_iter = iter.first_child();
            smart_thing_iter != 0;
            smart_thing_iter = smart_thing_iter.next_sibling()) {
-        std::string name = smart_thing_iter.name();
-        auto result =
-            std::find_if(SmartThings.begin(), SmartThings.end(),
-                         [&](auto &t) { return t->ClassName() == name; });
+        std::string name = getName(smart_thing_iter);
 
-        if (result == std::end(SmartThings)) {
-          SmartThings.push_back(Dll_Manager::LoadDLLObject<SMART_THING>(
-              Dll_Manager::findDLLPath(getPath("/assets/models/" + name))));
-          result = std::prev(SmartThings.end());
-        }
+        auto thing = std::find_if(things.begin(), things.end(), [&](auto &t) {
+          return t->GetName() == name;
+        });
 
-        /// Создаем новые умные вещи
-        TSmartThing *newThing = (*result)->Clone();
-        for (pugi::xml_node iter_obj_property = smart_thing_iter.first_child();
-             iter_obj_property != 0;
-             iter_obj_property = iter_obj_property.next_sibling()) {
-          std::string nameProperty = iter_obj_property.name();
-          std::string valueProperty = iter_obj_property.child_value();
-          if (nameProperty == "Object") {
-            for (int j = 0; j < objects.size(); j++) {
-              if (objects[j]->GetName() == valueProperty)
-                newThing->AddObject(objects[j]);
+        if (thing != std::end(things)) {
+          for (pugi::xml_node iter_obj_property =
+                   smart_thing_iter.first_child();
+               iter_obj_property != 0;
+               iter_obj_property = iter_obj_property.next_sibling()) {
+            std::string nameProperty = iter_obj_property.name();
+            std::string valueProperty = iter_obj_property.child_value();
+            if (nameProperty == "Object") {
+              auto observe_object =
+                  std::find_if(objects.begin(), objects.end(), [&](auto &t) {
+                    return t->GetName() == valueProperty;
+                  });
+              (*thing)->AddObject(*observe_object);
             }
-          } else
-            SetProperty(newThing, nameProperty, valueProperty);
+          }
         }
-        things.push_back(newThing);
       }
     }
   }
 }
 
-std::vector<TObjectOfObservation *> TMainSet::GetObjects() { return objects; }
+std::vector<TObjectOfObservation *>& TMainSet::GetObjects() { return objects; }
 
-std::vector<TStaticObject *> TMainSet::GetStaticObjects() {
+std::vector<TStaticObject *>& TMainSet::GetStaticObjects() {
   return staticObjects;
 }
 
-std::vector<TSmartThing *> TMainSet::GetThings() { return things; }
+std::vector<TSmartThing *>& TMainSet::GetThings() { return things; }

@@ -8,7 +8,6 @@
     class TGraphicManager;
 #endif
 
-
 class IGraphicPresenter {
   public:
     virtual void addTObject(TObject *obj) {}

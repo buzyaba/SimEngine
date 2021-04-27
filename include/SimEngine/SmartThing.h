@@ -20,8 +20,8 @@ public:
   TSmartThing(std::string _name, std::vector<ISensor*> _sensors, std::vector<IActuator*> _actuators);
   TSmartThing(const TSmartThing& thing);
 
-  virtual std::vector<ISensor*> GetSensors();
-  virtual std::vector<IActuator*> GetActuators();
+  virtual std::vector<ISensor*>& GetSensors();
+  virtual std::vector<IActuator*>& GetActuators();
 
   virtual void AddObject(TObjectOfObservation* object);
   virtual void ExcludeObject(TObjectOfObservation* object);
@@ -29,6 +29,8 @@ public:
 
   /// Создание клона объекта
   virtual TSmartThing* Clone() = 0;
+
+  virtual bool isDrawable() { return false; }
 };
 
 ///Тип функции-фабрики, которая экспортируется подключаемой библиотекой с умными вещами

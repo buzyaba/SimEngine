@@ -13,7 +13,9 @@ void TSmartEnergyProgram::End() {
       }
     }
 
-    std::cout << "Power consumption = " << sum << std::endl;
+    sum = sum / 1000;
+
+    std::cout << "Power consumption = " << sum << " kW/h" << std::endl;
     if (sum > 50)
       std::cout << "Electricity bill = " << sum * 6.45 <<" rub\n";
     else 
