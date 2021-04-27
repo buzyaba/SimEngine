@@ -10,23 +10,23 @@
             <Name>CrossRoad0</Name>
             <Coordinate>275 0 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
-            <!-- <Neighbour>CarManager2</Neighbour> -->
+            <Neighbour>CarManager2</Neighbour>
         </TCarManager>
         <TCrossRoad>
             <Name>CrossRoad1</Name>
             <Coordinate>0 0 0</Coordinate>
             <Neighbour>CrossRoad0</Neighbour>
             <Neighbour>CrossRoad2</Neighbour>
-            <!-- <Neighbour>CrossRoad3</Neighbour>
-            <Neighbour>CrossRoad4</Neighbour> -->
+            <Neighbour>CrossRoad3</Neighbour>
+            <Neighbour>CrossRoad4</Neighbour>
         </TCrossRoad>
         <TCarManager>
             <Name>CrossRoad2</Name>
             <Coordinate>-275 0 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
-            <!-- <Neighbour>CarManager1</Neighbour> -->
+            <Neighbour>CarManager1</Neighbour>
         </TCarManager>
-        <!-- <TCrossRoad>
+        <TCrossRoad>
             <Name>CrossRoad3</Name>
             <Coordinate>0 0 275</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
@@ -49,7 +49,7 @@
             <Coordinate>275 0 275</Coordinate>
             <Neighbour>CrossRoad0</Neighbour>
             <Neighbour>CrossRoad3</Neighbour>
-        </TCarManager> -->
+        </TCarManager>
     </ObjectOfObservation>
     <SmartThing>
         <TTrafficLight>

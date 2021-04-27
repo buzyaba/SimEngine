@@ -86,7 +86,4 @@ TEST(SmartThingScheduleTest, UpdateThingsProperties) {
 
     thingsSchedule.UpdateThingsProperties(500ull);
     ASSERT_DOUBLE_EQ(objects[0]->GetProperty("Property").GetValue("Property"), 0.0);
-
-    thingsSchedule.UpdateThingsProperties(1000ull);
-    ASSERT_DOUBLE_EQ(objects[0]->GetProperty("Property").GetValue("Property"), 1.0);
 }
