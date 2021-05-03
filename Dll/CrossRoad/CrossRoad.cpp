@@ -17,8 +17,6 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
         {"Rotate",
         new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
                         false, "Rotate")});
-    properties.insert(
-        { "HasJam", new TProperties({{"HasJam", 0}}, false, "HasJam") });
 }
 
 void TCrossRoad::Update() {
@@ -28,7 +26,7 @@ void TCrossRoad::Update() {
         for (std::size_t i = 0; i < childObjects.size(); ++i) {
             auto roadElem = childObjects[i]->GetChildObjects().front();
             auto childs = roadElem->GetChildObjects();
-            if (childs.size() > 0) {
+            if (childs.size() > 0 && !roadElem->GetProperty("RoadState").GetValue("Blocked")) {
                 std::size_t target_idx;
                 do {
                     target_idx = d(gen) % neighboringObjects.size();
@@ -52,20 +50,17 @@ int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {
 
     auto&& roadElems = childObjects[index]->GetChildObjects();
     auto elem = roadElems.rbegin();
-    for (; elem != roadElems.rend(); ++elem) {
-        auto& road_property = (*elem)->GetProperty("RoadState");
-        auto& coord_prop = (*elem)->GetProperty("Coordinate");
-        auto& rotate_prop = (*elem)->GetProperty("Rotate");
-        if (!road_property.GetValue("Busy")) {
-            (*elem)->AddChildObject(car);
-            car->AddParentObject(*elem);
-            car->GetProperty("Moving").SetValue("Moving", 1);
-            road_property.SetValue("Busy", 1);
-            return 0;
-        }
-        else break;
+    auto& road_property = (*elem)->GetProperty("RoadState");
+    auto& coord_prop = (*elem)->GetProperty("Coordinate");
+    auto& rotate_prop = (*elem)->GetProperty("Rotate");
+    if (!road_property.GetValue("Busy")) {
+        (*elem)->AddChildObject(car);
+        car->AddParentObject(*elem);
+        car->GetProperty("Moving").SetValue("Moving", 1);
+        road_property.SetValue("Busy", 1);
+        return 0;
     }
-    return 1;
+    else return 1;
 }
 
 void TCrossRoad::AddNeighboringObject(TObjectOfObservation* obect) {

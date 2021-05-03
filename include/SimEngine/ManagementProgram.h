@@ -112,6 +112,7 @@ virtual void Run()
 
   virtual void Run(std::size_t time, std::size_t step)
   {
+    printf("time=%lu step=%lu\n", time, step);
     smartThingShedule.UpdateThingsProperties(time);
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);

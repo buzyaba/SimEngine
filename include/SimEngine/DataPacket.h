@@ -21,7 +21,7 @@ public:
   }
 
   TDataPacket(std::size_t _size): size(_size) {
-    data = new char[size];
+    data = new char[size]{};
   }
 
   TDataPacket(const TDataPacket& packet): size(packet.size) {
