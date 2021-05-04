@@ -20,28 +20,28 @@ TCrossRoad::TCrossRoad(std::string _name): TObjectOfObservation(_name) {
 }
 
 void TCrossRoad::Update() {
-    TObjectOfObservation::Update();
-    std::uniform_int_distribution<> d(1, 100);
-    if (!neighboringObjects.empty() && neighboringObjects.size() != 1)
-        for (std::size_t i = 0; i < childObjects.size(); ++i) {
-            auto roadElem = childObjects[i]->GetChildObjects().front();
-            auto childs = roadElem->GetChildObjects();
-            if (childs.size() > 0 && !roadElem->GetProperty("RoadState").GetValue("Blocked")) {
-                std::size_t target_idx;
-                do {
-                    target_idx = d(gen) % neighboringObjects.size();
-                } while (target_idx == i);
-                auto car = childs.front();
-                if (!car->GetProperty("Moving").GetValue("Moving")) {
-                    auto crossroad = static_cast<TCrossRoad*>(neighboringObjects[target_idx]);
-                    int res = crossroad->sendCar(this, static_cast<TCar*>(car));
-                    if (!res) {
-                        roadElem->ExcludeChildObject(car);
-                        roadElem->GetProperty("RoadState").SetValue("Busy", 0);
-                    }
-                }
-            }
-        }
+    // TObjectOfObservation::Update();
+    // std::uniform_int_distribution<> d(1, 100);
+    // if (!neighboringObjects.empty() && neighboringObjects.size() != 1)
+    //     for (std::size_t i = 0; i < childObjects.size(); ++i) {
+    //         auto roadElem = childObjects[i]->GetChildObjects().front();
+    //         auto childs = roadElem->GetChildObjects();
+    //         if (childs.size() > 0 && !roadElem->GetProperty("RoadState").GetValue("Blocked")) {
+    //             std::size_t target_idx;
+    //             do {
+    //                 target_idx = d(gen) % neighboringObjects.size();
+    //             } while (target_idx == i);
+    //             auto car = childs.front();
+    //             if (!car->GetProperty("Moving").GetValue("Moving")) {
+    //                 auto crossroad = static_cast<TCrossRoad*>(neighboringObjects[target_idx]);
+    //                 int res = crossroad->sendCar(this, static_cast<TCar*>(car));
+    //                 if (!res) {
+    //                     roadElem->ExcludeChildObject(car);
+    //                     roadElem->GetProperty("RoadState").SetValue("Busy", 0);
+    //                 }
+    //             }
+    //         }
+    //     }
 }
 
 int TCrossRoad::sendCar(TCrossRoad* origin, TCar* car) {

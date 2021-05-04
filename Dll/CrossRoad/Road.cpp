@@ -73,44 +73,24 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
 }
 
 void TRoad::Update() {
-    bool hasjam = std::all_of(childObjects.begin(), childObjects.end(), [](TObjectOfObservation* obj) { return obj->GetChildObjects().size() > 0; });
-    GetProperty("HasJam").SetValue("HasJam", hasjam);
+    // bool hasjam = std::all_of(childObjects.begin(), childObjects.end(), [](TObjectOfObservation* obj) { return obj->GetChildObjects().size() > 0; });
+    // GetProperty("HasJam").SetValue("HasJam", hasjam);
 
-    for (std::size_t i = 1; i < childObjects.size(); ++i) {
-        if (childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
-            std::size_t k = i;
-        //  for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
-        //  if (k < childObjects.size()) {
-            auto car = childObjects[i]->GetChildObjects().front();
-            if (!car->GetProperty("Moving").GetValue("Moving") && !childObjects[i-1]->GetProperty("RoadState").GetValue("Busy")) {
-                childObjects[i]->ExcludeChildObject(car);
-                childObjects[i]->GetProperty("RoadState").SetValue("Busy", 0);
-                childObjects[i-1]->AddChildObject(car);
-                car->AddParentObject(childObjects[i-1]);
-                childObjects[i-1]->GetProperty("RoadState").SetValue("Busy", 1);
-            }
-        //  }
-        }
-    }
-    TObjectOfObservation::Update();
-}
-
-void TRoad::Update() {
-    //  for (std::size_t i = 0; i < childObjects.size(); ++i) {
-    //      if (!childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
-    //          std::size_t k = i;
-    //          for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
-    //          if (k < childObjects.size()) {
-    //              auto car = childObjects[k]->GetChildObjects().front();
-    //              if (!car->GetProperty("Moving").GetValue("Moving")) {
-    //                  childObjects[k]->ExcludeChildObject(car);
-    //                  childObjects[k]->GetProperty("RoadState").SetValue("Busy", 0);
-    //                  childObjects[i]->AddChildObject(car);
-    //                  car->AddParentObject(childObjects[i]);
-    //                  childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
-    //              }
-    //          }
-    //      }
-    //  }
+    // for (std::size_t i = 1; i < childObjects.size(); ++i) {
+    //     if (childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
+    //         std::size_t k = i;
+    //     //  for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
+    //     //  if (k < childObjects.size()) {
+    //         auto car = childObjects[i]->GetChildObjects().front();
+    //         if (!car->GetProperty("Moving").GetValue("Moving") && !childObjects[i-1]->GetProperty("RoadState").GetValue("Busy")) {
+    //             childObjects[i]->ExcludeChildObject(car);
+    //             childObjects[i]->GetProperty("RoadState").SetValue("Busy", 0);
+    //             childObjects[i-1]->AddChildObject(car);
+    //             car->AddParentObject(childObjects[i-1]);
+    //             childObjects[i-1]->GetProperty("RoadState").SetValue("Busy", 1);
+    //         }
+    //     //  }
+    //     }
+    // }
     // TObjectOfObservation::Update();
 }
