@@ -9,7 +9,7 @@ std::vector<TCar*> TCarManager::car_pool = {};
 
 TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     properties.insert(
-      {"PoolSize", new TProperties({{"PoolSize", 25}}, false, "PoolSize")});
+      {"PoolSize", new TProperties({{"PoolSize", 50}}, false, "PoolSize")});
     car_pool.resize(static_cast<std::size_t>(this->GetProperty("PoolSize").GetValue("PoolSize")));
     std::generate(car_pool.begin(), car_pool.end(), [] { 
         static std::size_t i = 0; 

@@ -4,20 +4,17 @@
 
 class TStreetProgram : public TManagementProgram
 {
-  TDataPacket sendPacket{2*sizeof(double)};
-  int timeGreen{30000};
-  int timeRed{120000};
-  std::vector<size_t> waitTime;
+    TDataPacket sendPacket{2 * sizeof(double)};
+    std::size_t summaryCarCount{0};
+
 public:
-  TStreetProgram() : TManagementProgram()
-  {
-    tableHeader.push_back("carCount");
-    waitTime.resize(things.size());
-  }
+    TStreetProgram() : TManagementProgram() {
+        tableHeader.push_back("carCount");
+    }
 
-  virtual void Run(std::size_t time, std::size_t step);
+    virtual void Run(std::size_t time, std::size_t step);
 
-  virtual void End();
+    virtual void End();
 };
 
-extern "C" LIB_EXPORT_API IManagementProgram* create();
+extern "C" LIB_EXPORT_API IManagementProgram *create();

@@ -23,10 +23,12 @@ public:
                 auto road = roadLane->roads[road_iter]->GetParentObject();
                 auto roadElems = road->GetChildObjects();
                 auto observedRoadElem = roadLane->roads[road_iter];
-                if ((observedRoadElem->GetProperty("RoadState").GetValue("Blocked") || road->GetProperty("HasJam").GetValue("HasJam")) && observedRoadElem->GetChildObjects().size() > 0) {
+                if (observedRoadElem->GetProperty("RoadState").GetValue("Blocked") || road->GetProperty("HasJam").GetValue("HasJam")) {
                     for (auto elem : roadElems) {
                         if (elem->GetProperty("RoadState").GetValue("Busy"))
                             data[i]++;
+                        else
+                            break;
                     }
                 }
             }

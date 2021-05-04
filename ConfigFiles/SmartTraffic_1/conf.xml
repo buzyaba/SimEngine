@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-  <maxStep>86400000</maxStep>
-  <!-- <intervalCount>10</intervalCount> -->
-  <!-- <time>0_144_288_432_576_720_864_1008_1152_1296_1440</time> -->
-  <!-- <Road13><IsBblockieren>1_1_1_1_0_0_0_0_1_1_0</IsBblockieren></Road13> -->
-</config>
