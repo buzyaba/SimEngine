@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <StaticObject>
+        <TDummyStaticObject>
+            <Name>DummyStaticObject1</Name>
+            <StaticProperty1>15</StaticProperty1>
+            <StaticProperty2>25</StaticProperty2>
+        </TDummyStaticObject>
+        <TDummyStaticObject>
+            <Name>DummyStaticObject2</Name>
+            <StaticProperty1>17</StaticProperty1>
+            <StaticProperty2>19</StaticProperty2>
+        </TDummyStaticObject>
+    </StaticObject>
+    <ObjectOfObservation>
+        <TDummyObject>
+            <Name>DummyObject1</Name>
+            <Property1>4</Property1>
+            <Property2>7</Property2>
+        </TDummyObject>
+        <TDummyObject>
+            <Name>DummyObject2</Name>
+            <Property1>11</Property1>
+            <Property2>15</Property2>
+        </TDummyObject>
+        <TDummyObject>
+            <Name>DummyObject3</Name>
+            <Property1>12</Property1>
+            <Property2>17</Property2>
+        </TDummyObject>
+    </ObjectOfObservation>
+    <SmartThing>
+        <TDummySmartThing>
+            <Name>DummyStaticObject1</Name>
+            <Object>DummyObject1</Object>
+            <Object>DummyObject3</Object>
+        </TDummySmartThing>
+        <TDummySmartThing>
+            <Name>DummyStaticObject2</Name>
+            <Object>DummyObject2</Object>
+        </TDummySmartThing>
+    </SmartThing>
+</config>

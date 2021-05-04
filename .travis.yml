@@ -46,5 +46,5 @@ script:
 - cmake -DBUILD_TESTS=ON -DUSE_OPENGL=OFF ..
 - cmake --build . --config RELEASE
 - bin/RELEASE/tests
-- echo 4 > run.txt
+- echo 1 > run.txt
 - bin/RELEASE/SimEngineLauncher < run.txt

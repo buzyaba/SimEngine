@@ -51,7 +51,7 @@ void Dll_Manager::FreeDllManager()
 #ifdef WIN32
   FreeLibrary(handle);
 #else
-  dlclose(handle);
+  // dlclose(handle);
 #endif
   handle = NULL;
   }

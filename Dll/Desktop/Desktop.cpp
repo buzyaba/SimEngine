@@ -26,16 +26,21 @@ void TDesktop::Update() {
 
   int newIsWork = static_cast<int>(properties["IsWork"]->GetValues()["IsWork"]);
 
-  switch(newIsWork) {
+    switch(newIsWork) {
     case 0:
       isWork = newIsWork;
-      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.0}}); // sleep
-      textures[0][2] = "monitorOFF.png";
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.1667}}); // sleep
+      textures[0][2] = "monitorSleep.png";
       break;
     case 1:
       isWork = newIsWork;
-      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.00217}}); // full
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 2.5}}); // full
       textures[0][2] = "monitorON.png";
+      break;
+    case 2:
+      isWork = newIsWork;
+      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0}}); // shutdown
+      textures[0][2] = "monitorOFF.png";
       break;
   }
 }

@@ -48,6 +48,8 @@ public:
     SetSmartThing(_things);
   }
 
+  std::vector < std::vector<std::string>> GetTable() { return table; }
+
   virtual void SetSmartThing(std::vector<TSmartThing*> _things)
   {
     things = _things;
@@ -61,7 +63,7 @@ public:
       for (int j = 0; j < sensor.size(); j++)
       {
         sensors.push_back(sensor[j]);
-        int dataCount = int(sensor[j]->GetDataPacket().GetSize() / sizeof(double));
+        int dataCount = int(sensor[j]->GetDataPacket()->GetSize() / sizeof(double));
         for (int k = 0; k < dataCount; k++)
           tableHeader.push_back(things[i]->GetName() + "_" + sensor[j]->GetName() + "_" + std::to_string(k));
       }
@@ -82,8 +84,8 @@ virtual void Run()
 
   for (int i = 0; i < sensors.size(); i++)
   {
-    double* val = sensors[i]->GetDataPacket().GetData<double>();
-    int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+    double* val = sensors[i]->GetDataPacket()->GetData<double>();
+    int dataCount = int(sensors[i]->GetDataPacket()->GetSize() / sizeof(double));
     for (int j = 0; j < dataCount; j++)
     {
       str.push_back(std::to_string(val[j]));
@@ -112,14 +114,15 @@ virtual void Run()
 
   virtual void Run(std::size_t time, std::size_t step)
   {
+    // printf("time=%lu step=%lu\n", time, step);
     smartThingShedule.UpdateThingsProperties(time);
     std::vector<std::string> str(1);
     str[0] = std::to_string(currentTime);
 
     for (int i = 0; i < sensors.size(); i++)
     {
-      double* val = sensors[i]->GetDataPacket().GetData<double>();
-      int dataCount = int(sensors[i]->GetDataPacket().GetSize() / sizeof(double));
+      double* val = sensors[i]->GetDataPacket()->GetData<double>();
+      int dataCount = int(sensors[i]->GetDataPacket()->GetSize() / sizeof(double));
       for (int j = 0; j < dataCount; j++)
       {
         str.push_back(std::to_string(val[j]));

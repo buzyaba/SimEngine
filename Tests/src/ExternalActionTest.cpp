@@ -17,6 +17,8 @@ TEST(ExternalActionTest, Can_Create) {
     std::generate(allObjects.begin(), allObjects.end(), [] {static int a = 1; return new DummyObject("DummyObject"+std::to_string(a++));} );
 
     ASSERT_NO_THROW(TExternalActionSchedule(allObjects, getPath("/Tests/common/actions.xml")));
+    for(auto& elem : allObjects)
+        delete(elem);
 }
 
 TEST(ExternalActionTest, GetObjectProperties_string) {
@@ -29,6 +31,7 @@ TEST(ExternalActionTest, GetObjectProperties_string) {
 
     property = schedule.GetObjectProperties("DummyObject1", 1000ull);
     ASSERT_DOUBLE_EQ(property["Property"]->GetValue("Property"), 1.0);
+    free(allObjects[0]);
 }
 
 TEST(ExternalActionTest, GetObjectProperties_reference) {
@@ -41,6 +44,7 @@ TEST(ExternalActionTest, GetObjectProperties_reference) {
 
     property = schedule.GetObjectProperties(allObjects[0], 1000ull);
     ASSERT_DOUBLE_EQ(property["Property"]->GetValue("Property"), 1.0);
+    free(allObjects[0]);
 }
 
 TEST(ExternalActionTest, UpdateObjectProperties) {
@@ -59,4 +63,6 @@ TEST(ExternalActionTest, UpdateObjectProperties) {
 
     schedule.UpdateObjectsProperties(1000ull);
     ASSERT_DOUBLE_EQ(allObjects[0]->GetProperty("Property").GetValue("Property"), 1.0);
+    for(auto& elem : allObjects)
+        delete(elem);
 }

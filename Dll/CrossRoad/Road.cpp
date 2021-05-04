@@ -1,6 +1,6 @@
 #include "Road.hpp"
 #include <cmath>
-#include <thread>
+#include <algorithm>
 
 TRoad::TRoad(std::string _name): TObjectOfObservation(_name) {
     properties.insert(
@@ -17,6 +17,8 @@ TRoad::TRoad(std::string _name): TObjectOfObservation(_name) {
 
 
 TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_crossr): TObjectOfObservation(_name) {
+    properties.insert( { "HasJam", new TProperties({{"HasJam", 0}}, false, "HasJam") } );
+
     auto first_crossr_x = first_crossr.GetValue("X");
     auto first_crossr_y = first_crossr.GetValue("Z");
 
@@ -68,9 +70,29 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
         { "Rotate",
         new TProperties({{"X", 0.0}, {"Y", angle}, {"Z", 0.0}},
                         false, "Rotate") });
+}
 
-    auto prop1 = GetProperty("Coordinate").GetValue("X");
-    auto prop2 = GetProperty("Coordinate").GetValue("Z");
+void TRoad::Update() {
+    bool hasjam = std::all_of(childObjects.begin(), childObjects.end(), [](TObjectOfObservation* obj) { return obj->GetChildObjects().size() > 0; });
+    GetProperty("HasJam").SetValue("HasJam", hasjam);
+
+    for (std::size_t i = 1; i < childObjects.size(); ++i) {
+        if (childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
+            std::size_t k = i;
+        //  for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
+        //  if (k < childObjects.size()) {
+            auto car = childObjects[i]->GetChildObjects().front();
+            if (!car->GetProperty("Moving").GetValue("Moving") && !childObjects[i-1]->GetProperty("RoadState").GetValue("Busy")) {
+                childObjects[i]->ExcludeChildObject(car);
+                childObjects[i]->GetProperty("RoadState").SetValue("Busy", 0);
+                childObjects[i-1]->AddChildObject(car);
+                car->AddParentObject(childObjects[i-1]);
+                childObjects[i-1]->GetProperty("RoadState").SetValue("Busy", 1);
+            }
+        //  }
+        }
+    }
+    TObjectOfObservation::Update();
 }
 
 void TRoad::Update() {

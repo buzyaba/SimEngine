@@ -2,9 +2,10 @@
 <config>
 	<type>3</type>
 	<xmlExternalActionScheduleName>SmartTraffic_3/conf.xml</xmlExternalActionScheduleName> 
+	<xmlSmartThingScheduleName>SmartTraffic_3/SmartThing.xml</xmlSmartThingScheduleName> 
 	<xmlMainSetConfigurationFile>SmartTraffic_3/Street.xml</xmlMainSetConfigurationFile>
 	<managementProgramDllFile>TStreetAutoProgram</managementProgramDllFile>
-	<millisecondsInTimeStep>60000</millisecondsInTimeStep>
+	<millisecondsInTimeStep>1000</millisecondsInTimeStep>
 	<timeAcceleration>0</timeAcceleration>
-	<maxStep>1440</maxStep>
+	<maxStep>86400</maxStep>
 </config>

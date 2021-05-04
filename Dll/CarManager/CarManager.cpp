@@ -9,7 +9,7 @@ std::vector<TCar*> TCarManager::car_pool = {};
 
 TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     properties.insert(
-      {"PoolSize", new TProperties({{"PoolSize", 25}}, false, "PoolSize")});
+      {"PoolSize", new TProperties({{"PoolSize", 50}}, false, "PoolSize")});
     car_pool.resize(static_cast<std::size_t>(this->GetProperty("PoolSize").GetValue("PoolSize")));
     std::generate(car_pool.begin(), car_pool.end(), [] { 
         static std::size_t i = 0; 
@@ -17,11 +17,12 @@ TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     });
 }
 
-std::vector<TObjectOfObservation*> TCarManager::GetChildObjects() {
-    std::vector<TObjectOfObservation*> res;
-    res.insert(res.end(), childObjects.begin(), childObjects.end());
-    res.insert(res.end(), car_pool.begin(), car_pool.end());
-    return res;
+std::vector<TObjectOfObservation*>& TCarManager::GetChildObjects() {
+    if (my_child_objects.empty()) {
+        my_child_objects.insert(my_child_objects.end(), childObjects.begin(), childObjects.end());
+        my_child_objects.insert(my_child_objects.end(), car_pool.begin(), car_pool.end());
+    }
+    return my_child_objects;
 }
 
 void TCarManager::Update() {

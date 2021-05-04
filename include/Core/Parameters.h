@@ -47,12 +47,12 @@ public:
 
   IManagementProgram* managementProgram;
 
-  TParameters(int argc = -1, char** argv = 0);
+  TParameters(int argc = -1, const char** argv = 0);
 
   /* Определение параметров запуска из консоли
   Если один параметр - то адрес xml с настройкой программы
   **/
-  void LoadConsoleParameters(int argc = 0, char** argv = 0);
+  void LoadConsoleParameters(int argc = 0, const char** argv = 0);
   /// Создает сроку со значениями текущей конфигурации параметров для печати
   std::string Print();
   /// Работа с консольным интерфейсом

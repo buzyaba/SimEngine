@@ -6,12 +6,13 @@
         </TStreet>
     </StaticObject>
     <ObjectOfObservation>
-        <TCarManager>
+        <TCrossRoad>
             <Name>CrossRoad0</Name>
             <Coordinate>275 1 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
+            <Neighbour>CrossRoad6</Neighbour>
             <Neighbour>CarManager2</Neighbour>
-        </TCarManager>
+        </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad1</Name>
             <Coordinate>0 1 0</Coordinate>
@@ -24,19 +25,34 @@
             <Name>CrossRoad2</Name>
             <Coordinate>-275 1 0</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
+            <Neighbour>CrossRoad5</Neighbour>
             <Neighbour>CarManager1</Neighbour>
         </TCarManager>
         <TCrossRoad>
             <Name>CrossRoad3</Name>
             <Coordinate>0 1 275</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
+            <Neighbour>CrossRoad5</Neighbour>
             <Neighbour>CarManager2</Neighbour>
         </TCrossRoad>
         <TCrossRoad>
             <Name>CrossRoad4</Name>
             <Coordinate>0 1 -275</Coordinate>
             <Neighbour>CrossRoad1</Neighbour>
+            <Neighbour>CrossRoad6</Neighbour>
             <Neighbour>CarManager1</Neighbour>
+        </TCrossRoad>
+        <TCrossRoad>
+            <Name>CrossRoad5</Name>
+            <Neighbour>CrossRoad2</Neighbour>
+            <Neighbour>CrossRoad3</Neighbour>
+            <Coordinate>-275 0 275</Coordinate>
+        </TCrossRoad>
+        <TCrossRoad>
+            <Name>CrossRoad6</Name>
+            <Neighbour>CrossRoad0</Neighbour>
+            <Neighbour>CrossRoad4</Neighbour>
+            <Coordinate>275 0 -275</Coordinate>
         </TCrossRoad>
         <TCarManager>
             <Name>CarManager1</Name>
@@ -53,8 +69,29 @@
     </ObjectOfObservation>
     <SmartThing>
         <TTrafficLight>
+            <Name>TrafficLight0</Name>
+            <Coordinate>275 0 0</Coordinate>
+            <Object>CrossRoad0</Object>
+        </TTrafficLight>
+        <TTrafficLight>
             <Name>TrafficLight1</Name>
-            <Coordinate>0 1 0</Coordinate>
+            <Coordinate>0 0 0</Coordinate>
+            <Object>CrossRoad1</Object>
+        </TTrafficLight>
+        <TTrafficLight>
+            <Name>TrafficLight2</Name>
+            <Coordinate>-275 0 0</Coordinate>
+            <Object>CrossRoad2</Object>
+        </TTrafficLight>
+        <TTrafficLight>
+            <Name>TrafficLight3</Name>
+            <Coordinate>0 0 275</Coordinate>
+            <Object>CrossRoad3</Object>
+        </TTrafficLight>
+        <TTrafficLight>
+            <Name>TrafficLight4</Name>
+            <Coordinate>0 0 -275</Coordinate>
+            <Object>CrossRoad4</Object>
         </TTrafficLight>
     </SmartThing>
 </config>

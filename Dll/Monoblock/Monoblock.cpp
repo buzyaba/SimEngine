@@ -1,9 +1,9 @@
 #include "Monoblock.h"
 #include <random>
 
-static std::random_device rd;
-static std::mt19937 gen(rd());
-static std::bernoulli_distribution d(0.02);
+// static std::random_device rd;
+// static std::mt19937 gen(rd());
+// static std::bernoulli_distribution d(0.02);
 
 TMonoblock::TMonoblock(std::string _name) : TObjectOfObservation(_name) {
   properties.insert(
@@ -16,8 +16,7 @@ TMonoblock::TMonoblock(std::string _name) : TObjectOfObservation(_name) {
        new TProperties({{"X", 0}, {"Y", 0}, {"Z", 0}}, false, "Coordinate")});
   properties.insert(
       {"Rotate",
-       new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}},
-                       false, "Rotate")});
+       new TProperties({{"X", 0.0}, {"Y", 0.0}, {"Z", 0.0}}, false, "Rotate")});
   properties.insert(
       {"Scale", new TProperties({{"Width", 3}, {"Length", 3}, {"Height", 3}},
                                 false, "Scale")});
@@ -31,31 +30,31 @@ void TMonoblock::Update() {
 
   int newIsWork = static_cast<int>(properties["IsWork"]->GetValues()["IsWork"]);
 
-  if (newIsWork < 2 && d(gen))
-    newIsWork = newIsWork ? 0 : 1;
+  // if (newIsWork < 2 && d(gen))
+  //   newIsWork = newIsWork ? 0 : 1;
 
-  switch(newIsWork) {
-    case 0:
-      if (isWork != 2) {
-        isWork = newIsWork;
-        properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.00028}}); // sleep
-        textures[0][2] = "monitorSleep.png";
-      }
-      break;
-    case 1:
-      isWork = newIsWork;
-      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0.0278}}); // full
-      textures[0][2] = "monitorON.png";
-      break;
-    case 2:
-      isWork = newIsWork;
-      properties["PowerConsumption"]->SetValues({{"PowerConsumption", 0}}); // shutdown
-      textures[0][2] = "monitorOFF.png";
-      break;
+  switch (newIsWork) {
+  case 0:
+    isWork = newIsWork;
+    properties["PowerConsumption"]->SetValues(
+        {{"PowerConsumption", 0.1667}}); // sleep
+    textures[0][2] = "monitorSleep.png";
+    break;
+  case 1:
+    isWork = newIsWork;
+    properties["PowerConsumption"]->SetValues(
+        {{"PowerConsumption", 1.6667}}); // full
+    textures[0][2] = "monitorON.png";
+    break;
+  case 2:
+    isWork = newIsWork;
+    properties["PowerConsumption"]->SetValues(
+        {{"PowerConsumption", 0}}); // shutdown
+    textures[0][2] = "monitorOFF.png";
+    break;
   }
 }
 
-LIB_EXPORT_API TObjectOfObservation* create()
-{
-    return new TMonoblock("TMonoblock");
+LIB_EXPORT_API TObjectOfObservation *create() {
+  return new TMonoblock("TMonoblock");
 }

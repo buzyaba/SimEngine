@@ -13,12 +13,12 @@ TSmartThing::TSmartThing(const TSmartThing& thing) : TObject(thing)
   this->actuators = thing.actuators;
 }
 
-std::vector<ISensor*> TSmartThing::GetSensors()
+std::vector<ISensor*>& TSmartThing::GetSensors()
 {
   return sensors;
 }
 
-std::vector<IActuator*> TSmartThing::GetActuators()
+std::vector<IActuator*>& TSmartThing::GetActuators()
 {
   return actuators;
 }
