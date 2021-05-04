@@ -8,13 +8,13 @@ class DummyActuator: public TActuator {
 public:
   DummyActuator(std::string _name) : TActuator(_name) {}
 
-  virtual void SetDataPacket(TDataPacket& packet)
+  virtual void SetDataPacket(TDataPacket* packet)
   {
     for (int i = 0; i < objects.size(); i++)
     {
       if (objects[i] != nullptr)
       {
-        switch (static_cast<int>(packet.GetData<double>()[i])) {
+        switch (static_cast<int>(packet->GetData<double>()[i])) {
           case 0:
             objects[i]->SetProperty({{"Property", 0}}, "Property");
             break;
@@ -86,7 +86,4 @@ TEST(SmartThingScheduleTest, UpdateThingsProperties) {
 
     thingsSchedule.UpdateThingsProperties(500ull);
     ASSERT_DOUBLE_EQ(objects[0]->GetProperty("Property").GetValue("Property"), 0.0);
-
-    thingsSchedule.UpdateThingsProperties(1000ull);
-    ASSERT_DOUBLE_EQ(objects[0]->GetProperty("Property").GetValue("Property"), 1.0);
 }

@@ -1,4 +1,4 @@
-#pragma once
+// #pragma once
 
 #include "SimEngine/Sensor.h"
 #include "RoadLane.h"
@@ -9,7 +9,7 @@ class TCarNumberSensor : public TSensor
 public:
     TCarNumberSensor(std::string _name) : TSensor(_name) {}
 
-    TDataPacket& GetDataPacket() override {
+    TDataPacket* GetDataPacket() override {
         if (packet != nullptr) {
             delete packet;
         }
@@ -38,6 +38,6 @@ public:
             //     printf("%f ", data[i]);
             // printf("\n");
         // }
-        return *packet;
+        return packet;
     }
 };

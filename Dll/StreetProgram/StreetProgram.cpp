@@ -8,7 +8,7 @@ void TStreetProgram::Run(std::size_t time, std::size_t step) {
         auto thingSensors = things[iter]->GetSensors();
         auto thingActuators = things[iter]->GetActuators();
 
-        double *val = thingSensors[0]->GetDataPacket().GetData<double>();
+        double *val = thingSensors[0]->GetDataPacket()->GetData<double>();
         carCount += val[0] + val[1];
     }
     summaryCarCount += carCount;

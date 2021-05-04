@@ -8,7 +8,7 @@ void TStreetAutoProgram::Run(std::size_t time, std::size_t step) {
         auto thingSensors = things[iter]->GetSensors();
         auto thingActuators = things[iter]->GetActuators();
 
-        double* val = thingSensors[0]->GetDataPacket().GetData<double>();
+        double* val = thingSensors[0]->GetDataPacket()->GetData<double>();
         carCount += val[0] + val[1];
 
         double* packetVal = sendPacket.GetData<double>(); 
@@ -16,10 +16,10 @@ void TStreetAutoProgram::Run(std::size_t time, std::size_t step) {
             if (val[actuatorIter] >= carThreshold) {
                 packetVal[0] = 0;
                 packetVal[1] = 0;
-                thingActuators[actuatorIter]->SetDataPacket(sendPacket);
+                thingActuators[actuatorIter]->SetDataPacket(&sendPacket);
                 packetVal[0] = 1;
                 packetVal[1] = 1;
-                thingActuators[thingActuators.size()-1-actuatorIter]->SetDataPacket(sendPacket);
+                thingActuators[thingActuators.size()-1-actuatorIter]->SetDataPacket(&sendPacket);
             }
         }
         

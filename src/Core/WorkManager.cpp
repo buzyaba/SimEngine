@@ -54,7 +54,7 @@ void TWorkManager::Iteration(const std::size_t step, const std::chrono::millisec
         objects[i]->Update();
     }
 
-    storage->AddAllProperties(time);
+    // storage->AddAllProperties(time);
     program->Run(currentTime, currentStep);
 
     presenter->transformsUpdateSignal();

@@ -13,5 +13,5 @@ build_script:
   - cmd: cmake -DBUILD_TESTS=ON -DUSE_OPENGL=OFF ..
   - cmd: cmake --build . --config RELEASE
   - cmd: C:\projects\simengine\_build\bin\RELEASE\tests.exe
-  - cmd: echo 4 > run.txt
+  - cmd: echo 1 > run.txt
   - cmd: C:\projects\simengine\_build\bin\RELEASE\SimEngineLauncher.exe < run.txt

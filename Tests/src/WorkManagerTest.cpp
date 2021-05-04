@@ -1,24 +1,39 @@
 #include "gtest/gtest.h"
-// #include "Core/Object.h"
-// #include "Core/Scene.h"
-// #include "Core/ObjectOfObservation.h"
-// #include "Core/Sensor.h"
-// #include "Core/Properties.h"
-// #include "Core/Actuator.h"
-// #include "Core/SmartThing.h"
-// #include "Core/DataStore.h"
-// #include "Core/WorkManager.h"
-// #include "Core/DataPacket.h"
-// #include "Core/ManagementProgram.h"
-// #include "Core/ExternalActionSchedule.h"
+#include "Core/WorkManager.h"
 
-// TEST(WorkManagerTest, CanCreate)
-// {
-//   //TWorkManager(unsigned int _millisecondsOfTimeStep = 1000, double _fractionOfTimeStep = -1.0);
-//   //~TWorkManager();
-//   //void Start();
-//   //void Stop();
-//   //void SetMillisecondsInTimeStep(unsigned int _milliseconds = 1000);
-//   //void SetProgramStep(double _fractionOfTimeStep = -1.0);
-//   // EXPECT_EQ(4, 2 + 2);
-// };
+TEST(WorkManagerTest, Can_Create)
+{
+    auto presenter = new IGraphicPresenter();
+    auto params = TParameters();        
+    std::string path_str = getPath("/ConfigFiles/TestConfig.xml");
+    char* path = new char[path_str.length() + 1];
+    strcpy(path, path_str.c_str());
+    std::vector<const char*> options;
+    options.push_back("programName");
+    options.push_back(path);
+    const char** argv = &options.front();
+    params.LoadConsoleParameters(2, argv);
+    
+    ASSERT_NO_THROW(TWorkManager(params, presenter));
+    delete presenter;
+};
+
+TEST(WorkManagerTest, Can_Start_And_Run)
+{
+    auto presenter = new IGraphicPresenter();
+    auto params = TParameters();        
+    std::string path_str = getPath("/ConfigFiles/TestConfig.xml");
+    char* path = new char[path_str.length() + 1];
+    strcpy(path, path_str.c_str());
+    std::vector<const char*> options;
+    options.push_back("programName");
+    options.push_back(path);
+    const char** argv = &options.front();
+    params.LoadConsoleParameters(2, argv);
+    
+    auto wm = TWorkManager(params, presenter);
+    
+    ASSERT_NO_THROW(wm.Start(););
+    delete presenter;
+};
+

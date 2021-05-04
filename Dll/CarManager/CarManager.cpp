@@ -17,11 +17,12 @@ TCarManager::TCarManager(std::string _name): TCrossRoad(_name) {
     });
 }
 
-std::vector<TObjectOfObservation*> TCarManager::GetChildObjects() {
-    std::vector<TObjectOfObservation*> res;
-    res.insert(res.end(), childObjects.begin(), childObjects.end());
-    res.insert(res.end(), car_pool.begin(), car_pool.end());
-    return res;
+std::vector<TObjectOfObservation*>& TCarManager::GetChildObjects() {
+    if (my_child_objects.empty()) {
+        my_child_objects.insert(my_child_objects.end(), childObjects.begin(), childObjects.end());
+        my_child_objects.insert(my_child_objects.end(), car_pool.begin(), car_pool.end());
+    }
+    return my_child_objects;
 }
 
 void TCarManager::Update() {

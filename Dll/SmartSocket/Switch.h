@@ -7,13 +7,13 @@ class TSwitch : public TActuator
 public:
   TSwitch(std::string _name) : TActuator(_name) {}
 
-  virtual void SetDataPacket(TDataPacket& packet)
+  virtual void SetDataPacket(TDataPacket* packet)
   {
     for (int i = 0; i < objects.size(); i++)
     {
       if (objects[i] != nullptr)
       {
-        switch (static_cast<int>(packet.GetData<double>()[i])) {
+        switch (static_cast<int>(packet->GetData<double>()[i])) {
           case 0:
             objects[i]->SetProperty({{"IsWork", 0}}, "IsWork");
             break;

@@ -3,7 +3,7 @@
 #include "SimEngine/ManagementProgram.h"
 
 class TStreetPeakProgram : public TManagementProgram {
-    TDataPacket sendPacket{1};
+    TDataPacket* sendPacket;
     int peakTime;
     int timeGreen;
     int timeRed;
@@ -12,13 +12,16 @@ public:
     TStreetPeakProgram() : TManagementProgram()
     {
         tableHeader.push_back("carCount");
-        double* packetVal = sendPacket.GetData<double>();
+        sendPacket = new TDataPacket(sizeof(double));
+        double* packetVal = sendPacket->GetData<double>();
         packetVal[0] = 0;
         peakTime = 10;
         timeGreen = 30;
         timeRed = 120;
         waitingTime = 1;
     }
+
+    ~TStreetPeakProgram() { delete sendPacket; }
 
     virtual void Run();
     virtual void End();

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <intervalCount>2</intervalCount>
+  <time>0_1000</time>
+  <DummyThing1>(0)_(1)</DummyThing1>
+</config>
