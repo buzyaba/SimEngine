@@ -10,11 +10,11 @@ protected:
 public:
     TBarrage(std::string _name) : TActuator(_name) {}
 
-    virtual void SetDataPacket(TDataPacket& packet)
+    virtual void SetDataPacket(TDataPacket* packet) override
     {
         for (std::size_t i = 0; i < objects.size(); ++i) {
             for (auto elem : static_cast<RoadLane*>(objects[i])->roads) {
-                elem->GetProperty("RoadState").SetValue("Blocked", packet.GetData<double>()[i]);
+                elem->GetProperty("RoadState").SetValue("Blocked", packet->GetData<double>()[i]);
             }
         }
     }
