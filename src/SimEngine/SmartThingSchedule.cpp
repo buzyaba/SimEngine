@@ -42,6 +42,7 @@ void TSmartThingSchedule::LoadXML(std::string xmlName)
 void TSmartThingSchedule::UpdateThingsProperties(std::size_t time)
 {
   if (!created)
+
     return;
   std::int64_t time_index = GetTimePointIndex(time);
   if (time_index == -1)

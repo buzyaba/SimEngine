@@ -3,27 +3,16 @@
 #include "SimEngine/ManagementProgram.h"
 
 class TStreetAutoProgram : public TManagementProgram {
-    TDataPacket* sendPacket;
-    int carThreshold;
-    int timeGreen;
-    int timeRed;
-    int waitingTime;
+    TDataPacket sendPacket{2 * sizeof(double)};
+    std::size_t summaryCarCount{0};
+    std::size_t carThreshold{5};
+
 public:
-    TStreetAutoProgram() : TManagementProgram()
-    {
+    TStreetAutoProgram() : TManagementProgram() {
         tableHeader.push_back("carCount");
-        sendPacket = new TDataPacket(sizeof(double));
-        double* packetVal = sendPacket->GetData<double>();
-        packetVal[0] = 0;
-        carThreshold = 10;
-        timeGreen = 30;
-        timeRed = 120;
-        waitingTime = 1;
     }
 
-    ~TStreetAutoProgram() { delete sendPacket; }
-
-    virtual void Run();
+    virtual void Run(std::size_t time, std::size_t step);
 
     virtual void End();
 };

@@ -5,7 +5,7 @@
 #include <thread>
 #include <algorithm>
 
-double TCar::dt = 0.05;
+double TCar::dt = 1;
 
 template<typename T>
 bool compare_fp(T a, T b) { 
@@ -56,23 +56,24 @@ void TCar::Update() {
         oldRoad = parentObject;
     }
 
-    if ( abs(car_coord_x-road_coord_x) > dt || abs(car_coord_y - road_coord_y) > dt || abs(car_rotate_y - road_rotate_y) > dt) {
-        if (abs(car_rotate_y - road_rotate_y) > dt)
-            car_rotate_y += dt*rotate_diff;
-        if (abs(car_coord_x - road_coord_x) > dt)
-            car_coord_x += dt*x_dir;
-        if (abs(car_coord_y - road_coord_y) > dt)
-            car_coord_y += dt*y_dir;
+    // if ( abs(car_coord_x-road_coord_x) > dt || abs(car_coord_y - road_coord_y) > dt || abs(car_rotate_y - road_rotate_y) > dt) {
+    //     if (abs(car_rotate_y - road_rotate_y) > dt)
+    //         car_rotate_y += dt*rotate_diff;
+    //     if (abs(car_coord_x - road_coord_x) > dt)
+    //         car_coord_x += dt*x_dir;
+    //     if (abs(car_coord_y - road_coord_y) > dt)
+    //         car_coord_y += dt*y_dir;
+    //     GetProperty("Moving").SetValue("Moving", 1);
+    //     car_coord.SetValue("X", car_coord_x);
+    //     car_coord.SetValue("Z", car_coord_y);
+    //     car_rotate.SetValue("Y", car_rotate_y);
+    // }
+    // else {
         GetProperty("Moving").SetValue("Moving", 1);
-        car_coord.SetValue("X", car_coord_x);
-        car_coord.SetValue("Z", car_coord_y);
-        car_rotate.SetValue("Y", car_rotate_y);
-    }
-    else {
         car_coord.SetValue("X", road_coord_x);
         car_coord.SetValue("Z", road_coord_y);
         car_rotate.SetValue("Y", road_rotate_y);
         GetProperty("Moving").SetValue("Moving", 0);
-    }
+    // }
 
 }

@@ -1,12 +1,14 @@
 #include "Road.hpp"
 #include <cmath>
-#include <thread>
+#include <algorithm>
 
 double TRoad::TRoadElem::roadElemLength = 55;
 
 TRoad::TRoad(std::string _name): TObjectOfObservation(_name) {}
 
 TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_crossr): TObjectOfObservation(_name) {
+    properties.insert( { "HasJam", new TProperties({{"HasJam", 0}}, false, "HasJam") } );
+
     auto first_crossr_x = first_crossr.GetValue("X");
     auto first_crossr_y = first_crossr.GetValue("Z");
 
@@ -52,6 +54,7 @@ TRoad::TRoad(std::string _name, IProperties& first_crossr, IProperties& second_c
         }
         childObjects.back()->SetProperty({{"X", pos_x + offset_x}, {"Y", 0}, {"Z", pos_y + offset_y}}, "Coordinate");
         childObjects.back()->SetProperty({{"X", 0.0}, {"Y", angle}, {"Z", 0.0}}, "Rotate");
+        childObjects.back()->AddParentObject(this);
 
         pos_x += x_dir * 1.4*TRoadElem::roadElemLength/2;
         pos_y += y_dir * 1.4*TRoadElem::roadElemLength/2;
@@ -73,22 +76,25 @@ TRoad::TRoadElem::TRoadElem(std::string _name): TObjectOfObservation(_name) {
 }
 
 void TRoad::Update() {
-     for (std::size_t i = 0; i < childObjects.size(); ++i) {
-         if (!childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
-             std::size_t k = i;
-             for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
-             if (k < childObjects.size()) {
-                 auto car = childObjects[k]->GetChildObjects().front();
-                 if (!car->GetProperty("Moving").GetValue("Moving")) {
-                     childObjects[k]->ExcludeChildObject(car);
-                     childObjects[k]->GetProperty("RoadState").SetValue("Busy", 0);
-                     childObjects[i]->AddChildObject(car);
-                     car->AddParentObject(childObjects[i]);
-                     childObjects[i]->GetProperty("RoadState").SetValue("Busy", 1);
-                 }
-             }
-         }
-     }
+    bool hasjam = std::all_of(childObjects.begin(), childObjects.end(), [](TObjectOfObservation* obj) { return obj->GetChildObjects().size() > 0; });
+    GetProperty("HasJam").SetValue("HasJam", hasjam);
+
+    for (std::size_t i = 1; i < childObjects.size(); ++i) {
+        if (childObjects[i]->GetProperty("RoadState").GetValue("Busy")) {
+            std::size_t k = i;
+        //  for (; k < childObjects.size() && !childObjects[k]->GetProperty("RoadState").GetValue("Busy"); ++k);
+        //  if (k < childObjects.size()) {
+            auto car = childObjects[i]->GetChildObjects().front();
+            if (!car->GetProperty("Moving").GetValue("Moving") && !childObjects[i-1]->GetProperty("RoadState").GetValue("Busy")) {
+                childObjects[i]->ExcludeChildObject(car);
+                childObjects[i]->GetProperty("RoadState").SetValue("Busy", 0);
+                childObjects[i-1]->AddChildObject(car);
+                car->AddParentObject(childObjects[i-1]);
+                childObjects[i-1]->GetProperty("RoadState").SetValue("Busy", 1);
+            }
+        //  }
+        }
+    }
     TObjectOfObservation::Update();
 }
 
